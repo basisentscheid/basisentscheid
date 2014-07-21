@@ -17,6 +17,30 @@
  */
 
 
+// configuration
+
+// mail address for error mails
+// Set to empty string to disable error mails.
+if (!defined("ERROR_MAIL"))                define("ERROR_MAIL", "root");
+
+// prefix for the subject of the error mails
+if (!defined("ERROR_MAIL_SUBJECT_PREFIX")) define("ERROR_MAIL_SUBJECT_PREFIX", "");
+
+// path to the directory for backtrace files
+// (relative or absolute with trailing slash, e.g. DOCROOT."var/errors/")
+// If not set writing backtrace files will be disabled.
+if (!defined("ERROR_BACKTRACE_PATH"))      define("ERROR_BACKTRACE_PATH", "");
+
+// URL to the directory for backtrace files
+// (absolute URL with trailing slash, e.g. BASE_URL."var/errors/")
+// If not set the backtrace links in the mails will be disabled.
+if (!defined("ERROR_BACKTRACE_URL"))       define("ERROR_BACKTRACE_URL", "");
+
+// output backtraces to the browser or shell
+// (for debugging only!)
+if (!defined("ERROR_PRINT_BACKTRACE"))     define("ERROR_PRINT_BACKTRACE", false);
+
+
 error_reporting(E_ALL);
 ini_set("display_errors", "off");
 set_error_handler("user_error_handler");
@@ -124,152 +148,167 @@ function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal) 
 		!DEBUG
 	) $show = false;
 
-	if (PHP_SAPI!="cli") {
-		// display error as HTML
-		if ($show) {
+	// display error
+	if (PHP_SAPI!="cli" and $show) {
 ?>
 <p class="syserror">
 <b><?=$errortype[$errno]?></b>:  <?=$errstr?><br>
-in <b><?=$errfile?></b> on line <b><?=$errline?></b><br>
+in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 <?
-		}
 	}
 
 	// log error
 	$logline = "PHP ".$errortype[$errno].":  ".$errstr." in ".$errfile." on line ".$errline;
 	error_log($logline, 0);
 
-	// gather debug information
-
-	$backtrace = date("r")."\n\n";
-
-	$backtrace .= $errortype[$errno].":  ".$errstr."\n";
-	$backtrace .= "in ".$errfile." on line ".$errline."\n\n";
-
-	// code section where the error occurred
-	$backtrace .= str_repeat("-", 70)."\n";
-	if ( is_readable($errfile) and $f = fopen($errfile, "r") ) {
-		$line = 1;
-		while ( $buffer = fgets($f) and $line <= $errline + 10 ) {
-			if ($line >= $errline - 10) {
-				$backtrace .= str_pad($line, 5, " ", STR_PAD_LEFT);
-				if ($line==$errline) $backtrace .= " > "; else $backtrace .= "   ";
-				$backtrace .= $buffer;
-			}
-			$line++;
-		}
-		fclose($f);
-	} else {
-		$backtrace .= "The file could not be read!\n";
-	}
-	$backtrace .= str_repeat("-", 70)."\n\n";
-
-	// some interesting variables
-	if (!empty($_SERVER['SCRIPT_FILENAME'])) {
-		$backtrace .= "_SERVER[SCRIPT_FILENAME]: ".$_SERVER['SCRIPT_FILENAME']."\n";
-	}
-	if (!empty($_SERVER['REQUEST_URI'])) {
-		$backtrace .= "_SERVER[REQUEST_URI]: ".$_SERVER['REQUEST_URI']."\n";
-	}
-	if (!empty($_SERVER['argv'])) {
-		$backtrace .= "_SERVER[argv]: ".print_r( $_SERVER['argv'], true)."\n";
-	}
-	if (!empty($_SERVER['HTTP_USER_AGENT'])) {
-		$backtrace .= "_SERVER[HTTP_USER_AGENT]: ".$_SERVER['HTTP_USER_AGENT']."\n";
-	}
-	$backtrace .= "\n";
-
 	// backtrace
-	$debug_backtrace = debug_backtrace();
-	// Was in der Fehlerbehandlungsfunktion passierte, interessiert uns nicht
-	unset($debug_backtrace[0], $debug_backtrace[1]);
-	$backtrace .= "======= debug_backtrace ======= ".print_r($debug_backtrace, true)."\n";
+	if (ERROR_MAIL or ERROR_BACKTRACE_PATH or ERROR_PRINT_BACKTRACE) {
 
-	// sent the first 10000 letters until here also by mail
-	if (
-		strlen($backtrace) > 10000 and
-		// make the last line complete
-		$pos = strpos($backtrace, "\n", 10000)
-	) {
-		$mailbody = substr($backtrace, 0, $pos+10001)."[...]\n";
-	} else {
-		$mailbody = $backtrace;
-	}
+		$backtrace = date("r")."\n\n";
 
-	// We list the superglobals separately, so we don't want to have them also in the context and the global variables.
-	$superglobals = array(
-		'HTTP_POST_VARS',    '_POST',
-		'HTTP_GET_VARS',     '_GET',
-		'HTTP_COOKIE_VARS',  '_COOKIE',
-		'HTTP_SERVER_VARS',  '_SERVER',
-		'HTTP_ENV_VARS',     '_ENV',
-		'HTTP_SESSION_VARS', '_SESSION',
-		'HTTP_POST_FILES',   '_FILES',
-		'_REQUEST',
-		'GLOBALS',
-	);
+		$backtrace .= $errortype[$errno].":  ".$errstr."\n";
+		$backtrace .= "in ".$errfile." on line ".$errline."\n\n";
 
-	$globals = array();
-	foreach ( $GLOBALS as $key => $value ) {
-		if (!in_array($key, $superglobals)) $globals[$key] = $value;
-	}
-	$context = array();
-	foreach ( $errcontext as $key => $value ) {
-		if (!in_array($key, $superglobals)) $context[$key] = $value;
-	}
-	if ($globals==$context) {
-		$backtrace .= "======= global variables = error context (without superglobals) ======= ".print_r($globals, true)."\n";
-	} else {
-		$backtrace .= "======= error context (without superglobals) ======= "   .print_r($context, true)."\n";
-		$backtrace .= "======= global variables (without superglobals) ======= ".print_r($globals, true)."\n";
-	}
+		// code section where the error occurred
+		$backtrace .= str_repeat("-", 70)."\n";
+		if ( is_readable($errfile) and $f = fopen($errfile, "r") ) {
+			$line = 1;
+			while ( $buffer = fgets($f) and $line <= $errline + 10 ) {
+				if ($line >= $errline - 10) {
+					$backtrace .= str_pad($line, 5, " ", STR_PAD_LEFT);
+					if ($line==$errline) $backtrace .= " > "; else $backtrace .= "   ";
+					$backtrace .= $buffer;
+				}
+				$line++;
+			}
+			fclose($f);
+		} else {
+			$backtrace .= "The file could not be read!\n";
+		}
+		$backtrace .= str_repeat("-", 70)."\n\n";
 
-	$backtrace .= "======= _GET ======= "    .print_r($_GET,    true)."\n";
-	$backtrace .= "======= _POST ======= "   .print_r($_POST,   true)."\n";
-	$backtrace .= "======= _FILES ======= "  .print_r($_FILES,  true)."\n";
-	$backtrace .= "======= _COOKIE ======= " .print_r($_COOKIE, true)."\n";
-	$backtrace .= "======= _SESSION ======= ".print_r(( isset($_SESSION) ? $_SESSION : "undefined\n" ), true)."\n";
-	$server = $_SERVER;
-	// don't expose the http password
-	if (isset($server["PHP_AUTH_PW"])) $server["PHP_AUTH_PW"] = "********";
-	$backtrace .= "======= _SERVER ======= " .print_r($server,  true)."\n";
-	$backtrace .= "======= _ENV ======= "    .print_r($_ENV,    true)."\n";
+		// some interesting variables
+		if (!empty($_SERVER['SCRIPT_FILENAME'])) {
+			$backtrace .= "_SERVER[SCRIPT_FILENAME]: ".$_SERVER['SCRIPT_FILENAME']."\n";
+		}
+		if (!empty($_SERVER['REQUEST_URI'])) {
+			$backtrace .= "_SERVER[REQUEST_URI]: ".$_SERVER['REQUEST_URI']."\n";
+		}
+		if (!empty($_SERVER['argv'])) {
+			$backtrace .= "_SERVER[argv]: ".print_r( $_SERVER['argv'], true)."\n";
+		}
+		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+			$backtrace .= "_SERVER[HTTP_USER_AGENT]: ".$_SERVER['HTTP_USER_AGENT']."\n";
+		}
+		$backtrace .= "\n";
 
-	// write backtrace file
-	$microtime = microtime();
-	$filename = "backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
-	file_put_contents(DOCROOT."var/errors/".$filename, $backtrace);
-	$mailbody .= "\n";
-	$mailbody .= "complete backtrace:\n";
-	$mailbody .= BASE_URL."var/errors/".$filename."\n";
+		// actual backtrace
+		$debug_backtrace = debug_backtrace();
+		// We don't want to know what happened in the error handling functions.
+		unset($debug_backtrace[0], $debug_backtrace[1]);
+		$backtrace .= "======= debug_backtrace ======= ".print_r($debug_backtrace, true)."\n";
 
-	// send mail
-	$subject = "[Basisentscheid] ".$errortype[$errno].": ";
-	if (strlen($errstr) > 800) {
-		$subject .= substr($errstr, 0, 797)."...";
-	} else {
-		$subject .= $errstr;
-	}
-	error_send_mail_limited($subject, $mailbody);
+		// sent the first 10000 letters until here also by mail
+		if (ERROR_MAIL) {
+			if (
+				strlen($backtrace) > 10000 and
+				// make the last line complete
+				$pos = strpos($backtrace, "\n", 10000)
+			) {
+				$mailbody = substr($backtrace, 0, $pos+10001)."[...]\n";
+			} else {
+				$mailbody = $backtrace;
+			}
+		}
 
-	// display backtrace
-	if (PHP_SAPI!="cli") {
-		// display as HTML
-		if ($show) {
-			if (false) {
+		// extended backtrace
+		if (ERROR_BACKTRACE_PATH or ERROR_PRINT_BACKTRACE) {
+
+			// We list the superglobals separately, so we don't want to have them also in the context and the global variables.
+			$superglobals = array(
+				'HTTP_POST_VARS',    '_POST',
+				'HTTP_GET_VARS',     '_GET',
+				'HTTP_COOKIE_VARS',  '_COOKIE',
+				'HTTP_SERVER_VARS',  '_SERVER',
+				'HTTP_ENV_VARS',     '_ENV',
+				'HTTP_SESSION_VARS', '_SESSION',
+				'HTTP_POST_FILES',   '_FILES',
+				'_REQUEST',
+				'GLOBALS',
+			);
+
+			$globals = array();
+			foreach ( $GLOBALS as $key => $value ) {
+				if (!in_array($key, $superglobals)) $globals[$key] = $value;
+			}
+			$context = array();
+			foreach ( $errcontext as $key => $value ) {
+				if (!in_array($key, $superglobals)) $context[$key] = $value;
+			}
+			if ($globals==$context) {
+				$backtrace .= "======= global variables = error context (without superglobals) ======= ".print_r($globals, true)."\n";
+			} else {
+				$backtrace .= "======= error context (without superglobals) ======= "   .print_r($context, true)."\n";
+				$backtrace .= "======= global variables (without superglobals) ======= ".print_r($globals, true)."\n";
+			}
+
+			$backtrace .= "======= _GET ======= "    .print_r($_GET,    true)."\n";
+			$backtrace .= "======= _POST ======= "   .print_r($_POST,   true)."\n";
+			$backtrace .= "======= _FILES ======= "  .print_r($_FILES,  true)."\n";
+			$backtrace .= "======= _COOKIE ======= " .print_r($_COOKIE, true)."\n";
+			$backtrace .= "======= _SESSION ======= ".print_r(( isset($_SESSION) ? $_SESSION : "undefined\n" ), true)."\n";
+			$server = $_SERVER;
+			// don't expose the http password
+			if (isset($server["PHP_AUTH_PW"])) $server["PHP_AUTH_PW"] = "********";
+			$backtrace .= "======= _SERVER ======= " .print_r($server,  true)."\n";
+			$backtrace .= "======= _ENV ======= "    .print_r($_ENV,    true)."\n";
+
+		}
+
+		// write backtrace file
+		if (ERROR_BACKTRACE_PATH) {
+			$microtime = microtime();
+			$filename = "backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
+			file_put_contents(ERROR_BACKTRACE_PATH.$filename, $backtrace);
+			if (ERROR_MAIL and ERROR_BACKTRACE_URL) {
+				$mailbody .= "\n";
+				$mailbody .= "complete backtrace:\n";
+				$mailbody .= ERROR_BACKTRACE_URL.$filename."\n";
+			}
+		}
+
+		// send mail
+		if (ERROR_MAIL) {
+			$subject = ERROR_MAIL_SUBJECT_PREFIX.$errortype[$errno].": ";
+			if (strlen($errstr) > 800) {
+				$subject .= substr($errstr, 0, 797)."...";
+			} else {
+				$subject .= $errstr;
+			}
+			error_send_mail($subject, $mailbody);
+		}
+
+		// display backtrace
+		if (PHP_SAPI!="cli") {
+			// display as HTML
+			if ($show) {
+				if (ERROR_PRINT_BACKTRACE) {
 ?>
 <br>
-<pre><?=h($backtrace)?></pre>
+<pre><?=htmlspecialchars($backtrace)?></pre>
 <?
-			}
+				}
 ?>
 </p>
 <?
+			}
+		} else {
+			// display as Text
+			if (ERROR_PRINT_BACKTRACE) {
+				echo $backtrace."\n";
+			}
 		}
-	} else {
-		// display as Text
-		// echo $backtrace."\n";
-		//exit;
+
 	}
 
 	// abort at fatal errors
@@ -310,7 +349,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b><br>
  * @param string  $subject
  * @param string  $mailbody
  */
-function error_send_mail_limited($subject, $mailbody) {
+function error_send_mail($subject, $mailbody) {
 
 	// counter
 	$count = 0;
@@ -345,25 +384,6 @@ function error_send_mail_limited($subject, $mailbody) {
 			"By deleting the file ".$file."\nthe counter can be reset.\n";
 	}
 
-	error_send_mail($subject, $mailbody);
-
-}
-
-
-/**
- * send error mail
- *
- * @param string  $subject
- * @param string  $mailbody
- */
-function error_send_mail($subject, $mailbody) {
-
-	//if (!empty(ADMINMAIL)) {
-		$mailto = ADMINMAIL;
-	//} else {
-	//	$mailto = "root"; // Fallback
-	//}
-
-	mail($mailto, $subject, $mailbody, "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n");
+	mail(ERROR_MAIL, $subject, $mailbody, "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n");
 
 }

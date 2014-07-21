@@ -68,7 +68,7 @@ function html_head($title) {
 GET: <? print_r($_GET); echo "\n"; ?>
 POST: <? print_r($_POST); echo "\n"; ?>
 SESSION: <? if (isset($_SESSION)) { print_r($_SESSION); } echo "\n"; ?>
-DEBUG: <? print_r(DEBUG); echo "\n"; ?>
+BN: <? print_r(BN); echo "\n"; ?>
 -->
 <?
 	}

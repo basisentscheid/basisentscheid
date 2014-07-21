@@ -2,21 +2,26 @@
 /**
  * configuration
  *
+ * @see inc/common.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
- * @see inc/common.php
  */
 
 
-define("DEBUG", true);
-
-define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
+define("DEBUG", false);
 
 // with trailing slash
 define("BASE_URL", "http://example.com/basisentscheid/portal/");
 
-// for error notifications
-define("ADMINMAIL", "root");
+// for error notifications, see inc/errors.php
+// Enter a mail address or a local user to get error mails.
+define("ERROR_MAIL", "");
+define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
+// Uncomment these lines to get backtrace files.
+//define("ERROR_BACKTRACE_PATH", DOCROOT."var/errors/");
+//define("ERROR_BACKTRACE_URL", BASE_URL."var/errors/");
+
+define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 
 define("MINIMUM_POPULATION", 500);
 define("SUPPORTERS_VALID_INTERVAL", '84 days'); // 12 weeks are 84 days

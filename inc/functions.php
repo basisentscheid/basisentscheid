@@ -40,7 +40,7 @@ function out($text) {
  * @return string
  */
 function h($string) {
-	return htmlspecialchars($string, ENT_COMPAT, "UTF-8");
+	return htmlspecialchars($string, ENT_COMPAT | ENT_HTML5, "UTF-8");
 }
 
 
