@@ -44,7 +44,7 @@ function redirect($target="") {
  * @param string  $title
  */
 function html_head($title) {
-	global $member;
+	global $member, $admin;
 
 	$output = ob_get_clean();
 
@@ -56,6 +56,9 @@ function html_head($title) {
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
  <meta http-equiv="Content-Style-Type" content="text/css">
  <link rel="stylesheet" media="all" type="text/css" href="style.css">
+<? if ($admin) { ?>
+ <link rel="stylesheet" media="all" type="text/css" href="admin.css">
+<? } ?>
  <link rel="icon" href="/favicon.ico" type="image/x-icon">
  <title><?=h($title)?></title>
 </head>
@@ -85,9 +88,17 @@ BN: <? print_r(BN); echo "\n"; ?>
 	</div>
 	<div id="user">
 <?
-	if ($member) {
+	if ($member or $admin) {
+		if ($member) {
 ?>
 <?=_("Logged in as")?> <a href="member.php"><?=Member::username_static($member->username)?></a>
+<?
+		} else {
+?>
+<?=_("Logged in as Admin")?> <a href="admin_.php"><?=$admin->username?></a>
+<?
+		}
+?>
 <form action="<?=BN?>" method="post" class="button" style="margin-left: 10px">
 <input type="hidden" name="action" value="logout">
 <input type="submit" value="<?=_("Logout")?>">
@@ -95,6 +106,7 @@ BN: <? print_r(BN); echo "\n"; ?>
 <?
 	} else {
 ?>
+<a href="admin.php">Login as Admin</a>
 <form action="login.php" method="post" class="button">
 <input type="hidden" name="origin" value="<?=h($_SERVER['REQUEST_URI'])?>">
 <input type="submit" value="<?=_("Login")?>">

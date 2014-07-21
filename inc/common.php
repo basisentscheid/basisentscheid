@@ -4,6 +4,7 @@
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see admin.php
  * @see areas.php
  * @see auth.php
  * @see login.php
@@ -41,15 +42,22 @@ if (php_sapi_name()!="cli") {
 
 	require "inc/locale.php";
 
-	// get logged in user
-	if (empty($_SESSION['member'])) {
-		$member = false;
-	} else {
+	// get logged in member or admin
+	$member = false;
+	$admin  = false;
+	if (!empty($_SESSION['member'])) {
 		$member = new Member($_SESSION['member']);
 		// automatically logout if member was deleted from the database
 		if (!$member->id) {
 			$member = false;
-			$_SESSION['member'] = 0;
+			unset($_SESSION['member']);
+		}
+	} elseif (!empty($_SESSION['admin'])) {
+		$admin = new Admin($_SESSION['admin']);
+		// automatically logout if admin was deleted from the database
+		if (!$admin->id) {
+			$admin = false;
+			unset($_SESSION['admin']);
 		}
 	}
 
@@ -57,7 +65,7 @@ if (php_sapi_name()!="cli") {
 
 	// action on all pages
 	if ($action=="logout") {
-		$_SESSION['member'] = 0;
+		unset($_SESSION['member'], $_SESSION['admin']);
 		redirect();
 	}
 
