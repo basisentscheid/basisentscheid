@@ -1,0 +1,337 @@
+# Commands for maintenance:
+# grep -v "^# File" locale/de/LC_MESSAGES/messages.po > locale/de/LC_MESSAGES/messages.po_ && mv locale/de/LC_MESSAGES/messages.po_ locale/de/LC_MESSAGES/messages.po && xgettext --join-existing --omit-header --strict --no-wrap --output-dir=locale/de/LC_MESSAGES/ --from-code=UTF-8 *.php inc/*.php inc/classes/*.php
+# -- translate new msgids
+# cd locale/de/LC_MESSAGES/ ; msgfmt messages.po ; cd -
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Basisentscheid\n"
+"Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
+"POT-Creation-Date: 2014-07-20 11:24+0200\n"
+"PO-Revision-Date: 2014-07-20 11:24+0200\n"
+"Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
+"Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#
+# File: areas.php, line: 42
+msgid "Subject areas"
+msgstr "Themenbereiche"
+#
+# File: areas.php, line: 84
+msgid "unsubscribe"
+msgstr "abmelden"
+#
+# File: areas.php, line: 92
+msgid "subscribe"
+msgstr "anmelden"
+#
+# File: member.php, line: 46
+msgid "Member"
+msgstr "Mitglied"
+#
+# File: member.php, line: 50
+msgid "Username"
+msgstr "Benutzername"
+#
+# File: member.php, line: 52
+# File: proposal_edit.php, line: 113
+msgid "Save"
+msgstr "Speichern"
+#
+# File: periods.php, line: 14
+# File: inc/functions_http.php, line: 83
+msgid "Periods"
+msgstr "Abstimmungsperioden"
+#
+msgid "Edit Proposal"
+msgstr "Antrag bearbeiten"
+#
+msgid "New Proposal"
+msgstr "Neuer Antrag"
+#
+# File: proposal_edit.php, line: 106
+# File: proposal.php, line: 77
+# File: inc/classes/Issue.php, line: 209
+msgid "Title"
+msgstr "Titel"
+#
+# File: proposal.php, line: 64
+msgid "Proposal"
+msgstr "Antrag"
+#
+msgid "Apply to become proponent"
+msgstr "Beantragen, als Antragsteller aufgenommen zu werden"
+#
+# File: proposal.php, line: 108
+msgid "Revoke your support for this proposal"
+msgstr "Antrag nicht mehr unterstützen"
+#
+# File: proposal.php, line: 115
+msgid "Support this proposal"
+msgstr "Diesen Antrag unterstützen"
+#
+msgid "Revoke your demand for offline voting"
+msgstr "Keine geheime Abstimmung mehr fordern"
+#
+msgid "Demand offline voting"
+msgstr "Geheime Abstimmung fordern"
+#
+# File: proposal_edit.php, line: 108
+# File: proposal.php, line: 81
+msgid "Content"
+msgstr "Antragstext"
+#
+# File: proposal_edit.php, line: 110
+# File: proposal.php, line: 83
+msgid "Reason"
+msgstr "Begründung"
+#
+msgid "Edit"
+msgstr "Bearbeiten"
+#
+msgid "Add competing proposal"
+msgstr "Konkurrierenden Antrag hinzufügen"
+#
+# File: proposals.php, line: 12
+# File: inc/functions_http.php, line: 81
+msgid "Proposals"
+msgstr "Anträge"
+#
+# File: proposals.php, line: 98
+msgid "Add proposal"
+msgstr "Antrag hinzufügen"
+#
+# File: inc/functions_http.php, line: 82
+msgid "Areas"
+msgstr "Themenbereiche"
+#
+# File: inc/functions_http.php, line: 92
+msgid "Logout"
+msgstr "Abmelden"
+#
+# File: inc/functions_http.php, line: 99
+msgid "Login"
+msgstr "Anmelden"
+#
+# File: inc/classes/Member.php, line: 85
+msgid "anonymous"
+msgstr "anonym"
+#
+# File: inc/classes/Pager.php, line: 107
+msgid "Pages"
+msgstr "Seiten"
+#
+# File: inc/classes/Pager.php, line: 126
+msgid "Records per page"
+msgstr "Datensätze pro Seite"
+#
+# File: periods.php, line: 22
+# File: proposals.php, line: 18
+# File: inc/functions.php, line: 235
+msgid "Debate"
+msgstr "Debatte"
+#
+# File: periods.php, line: 23
+msgid "Preparation"
+msgstr "Vorbereitung"
+#
+# File: periods.php, line: 24
+# File: proposals.php, line: 19
+# File: inc/functions.php, line: 237
+msgid "Voting"
+msgstr "Abstimmung"
+#
+# File: periods.php, line: 25
+# File: inc/functions.php, line: 238
+msgid "Counting"
+msgstr "Auszählung"
+#
+# File: periods.php, line: 26
+# File: inc/classes/Issue.php, line: 300
+msgid "Online"
+msgstr "Online"
+#
+# File: periods.php, line: 27
+# File: inc/classes/Issue.php, line: 296
+msgid "Secret"
+msgstr "Geheim"
+#
+# File: proposal_edit.php, line: 92
+# File: proposal.php, line: 70
+msgid "Area"
+msgstr "Themenbereich"
+#
+# File: test.php, line: 12
+# File: test_redirect_errors.php, line: 31
+msgid "Test"
+msgstr "Test"
+#
+# File: inc/functions.php, line: 214
+msgid "Draft"
+msgstr "Entwurf"
+#
+# File: inc/functions.php, line: 215
+msgid "Submitted"
+msgstr "Eingereicht"
+#
+# File: inc/functions.php, line: 216
+msgid "Admitted"
+msgstr "Zugelassen"
+#
+# File: inc/functions.php, line: 225
+msgid "Revoked"
+msgstr "Zurückgezogen"
+#
+# File: inc/functions.php, line: 226
+msgid "Cancelled"
+msgstr "Abgebrochen"
+#
+# File: inc/functions.php, line: 227
+msgid "Done otherwise"
+msgstr "Anderweitig erledigt"
+#
+# File: inc/functions.php, line: 236
+msgid "Voting preparation"
+msgstr "Abstimmungsvorbereitung"
+#
+# File: inc/functions.php, line: 239
+msgid "Finished"
+msgstr "Abgeschlossen"
+#
+# File: inc/functions.php, line: 240
+msgid "Finished and cleared"
+msgstr "Abgeschlossen und bereinigt"
+#
+# File: inc/functions_http.php, line: 197
+msgid "Error"
+msgstr "Fehler"
+#
+msgid "A system error occurred"
+msgstr "Ein Systemfehler ist aufgetreten"
+#
+msgid "System Error"
+msgstr "Systemfehler"
+#
+# File: areas.php, line: 49
+msgid "Name"
+msgstr ""
+#
+# File: areas.php, line: 50
+msgid "Participants"
+msgstr "Teilnehmer"
+#
+# File: areas.php, line: 52
+msgid "Participation"
+msgstr "Teilnahme"
+#
+# File: areas.php, line: 80
+msgid "last time activated"
+msgstr "zuletzt aktiviert"
+#
+# File: proposal_edit.php, line: 90
+# File: proposal.php, line: 72
+msgid "Proponents"
+msgstr "Antragsteller"
+#
+# File: proposal.php, line: 97
+msgid "Supporters"
+msgstr "Unterstützer"
+#
+msgid "Offline demanders"
+msgstr "Geheime Abstimmung"
+#
+# File: proposal_edit.php, line: 68
+msgid "New alternative proposal"
+msgstr "Neuer konkurrierender Antrag"
+#
+# File: proposal_edit.php, line: 74
+msgid "New proposal"
+msgstr "Neuer Antrag"
+#
+# File: proposal.php, line: 78
+msgid "Edit proposal"
+msgstr "Antrag bearbeiten"
+#
+# File: proposal.php, line: 106
+msgid "You support this proposal."
+msgstr "Du unterstützt diesen Antrag."
+#
+# File: proposal.php, line: 129
+msgid "Secret voting demanders"
+msgstr "Unterstützer für geheime Abstimmung"
+#
+# File: proposal.php, line: 138
+msgid "You demand secret voting for this issue."
+msgstr "Du forderst eine geheime Abstimmung bei diesem Thema"
+#
+# File: proposal.php, line: 140
+msgid "Revoke your demand for secret voting"
+msgstr "Forderung nach geheimer Abstimmung zurückziehen"
+#
+# File: proposal.php, line: 147
+msgid "Demand secret voting for this issue"
+msgstr "Geheime Abstimmung zu diesem Thema fordern"
+#
+# File: proposal.php, line: 157
+msgid "This and alternative proposals"
+msgstr "Dieser und dazu konkurrierende Anträge"
+#
+# File: proposal.php, line: 158
+msgid "Add alternative proposal"
+msgstr "Konkurrierenden Antrag hinzufügen"
+#
+# File: inc/functions_http.php, line: 89
+msgid "Logged in as"
+msgstr "Angemeldet als"
+#
+# File: inc/classes/Issue.php, line: 208
+msgid "No."
+msgstr "Nr."
+#
+# File: inc/classes/Issue.php, line: 210
+msgid "State"
+msgstr "Status"
+#
+# File: inc/classes/Issue.php, line: 211
+msgid "Details"
+msgstr "Details"
+#
+# File: inc/classes/Issue.php, line: 212
+msgid "Voting period"
+msgstr "Abstimmungsperiode"
+#
+# File: inc/classes/Issue.php, line: 213
+msgid "Voting type"
+msgstr "Abstimmungsart"
+#
+# File: inc/classes/Issue.php, line: 322
+# File: inc/classes/Proposal.php, line: 260
+msgid "%value% of currently required %required% (%percent% of %population%)"
+msgstr "%value% von momentan erforderlichen %required% (%percent% von %population%)"
+#
+# File: proposals.php, line: 16
+msgid "All"
+msgstr "Alle"
+#
+# File: proposals.php, line: 17
+msgid "Admission"
+msgstr "Zulassung"
+#
+# File: proposals.php, line: 20
+msgid "Closed"
+msgstr "Geschlossen"
+#
+# File: areas.php, line: 92
+msgid "subscribe anew"
+msgstr "erneut anmelden"
+#
+# File: proposals.php, line: 39
+msgid "Search"
+msgstr "Suche"
+#
+# File: proposals.php, line: 40
+msgid "search"
+msgstr "suchen"

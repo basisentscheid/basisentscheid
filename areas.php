@@ -1,0 +1,107 @@
+<?
+/**
+ *
+ * @author Magnus Rosenbaum <dev@cmr.cx>
+ * @package Basisentscheid
+ */
+
+
+require "inc/common.php";
+
+
+if ($action) {
+	if (!$member) {
+		warning("Access denied.");
+		redirect();
+	}
+	if ( empty($_POST['area']) ) {
+		warning("Parameter missing.");
+		redirect();
+	}
+	$area = new Area($_POST['area']);
+	if (!$area->id) {
+		warning("The requested area does not exist!");
+		redirect();
+	}
+	switch ($action) {
+	case "subscribe":
+		$area->subscribe();
+		redirect();
+		break;
+	case "unsubscribe":
+		$area->unsubscribe();
+		redirect();
+		break;
+	default:
+		warning("Unknown action");
+		redirect();
+	}
+}
+
+
+html_head(_("Subject areas"));
+
+
+
+?>
+<table border="0" cellspacing="1" cellpadding="2" class="proposals">
+	<tr>
+		<th><?=_("Name")?></th>
+		<th><?=_("Participants")?></th>
+<? if ($member) { ?>
+		<th><?=_("Participation")?></th>
+<? } ?>
+	</tr>
+<?
+
+
+
+if ($member) {
+	$sql = "SELECT areas.*, participants.activated
+		FROM areas
+		LEFT JOIN participants ON areas.id = participants.area AND participants.member=".intval($member->id);
+} else {
+	$sql = "SELECT areas.*
+		FROM areas";
+}
+$sql .= "	ORDER BY areas.name";
+$result = DB::query($sql);
+while ($row = pg_fetch_assoc($result)) {
+
+?>
+	<tr<?=stripes()?>>
+		<td><?=$row['name']?></td>
+		<td align="center"><?=$row['participants']?></td>
+<? if ($member) { ?>
+		<td>
+<?
+		if ($row['activated']) {
+?>
+			&#10003; <?=_("last time activated")?>: <?=dateformat($row['activated'])?>
+			<form action="<?=BN?>" method="POST" class="button">
+			<input type="hidden" name="area" value="<?=$row['id']?>">
+			<input type="hidden" name="action" value="unsubscribe">
+			<input type="submit" value="<?=_("unsubscribe")?>">
+			</form>
+<?
+		}
+?>
+			<form action="<?=BN?>" method="POST" class="button">
+			<input type="hidden" name="area" value="<?=$row['id']?>">
+			<input type="hidden" name="action" value="subscribe">
+			<input type="submit" value="<?=$row['activated']?_("subscribe anew"):_("subscribe")?>">
+			</form>
+		</td>
+<? } ?>
+	</tr>
+<?
+
+}
+
+?>
+</table>
+
+<?
+
+
+html_foot();
