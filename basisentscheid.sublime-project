@@ -1,0 +1,23 @@
+{
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "path": "."
+        },
+        {
+            "follow_symlinks": false,
+            "path": "./ZF2/library/Zend"
+        },
+        {
+            "follow_symlinks": false,
+            "path": "./zendportal/module/Basisentscheid"
+        }
+    ],
+    "settings": {
+        "save_on_focus_lost": true,
+        "rulers": [80,120],
+        "translate_tabs_to_spaces": true,
+        "tab_size": 4
+    }
+}
