@@ -1,0 +1,42 @@
+<?php
+$title = 'Proposals';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('proposal', array('action'=>'add'));?>">Add new proposal</a>
+</p>
+
+<table class="table">
+<tr>
+    <th>Title</th>
+    <th>Content</th>
+    <th>Reason</th>
+    <th>Issue</th>
+    <th>Supporters</th>
+    <th>Quorum reached?</th>
+    <th>Admission decision</th>
+    <th>State</th>
+    <th>Proponents</th>
+    <th> </th>
+</tr>
+<?php foreach ($proposals as $proposal) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($proposal->title);?></td>
+    <td><?php echo $this->escapeHtml($proposal->content);?></td>
+    <td><?php echo $this->escapeHtml($proposal->reason);?></td>
+    <td><?php echo $this->escapeHtml($proposal->issue);?></td>
+    <td><?php echo $this->escapeHtml($proposal->supporters);?></td>
+    <td><?php echo ($proposal->quorum_reached == 1) ? 'yes' : 'no';?></td>
+    <td><?php echo $this->escapeHtml($proposal->admission_decision);?></td>
+    <td><?php echo $this->escapeHtml($proposal->state);?></td>
+    <td><?php echo $this->escapeHtml($proposal->proponents);?></td>
+    <td>
+        <a href="<?php echo $this->url('proposal',
+            array('action'=>'edit', 'id' => $proposal->id));?>">Edit</a>
+        <a href="<?php echo $this->url('proposal',
+            array('action'=>'delete', 'id' => $proposal->id));?>">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

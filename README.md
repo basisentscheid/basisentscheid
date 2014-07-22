@@ -20,7 +20,9 @@ $ vi inc/config.php
 Portal using Zend Framework
 ===========================
 
-### Installation
+## Installation
+
 1. Setup database as above
 2. Initialize git submodules (`git submodules init && git submodules update`)
 3. Configure your vhost to serve `zendportal/public`
+4. Put your database credentials in `zendportal/config/autoload/local.php.dist`and save it as `zendportal/config/autoload/local.php`

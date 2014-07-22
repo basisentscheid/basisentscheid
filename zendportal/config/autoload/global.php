@@ -12,5 +12,16 @@
  */
 
 return array(
-    // ...
+   'db' => array(
+        'driver'         => 'Pdo',
+        'dsn'            => 'pgsql:dbname=basisentscheid;host=localhost',
+        'driver_options' => array(
+        ),
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter'
+                    => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
 );
