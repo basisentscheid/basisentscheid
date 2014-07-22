@@ -221,6 +221,7 @@ class Issue {
 	 * @param unknown $selected_proposal (optional)
 	 */
 	function display_proposals($selected_proposal=0) {
+		global $admin;
 
 ?>
 		<tr><td colspan="6" style="height:5px"></td></tr>
@@ -241,7 +242,9 @@ class Issue {
 ?>
 		<tr class="td1">
 			<td align="right"><?=$proposal->id?></td>
-			<td><a href="proposal.php?id=<?=$proposal->id?>"<? if ($selected_proposal==$proposal->id) { ?> style="font-weight:bold"<? } ?>><?=h($proposal->title)?></a></td>
+			<td><a href="proposal.php?id=<?=$proposal->id?>"<?
+			if ($selected_proposal==$proposal->id) { ?> style="font-weight:bold"<? }
+			?>><?=h($proposal->title)?></a></td>
 <?
 			if ($this->state=="admission") {
 ?>
@@ -287,9 +290,35 @@ class Issue {
 				// voting results
 			}
 ?>
-				</td>
+			</td>
 <? if ($first) { ?>
-			<td rowspan="<?=$num_rows?>"><?=$this->period?></td>
+			<td rowspan="<?=$num_rows?>"><?
+				if ($admin) {
+					if (@$_GET['edit_period']==$this->id) {
+?>
+<form action="<?=uri_strip(array('edit_period'))?>" method="POST">
+<?
+						// TODO: restrict available periods
+						$sql_periods = "SELECT * FROM periods";
+						$result_periods = DB::query($sql_periods);
+						$options = array();
+						while ( $row_periods = pg_fetch_assoc($result_periods) ) {
+							$options[$row_periods['id']] = $row_periods['id'];
+						}
+						input_select("period", $options, $this->period);
+						input_hidden("issue", $this->id);
+						input_hidden("action", "select_period");
+?>
+<input type="submit">
+</form>
+<?
+					} else {
+						?><?=$this->period?> <a href="<?=uri_append(array('edit_period'=>$this->id))?>"><?=_("edit")?></a><?
+					}
+				} else {
+					echo $this->period;
+				}
+				?></td>
 			<td rowspan="<?=$num_rows?>"><?
 
 				if ($this->secret_reached) {

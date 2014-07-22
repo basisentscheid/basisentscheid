@@ -9,6 +9,40 @@
 
 require "inc/common.php";
 
+
+if ($action) {
+	if (!$admin) {
+		error("Access denied");
+	}
+	switch ($action) {
+	case "select_period":
+
+		$issue = new Issue(@$_POST['issue']);
+		if (!$issue) {
+			warning("The requested issue does not exist!");
+			redirect();
+		}
+
+		$period = new Period(@$_POST['period']);
+		if (!$period) {
+			warning("The selected period does not exist!");
+			redirect();
+		}
+
+		// TODO: restrict available periods
+
+		$issue->period = $period->id;
+		$issue->update(array("period"));
+
+		redirect();
+		break;
+	default:
+		warning("Unknown action");
+		redirect();
+	}
+}
+
+
 html_head(_("Proposals"));
 
 $filter = @$_GET['filter'];
