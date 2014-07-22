@@ -6,10 +6,21 @@ requirements:
 recommended php.ini settings for cli:
 - display_errors = Off   (otherwise the errors are displayed twice)
 
+Portal
+======
 
-=== Installation ===
+## Installation
 
 $ psql --username=basisentscheid basisentscheid < db/basisentscheid.sql
 
 $ cp inc/config_example.php inc/config.php
 $ vi inc/config.php
+
+
+Portal using Zend Framework
+===========================
+
+### Installation
+1. Setup database as above
+2. Initialize git submodules (`git submodules init && git submodules update`)
+3. Configure your vhost to serve `zendportal/public`
