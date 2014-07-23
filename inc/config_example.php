@@ -39,8 +39,9 @@ define("QUORUM_SECRET_NUM", 1); // 5%
 define("QUORUM_SECRET_DEN", 20);
 
 //define("TIME_FORMAT", "j.n.Y G:i:s T"); // with timezone
-define("TIME_FORMAT", "j.n.Y G:i"); // without timezone
+define("DATETIME_FORMAT", "j.n.Y G:i"); // without timezone
 define("DATE_FORMAT", "j.n.Y");
+define("TIME_FORMAT", "G:i");
 
 define("OAUTH2_CLIENT_ID",     'example');
 define("OAUTH2_CLIENT_SECRET", 'example');

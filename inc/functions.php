@@ -125,14 +125,7 @@ function stripes($change=false, $suffix="") {
 }
 
 
-/**
- *
- * @param unknown $date
- * @return unknown
- */
-function combine_date($date) {
-	return $date['year']."-".str_pad($date['month'], 2, "0", STR_PAD_LEFT)."-".str_pad($date['day'], 2, "0", STR_PAD_LEFT);
-}
+
 
 
 /**
@@ -149,18 +142,19 @@ function dateformat($date) {
 
 
 /**
+ * format a timestamp human friendly from Postgres (YYYY-dd-mm HH:ii:ss+ZZ)
  *
- * @param unknown $datum
- * @return unknown
+ * @param string  $time
+ * @return string
  */
-function datum_empty($datum) {
-	if ($datum=="0.0.0000") return "";
-	return $datum;
+function datetimeformat($time) {
+	if ($time===NULL) return "";
+	return date(DATETIME_FORMAT, strtotime($time));
 }
 
 
 /**
- * format a timestamp human friendly from Postgres (YYYY-dd-mm HH:ii:ss+ZZ)
+ * format a day time without date human friendly from Postgres (HH:ii:ss+ZZ)
  *
  * @param string  $time
  * @return string

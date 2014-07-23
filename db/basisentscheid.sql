@@ -127,6 +127,46 @@ ALTER SEQUENCE areas_id_seq OWNED BY areas.id;
 
 
 --
+-- Name: ballots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ballots (
+    id integer NOT NULL,
+    name text NOT NULL,
+    period integer NOT NULL,
+    approved boolean DEFAULT false NOT NULL,
+    opening time with time zone NOT NULL,
+    voters integer DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: COLUMN ballots.voters; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN ballots.voters IS 'cache';
+
+
+--
+-- Name: ballots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE ballots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ballots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE ballots_id_seq OWNED BY ballots.id;
+
+
+--
 -- Name: issues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -302,6 +342,17 @@ CREATE TABLE supporters (
 
 
 --
+-- Name: voters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE voters (
+    member integer NOT NULL,
+    ballot integer NOT NULL,
+    agent boolean DEFAULT false NOT NULL
+);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -313,6 +364,13 @@ ALTER TABLE ONLY admins ALTER COLUMN id SET DEFAULT nextval('admins_id_seq'::reg
 --
 
 ALTER TABLE ONLY areas ALTER COLUMN id SET DEFAULT nextval('areas_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ballots ALTER COLUMN id SET DEFAULT nextval('ballots_id_seq'::regclass);
 
 
 --
@@ -365,6 +423,14 @@ ALTER TABLE ONLY admins
 
 ALTER TABLE ONLY areas
     ADD CONSTRAINT areas_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ballots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY ballots
+    ADD CONSTRAINT ballots_pkey PRIMARY KEY (id);
 
 
 --
@@ -440,6 +506,22 @@ ALTER TABLE ONLY members
 
 
 --
+-- Name: voters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY voters
+    ADD CONSTRAINT voters_pkey PRIMARY KEY (member, ballot);
+
+
+--
+-- Name: ballots_period_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ballots
+    ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON DELETE CASCADE;
+
+
+--
 -- Name: issues_area_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -509,6 +591,22 @@ ALTER TABLE ONLY supporters
 
 ALTER TABLE ONLY supporters
     ADD CONSTRAINT supporters_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+
+
+--
+-- Name: voters_ballot_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY voters
+    ADD CONSTRAINT voters_ballot_fkey FOREIGN KEY (ballot) REFERENCES ballots(id) ON DELETE CASCADE;
+
+
+--
+-- Name: voters_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY voters
+    ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
 
 
 --

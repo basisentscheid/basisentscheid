@@ -25,6 +25,7 @@ html_head(_("Periods"));
 		<th><?=_("Counting")?></th>
 		<th><?=_("Online")?></th>
 		<th><?=_("Secret")?></th>
+		<th><?=_("Ballots")?></th>
 	</tr>
 <?
 
@@ -33,17 +34,17 @@ html_head(_("Periods"));
 $sql = "SELECT * FROM periods ORDER BY id";
 $result = DB::query($sql);
 while ($row = pg_fetch_assoc($result)) {
-	DB::pg2bool($row['online']);
-	DB::pg2bool($row['secret']);
+	$period = new Period($row);
 ?>
 	<tr<?=stripes()?>>
-		<td align="right"><?=$row['id']?></td>
-		<td><?=timeformat($row['debate'])?></td>
-		<td><?=timeformat($row['preparation'])?></td>
-		<td><?=timeformat($row['voting'])?></td>
-		<td><?=timeformat($row['counting'])?></td>
-		<td align="center"><?=boolean($row['online'])?></td>
-		<td align="center"><?=boolean($row['secret'])?></td>
+		<td align="right"><?=$period->id?></td>
+		<td><?=datetimeformat($period->debate)?></td>
+		<td><?=datetimeformat($period->preparation)?></td>
+		<td><?=datetimeformat($period->voting)?></td>
+		<td><?=datetimeformat($period->counting)?></td>
+		<td align="center"><?=boolean($period->online)?></td>
+		<td align="center"><?=boolean($period->secret)?></td>
+		<td><a href="ballots.php?period=<?=$period->id?>"><?=_("Ballots")?></a></td>
 	</tr>
 <?
 

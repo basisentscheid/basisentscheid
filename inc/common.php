@@ -7,6 +7,8 @@
  * @see admin.php
  * @see areas.php
  * @see auth.php
+ * @see ballot_edit.php
+ * @see ballots.php
  * @see login.php
  * @see member.php
  * @see periods.php

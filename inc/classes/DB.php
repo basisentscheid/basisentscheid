@@ -191,10 +191,8 @@ abstract class DB {
 
 		//self::transaction_start();
 
-		$id = 0;
-
 		foreach ($fields_values as $key => $value) {
-			$fields_values[$key] = DB::m_null($fields_values[$key]);
+			$fields_values[$key] = DB::m_null($value);
 		}
 
 		$sql = "INSERT INTO ".$table." (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
@@ -258,6 +256,35 @@ abstract class DB {
 		$sql = "DELETE FROM ".$table.self::where_and($where);
 
 		return self::query($sql);
+	}
+
+
+	/**
+	 *
+	 * @param unknown $table
+	 * @param unknown $fields_values
+	 * @param unknown $where
+	 * @param unknown $insert_id     (optional, reference)
+	 * @return unknown
+	 */
+	function insert_or_update($table, $fields_values, $where, &$insert_id=false) {
+
+		$result = self::update($table, $where, $fields_values);
+		if ( pg_affected_rows($result) ) return $result;
+
+		return self::insert($table, $fields_values, $insert_id);
+	}
+
+
+	/**
+	 *
+	 * @param unknown $fields_values
+	 */
+	public function convert_fields_values($fields_values) {
+		$converted = array();
+		foreach ( $fields_values as $key => $value ) {
+			$converted[] = $key."=".self::m_null($value);
+		}
 	}
 
 

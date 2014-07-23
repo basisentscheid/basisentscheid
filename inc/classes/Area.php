@@ -37,20 +37,6 @@ class Area {
 	/**
 	 *
 	 */
-	function update_participants_cache() {
-
-		$sql = "SELECT COUNT(1) FROM participants WHERE area=".intval($this->id);
-		$count = DB::fetchfield($sql);
-
-		$sql = "UPDATE areas SET participants=".intval($count)." WHERE id=".intval($this->id);
-		DB::query($sql);
-
-	}
-
-
-	/**
-	 *
-	 */
 	public function subscribe() {
 		global $member;
 
@@ -60,6 +46,7 @@ class Area {
 			$sql = "INSERT INTO participants (member, area) VALUES (".intval($member->id).", ".intval($this->id).")";
 			DB::query($sql);
 		}
+
 		$this->update_participants_cache();
 	}
 
@@ -73,6 +60,20 @@ class Area {
 		$sql = "DELETE FROM participants WHERE member=".intval($member->id)." AND area=".intval($this->id);
 		DB::query($sql);
 		$this->update_participants_cache();
+	}
+
+
+	/**
+	 *
+	 */
+	function update_participants_cache() {
+
+		$sql = "SELECT COUNT(1) FROM participants WHERE area=".intval($this->id);
+		$count = DB::fetchfield($sql);
+
+		$sql = "UPDATE areas SET participants=".intval($count)." WHERE id=".intval($this->id);
+		DB::query($sql);
+
 	}
 
 

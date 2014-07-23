@@ -264,16 +264,16 @@ class Issue {
 
 					switch ($this->state) {
 					case "debate":
-						?> bis <?=timeformat($this->period()->preparation);
+						?> bis <?=datetimeformat($this->period()->preparation);
 						break;
 					case "preparation":
-						?> bis <?=timeformat($this->period()->voting);
+						?> bis <?=datetimeformat($this->period()->voting);
 						break;
 					case "voting":
-						?> bis <?=timeformat($this->period()->counting);
+						?> bis <?=datetimeformat($this->period()->counting);
 						break;
 					case "finished":
-						?> bis <?=timeformat($this->clear);
+						?> bis <?=datetimeformat($this->clear);
 						break;
 					}
 
