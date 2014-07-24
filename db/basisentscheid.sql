@@ -136,7 +136,8 @@ CREATE TABLE ballots (
     period integer NOT NULL,
     approved boolean DEFAULT false NOT NULL,
     opening time with time zone NOT NULL,
-    voters integer DEFAULT 0 NOT NULL
+    voters integer DEFAULT 0 NOT NULL,
+    agents text NOT NULL
 );
 
 
@@ -348,7 +349,8 @@ CREATE TABLE supporters (
 CREATE TABLE voters (
     member integer NOT NULL,
     ballot integer NOT NULL,
-    agent boolean DEFAULT false NOT NULL
+    agent boolean DEFAULT false NOT NULL,
+    period integer NOT NULL
 );
 
 
@@ -506,6 +508,14 @@ ALTER TABLE ONLY members
 
 
 --
+-- Name: voters_member_period_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY voters
+    ADD CONSTRAINT voters_member_period_key UNIQUE (member, period);
+
+
+--
 -- Name: voters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -607,6 +617,14 @@ ALTER TABLE ONLY voters
 
 ALTER TABLE ONLY voters
     ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+
+
+--
+-- Name: voters_period_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY voters
+    ADD CONSTRAINT voters_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON DELETE CASCADE;
 
 
 --
