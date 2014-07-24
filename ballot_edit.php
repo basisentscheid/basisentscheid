@@ -68,7 +68,7 @@ if ($ballot->id) {
 <input type="text" name="name" value="<?=h($ballot->name)?>"><br>
 <h2><?=_("Agents")?></h2>
 <input type="text" name="agents" value="<?=h($ballot->agents)?>"><br>
-<h2><?=_("Opening")?></h2>
+<h2><?=_("Opening time")?></h2>
 <select name="opening_hour">
 <?
 if ($ballot->opening) {

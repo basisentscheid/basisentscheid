@@ -50,7 +50,7 @@ if ($action) {
 }
 
 
-html_head(_("Ballots"));
+html_head(strtr(_("Ballots for voting period %period%"), array('%period%'=>$period->id)));
 
 if (Login::$admin) {
 ?>
@@ -107,7 +107,7 @@ while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 <form action="<?=URI?>" method="POST" class="button">
 <input type="hidden" name="ballot" value="<?=$ballot->id?>">
 <input type="hidden" name="action" value="select">
-<input type="submit" value="<?=_("select")?>">
+<input type="submit" value="<?=_("select this ballot for voting")?>">
 </form>
 <?
 		}
