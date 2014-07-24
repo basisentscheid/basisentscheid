@@ -70,7 +70,8 @@ function html_head($title) {
 GET: <? print_r($_GET); echo "\n"; ?>
 POST: <? print_r($_POST); echo "\n"; ?>
 SESSION: <? if (isset($_SESSION)) { print_r($_SESSION); } echo "\n"; ?>
-BN: <? print_r(BN); echo "\n"; ?>
+BN: <?=BN."\n"?>
+URI: <?=URI."\n"?>
 -->
 <?
 	}
@@ -98,7 +99,7 @@ BN: <? print_r(BN); echo "\n"; ?>
 <?
 		}
 ?>
-<form action="<?=BN?>" method="post" class="button" style="margin-left: 10px">
+<form action="<?=URI?>" method="post" class="button" style="margin-left: 10px">
 <input type="hidden" name="action" value="logout">
 <input type="submit" value="<?=_("Logout")?>">
 </form>

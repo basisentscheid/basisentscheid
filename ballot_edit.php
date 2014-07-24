@@ -62,7 +62,7 @@ if ($ballot->id) {
 }
 
 ?>
-<form action="<?=$_SERVER['REQUEST_URI']?>" method="post">
+<form action="<?=URI?>" method="post">
 <h2><?=_("Name")?></h2>
 <input type="text" name="name" value="<?=h($ballot->name)?>"><br>
 <h2><?=_("Opening")?></h2>

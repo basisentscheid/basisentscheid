@@ -28,6 +28,7 @@ require "inc/functions.php";
 require "inc/functions_http.php";
 
 define("BN", basename($_SERVER['PHP_SELF']));
+define("URI", basename($_SERVER['REQUEST_URI']));
 
 
 if (php_sapi_name()!="cli") {

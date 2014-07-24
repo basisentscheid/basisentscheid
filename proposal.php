@@ -106,7 +106,7 @@ if (Login::$member and $proposal->state=="submitted") {
 <?
 	if ($supported_by_member) {
 ?>
-<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST" style="background-color:green; display:inline-block">
+<form action="<?=URI?>" method="POST" style="background-color:green; display:inline-block">
 &#10003; <?=_("You support this proposal.")?>
 <input type="hidden" name="action" value="revoke_support">
 <input type="submit" value="<?=_("Revoke your support for this proposal")?>">
@@ -114,7 +114,7 @@ if (Login::$member and $proposal->state=="submitted") {
 <?
 	} else {
 ?>
-<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST" style="display:inline-block">
+<form action="<?=URI?>" method="POST" style="display:inline-block">
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
 </form>
@@ -138,7 +138,7 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 <?
 	if ($demanded_by_member) {
 ?>
-<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST" style="background-color:red; display:inline-block">
+<form action="<?=URI?>" method="POST" style="background-color:red; display:inline-block">
 &#10003; <?=_("You demand secret voting for this issue.")?>
 <input type="hidden" name="action" value="revoke_demand_offline">
 <input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
@@ -146,7 +146,7 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 <?
 	} else {
 ?>
-<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST" style="display:inline-block">
+<form action="<?=URI?>" method="POST" style="display:inline-block">
 <input type="hidden" name="action" value="demand_offline">
 <input type="submit" value="<?=_("Demand secret voting for this issue")?>">
 </form>

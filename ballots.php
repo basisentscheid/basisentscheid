@@ -10,7 +10,7 @@ require "inc/common.php";
 
 
 $period = new Period(@$_GET['period']);
-if (!$period) {
+if (!$period->id) {
 	error("The requested period does not exist!");
 }
 
@@ -84,7 +84,7 @@ while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 		if ($row['member']) {
 ?>
 				&#10003;
-				<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST" class="button">
+				<form action="<?=URI?>" method="POST" class="button">
 				<input type="hidden" name="ballot" value="<?=$ballot->id?>">
 				<input type="hidden" name="action" value="unsubscribe">
 				<input type="submit" value="<?=_("unsubscribe")?>">
@@ -92,7 +92,7 @@ while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 				<?
 		} else {
 ?>
-				<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST" class="button">
+				<form action="<?=URI?>" method="POST" class="button">
 				<input type="hidden" name="ballot" value="<?=$ballot->id?>">
 				<input type="hidden" name="action" value="subscribe">
 				<input type="submit" value="<?=_("subscribe")?>">
