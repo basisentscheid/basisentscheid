@@ -115,7 +115,7 @@ class Pager {
 		$showpagebegin = max(1, $this->page - $pagelinksdist);
 		$showpageend = min($this->pagescount, $this->page + $pagelinksdist);
 
-		$linkpart = Uri::strip(array('page', 'itemsperpage'));
+		$linkpart = URI::strip(array('page', 'itemsperpage'));
 		if (strpos($linkpart, "?")!==false) $linkpart .= "&amp;"; else $linkpart .= "?";
 
 		$linkpart2 = $linkpart."itemsperpage=".$this->itemsperpage."&amp;";

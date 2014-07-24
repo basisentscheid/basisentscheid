@@ -69,7 +69,8 @@ $sql .= "	WHERE period=".DB::m($period->id)."
 
 $result = DB::query($sql);
 $pager->seek($result);
-while ($row = pg_fetch_assoc($result)) {
+$line = $pager->firstline;
+while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 	$ballot = new Ballot($row);
 ?>
 	<tr>
@@ -102,16 +103,14 @@ while ($row = pg_fetch_assoc($result)) {
 	?></td>
 	</tr>
 <?
+	$line++;
 }
 
 ?>
 </table>
 
 <?
-$params = array();
-/*if ($filter) $params['filter'] = $filter;
-if ($search) $params['search'] = $search;*/
-$pager->output(uri($params));
+$pager->output();
 
 if (Login::$member) {
 ?>

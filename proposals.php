@@ -41,7 +41,7 @@ foreach ( $filters as $key => $name ) {
 	if ($key) $params['filter'] = $key;
 	if ($search) $params['search'] = $search;
 ?>
-<a href="<?=uri($params)?>"<?
+<a href="<?=URI::build($params)?>"<?
 	if ($key==$filter) { ?> class="active"<? }
 	?>><?=$name?></a>
 <?
