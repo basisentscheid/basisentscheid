@@ -10,14 +10,8 @@ require "inc/common.php";
 
 
 if ($action) {
-	if (!Login::$member) {
-		warning("Access denied.");
-		redirect();
-	}
-	if ( empty($_POST['area']) ) {
-		warning("Parameter missing.");
-		redirect();
-	}
+	Login::access_action("member");
+	action_required_parameters('area');
 	$area = new Area($_POST['area']);
 	if (!$area->id) {
 		warning("The requested area does not exist!");

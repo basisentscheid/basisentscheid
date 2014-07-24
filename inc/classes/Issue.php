@@ -139,7 +139,7 @@ class Issue {
 		resetfirst();
 		while ( $row = pg_fetch_assoc($result) ) {
 			$member = new Member($row['member']);
-			if ($member->id==Login::$member->id) $demanded_by_member = true;
+			if (Login::$member and $member->id==Login::$member->id) $demanded_by_member = true;
 			if (!first()) echo ", ";
 			echo $member->username();
 		}

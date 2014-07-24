@@ -165,6 +165,48 @@ function html_foot_exit() {
 
 
 /**
+ *
+ */
+function action_required_parameters() {
+	foreach ( func_get_args() as $arg ) {
+		if ( !isset($_POST[$arg]) ) {
+			warning("Parameter missing.");
+			redirect();
+		}
+	}
+}
+
+
+/**
+ *
+ */
+function action_proposal_select_period() {
+
+	Login::access_action("admin");
+	action_required_parameters('issue', 'period');
+
+	$issue = new Issue($_POST['issue']);
+	if (!$issue) {
+		warning("The requested issue does not exist!");
+		redirect();
+	}
+
+	$period = new Period($_POST['period']);
+	if (!$period) {
+		warning("The selected period does not exist!");
+		redirect();
+	}
+
+	// TODO: restrict available periods
+
+	$issue->period = $period->id;
+	$issue->update(array("period"));
+
+	redirect();
+}
+
+
+/**
  * build URI
  *
  * @param array   $params
@@ -184,7 +226,7 @@ function uri(array $params) {
  * @return string
  */
 function uri_append(array $params) {
-	$query_array = parse_str($_SERVER['QUERY_STRING']);
+	parse_str($_SERVER['QUERY_STRING'], $query_array);
 	foreach ( $params as $key => $value ) {
 		$query_array[$key] = $value;
 	}
@@ -199,7 +241,7 @@ function uri_append(array $params) {
  * @return string
  */
 function uri_strip(array $keys) {
-	$query_array = parse_str($_SERVER['QUERY_STRING']);
+	parse_str($_SERVER['QUERY_STRING'], $query_array);
 	foreach ( $keys as $key ) {
 		unset($query_array[$key]);
 	}
@@ -296,7 +338,6 @@ function input_select($name, $options, $selected=false) {
 </select>
 <?
 }
-
 
 
 /**

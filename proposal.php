@@ -17,11 +17,9 @@ if (!$proposal->id) {
 $issue = $proposal->issue();
 
 if ($action) {
-	if (!Login::$member) {
-		error("Access denied");
-	}
 	switch ($action) {
 	case "add_support":
+		Login::access_action("member");
 		if ($proposal->state=="submitted") {
 			$proposal->add_support();
 		} else {
@@ -30,6 +28,7 @@ if ($action) {
 		redirect();
 		break;
 	case "revoke_support":
+		Login::access_action("member");
 		if ($proposal->state=="submitted") {
 			$proposal->revoke_support();
 		} else {
@@ -38,6 +37,7 @@ if ($action) {
 		redirect();
 		break;
 	case "demand_offline":
+		Login::access_action("member");
 		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
 			$issue->demand_secret();
 		} else {
@@ -46,12 +46,17 @@ if ($action) {
 		redirect();
 		break;
 	case "revoke_demand_offline":
+		Login::access_action("member");
 		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
 			$issue->revoke_secret();
 		} else {
 			warning("Support for secret voting can not be removed, because the proposal is not in submitted, admitted or debate phase!");
 		}
 		redirect();
+		break;
+	case "select_period":
+		Login::access_action("admin");
+		action_proposal_select_period();
 		break;
 	default:
 		warning("Unknown action");
@@ -95,7 +100,7 @@ $proposal->bargraph_quorum();
 </div>
 <b><?=_("Supporters")?>:</b> <?
 $supported_by_member = $proposal->show_supporters();
-if ($proposal->state=="submitted") {
+if (Login::$member and $proposal->state=="submitted") {
 ?>
 <br clear="both">
 <?
@@ -127,7 +132,7 @@ $issue->bargraph_secret();
 </div>
 <b><?=_("Secret voting demanders")?>:</b> <?
 $demanded_by_member = $issue->show_offline_demanders();
-if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
+if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
 ?>
 <br clear="both">
 <?
@@ -153,9 +158,12 @@ if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->sta
 
 
 <div style="margin-top:20px">
-<h2><?=_("This and alternative proposals")?>
-<span class="hadd"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></span>
-</h2>
+<h2><?=_("This and alternative proposals");
+if (Login::$member) {
+?>
+<span class="hadd"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></span><?
+}
+?></h2>
 <table border="0" cellspacing="1" cellpadding="2" class="proposals">
 <?
 Issue::display_proposals_th();

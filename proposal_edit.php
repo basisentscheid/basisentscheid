@@ -28,10 +28,7 @@ if ($action) {
 		redirect();
 	}
 
-	if (!isset($_POST['proponents']) or !isset($_POST['title']) or !isset($_POST['content']) or !isset($_POST['reason'])) {
-		warning("Missing parameters");
-		redirect();
-	}
+	action_required_parameters('proponents', 'title', 'content', 'reason');
 
 	$proposal->proponents = trim($_POST['proponents']);
 	$proposal->title      = trim($_POST['title']);

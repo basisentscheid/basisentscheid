@@ -15,10 +15,7 @@ if ($action) {
 		warning("Unknown action");
 		redirect();
 	}
-	if (!isset($_POST['username'])) {
-		warning("Parameter missing.");
-		redirect();
-	}
+	action_required_parameters('username');
 
 	$username = trim($_POST['username']);
 	if ($username==Login::$member->username) redirect();

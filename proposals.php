@@ -11,31 +11,10 @@ require "inc/common.php";
 
 
 if ($action) {
-	if (!Login::$member) {
-		warning("Access denied");
-		redirect();
-	}
 	switch ($action) {
 	case "select_period":
-
-		$issue = new Issue(@$_POST['issue']);
-		if (!$issue) {
-			warning("The requested issue does not exist!");
-			redirect();
-		}
-
-		$period = new Period(@$_POST['period']);
-		if (!$period) {
-			warning("The selected period does not exist!");
-			redirect();
-		}
-
-		// TODO: restrict available periods
-
-		$issue->period = $period->id;
-		$issue->update(array("period"));
-
-		redirect();
+		Login::access_action("admin");
+		action_proposal_select_period();
 		break;
 	default:
 		warning("Unknown action");
@@ -131,10 +110,11 @@ $params = array();
 if ($filter) $params['filter'] = $filter;
 if ($search) $params['search'] = $search;
 $pager->output(uri($params));
-?>
 
+if (Login::$member) {
+?>
 <a href="proposal_edit.php"><?=_("Add proposal")?></a>
 <?
-
+}
 
 html_foot();

@@ -16,14 +16,8 @@ if (!$period) {
 
 
 if ($action) {
-	if (!Login::$member) {
-		warning("Access denied.");
-		redirect();
-	}
-	if ( empty($_POST['ballot']) ) {
-		warning("Parameter missing.");
-		redirect();
-	}
+	Login::access_action("member");
+	action_required_parameters('ballot');
 	$ballot = new Ballot($_POST['ballot']);
 	if (!$ballot->id) {
 		warning("The requested area does not exist!");
@@ -118,10 +112,11 @@ $params = array();
 /*if ($filter) $params['filter'] = $filter;
 if ($search) $params['search'] = $search;*/
 $pager->output(uri($params));
-?>
 
+if (Login::$member) {
+?>
 <a href="ballot_edit.php?period=<?=$period->id?>"><?=_("Apply to operate a ballot")?></a>
 <?
-
+}
 
 html_foot();

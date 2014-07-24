@@ -54,8 +54,9 @@ abstract class Login {
 	/**
 	 *
 	 * @param unknown $allowed_users
+	 * @param unknown $redirect      (optional)
 	 */
-	public static function access($allowed_users) {
+	public static function access($allowed_users, $redirect=false) {
 		switch ($allowed_users) {
 		case "member":
 			if (Login::$member) return;
@@ -69,7 +70,20 @@ abstract class Login {
 		default:
 			trigger_error("Unknown allowed users keyword", E_USER_ERROR);
 		}
+		if ($redirect) {
+			warning("Access denied");
+			redirect();
+		}
 		error("Access denied");
+	}
+
+
+	/**
+	 *
+	 * @param unknown $allowed_users
+	 */
+	public static function access_action($allowed_users) {
+		self::access($allowed_users, true);
 	}
 
 

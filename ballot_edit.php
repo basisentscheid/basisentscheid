@@ -28,15 +28,14 @@ if (!empty($_GET['id'])) {
 
 if ($action) {
 
+	Login::access_action("user"); // TODO: distinct cases
+
 	if ($action!="save") {
 		warning("Unknown action.");
 		redirect();
 	}
 
-	if (!isset($_POST['name']) or !isset($_POST['opening'])) {
-		warning("Missing parameters.");
-		redirect();
-	}
+	action_required_parameters('name', 'opening');
 
 	$ballot->name = trim($_POST['name']);
 	$ballot->opening = trim($_POST['opening']);
