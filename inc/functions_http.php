@@ -207,51 +207,6 @@ function action_proposal_select_period() {
 
 
 /**
- * build URI
- *
- * @param array   $params
- * @return string
- */
-function uri(array $params) {
-	$uri = BN;
-	if ($query = http_build_query($params)) $uri .= "?".$query;
-	return $uri;
-}
-
-
-/**
- * add or replace parameters to the current URI
- *
- * @param array   $params
- * @return string
- */
-function uri_append(array $params) {
-	parse_str($_SERVER['QUERY_STRING'], $query_array);
-	foreach ( $params as $key => $value ) {
-		$query_array[$key] = $value;
-	}
-	return uri($query_array);
-}
-
-
-/**
- * remove parameters from the current URI
- *
- * @param array   $keys
- * @return string
- */
-function uri_strip(array $keys) {
-	parse_str($_SERVER['QUERY_STRING'], $query_array);
-	foreach ( $keys as $key ) {
-		unset($query_array[$key]);
-	}
-	// if all elements are unset, the array behaves not as an array anymore
-	if (!count($query_array)) $query_array = array();
-	return uri($query_array);
-}
-
-
-/**
  * message, that an action was successful
  *
  * @param unknown $text

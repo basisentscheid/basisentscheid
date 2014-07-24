@@ -287,7 +287,7 @@ class Issue {
 				if (Login::$admin) {
 					if (@$_GET['edit_period']==$this->id) {
 ?>
-<form action="<?=uri_strip(array('edit_period'))?>" method="POST">
+<form action="<?=URI::strip(array('edit_period'))?>" method="POST">
 <?
 						// TODO: restrict available periods
 						$sql_periods = "SELECT * FROM periods";
@@ -304,7 +304,7 @@ class Issue {
 </form>
 <?
 					} else {
-						?><?=$this->period?> <a href="<?=uri_append(array('edit_period'=>$this->id))?>"><?=_("edit")?></a><?
+						?><?=$this->period?> <a href="<?=URI::append(array('edit_period'=>$this->id))?>"><?=_("edit")?></a><?
 					}
 				} else {
 					echo $this->period;

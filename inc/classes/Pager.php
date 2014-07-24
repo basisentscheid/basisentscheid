@@ -1,6 +1,19 @@
 <?
 /**
- * paging
+ * pager
+ *
+ * example:
+ *
+ * $pager = new Pager;
+ * $sql = "SELECT * FROM table";
+ * $result = pg_query($sql);
+ * $pager->seek($result);
+ * $line = $pager->firstline;
+ * while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
+ *   print_r($row);
+ *   $line++;
+ * }
+ * $pager->output();
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -14,8 +27,10 @@ class Pager {
 	private $itemsperpage;
 	public $linescount;
 	private $pagescount;
+	// internal line numbers, starting at 0
 	public $firstline;
 	public $lastline;
+	// human readable line numbers, starting at 1
 	public $firsthline;
 	public $lasthline;
 
@@ -31,14 +46,14 @@ class Pager {
 		$this->itemsperpage = @$_SESSION['pager_itemsperpage'][BN];
 
 		// apply change by user
-		if ( isset($_REQUEST['itemsperpage']) ) {
-			$this->itemsperpage = $_REQUEST['itemsperpage'];
+		if ( isset($_GET['itemsperpage']) ) {
+			$this->itemsperpage = $_GET['itemsperpage'];
 			$_SESSION['pager_itemsperpage'][BN] = $this->itemsperpage;
 		}
 
 		if ( $this->itemsperpage < $itemsperpage_min ) $this->itemsperpage = $itemsperpage_default;
 
-		$this->page = (int) @$_REQUEST['page'];
+		$this->page = intval(@$_GET['page']);
 		if ( ! $this->page > 0 ) $this->page = 1; // start with page 1
 
 	}
@@ -74,7 +89,7 @@ class Pager {
 	/**
 	 * jump to first line in db
 	 *
-	 * @param mixed   $result
+	 * @param resource $result
 	 */
 	public function seek($result) {
 
@@ -92,21 +107,22 @@ class Pager {
 	/**
 	 * display pager
 	 *
-	 * @param mixed   $linkpart
-	 * @param mixed   $pagelinksdist (optional)
+	 * @param string  $itemsperpage_title (optional)
+	 * @param integer $pagelinksdist      (optional)
 	 */
-	public function output($linkpart, $pagelinksdist=3) {
+	public function output($itemsperpage_title=false, $pagelinksdist=3) {
 
 		$showpagebegin = max(1, $this->page - $pagelinksdist);
 		$showpageend = min($this->pagescount, $this->page + $pagelinksdist);
 
+		$linkpart = Uri::strip(array('page', 'itemsperpage'));
 		if (strpos($linkpart, "?")!==false) $linkpart .= "&amp;"; else $linkpart .= "?";
 
 		$linkpart2 = $linkpart."itemsperpage=".$this->itemsperpage."&amp;";
 
 		if ( $this->pagescount > 1 ) { // display the page only if there is more than 1 page
 ?>
-		<p><?=_("Pages")?>: &nbsp;&nbsp; <?
+<p><?=_("Pages")?>: &nbsp;&nbsp; <?
 			if ( $this->page > $pagelinksdist + 1) {
 				?><a href="<?=$linkpart2?>page=1">1</a> - <?
 				if ( $this->page > $pagelinksdist + 2 ) { ?> ... - <? }
@@ -120,13 +136,13 @@ class Pager {
 				?> - <a href="<?=$linkpart2?>page=<?=$this->pagescount?>"><?=$this->pagescount?></a><?
 			}
 			?></p>
-<?
+		<?
 		}
 
 		if ( $this->linescount > 10 ) { // display the items-per-page switch only if it would change anything
 ?>
-		<p><?=_("Records per page")?>: &nbsp;&nbsp; <?
-			foreach ( array(10, 20, 50, 100, 1000) as $i ) {
+<p><?=$itemsperpage_title?$itemsperpage_title:_("Records per page")?>: &nbsp;&nbsp; <?
+			foreach ( array(10, 20, 50, 100) as $i ) {
 				if ( $this->itemsperpage == $i ) {
 					?><b><?=$i?></b> <?
 				} else {

@@ -97,19 +97,18 @@ $sql .= " ORDER BY issues.id DESC";
 
 $result = DB::query($sql);
 $pager->seek($result);
-while ($row = pg_fetch_assoc($result)) {
+$line = $pager->firstline;
+while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 	$issue = new Issue($row);
 	$issue->display_proposals();
+	$line++;
 }
 
 ?>
 </table>
 
 <?
-$params = array();
-if ($filter) $params['filter'] = $filter;
-if ($search) $params['search'] = $search;
-$pager->output(uri($params));
+$pager->output(_("Issues per page"));
 
 if (Login::$member) {
 ?>
