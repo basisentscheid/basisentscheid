@@ -16,7 +16,7 @@ if (!$period) {
 
 
 if ($action) {
-	if (!$member) {
+	if (!Login::$member) {
 		warning("Access denied.");
 		redirect();
 	}
@@ -62,10 +62,15 @@ html_head(_("Ballots"));
 
 $pager = new Pager;
 
-$sql = "SELECT ballots.*, voters.member
-	FROM ballots
-	LEFT JOIN voters ON ballots.id = voters.ballot AND voters.member = ".intval($member->id)."
-	WHERE period=".DB::m($period->id)."
+if (Login::$member) {
+	$sql = "SELECT ballots.*, voters.member
+		FROM ballots
+		LEFT JOIN voters ON ballots.id = voters.ballot AND voters.member = ".intval(Login::$member->id);
+} else {
+	$sql = "SELECT ballots.*
+		FROM ballots";
+}
+$sql .= "	WHERE period=".DB::m($period->id)."
 	ORDER BY ballots.id";
 
 $result = DB::query($sql);
@@ -80,7 +85,7 @@ while ($row = pg_fetch_assoc($result)) {
 		<td><?=timeformat($ballot->opening)?></td>
 		<td><?
 	echo $ballot->voters;
-	if ($member) {
+	if (Login::$member) {
 		if ($row['member']) {
 ?>
 				&#10003;

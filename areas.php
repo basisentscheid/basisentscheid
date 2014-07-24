@@ -10,7 +10,7 @@ require "inc/common.php";
 
 
 if ($action) {
-	if (!$member) {
+	if (!Login::$member) {
 		warning("Access denied.");
 		redirect();
 	}
@@ -32,10 +32,9 @@ if ($action) {
 		$area->unsubscribe();
 		redirect();
 		break;
-	default:
-		warning("Unknown action");
-		redirect();
 	}
+	warning("Unknown action");
+	redirect();
 }
 
 
@@ -48,7 +47,7 @@ html_head(_("Subject areas"));
 	<tr>
 		<th><?=_("Name")?></th>
 		<th><?=_("Participants")?></th>
-<? if ($member) { ?>
+<? if (Login::$member) { ?>
 		<th><?=_("Participation")?></th>
 <? } ?>
 	</tr>
@@ -56,10 +55,10 @@ html_head(_("Subject areas"));
 
 
 
-if ($member) {
+if (Login::$member) {
 	$sql = "SELECT areas.*, participants.activated
 		FROM areas
-		LEFT JOIN participants ON areas.id = participants.area AND participants.member=".intval($member->id);
+		LEFT JOIN participants ON areas.id = participants.area AND participants.member=".intval(Login::$member->id);
 } else {
 	$sql = "SELECT areas.*
 		FROM areas";
@@ -72,7 +71,7 @@ while ($row = pg_fetch_assoc($result)) {
 	<tr<?=stripes()?>>
 		<td><?=$row['name']?></td>
 		<td align="center"><?=$row['participants']?></td>
-<? if ($member) { ?>
+<? if (Login::$member) { ?>
 		<td>
 <?
 		if ($row['activated']) {

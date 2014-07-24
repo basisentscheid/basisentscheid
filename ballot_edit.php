@@ -8,6 +8,8 @@
 
 require "inc/common.php";
 
+Login::access("user");
+
 
 if (!empty($_GET['id'])) {
 	$ballot = new Ballot($_GET['id']);
@@ -27,12 +29,12 @@ if (!empty($_GET['id'])) {
 if ($action) {
 
 	if ($action!="save") {
-		warning("Unknown action");
+		warning("Unknown action.");
 		redirect();
 	}
 
 	if (!isset($_POST['name']) or !isset($_POST['opening'])) {
-		warning("Missing parameters");
+		warning("Missing parameters.");
 		redirect();
 	}
 

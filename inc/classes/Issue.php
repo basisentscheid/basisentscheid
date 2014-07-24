@@ -112,9 +112,7 @@ class Issue {
 	 *
 	 */
 	function demand_secret() {
-		global $member;
-
-		$sql = "INSERT INTO offline_demanders (issue, member) VALUES (".intval($this->id).", ".intval($member->id).")";
+		$sql = "INSERT INTO offline_demanders (issue, member) VALUES (".intval($this->id).", ".intval(Login::$member->id).")";
 		DB::query($sql);
 		$this->update_secret_cache();
 	}
@@ -124,9 +122,7 @@ class Issue {
 	 *
 	 */
 	function revoke_secret() {
-		global $member;
-
-		$sql = "DELETE FROM offline_demanders WHERE issue=".intval($this->id)." AND member=".intval($member->id);
+		$sql = "DELETE FROM offline_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
 		$this->update_secret_cache();
 	}
@@ -137,21 +133,17 @@ class Issue {
 	 * @return unknown
 	 */
 	public function show_offline_demanders() {
-		global $member;
-
 		$demanded_by_member = false;
 		$sql = "SELECT member FROM offline_demanders WHERE issue=".intval($this->id);
 		$result = DB::query($sql);
 		resetfirst();
 		while ( $row = pg_fetch_assoc($result) ) {
-			if ($row['member']==$member->id) $demanded_by_member = true;
 			$member = new Member($row['member']);
+			if ($member->id==Login::$member->id) $demanded_by_member = true;
 			if (!first()) echo ", ";
 			echo $member->username();
 		}
-
 		return $demanded_by_member;
-
 	}
 
 
@@ -221,7 +213,6 @@ class Issue {
 	 * @param unknown $selected_proposal (optional)
 	 */
 	function display_proposals($selected_proposal=0) {
-		global $admin;
 
 ?>
 		<tr><td colspan="6" style="height:5px"></td></tr>
@@ -293,7 +284,7 @@ class Issue {
 			</td>
 <? if ($first) { ?>
 			<td rowspan="<?=$num_rows?>"><?
-				if ($admin) {
+				if (Login::$admin) {
 					if (@$_GET['edit_period']==$this->id) {
 ?>
 <form action="<?=uri_strip(array('edit_period'))?>" method="POST">

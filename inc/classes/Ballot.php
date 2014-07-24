@@ -73,9 +73,7 @@ class Ballot {
 	 *
 	 */
 	public function subscribe() {
-		global $member;
-
-		$fields_values = array('member'=>$member->id, 'ballot'=>$this->id);
+		$fields_values = array('member'=>Login::$member->id, 'ballot'=>$this->id);
 		$where = DB::convert_fields_values($fields_values);
 		DB::insert_or_update("voters", $fields_values, $where);
 		$this->update_voters_cache();
@@ -86,9 +84,7 @@ class Ballot {
 	 *
 	 */
 	public function unsubscribe() {
-		global $member;
-
-		DB::delete("voters", "member=".intval($member->id)." AND ballot=".intval($this->id));
+		DB::delete("voters", "member=".intval(Login::$member->id)." AND ballot=".intval($this->id));
 		$this->update_voters_cache();
 	}
 

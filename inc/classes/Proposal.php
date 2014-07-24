@@ -116,9 +116,7 @@ class Proposal {
 	 *
 	 */
 	function add_support() {
-		global $member;
-
-		$sql = "INSERT INTO supporters (proposal, member) VALUES (".intval($this->id).", ".intval($member->id).")";
+		$sql = "INSERT INTO supporters (proposal, member) VALUES (".intval($this->id).", ".intval(Login::$member->id).")";
 		DB::query($sql);
 		$this->update_supporters_cache();
 		$this->issue()->area()->subscribe();
@@ -129,9 +127,7 @@ class Proposal {
 	 *
 	 */
 	function revoke_support() {
-		global $member;
-
-		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval($member->id);
+		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
 		$this->update_supporters_cache();
 	}
@@ -200,19 +196,16 @@ class Proposal {
 	 * @return unknown
 	 */
 	public function show_supporters() {
-		global $member;
-
 		$supported_by_member = false;
 		$sql = "SELECT member FROM supporters WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
 		resetfirst();
 		while ( $row = pg_fetch_assoc($result) ) {
-			if ($row['member']==$member->id) $supported_by_member = true;
 			$member = new Member($row['member']);
+			if ($member->id==Login::$member->id) $supported_by_member = true;
 			if (!first()) echo ", ";
 			echo $member->username();
 		}
-
 		return $supported_by_member;
 	}
 

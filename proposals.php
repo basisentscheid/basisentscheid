@@ -11,8 +11,9 @@ require "inc/common.php";
 
 
 if ($action) {
-	if (!$admin) {
-		error("Access denied");
+	if (!Login::$member) {
+		warning("Access denied");
+		redirect();
 	}
 	switch ($action) {
 	case "select_period":

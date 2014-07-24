@@ -44,7 +44,6 @@ function redirect($target="") {
  * @param string  $title
  */
 function html_head($title) {
-	global $member, $admin;
 
 	$output = ob_get_clean();
 
@@ -56,7 +55,7 @@ function html_head($title) {
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
  <meta http-equiv="Content-Style-Type" content="text/css">
  <link rel="stylesheet" media="all" type="text/css" href="style.css">
-<? if ($admin) { ?>
+<? if (Login::$admin) { ?>
  <link rel="stylesheet" media="all" type="text/css" href="admin.css">
 <? } ?>
  <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -88,14 +87,14 @@ BN: <? print_r(BN); echo "\n"; ?>
 	</div>
 	<div id="user">
 <?
-	if ($member or $admin) {
-		if ($member) {
+	if (Login::$member or Login::$admin) {
+		if (Login::$member) {
 ?>
-<?=_("Logged in as")?> <a href="member.php"><?=Member::username_static($member->username)?></a>
+<?=_("Logged in as")?> <a href="member.php"><?=Member::username_static(Login::$member->username)?></a>
 <?
 		} else {
 ?>
-<?=_("Logged in as Admin")?> <a href="admin_.php"><?=$admin->username?></a>
+<?=_("Logged in as Admin")?> <a href="admin_.php"><?=Login::$admin->username?></a>
 <?
 		}
 ?>

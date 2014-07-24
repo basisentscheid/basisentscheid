@@ -62,7 +62,7 @@ function create_case($case) {
 
 	$stop = 0;
 
-	$member = $login;
+	Login::$member = $login;
 
 	// create new proposal
 	$proposal = new Proposal;
@@ -190,12 +190,12 @@ function create_case($case) {
  * @param unknown $i
  */
 function add_supporter($proposal, $case, $i) {
-	global $date, $member;
+	global $date;
 
-	$member = new Member;
-	$member->username = "testc".$case."p".$proposal->id."s".$i;
-	$member->auid = $member->username;
-	$member->create();
+	Login::$member = new Member;
+	Login::$member->username = "testc".$case."p".$proposal->id."s".$i;
+	Login::$member->auid = Login::$member->username;
+	Login::$member->create();
 	$proposal->add_support();
 }
 
@@ -207,12 +207,12 @@ function add_supporter($proposal, $case, $i) {
  * @param unknown $i
  */
 function add_secretdemander($proposal, $case, $i) {
-	global $date, $member;
+	global $date;
 
-	$member = new Member;
-	$member->username = "testc".$case."p".$proposal->id."g".$i;
-	$member->auid = $member->username;
-	$member->create();
+	Login::$member = new Member;
+	Login::$member->username = "testc".$case."p".$proposal->id."g".$i;
+	Login::$member->auid = Login::$member->username;
+	Login::$member->create();
 	$proposal->issue()->demand_secret();
 }
 

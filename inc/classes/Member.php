@@ -68,6 +68,30 @@ class Member {
 	/**
 	 *
 	 * @param unknown $username
+	 */
+	function set_unique_username($username) {
+
+		$this->username = $username;
+
+		$suffix = 0;
+		do {
+			$sql = "SELECT * FROM members WHERE username=".DB::m($this->username);
+			$result = DB::query($sql);
+			if ( $exists = pg_num_rows($result) ) {
+				$this->username = $username . ++$suffix;
+			}
+		} while ($exists);
+
+		if ($this->username != $username) {
+			notice("The username is already used by someone else, so we added a number to it.");
+		}
+
+	}
+
+
+	/**
+	 *
+	 * @param unknown $username
 	 * @return unknown
 	 */
 	public function username() {

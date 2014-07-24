@@ -1,6 +1,5 @@
 <?
 /**
- * proposal_edit.php
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -9,6 +8,7 @@
 
 require "inc/common.php";
 
+Login::access("member");
 
 if ($action) {
 	if ($action!="save") {
@@ -21,7 +21,7 @@ if ($action) {
 	}
 
 	$username = trim($_POST['username']);
-	if ($username==$member->username) redirect();
+	if ($username==Login::$member->username) redirect();
 
 	if ($username) {
 		$sql = "SELECT * FROM members WHERE username=".DB::m($username);
@@ -30,14 +30,14 @@ if ($action) {
 			warning("This username is already used by someone else. Please choose a different one!");
 			redirect();
 		}
-		$member->username = $username;
-		$member->update(array("username"));
+		Login::$member->username = $username;
+		Login::$member->update(array("username"));
 		success("The new username has been saved.");
 		redirect();
 	}
 
-	$member->username = NULL;
-	$member->update(array("username"));
+	Login::$member->username = NULL;
+	Login::$member->update(array("username"));
 	success("You are now anonymous.");
 	redirect();
 }
@@ -47,7 +47,7 @@ html_head(_("Member"));
 
 ?>
 <form action="<?=BN?>" method="post">
-<?=_("Username")?> (leave empty to be displayed as "anonymous"): <input type="text" name="username" value="<?=h($member->username)?>"><br>
+<?=_("Username")?> (leave empty to be displayed as "anonymous"): <input type="text" name="username" value="<?=h(Login::$member->username)?>"><br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
 </form>

@@ -9,7 +9,6 @@
 
 require "inc/common.php";
 
-
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
 	error("The requested proposal does not exist!");
@@ -18,7 +17,7 @@ if (!$proposal->id) {
 $issue = $proposal->issue();
 
 if ($action) {
-	if (!$member) {
+	if (!Login::$member) {
 		error("Access denied");
 	}
 	switch ($action) {

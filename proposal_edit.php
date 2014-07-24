@@ -9,6 +9,7 @@
 
 require "inc/common.php";
 
+Login::access("member");
 
 if (!empty($_GET['id'])) {
 	$proposal = new Proposal($_GET['id']);
