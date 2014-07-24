@@ -40,4 +40,19 @@ class Period {
 	}
 
 
+	/**
+	 *
+	 */
+	function save_approved_ballots() {
+
+		foreach ( $_POST['approved_id'] as $key => $ballot_id ) {
+			$value = !empty($_POST['approved'][$key]);
+			$sql = "UPDATE ballots SET approved=".DB::bool2pg($value)." WHERE id=".intval($ballot_id);
+			DB::query($sql);
+		}
+
+	}
+
+
+
 }

@@ -35,10 +35,11 @@ if ($action) {
 		redirect();
 	}
 
-	action_required_parameters('name', 'opening');
+	action_required_parameters('name', 'opening_hour', 'opening_minute');
 
 	$ballot->name = trim($_POST['name']);
-	$ballot->opening = trim($_POST['opening']);
+	$ballot->agents = trim($_POST['agents']);
+	$ballot->opening = sprintf("%02d", $_POST['opening_hour']).":".sprintf("%02d", $_POST['opening_minute']).":00";
 	if ($ballot->id) {
 		$ballot->update();
 	} else {
@@ -49,7 +50,7 @@ if ($action) {
 		}
 	}
 
-	$ballot->subscribe();
+	$ballot->select(true);
 
 	redirect("ballots.php?period=".$period->id);
 }
@@ -62,11 +63,42 @@ if ($ballot->id) {
 }
 
 ?>
-<form action="<?=URI?>" method="post">
-<h2><?=_("Name")?></h2>
+<form action="<?=URI?>" method="post" class="edit_ballot">
+<h2><?=_("Name or location of the ballot")?></h2>
 <input type="text" name="name" value="<?=h($ballot->name)?>"><br>
+<h2><?=_("Agents")?></h2>
+<input type="text" name="agents" value="<?=h($ballot->agents)?>"><br>
 <h2><?=_("Opening")?></h2>
-<input type="text" name="opening" value="<?=h($ballot->opening)?>"><br>
+<select name="opening_hour">
+<?
+if ($ballot->opening) {
+	list($hour, $minute, $second) = explode(":", $ballot->opening);
+} else {
+	$hour = 0;
+	$minute = 0;
+}
+for ( $h=0; $h<24; $h++ ) {
+?>
+ <option value="<?=$h?>"<?
+	if ($h==$hour) { ?> selected<? }
+	?>><?=$h?></option>
+<?
+}
+?>
+</select>
+:
+<select name="opening_minute">
+<?
+for ( $m=0; $m<60; $m++ ) {
+?>
+ <option value="<?=$m?>"<?
+	if ($m==$minute) { ?> selected<? }
+	?>><?=sprintf("%02d", $m)?></option>
+<?
+}
+?>
+</select>
+<br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
 </form>

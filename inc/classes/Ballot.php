@@ -10,6 +10,7 @@ class Ballot {
 
 	public $id;
 	public $name;
+	public $agents;
 	public $period;
 	public $approved;
 	public $opening;
@@ -42,14 +43,14 @@ class Ballot {
 	 * @return boolean
 	 * @param unknown $fields (optional)
 	 */
-	public function create( $fields = array("name", "period", "opening") ) {
+	public function create( $fields = array("name", "agents", "period", "opening") ) {
 
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
 		DB::insert("ballots", $fields_values, $this->id);
 
-		$this->subscribe();
+		$this->select();
 
 	}
 
@@ -58,7 +59,7 @@ class Ballot {
 	 *
 	 * @param unknown $fields (optional)
 	 */
-	function update( $fields = array("name", "opening") ) {
+	function update( $fields = array("name", "agents", "opening") ) {
 
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
@@ -71,34 +72,43 @@ class Ballot {
 
 	/**
 	 *
+	 * @param unknown $agent (optional)
 	 */
-	public function subscribe() {
-		$fields_values = array('member'=>Login::$member->id, 'ballot'=>$this->id);
-		$where = DB::convert_fields_values($fields_values);
+	public function select($agent=false) {
+		$fields_values = array('member'=>Login::$member->id, 'period'=>$this->period, 'ballot'=>$this->id, 'agent'=>DB::bool2pg($agent));
+		$where = "member=".intval(Login::$member->id)." AND period=".intval($this->period);
 		DB::insert_or_update("voters", $fields_values, $where);
-		$this->update_voters_cache();
+		self::update_voters_cache($this->period);
 	}
 
 
 	/**
 	 *
+	 * @param unknown $period
 	 */
-	public function unsubscribe() {
-		DB::delete("voters", "member=".intval(Login::$member->id)." AND ballot=".intval($this->id));
-		$this->update_voters_cache();
+	public static function unselect($period) {
+		DB::delete("voters", "member=".intval(Login::$member->id)." AND period=".intval($period));
+		self::update_voters_cache($period);
 	}
 
 
 	/**
 	 *
+	 * @param unknown $period
 	 */
-	function update_voters_cache() {
+	static function update_voters_cache($period) {
 
-		$sql = "SELECT COUNT(1) FROM voters WHERE ballot=".intval($this->id);
-		$count = DB::fetchfield($sql);
+		$sql = "SELECT id FROM ballots WHERE period=".intval($period);
+		$result = DB::query($sql);
+		while ( $row = pg_fetch_assoc($result) ) {
 
-		$sql = "UPDATE ballots SET voters=".intval($count)." WHERE id=".intval($this->id);
-		DB::query($sql);
+			$sql = "SELECT COUNT(1) FROM voters WHERE ballot=".intval($row['id']);
+			$count = DB::fetchfield($sql);
+
+			$sql = "UPDATE ballots SET voters=".intval($count)." WHERE id=".intval($row['id']);
+			DB::query($sql);
+
+		}
 
 	}
 

@@ -70,6 +70,9 @@ p.syserror {
 	font-weight: normal;
 }
 
+form.button {
+	display: inline;
+}
 input.proposal, textarea.proposal {
 	width: 100%;
 }
@@ -87,6 +90,10 @@ div.quorum {
 	padding: 5px 10px 5px 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+
+form.edit_ballot input[type=text] {
+	width: 100%;
 }
 
 #head {
@@ -121,10 +128,6 @@ div.quorum {
 	height: 0;
 	clear: both;
 	visibility: hidden;
-}
-
-form.button {
-	display: inline;
 }
 
 div.bargraph {

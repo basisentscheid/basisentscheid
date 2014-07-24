@@ -64,6 +64,18 @@ abstract class DB {
 
 
 	/**
+	 *
+	 * @param unknown $value
+	 * @return unknown
+	 */
+	public function bool2pg($value) {
+		if ($value) return "TRUE";
+		if (is_null($value)) return "NULL";
+		return "FALSE";
+	}
+
+
+	/**
 	 * Like pg_query(), but with error management
 	 *
 	 * @param string  $sql
