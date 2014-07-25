@@ -120,9 +120,8 @@ html_head(_("Proposal")." ".$proposal->id);
 </div>
 
 <div style="overflow:hidden">
-<h2><?=_("Title")?>
-<!--<span class="hadd"><a href="proposal_edit.php?id=<?=$proposal->id?>"><?=_("Edit proposal")?></a></span>-->
-</h2>
+<!--<div style="float:right"><a href="proposal_edit.php?id=<?=$proposal->id?>"><?=_("Edit proposal")?></a></div>-->
+<h2><?=_("Title")?></h2>
 <p class="proposal proposal_title"><?=h($proposal->title)?></p>
 <h2><?=_("Content")?></h2>
 <p class="proposal"><?=nl2br(h($proposal->content))?></p>
@@ -226,7 +225,7 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 <?
 if (Login::$member) {
 ?>
-<div class="hadd"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></div>
+<div style="float:right"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></div>
 <?
 }
 ?>

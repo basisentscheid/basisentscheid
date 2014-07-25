@@ -1,7 +1,8 @@
 
+/* 1. common definitions without id or class */
+
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	/*font-size:12px;*/
 	color:#000;
 	background-color:#ffeec7;
 	padding: 5px 20px;
@@ -21,46 +22,6 @@ h3 {
 	font-size:1em;
 }
 
-div.hadd {
-	float: right;
-}
-
-a {
-	padding: 1px 3px;
-}
-a:link {
- color:#0000AA;
-}
-a:visited {
- color:#770088;
-}
-a:hover {
-	color:#000;
-	outline: 1px solid #DDD;
-	background-color:#F8F8F8;
-}
-a:focus, a:active {
- background-color:#F3F3F3;
-}
-a.active,
-a.active:hover {
-	outline: 1px solid #999;
-}
-
-a.filter {
-	padding: 2px 4px;
-	text-decoration: none;
-}
-a.filter_active {
-	padding: 2px 4px;
-	text-decoration: none;
-	outline: 1px solid #999;
-	background-color:#FFF;
-}
-a.filter_active:hover {
-	background-color:#F8F8F8;
-}
-
 table {
 	border-spacing: 1px;
 	border-collapse: separate;
@@ -68,64 +29,44 @@ table {
 td, th {
 	padding: 3px 4px;
 }
-
 th {
 	background-color:#CCCCCC;
 }
-td.td0, tr.td0 {
-	background-color:#EEEEEE;
-}
-td.td1, tr.td1 {
-	background-color:#FFFFFF;
+
+input[type=submit]:hover {
+	background-color: #E8E8E8;
+	border-radius: 5px;
 }
 
-td.current {
-	font-weight: bold;
+a {
+	padding: 1px 3px;
 }
-td.over {
-	font-style:italic;
-	color:#666666;
+a:link {
+	color:#0000AA;
 }
-
-table.proposals {
-	width:100%;
-	border-spacing: 1px 2px;
+a:visited {
+	color:#770088;
 }
-table.proposals tr.proposal {
-	background-color:#FFFFFF;
-}
-
-
-td.proposal_link {
-	cursor:pointer;cursor:hand;
-	padding: 2px 3px;
-	border: 1px solid #FFF;
-}
-td.proposal_link:hover {
-	background-color:#F8F8F8;
-	border-color: #DDD;
-}
-td.proposal_link_active {
-	cursor:pointer;cursor:hand;
-	font-weight: bold;
-	padding: 2px 3px;
-	border: 1px solid #999;
-}
-td.proposal_link_active:hover {
-	background-color:#F8F8F8;
-}
-td.proposal_link a,
-td.proposal_link_active a {
-	text-decoration: none;
-	outline: none;
-}
-td.proposal_link:hover a,
-td.proposal_link_active:hover a {
+a:hover {
 	color:#000;
+	outline: 1px solid #DDD;
+	background-color:#F8F8F8;
+}
+a:focus, a:active {
+	background-color:#F3F3F3;
 }
 
 
+/* 2. class definitions */
 
+/* 2.1 common classes */
+
+.clearfix {
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
 
 div.messages {
 	border: 1px solid #ccc;
@@ -152,27 +93,63 @@ p.syserror {
 	font-weight: normal;
 }
 
+div.bargraph {
+	border: 2px groove black;
+	width: 100px;
+	margin-top: 0;
+	margin-bottom: 1px;
+}
+div.bargraph div.bar {
+	float: left;
+	height: 1.8ex;
+}
+div.bargraph div.clear {
+	height: 0;
+	clear: both;
+}
+
+td.td0, tr.td0 {
+	background-color:#EEEEEE;
+}
+td.td1, tr.td1 {
+	background-color:#FFFFFF;
+}
+
+td.current {
+	font-weight: bold;
+}
+td.over {
+	font-style:italic;
+	color:#666666;
+}
+
 form.button {
 	display: inline;
 }
 
-form.proposal input[type=text] {
-	width: 100%;
-}
-form.proposal textarea {
-	width: 100%;
-	height: 100px;
-}
-form.proposal input[type=submit] {
-	margin-top: 10px;
+a.active,
+a.active:hover {
+	outline: 1px solid #999;
 }
 
-form.edit_ballot input[type=text] {
-	width: 100%;
+a.filter {
+	padding: 2px 4px;
+	text-decoration: none;
 }
-form.edit_ballot input[type=submit] {
-	margin-top: 10px;
+a.filter_active {
+	padding: 2px 4px;
+	text-decoration: none;
+	outline: 1px solid #999;
+	background-color:#FFF;
 }
+a.filter_active:hover {
+	background-color:#F8F8F8;
+}
+
+
+/* 2.2 classes for specific pages */
+
+/* 2.2.1 proposals */
 
 p.proposal {
 	background-color: #FFF;
@@ -192,6 +169,56 @@ div.quorum {
 }
 
 
+table.proposals {
+	width:100%;
+	border-spacing: 1px 2px;
+}
+table.proposals tr.proposal {
+	background-color:#FFFFFF;
+}
+
+table.proposals td.proposal_link {
+	cursor:pointer;cursor:hand;
+	padding: 2px 3px;
+	border: 1px solid #FFF;
+}
+table.proposals td.proposal_link:hover {
+	background-color:#F8F8F8;
+	border-color: #DDD;
+}
+table.proposals td.proposal_link_active {
+	cursor:pointer;cursor:hand;
+	font-weight: bold;
+	padding: 2px 3px;
+	border: 1px solid #999;
+}
+table.proposals td.proposal_link_active:hover {
+	background-color:#F8F8F8;
+}
+table.proposals td.proposal_link a,
+table.proposals td.proposal_link_active a {
+	text-decoration: none;
+	outline: none;
+}
+table.proposals td.proposal_link:hover a,
+table.proposals td.proposal_link_active:hover a {
+	color:#000;
+}
+
+
+form.proposal input[type=text] {
+	width: 100%;
+}
+form.proposal textarea {
+	width: 100%;
+	height: 100px;
+}
+form.proposal input[type=submit] {
+	margin-top: 10px;
+}
+
+
+/* 2.2.2 arguments */
 
 div.arguments_side {
 	background-color: white;
@@ -222,35 +249,50 @@ div.arguments_side h2 {
 	margin-top: 0;
 }
 
-
-span.plus {
-	color: #080;
-	padding-left: 3px;
+div.arguments_side ul {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 20px;
 }
-span.minus {
-	color: #a00;
-	padding-left: 3px;
-}
-span.rating {
-	color: #666;
-}
-span.me {
-	font-weight: bold;
+div.arguments_side > ul {
+	padding-left: 0;
 }
 
-form.argument input[type=text],
-form.argument textarea {
+div.arguments_side form.argument input[type=text],
+div.arguments_side form.argument textarea {
 	width: 100%;
 }
-form.argument a {
+div.arguments_side form.argument a {
 	padding:0;
 }
 
-input[type=submit]:hover {
-	background-color: #E8E8E8;
-	border-radius: 5px;
+div.arguments_side span.plus {
+	color: #080;
+	padding-left: 3px;
+}
+div.arguments_side span.minus {
+	color: #a00;
+	padding-left: 3px;
+}
+div.arguments_side span.rating {
+	color: #666;
+}
+div.arguments_side span.me {
+	font-weight: bold;
 }
 
+
+/* 2.2.3 ballots */
+
+form.edit_ballot input[type=text] {
+	width: 100%;
+}
+form.edit_ballot input[type=submit] {
+	margin-top: 10px;
+}
+
+
+/* 3. id definitions */
 
 #head {
 	width: 100%;
@@ -269,7 +311,6 @@ input[type=submit]:hover {
 	padding: 9px 20px;
 	float: left;
 }
-
 #nav a {
 	font-size: 1.1em;
 	padding: 2px 4px;
@@ -287,36 +328,3 @@ input[type=submit]:hover {
 	padding: 10px 10px 5px 10px;
 	float: right;
 }
-.clearfix {
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-}
-
-
-div.bargraph {
-	border: 2px groove black;
-	width: 100px;
-	margin-top: 0;
-	margin-bottom: 1px;
-}
-div.bargraph div.bar {
-	float: left;
-	height: 1.8ex;
-}
-div.bargraph div.clear {
-	height: 0;
-	clear: both;
-}
-
-
-ul {
-	list-style-type: none;
-	margin-left: 0px;
-	padding-left: 20px;
-}
-div.arguments_side > ul {
-	padding-left: 0;
-}
-
