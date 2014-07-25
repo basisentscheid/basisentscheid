@@ -259,7 +259,7 @@ function arguments($side, $parent) {
 			FROM arguments
 			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id);
 	} else {
-		$sql = "
+		$sql .= "
 			FROM arguments";
 	}
 	// intval($parent) gives parent=0 for "pro" and "contra"
