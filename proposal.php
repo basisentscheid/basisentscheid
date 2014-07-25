@@ -58,6 +58,48 @@ if ($action) {
 		Login::access_action("admin");
 		action_proposal_select_period();
 		break;
+	case "add_argument":
+		Login::access_action("member");
+		action_required_parameters("title", "content", "parent");
+		$argument = new Argument;
+		if ($_POST['parent']=="pro" or $_POST['parent']=="contra") {
+			$argument->parent = 0;
+			$argument->side = $_POST['parent'];
+		} else {
+			$parent = new Argument($_POST['parent']);
+			if (!$parent->id) {
+				warning("Invalid parent");
+				redirect();
+			}
+			$argument->parent = $parent->id;
+			$argument->side = $parent->side;
+		}
+		$argument->proposal = $proposal->id;
+		$argument->member = Login::$member->id;
+		$argument->title = trim($_POST['title']);
+		$argument->content = trim($_POST['content']);
+		$argument->create();
+		redirect();
+		break;
+	case "rating_plus":
+	case "rating_minus":
+		Login::access_action("member");
+		action_required_parameters("argument");
+		$argument = new Argument($_POST['argument']);
+		if ($argument->member==Login::$member->id) {
+			warning("Rating your own arguments is not allowed.");
+			redirect();
+		}
+		$argument->set_rating($action=="rating_plus");
+		redirect();
+		break;
+	case "rating_reset":
+		Login::access_action("member");
+		action_required_parameters("argument");
+		$argument = new Argument($_POST['argument']);
+		$argument->delete_rating();
+		redirect();
+		break;
 	default:
 		warning("Unknown action");
 		redirect();
@@ -88,9 +130,33 @@ html_head(_("Proposal")." ".$proposal->id);
 <p class="proposal"><?=nl2br(h($proposal->reason))?></p>
 </div>
 
-
 <br style="clear:both">
 
+<div>
+	<div class="arguments_side" style="float:left">
+<?
+if (Login::$member and @$_GET['argument_parent']!="pro") {
+?>
+		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form"><?=_("Add new pro argument")?></a></div>
+<?
+}
+?>
+		<h2><?=_("Pro")?></h2>
+		<? arguments("pro", "pro"); ?>
+	</div>
+	<div class="arguments_side" style="float:right">
+<?
+if (Login::$member and @$_GET['argument_parent']!="contra") {
+?>
+		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form"><?=_("Add new contra argument")?></a></div>
+<?
+}
+?>
+		<h2><?=_("Contra")?></h2>
+		<? arguments("contra", "contra"); ?>
+	</div>
+	<div style="clear:both"></div>
+</div>
 
 <div class="quorum">
 <div style="float:left; margin-right:10px">
@@ -156,14 +222,15 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 ?>
 </div>
 
-
 <div style="margin-top:20px">
-<h2><?=_("This and alternative proposals");
+<?
 if (Login::$member) {
 ?>
-<span class="hadd"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></span><?
+<div class="hadd"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></div>
+<?
 }
-?></h2>
+?>
+<h2><?=_("This and alternative proposals")?></h2>
 <table border="0" cellspacing="1" cellpadding="2" class="proposals">
 <?
 Issue::display_proposals_th();
@@ -174,5 +241,110 @@ $issue->display_proposals($proposal->id);
 
 <?
 
-
 html_foot();
+
+
+/**
+ * list the sub-arguments for one parent-argument
+ *
+ * @param string  $side   "pro" or "contra"
+ * @param mixed   $parent ID of parent argument or "pro" or "contra"
+ */
+function arguments($side, $parent) {
+	global $proposal;
+
+	$sql = "SELECT arguments.*, (arguments.plus - arguments.minus) AS rating";
+	if (Login::$member) {
+		$sql .= ", ratings.positive
+			FROM arguments
+			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id);
+	} else {
+		$sql = "
+			FROM arguments";
+	}
+	// intval($parent) gives parent=0 for "pro" and "contra"
+	$sql .= "	WHERE proposal=".intval($proposal->id)."
+			AND side=".m($side)."
+			AND parent=".intval($parent)."
+		ORDER BY rating DESC, arguments.created";
+	$result = DB::query($sql);
+	if (!pg_num_rows($result) and @$_GET['argument_parent']!=$parent) return;
+
+?>
+<ul>
+<?
+
+	while ( $row = pg_fetch_assoc($result) ) {
+		$member = new Member($row['member']);
+?>
+	<li>
+		<div class="author"><?=$member->username()?> <?=datetimeformat($row['created'])?></div>
+		<h3><?=h($row['title'])?></h3>
+		<p><?=nl2br(h($row['content']), false)?></p>
+<?
+		if (@$_GET['argument_parent']!=$row['id']) {
+?>
+		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$row['id']))?>#form"><?=_("Reply")?></a></div>
+<?
+		}
+		if ($row['plus']) {
+			?><span class="plus<? if ($row['positive']=="t") { ?> me<? } ?>">+<?=$row['plus']?></span> <?
+		}
+		if ($row['minus']) {
+			?><span class="minus<? if ($row['positive']=="f") { ?> me<? } ?>">-<?=$row['minus']?></span> <?
+		}
+		if ($row['plus'] and $row['minus']) {
+			?><span class="rating">=<?=$row['rating']?></span> <?
+		}
+		if (Login::$member and $row['member']!=Login::$member->id) { // don't allow to rate ones own arguments
+			if ($row['positive']) {
+?>
+		<form action="<?=URI?>" method="POST" class="button">
+		<input type="hidden" name="argument" value="<?=$row['id']?>">
+		<input type="hidden" name="action" value="rating_reset">
+		<input type="submit" value="reset">
+		</form>
+<?
+			} else {
+?>
+		<form action="<?=URI?>" method="POST" class="button">
+		<input type="hidden" name="argument" value="<?=$row['id']?>">
+		<input type="hidden" name="action" value="rating_plus">
+		<input type="submit" value="+1">
+		</form>
+		<form action="<?=URI?>" method="POST" class="button">
+		<input type="hidden" name="argument" value="<?=$row['id']?>">
+		<input type="hidden" name="action" value="rating_minus">
+		<input type="submit" value="-1">
+		</form>
+<?
+			}
+		}
+?>
+		<div class="clearfix"></div>
+<?
+		arguments($side, $row['id']);
+?>
+	</li>
+<?
+	}
+
+	if (@$_GET['argument_parent']==$parent) {
+?>
+	<li>
+		<form action="<?=URI::strip(array('argument_parent' ))?>" method="POST" class="argument">
+		<a name="form"></a>
+		<input name="title" type="text"><br>
+		<textarea name="content" rows="5"></textarea><br>
+		<input type="hidden" name="action" value="add_argument">
+		<input type="hidden" name="parent" value="<?=$parent?>">
+		<input type="submit" value="<?=_("save")?>">
+		</form>
+	</li>
+<?
+	}
+
+?>
+</ul>
+<?
+}

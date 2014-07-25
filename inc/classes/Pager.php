@@ -118,6 +118,20 @@ class Pager {
 		$linkpart = URI::strip(array('page', 'itemsperpage'));
 		if (strpos($linkpart, "?")!==false) $linkpart .= "&amp;"; else $linkpart .= "?";
 
+		if ( $this->linescount > 10 ) { // display the items-per-page switch only if it would change anything
+?>
+<p style="float:right"><?=$itemsperpage_title?$itemsperpage_title:_("Records per page")?>: &nbsp;&nbsp; <?
+			foreach ( array(10, 20, 50, 100) as $i ) {
+				if ( $this->itemsperpage == $i ) {
+					?><b><?=$i?></b> <?
+				} else {
+					?><a href="<?=$linkpart?>itemsperpage=<?=$i?>"><?=$i?></a> <?
+				}
+			}
+			?></p>
+<?
+		}
+
 		$linkpart2 = $linkpart."itemsperpage=".$this->itemsperpage."&amp;";
 
 		if ( $this->pagescount > 1 ) { // display the page only if there is more than 1 page
@@ -137,20 +151,6 @@ class Pager {
 			}
 			?></p>
 		<?
-		}
-
-		if ( $this->linescount > 10 ) { // display the items-per-page switch only if it would change anything
-?>
-<p><?=$itemsperpage_title?$itemsperpage_title:_("Records per page")?>: &nbsp;&nbsp; <?
-			foreach ( array(10, 20, 50, 100) as $i ) {
-				if ( $this->itemsperpage == $i ) {
-					?><b><?=$i?></b> <?
-				} else {
-					?><a href="<?=$linkpart?>itemsperpage=<?=$i?>"><?=$i?></a> <?
-				}
-			}
-			?></p>
-<?
 		}
 
 	}

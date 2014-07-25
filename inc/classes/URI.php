@@ -69,4 +69,4 @@ abstract class URI {
 }
 
 
-DB::__static();
+URI::__static();

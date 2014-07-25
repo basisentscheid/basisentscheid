@@ -7,9 +7,8 @@
  */
 
 
-class Issue {
+class Issue extends Relation {
 
-	public $id;
 	public $period;
 	public $area;
 	public $secret_demanders;
@@ -19,26 +18,8 @@ class Issue {
 	private $area_obj;
 	private $period_obj;
 
-
-	/**
-	 *
-	 * @param unknown $id_row (optional)
-	 */
-	function __construct($id_row=0) {
-
-		if (!$id_row) return;
-
-		if (!is_array($id_row)) {
-			$sql = "SELECT * FROM issues WHERE id=".intval($id_row);
-			if ( ! $id_row = DB::fetchassoc($sql) ) return;
-		}
-
-		foreach ( $id_row as $key => $value ) {
-			$this->$key = $value;
-		}
-		DB::pg2bool($this->secret_reached);
-
-	}
+	protected $boolean_fields = array("secret_reached");
+	protected $create_fields = array("area");
 
 
 	/**
@@ -60,19 +41,6 @@ class Issue {
 		if ($this->period_obj) return $this->period_obj;
 		$this->period_obj = new Period($this->period);
 		return $this->period_obj;
-	}
-
-
-	/**
-	 * Create a new issue
-	 *
-	 * @return boolean
-	 * @param integer $area
-	 */
-	public function create() {
-
-		DB::insert("issues", array('area'=>$this->area), $this->id);
-
 	}
 
 
@@ -197,12 +165,12 @@ class Issue {
 	public static function display_proposals_th() {
 ?>
 	<tr>
-		<th><?=_("No.")?></th>
-		<th><?=_("Title")?></th>
-		<th><?=_("State")?></th>
-		<th><?=_("Details")?></th>
-		<th><?=_("Voting period")?></th>
-		<th><?=_("Voting type")?></th>
+		<th width="2%"><?=_("No.")?></th>
+		<th width="50%"><?=_("Title")?></th>
+		<th width="10%"><?=_("State")?></th>
+		<th width="8%"><?=_("Details")?></th>
+		<th width="10%"><?=_("Voting period")?></th>
+		<th width="10%"><?=_("Voting type")?></th>
 	</tr>
 <?
 	}
@@ -242,7 +210,6 @@ class Issue {
 			<td align="center"><?=state_name($this->state, $proposal->state);
 
 				if ($proposal->state=="submitted") {
-					?>, 	Zulassungsquorum: <?
 					$proposal->bargraph_quorum();
 				}
 
@@ -255,16 +222,16 @@ class Issue {
 
 					switch ($this->state) {
 					case "debate":
-						?> bis <?=datetimeformat($this->period()->preparation);
+						?><br><?=_("until")?> <?=datetimeformat($this->period()->preparation);
 						break;
 					case "preparation":
-						?> bis <?=datetimeformat($this->period()->voting);
+						?><br><?=_("until")?> <?=datetimeformat($this->period()->voting);
 						break;
 					case "voting":
-						?> bis <?=datetimeformat($this->period()->counting);
+						?><br><?=_("until")?> <?=datetimeformat($this->period()->counting);
 						break;
 					case "finished":
-						?> bis <?=datetimeformat($this->clear);
+						?><br><?=_("until")?> <?=datetimeformat($this->clear);
 						break;
 					}
 
@@ -283,7 +250,7 @@ class Issue {
 ?>
 			</td>
 <? if ($first) { ?>
-			<td rowspan="<?=$num_rows?>"><?
+			<td rowspan="<?=$num_rows?>" align="center"><?
 				if (Login::$admin) {
 					if (@$_GET['edit_period']==$this->id) {
 ?>
@@ -310,7 +277,7 @@ class Issue {
 					echo $this->period;
 				}
 				?></td>
-			<td rowspan="<?=$num_rows?>"><?
+			<td rowspan="<?=$num_rows?>" align="center"><?
 
 				if ($this->secret_reached) {
 					echo _("Secret");

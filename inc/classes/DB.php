@@ -45,6 +45,8 @@ abstract class DB {
 	 */
 	public function m_null($value) {
 		if (is_null($value)) return "NULL";
+		if ($value===true)  return "TRUE";
+		if ($value===false) return "FALSE";
 		return "'".pg_escape_string($value)."'";
 	}
 

@@ -20,6 +20,16 @@ function __autoload($class_name) {
 
 /**
  *
+ * @param unknown $value
+ * @return unknown
+ */
+function m($value) {
+	return DB::m($value);
+}
+
+
+/**
+ *
  * @param unknown $text
  */
 function out($text) {

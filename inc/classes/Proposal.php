@@ -7,9 +7,8 @@
  */
 
 
-class Proposal {
+class Proposal extends Relation {
 
-	public $id;
 	public $proponents;
 	public $title;
 	public $content;
@@ -23,26 +22,8 @@ class Proposal {
 
 	private $issue_obj;
 
-
-	/**
-	 *
-	 * @param unknown $id_row (optional)
-	 */
-	function __construct($id_row=0) {
-
-		if (!$id_row) return;
-
-		if (!is_array($id_row)) {
-			$sql = "SELECT * FROM proposals WHERE id=".intval($id_row);
-			if ( ! $id_row = DB::fetchassoc($sql) ) return;
-		}
-
-		foreach ( $id_row as $key => $value ) {
-			$this->$key = $value;
-		}
-		DB::pg2bool($this->quorum_reached);
-
-	}
+	protected $boolean_fields = array("quorum_reached");
+	protected $update_fields = array("proponents", "title", "content", "reason");
 
 
 	/**
@@ -93,21 +74,6 @@ class Proposal {
 		DB::insert("proposals", $fields_values, $this->id);
 
 		$this->add_support();
-
-	}
-
-
-	/**
-	 *
-	 * @param unknown $fields (optional)
-	 */
-	function update( $fields = array("proponents", "title", "content", "reason") ) {
-
-		foreach ( $fields as $field ) {
-			$fields_values[$field] = $this->$field;
-		}
-
-		DB::update("proposals", "id=".intval($this->id), $fields_values);
 
 	}
 

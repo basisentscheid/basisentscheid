@@ -6,35 +6,16 @@
  */
 
 
-class Ballot {
+class Ballot extends Relation {
 
-	public $id;
 	public $name;
 	public $agents;
 	public $period;
 	public $approved;
 	public $opening;
 
-
-	/**
-	 *
-	 * @param unknown $id_row (optional)
-	 */
-	function __construct($id_row=0) {
-
-		if (!$id_row) return;
-
-		if (!is_array($id_row)) {
-			$sql = "SELECT * FROM ballots WHERE id=".intval($id_row);
-			if ( ! $id_row = DB::fetchassoc($sql) ) return;
-		}
-
-		foreach ( $id_row as $key => $value ) {
-			$this->$key = $value;
-		}
-		DB::pg2bool($this->approved);
-
-	}
+	protected $boolean_fields = array("approved");
+	protected $update_fields = array("name", "agents", "opening");
 
 
 	/**
@@ -51,21 +32,6 @@ class Ballot {
 		DB::insert("ballots", $fields_values, $this->id);
 
 		$this->select();
-
-	}
-
-
-	/**
-	 *
-	 * @param unknown $fields (optional)
-	 */
-	function update( $fields = array("name", "agents", "opening") ) {
-
-		foreach ( $fields as $field ) {
-			$fields_values[$field] = $this->$field;
-		}
-
-		DB::update("ballots", "id=".intval($this->id), $fields_values);
 
 	}
 

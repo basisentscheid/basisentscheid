@@ -25,6 +25,12 @@ if ($action) {
 
 html_head(_("Proposals"));
 
+if (Login::$member) {
+?>
+<div style="float:right"><a href="proposal_edit.php"><?=_("Add proposal")?></a></div>
+<?
+}
+
 $filter = @$_GET['filter'];
 $search = trim(@$_GET['search']);
 
@@ -110,10 +116,5 @@ while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 <?
 $pager->output(_("Issues per page"));
 
-if (Login::$member) {
-?>
-<a href="proposal_edit.php"><?=_("Add proposal")?></a>
-<?
-}
 
 html_foot();

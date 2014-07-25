@@ -26,6 +26,16 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
+-- Name: argument_side; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE argument_side AS ENUM (
+    'pro',
+    'contra'
+);
+
+
+--
 -- Name: issue_state; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -124,6 +134,43 @@ CREATE SEQUENCE areas_id_seq
 --
 
 ALTER SEQUENCE areas_id_seq OWNED BY areas.id;
+
+
+--
+-- Name: arguments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE arguments (
+    id integer NOT NULL,
+    proposal integer NOT NULL,
+    parent integer,
+    created timestamp with time zone DEFAULT now() NOT NULL,
+    member integer NOT NULL,
+    title text NOT NULL,
+    content text NOT NULL,
+    plus integer DEFAULT 0 NOT NULL,
+    minus integer DEFAULT 0 NOT NULL,
+    side argument_side NOT NULL
+);
+
+
+--
+-- Name: arguments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE arguments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: arguments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE arguments_id_seq OWNED BY arguments.id;
 
 
 --
@@ -332,6 +379,17 @@ ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
 
 
 --
+-- Name: ratings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ratings (
+    argument integer NOT NULL,
+    member integer NOT NULL,
+    positive boolean NOT NULL
+);
+
+
+--
 -- Name: supporters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -366,6 +424,13 @@ ALTER TABLE ONLY admins ALTER COLUMN id SET DEFAULT nextval('admins_id_seq'::reg
 --
 
 ALTER TABLE ONLY areas ALTER COLUMN id SET DEFAULT nextval('areas_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY arguments ALTER COLUMN id SET DEFAULT nextval('arguments_id_seq'::regclass);
 
 
 --
@@ -425,6 +490,14 @@ ALTER TABLE ONLY admins
 
 ALTER TABLE ONLY areas
     ADD CONSTRAINT areas_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: arguments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY arguments
+    ADD CONSTRAINT arguments_pkey PRIMARY KEY (id);
 
 
 --
@@ -492,6 +565,14 @@ ALTER TABLE ONLY proposals
 
 
 --
+-- Name: ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY ratings
+    ADD CONSTRAINT ratings_pkey PRIMARY KEY (argument, member);
+
+
+--
 -- Name: supporters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -521,6 +602,22 @@ ALTER TABLE ONLY voters
 
 ALTER TABLE ONLY voters
     ADD CONSTRAINT voters_pkey PRIMARY KEY (member, ballot);
+
+
+--
+-- Name: arguments_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY arguments
+    ADD CONSTRAINT arguments_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: arguments_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY arguments
+    ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON DELETE CASCADE;
 
 
 --
@@ -585,6 +682,22 @@ ALTER TABLE ONLY participants
 
 ALTER TABLE ONLY proposals
     ADD CONSTRAINT proposals_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ratings_argument_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ratings
+    ADD CONSTRAINT ratings_argument_fkey FOREIGN KEY (argument) REFERENCES arguments(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ratings_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ratings
+    ADD CONSTRAINT ratings_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

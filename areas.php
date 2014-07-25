@@ -37,7 +37,7 @@ html_head(_("Subject areas"));
 
 
 ?>
-<table border="0" cellspacing="1" cellpadding="2" class="proposals">
+<table border="0" cellspacing="1" cellpadding="2">
 	<tr>
 		<th><?=_("Name")?></th>
 		<th><?=_("Participants")?></th>
