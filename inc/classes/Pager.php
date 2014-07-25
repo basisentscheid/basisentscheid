@@ -153,6 +153,10 @@ class Pager {
 		<?
 		}
 
+?>
+<div class="clearfix"></div>
+<?
+
 	}
 
 
