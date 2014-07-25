@@ -282,7 +282,7 @@ function arguments($side, $parent) {
 		<h3><?=h($row['title'])?></h3>
 		<p><?=nl2br(h($row['content']), false)?></p>
 <?
-		if (@$_GET['argument_parent']!=$row['id']) {
+		if (Login::$member and @$_GET['argument_parent']!=$row['id']) {
 ?>
 		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$row['id']))?>#form"><?=_("Reply")?></a></div>
 <?
@@ -329,7 +329,7 @@ function arguments($side, $parent) {
 <?
 	}
 
-	if (@$_GET['argument_parent']==$parent) {
+	if (Login::$member and @$_GET['argument_parent']==$parent) {
 ?>
 	<li>
 		<form action="<?=URI::strip(array('argument_parent' ))?>" method="POST" class="argument">
