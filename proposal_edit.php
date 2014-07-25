@@ -75,7 +75,7 @@ if (isset($_GET['issue'])) {
 //}
 
 ?>
-<form action="<?=BN; if ($proposal->id) { ?>?id=<?=$proposal->id; } ?>" method="post">
+<form action="<?=BN; if ($proposal->id) { ?>?id=<?=$proposal->id; } ?>" method="post" class="proposal">
 <?
 
 if (isset($_GET['issue'])) {
@@ -86,7 +86,7 @@ if (isset($_GET['issue'])) {
 
 ?>
 <h2><?=_("Proponents")?></h2>
-<input type="text" name="proponents" class="proposal" value="<?=h($proposal->proponents)?>"><br>
+<input type="text" name="proponents" value="<?=h($proposal->proponents)?>"><br>
 <h2><?=_("Area")?></h2>
 <?
 if ($issue) {
@@ -102,11 +102,11 @@ if ($issue) {
 }
 ?>
 <h2><?=_("Title")?></h2>
-<input type="text" name="title" class="proposal" value="<?=h($proposal->title)?>"><br>
+<input type="text" name="title" value="<?=h($proposal->title)?>"><br>
 <h2><?=_("Content")?></h2>
-<textarea name="content" class="proposal"><?=h($proposal->content)?></textarea><br>
+<textarea name="content"><?=h($proposal->content)?></textarea><br>
 <h2><?=_("Reason")?></h2>
-<textarea name="reason" class="proposal"><?=h($proposal->reason)?></textarea><br>
+<textarea name="reason"><?=h($proposal->reason)?></textarea><br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
 </form>

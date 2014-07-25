@@ -123,7 +123,7 @@ html_head(_("Proposal")." ".$proposal->id);
 <h2><?=_("Title")?>
 <!--<span class="hadd"><a href="proposal_edit.php?id=<?=$proposal->id?>"><?=_("Edit proposal")?></a></span>-->
 </h2>
-<p class="proposal"><?=h($proposal->title)?></p>
+<p class="proposal proposal_title"><?=h($proposal->title)?></p>
 <h2><?=_("Content")?></h2>
 <p class="proposal"><?=nl2br(h($proposal->content))?></p>
 <h2><?=_("Reason")?></h2>
@@ -231,7 +231,7 @@ if (Login::$member) {
 }
 ?>
 <h2><?=_("This and alternative proposals")?></h2>
-<table border="0" cellspacing="1" cellpadding="2" class="proposals">
+<table border="0" cellspacing="1" class="proposals">
 <?
 Issue::display_proposals_th();
 $issue->display_proposals($proposal->id);

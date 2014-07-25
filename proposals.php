@@ -47,15 +47,15 @@ foreach ( $filters as $key => $name ) {
 	if ($key) $params['filter'] = $key;
 	if ($search) $params['search'] = $search;
 ?>
-<a href="<?=URI::build($params)?>"<?
-	if ($key==$filter) { ?> class="active"<? }
-	?>><?=$name?></a>
+<a href="<?=URI::build($params)?>" class="filter<?
+	if ($key==$filter) { ?>_active<? }
+	?>"><?=$name?></a>
 <?
 }
 
 ?>
 
-<form action="<?=BN?>" method="GET">
+<form action="<?=BN?>" method="GET" style="display:inline; margin-left:20px">
 <?
 if ($filter) input_hidden("filter", $filter);
 ?>
@@ -63,7 +63,7 @@ if ($filter) input_hidden("filter", $filter);
 <input type="submit" value="<?=_("search")?>">
 </form>
 
-<table border="0" cellspacing="1" cellpadding="2" class="proposals">
+<table border="0" cellspacing="1" class="proposals">
 <?
 Issue::display_proposals_th();
 
@@ -106,6 +106,9 @@ $pager->seek($result);
 $line = $pager->firstline;
 while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 	$issue = new Issue($row);
+?>
+			<tr><td colspan="6" style="height:5px"></td></tr>
+<?
 	$issue->display_proposals();
 	$line++;
 }

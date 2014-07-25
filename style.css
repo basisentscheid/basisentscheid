@@ -3,7 +3,7 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	/*font-size:12px;*/
 	color:#000;
-	background-color:#EEEEEE;
+	background-color:#ffeec7;
 	padding: 5px 20px;
 }
 
@@ -11,17 +11,11 @@ h1 {
 	font-size:1.5em;
 	margin-top:20px;
 }
-h1.title {
-	margin-top:0px;
-	margin-left:0px;
-	margin-bottom:20px;
-	font-size:24px;
-}
 h2 {
-	font-size:1.2em;
+	font-size:1.15em;
 	font-weight:normal;
 	margin-top:5px;
-	margin-bottom:5px;
+	margin-bottom:0;
 }
 h3 {
 	font-size:1em;
@@ -31,23 +25,106 @@ div.hadd {
 	float: right;
 }
 
-a.active {
-	font-weight:bold;
+a {
+	padding: 1px 3px;
+}
+a:link {
+ color:#0000AA;
+}
+a:visited {
+ color:#770088;
+}
+a:hover {
+	color:#000;
+	outline: 1px solid #DDD;
+	background-color:#F8F8F8;
+}
+a:focus, a:active {
+ background-color:#F3F3F3;
+}
+a.active,
+a.active:hover {
+	outline: 1px solid #999;
+}
+
+a.filter {
+	padding: 2px 4px;
+	text-decoration: none;
+}
+a.filter_active {
+	padding: 2px 4px;
+	text-decoration: none;
+	outline: 1px solid #999;
+	background-color:#FFF;
+}
+a.filter_active:hover {
+	background-color:#F8F8F8;
+}
+
+table {
+	border-spacing: 1px;
+	border-collapse: separate;
+}
+td, th {
+	padding: 3px 4px;
 }
 
 th {
-	background-color:#AAAAAA;
+	background-color:#CCCCCC;
 }
 td.td0, tr.td0 {
-	background-color:#DDDDDD;
+	background-color:#EEEEEE;
 }
 td.td1, tr.td1 {
-	background-color:#CCCCCC;
+	background-color:#FFFFFF;
+}
+
+td.current {
+	font-weight: bold;
+}
+td.over {
+	font-style:italic;
+	color:#666666;
 }
 
 table.proposals {
 	width:100%;
+	border-spacing: 1px 2px;
 }
+table.proposals tr.proposal {
+	background-color:#FFFFFF;
+}
+
+
+td.proposal_link {
+	cursor:pointer;cursor:hand;
+	padding: 2px 3px;
+	border: 1px solid #FFF;
+}
+td.proposal_link:hover {
+	background-color:#F8F8F8;
+	border-color: #DDD;
+}
+td.proposal_link_active {
+	cursor:pointer;cursor:hand;
+	font-weight: bold;
+	padding: 2px 3px;
+	border: 1px solid #999;
+}
+td.proposal_link_active:hover {
+	background-color:#F8F8F8;
+}
+td.proposal_link a,
+td.proposal_link_active a {
+	text-decoration: none;
+	outline: none;
+}
+td.proposal_link:hover a,
+td.proposal_link_active:hover a {
+	color:#000;
+}
+
+
 
 
 div.messages {
@@ -78,20 +155,37 @@ p.syserror {
 form.button {
 	display: inline;
 }
-input.proposal, textarea.proposal {
+
+form.proposal input[type=text] {
 	width: 100%;
 }
-textarea.proposal {
+form.proposal textarea {
+	width: 100%;
 	height: 100px;
 }
+form.proposal input[type=submit] {
+	margin-top: 10px;
+}
+
+form.edit_ballot input[type=text] {
+	width: 100%;
+}
+form.edit_ballot input[type=submit] {
+	margin-top: 10px;
+}
+
 p.proposal {
 	background-color: #FFF;
 	padding: 5px 10px;
-	margin-top: 5px;
+	margin-top: 0;
 	margin-bottom: 5px;
 }
+p.proposal_title {
+	font-weight: bold;
+	font-size: 1.1em;
+}
 div.quorum {
-	background-color: #DDD;
+	background-color: #DDF;
 	padding: 5px 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -148,18 +242,15 @@ form.argument input[type=text],
 form.argument textarea {
 	width: 100%;
 }
-/*form.argument {
-	margin: 0;
-}*/
-
-
-
-
-
-
-form.edit_ballot input[type=text] {
-	width: 100%;
+form.argument a {
+	padding:0;
 }
+
+input[type=submit]:hover {
+	background-color: #E8E8E8;
+	border-radius: 5px;
+}
+
 
 #head {
 	width: 100%;
@@ -175,15 +266,23 @@ form.edit_ballot input[type=text] {
 	background-color: #AAAAAA;
 }
 #nav {
-	padding: 10px 20px;
+	padding: 9px 20px;
 	float: left;
 }
+
 #nav a {
-	margin-left: 5px;
+	font-size: 1.1em;
+	padding: 2px 4px;
+	text-decoration: none;
 }
-#nav a.active {
-	font-weight: bold;
+#nav a:hover {
+	outline: 1px solid #EEE;
 }
+#nav a.active,
+#nav a.active:hover {
+	outline: 1px solid #999;
+}
+
 #user {
 	padding: 10px 10px 5px 10px;
 	float: right;
@@ -194,6 +293,7 @@ form.edit_ballot input[type=text] {
 	clear: both;
 	visibility: hidden;
 }
+
 
 div.bargraph {
 	border: 2px groove black;
@@ -209,3 +309,14 @@ div.bargraph div.clear {
 	height: 0;
 	clear: both;
 }
+
+
+ul {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 20px;
+}
+div.arguments_side > ul {
+	padding-left: 0;
+}
+

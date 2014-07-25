@@ -165,12 +165,11 @@ class Issue extends Relation {
 	public static function display_proposals_th() {
 ?>
 	<tr>
-		<th width="2%"><?=_("No.")?></th>
-		<th width="50%"><?=_("Title")?></th>
+		<th width="60%"><?=_("Proposals")?></th>
 		<th width="10%"><?=_("State")?></th>
-		<th width="8%"><?=_("Details")?></th>
 		<th width="10%"><?=_("Voting period")?></th>
 		<th width="10%"><?=_("Voting type")?></th>
+		<th width="10%"><?=_("Ergebnis")?></th>
 	</tr>
 <?
 	}
@@ -181,10 +180,6 @@ class Issue extends Relation {
 	 * @param unknown $selected_proposal (optional)
 	 */
 	function display_proposals($selected_proposal=0) {
-
-?>
-		<tr><td colspan="6" style="height:5px"></td></tr>
-<?
 
 		$sql = "SELECT proposals.*
 			FROM proposals
@@ -198,12 +193,13 @@ class Issue extends Relation {
 			$proposal = new Proposal($row);
 			$proposal->set_issue($this);
 
+			$link = "proposal.php?id=".$proposal->id;
+
 ?>
-		<tr class="td1">
-			<td align="right"><?=$proposal->id?></td>
-			<td><a href="proposal.php?id=<?=$proposal->id?>"<?
-			if ($selected_proposal==$proposal->id) { ?> style="font-weight:bold"<? }
-			?>><?=h($proposal->title)?></a></td>
+		<tr class="proposal">
+			<td class="proposal_link<?
+			if ($selected_proposal==$proposal->id) { ?>_active<? }
+			?>" onClick="location.href='<?=$link?>'"><?=_("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
 			if ($this->state=="admission") {
 ?>
@@ -239,17 +235,8 @@ class Issue extends Relation {
 <?
 				}
 			}
+			if ($first) {
 ?>
-			<td>
-<?
-			switch ($this->state) {
-			case "finished":
-			case "cleared":
-				// voting results
-			}
-?>
-			</td>
-<? if ($first) { ?>
 			<td rowspan="<?=$num_rows?>" align="center"><?
 				if (Login::$admin) {
 					if (@$_GET['edit_period']==$this->id) {
@@ -288,7 +275,18 @@ class Issue extends Relation {
 				}
 
 				?></td>
-<? } ?>
+<?
+			}
+?>
+			<td>
+<?
+			switch ($this->state) {
+			case "finished":
+			case "cleared":
+				// voting results
+			}
+?>
+			</td>
 		</tr>
 	<?
 

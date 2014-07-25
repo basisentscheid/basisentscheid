@@ -61,7 +61,7 @@ if (Login::$admin) {
 
 ?>
 
-<table border="0" cellspacing="1" cellpadding="2" class="proposals">
+<table border="0" cellspacing="1">
 	<tr>
 		<th><?=_("No.")?></th>
 		<th><?=_("Name")?></th>
