@@ -9,7 +9,13 @@ recommended php.ini settings for cli:
 
 === Installation ===
 
-$ psql --username=basisentscheid basisentscheid < db/basisentscheid.sql
+$ cd inc/
+$ cp config_example.php config.php
+$ vi config.php
 
-$ cp inc/config_example.php inc/config.php
-$ vi inc/config.php
+$ cd ../db/
+$ vi recreate_schema.sh
+$ ./recreate_schema.sh
+
+
+

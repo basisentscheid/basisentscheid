@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pg_dump --username=basisentscheid --schema-only --no-owner --no-privileges basisentscheid > basisentscheid.sql
+pg_dump --username=basisentscheid --schema-only --schema=public --no-owner --no-privileges basisentscheid > basisentscheid.sql

@@ -9,20 +9,6 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET search_path = public, pg_catalog;
 
 --
@@ -617,7 +603,7 @@ ALTER TABLE ONLY arguments
 --
 
 ALTER TABLE ONLY arguments
-    ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON DELETE CASCADE;
+    ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -625,7 +611,7 @@ ALTER TABLE ONLY arguments
 --
 
 ALTER TABLE ONLY ballots
-    ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON DELETE CASCADE;
+    ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -633,7 +619,7 @@ ALTER TABLE ONLY ballots
 --
 
 ALTER TABLE ONLY issues
-    ADD CONSTRAINT issues_area_fkey FOREIGN KEY (area) REFERENCES areas(id) ON DELETE RESTRICT;
+    ADD CONSTRAINT issues_area_fkey FOREIGN KEY (area) REFERENCES areas(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -641,7 +627,7 @@ ALTER TABLE ONLY issues
 --
 
 ALTER TABLE ONLY issues
-    ADD CONSTRAINT issues_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON DELETE RESTRICT;
+    ADD CONSTRAINT issues_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -649,7 +635,7 @@ ALTER TABLE ONLY issues
 --
 
 ALTER TABLE ONLY offline_demanders
-    ADD CONSTRAINT offlinedemanders_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON DELETE CASCADE;
+    ADD CONSTRAINT offlinedemanders_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -657,7 +643,7 @@ ALTER TABLE ONLY offline_demanders
 --
 
 ALTER TABLE ONLY offline_demanders
-    ADD CONSTRAINT offlinedemanders_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+    ADD CONSTRAINT offlinedemanders_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -665,7 +651,7 @@ ALTER TABLE ONLY offline_demanders
 --
 
 ALTER TABLE ONLY participants
-    ADD CONSTRAINT participants_area_fkey FOREIGN KEY (area) REFERENCES areas(id) ON DELETE CASCADE;
+    ADD CONSTRAINT participants_area_fkey FOREIGN KEY (area) REFERENCES areas(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -673,7 +659,7 @@ ALTER TABLE ONLY participants
 --
 
 ALTER TABLE ONLY participants
-    ADD CONSTRAINT participants_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+    ADD CONSTRAINT participants_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -681,7 +667,7 @@ ALTER TABLE ONLY participants
 --
 
 ALTER TABLE ONLY proposals
-    ADD CONSTRAINT proposals_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON DELETE CASCADE;
+    ADD CONSTRAINT proposals_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -689,7 +675,7 @@ ALTER TABLE ONLY proposals
 --
 
 ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_argument_fkey FOREIGN KEY (argument) REFERENCES arguments(id) ON DELETE CASCADE;
+    ADD CONSTRAINT ratings_argument_fkey FOREIGN KEY (argument) REFERENCES arguments(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -705,7 +691,7 @@ ALTER TABLE ONLY ratings
 --
 
 ALTER TABLE ONLY supporters
-    ADD CONSTRAINT supporters_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON DELETE CASCADE;
+    ADD CONSTRAINT supporters_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -713,7 +699,7 @@ ALTER TABLE ONLY supporters
 --
 
 ALTER TABLE ONLY supporters
-    ADD CONSTRAINT supporters_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+    ADD CONSTRAINT supporters_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -721,7 +707,7 @@ ALTER TABLE ONLY supporters
 --
 
 ALTER TABLE ONLY voters
-    ADD CONSTRAINT voters_ballot_fkey FOREIGN KEY (ballot) REFERENCES ballots(id) ON DELETE CASCADE;
+    ADD CONSTRAINT voters_ballot_fkey FOREIGN KEY (ballot) REFERENCES ballots(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -729,7 +715,7 @@ ALTER TABLE ONLY voters
 --
 
 ALTER TABLE ONLY voters
-    ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+    ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -737,7 +723,7 @@ ALTER TABLE ONLY voters
 --
 
 ALTER TABLE ONLY voters
-    ADD CONSTRAINT voters_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON DELETE CASCADE;
+    ADD CONSTRAINT voters_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
