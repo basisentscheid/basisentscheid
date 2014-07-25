@@ -1,5 +1,8 @@
 <?
 /**
+ * login as an admin user
+ *
+ * Admin users should use this page as start page.
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -51,6 +54,5 @@ html_head(_("Admin login"));
 </form>
 
 <?
-
 
 html_foot();

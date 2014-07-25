@@ -105,8 +105,13 @@ URI: <?=URI."\n"?>
 </form>
 <?
 	} else {
+		// These two links are for development and demonstration purposes only and have to be removed in live environment!
 ?>
-<a href="admin.php">Login as Admin</a>
+<a href="admin.php">Login as admin</a>
+<a href="local_member_login.php">Login as local member</a>
+<?
+		// login as member via ID server
+?>
 <form action="login.php" method="post" class="button">
 <input type="hidden" name="origin" value="<?=h($_SERVER['REQUEST_URI'])?>">
 <input type="submit" value="<?=_("Login")?>">
