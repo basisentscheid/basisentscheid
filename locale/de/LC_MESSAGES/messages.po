@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-07-20 11:24+0200\n"
+"PO-Revision-Date: 2014-07-25 14:07+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -55,23 +55,23 @@ msgid "New Proposal"
 msgstr "Neuer Antrag"
 #
 # File: proposal_edit.php, line: 104
-# File: proposal.php, line: 81
-# File: inc/classes/Issue.php, line: 201
+# File: proposal.php, line: 123
+# File: inc/classes/Issue.php, line: 169
 msgid "Title"
 msgstr "Titel"
 #
-# File: proposal.php, line: 68
+# File: proposal.php, line: 110
 msgid "Proposal"
 msgstr "Antrag"
 #
 msgid "Apply to become proponent"
 msgstr "Beantragen, als Antragsteller aufgenommen zu werden"
 #
-# File: proposal.php, line: 112
+# File: proposal.php, line: 178
 msgid "Revoke your support for this proposal"
 msgstr "Antrag nicht mehr unterstützen"
 #
-# File: proposal.php, line: 119
+# File: proposal.php, line: 185
 msgid "Support this proposal"
 msgstr "Diesen Antrag unterstützen"
 #
@@ -82,12 +82,12 @@ msgid "Demand offline voting"
 msgstr "Geheime Abstimmung fordern"
 #
 # File: proposal_edit.php, line: 106
-# File: proposal.php, line: 85
+# File: proposal.php, line: 127
 msgid "Content"
 msgstr "Antragstext"
 #
 # File: proposal_edit.php, line: 108
-# File: proposal.php, line: 87
+# File: proposal.php, line: 129
 msgid "Reason"
 msgstr "Begründung"
 #
@@ -102,7 +102,7 @@ msgstr "Konkurrierenden Antrag hinzufügen"
 msgid "Proposals"
 msgstr "Anträge"
 #
-# File: proposals.php, line: 115
+# File: proposals.php, line: 30
 msgid "Add proposal"
 msgstr "Antrag hinzufügen"
 #
@@ -118,21 +118,21 @@ msgstr "Abmelden"
 msgid "Login"
 msgstr "Anmelden"
 #
-# File: inc/classes/Member.php, line: 109
+# File: inc/classes/Member.php, line: 59
 msgid "anonymous"
 msgstr "anonym"
 #
-# File: inc/classes/Pager.php, line: 125
+# File: inc/classes/Pager.php, line: 139
 msgid "Pages"
 msgstr "Seiten"
 #
-# File: inc/classes/Pager.php, line: 144
+# File: inc/classes/Pager.php, line: 123
 msgid "Records per page"
 msgstr "Datensätze pro Seite"
 #
 # File: periods.php, line: 22
-# File: proposals.php, line: 34
-# File: inc/functions.php, line: 229
+# File: proposals.php, line: 40
+# File: inc/functions.php, line: 239
 msgid "Debate"
 msgstr "Debatte"
 #
@@ -141,28 +141,28 @@ msgid "Preparation"
 msgstr "Vorbereitung"
 #
 # File: periods.php, line: 24
-# File: proposals.php, line: 35
-# File: inc/functions.php, line: 231
+# File: proposals.php, line: 41
+# File: inc/functions.php, line: 241
 msgid "Voting"
 msgstr "Abstimmung"
 #
 # File: periods.php, line: 25
-# File: inc/functions.php, line: 232
+# File: inc/functions.php, line: 242
 msgid "Counting"
 msgstr "Auszählung"
 #
 # File: periods.php, line: 26
-# File: inc/classes/Issue.php, line: 320
+# File: inc/classes/Issue.php, line: 287
 msgid "Online"
 msgstr "Online"
 #
 # File: periods.php, line: 27
-# File: inc/classes/Issue.php, line: 316
+# File: inc/classes/Issue.php, line: 283
 msgid "Secret"
 msgstr "Geheim"
 #
 # File: proposal_edit.php, line: 90
-# File: proposal.php, line: 74
+# File: proposal.php, line: 116
 msgid "Area"
 msgstr "Themenbereich"
 #
@@ -170,39 +170,39 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
-# File: inc/functions.php, line: 208
+# File: inc/functions.php, line: 218
 msgid "Draft"
 msgstr "Entwurf"
 #
-# File: inc/functions.php, line: 209
+# File: inc/functions.php, line: 219
 msgid "Submitted"
 msgstr "Eingereicht"
 #
-# File: inc/functions.php, line: 210
+# File: inc/functions.php, line: 220
 msgid "Admitted"
 msgstr "Zugelassen"
 #
-# File: inc/functions.php, line: 219
+# File: inc/functions.php, line: 229
 msgid "Revoked"
 msgstr "Zurückgezogen"
 #
-# File: inc/functions.php, line: 220
+# File: inc/functions.php, line: 230
 msgid "Cancelled"
 msgstr "Abgebrochen"
 #
-# File: inc/functions.php, line: 221
+# File: inc/functions.php, line: 231
 msgid "Done otherwise"
 msgstr "Anderweitig erledigt"
 #
-# File: inc/functions.php, line: 230
+# File: inc/functions.php, line: 240
 msgid "Voting preparation"
 msgstr "Abstimmungsvorbereitung"
 #
-# File: inc/functions.php, line: 233
+# File: inc/functions.php, line: 243
 msgid "Finished"
 msgstr "Abgeschlossen"
 #
-# File: inc/functions.php, line: 234
+# File: inc/functions.php, line: 244
 msgid "Finished and cleared"
 msgstr "Abgeschlossen und bereinigt"
 #
@@ -234,11 +234,11 @@ msgid "last time activated"
 msgstr "zuletzt aktiviert"
 #
 # File: proposal_edit.php, line: 88
-# File: proposal.php, line: 76
+# File: proposal.php, line: 118
 msgid "Proponents"
 msgstr "Antragsteller"
 #
-# File: proposal.php, line: 101
+# File: proposal.php, line: 167
 msgid "Supporters"
 msgstr "Unterstützer"
 #
@@ -253,35 +253,35 @@ msgstr "Neuer konkurrierender Antrag"
 msgid "New proposal"
 msgstr "Neuer Antrag"
 #
-# File: proposal.php, line: 82
+# File: proposal.php, line: 124
 msgid "Edit proposal"
 msgstr "Antrag bearbeiten"
 #
-# File: proposal.php, line: 110
+# File: proposal.php, line: 176
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 #
-# File: proposal.php, line: 133
+# File: proposal.php, line: 199
 msgid "Secret voting demanders"
 msgstr "Unterstützer für geheime Abstimmung"
 #
-# File: proposal.php, line: 142
+# File: proposal.php, line: 208
 msgid "You demand secret voting for this issue."
 msgstr "Du forderst eine geheime Abstimmung bei diesem Thema"
 #
-# File: proposal.php, line: 144
+# File: proposal.php, line: 210
 msgid "Revoke your demand for secret voting"
 msgstr "Forderung nach geheimer Abstimmung zurückziehen"
 #
-# File: proposal.php, line: 151
+# File: proposal.php, line: 217
 msgid "Demand secret voting for this issue"
 msgstr "Geheime Abstimmung zu diesem Thema fordern"
 #
-# File: proposal.php, line: 161
+# File: proposal.php, line: 233
 msgid "This and alternative proposals"
 msgstr "Dieser und dazu konkurrierende Anträge"
 #
-# File: proposal.php, line: 164
+# File: proposal.php, line: 229
 msgid "Add alternative proposal"
 msgstr "Konkurrierenden Antrag hinzufügen"
 #
@@ -290,40 +290,40 @@ msgid "Logged in as"
 msgstr "Angemeldet als"
 #
 # File: ballots.php, line: 66
-# File: inc/classes/Issue.php, line: 200
+# File: inc/classes/Issue.php, line: 168
 msgid "No."
 msgstr "Nr."
 #
-# File: inc/classes/Issue.php, line: 202
+# File: inc/classes/Issue.php, line: 170
 msgid "State"
 msgstr "Status"
 #
-# File: inc/classes/Issue.php, line: 203
+# File: inc/classes/Issue.php, line: 171
 msgid "Details"
 msgstr "Details"
 #
-# File: inc/classes/Issue.php, line: 204
+# File: inc/classes/Issue.php, line: 172
 msgid "Voting period"
 msgstr "Abstimmungsperiode"
 #
-# File: inc/classes/Issue.php, line: 205
+# File: inc/classes/Issue.php, line: 173
 msgid "Voting type"
 msgstr "Abstimmungsart"
 #
-# File: inc/classes/Issue.php, line: 342
-# File: inc/classes/Proposal.php, line: 253
+# File: inc/classes/Issue.php, line: 309
+# File: inc/classes/Proposal.php, line: 219
 msgid "%value% of currently required %required% (%percent% of %population%)"
 msgstr "%value% von momentan erforderlichen %required% (%percent% von %population%)"
 #
-# File: proposals.php, line: 32
+# File: proposals.php, line: 38
 msgid "All"
 msgstr "Alle"
 #
-# File: proposals.php, line: 33
+# File: proposals.php, line: 39
 msgid "Admission"
 msgstr "Zulassung"
 #
-# File: proposals.php, line: 36
+# File: proposals.php, line: 42
 msgid "Closed"
 msgstr "Geschlossen"
 #
@@ -331,11 +331,11 @@ msgstr "Geschlossen"
 msgid "subscribe anew"
 msgstr "erneut anmelden"
 #
-# File: proposals.php, line: 56
+# File: proposals.php, line: 62
 msgid "Search"
 msgstr "Suche"
 #
-# File: proposals.php, line: 57
+# File: proposals.php, line: 63
 msgid "search"
 msgstr "suchen"
 #
@@ -412,7 +412,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Urnenantrag"
 #
-# File: proposals.php, line: 111
+# File: proposals.php, line: 117
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -420,7 +420,7 @@ msgstr "Themen pro Seite"
 msgid "Logged in as Admin"
 msgstr "Angemeldet als Admin"
 #
-# File: inc/classes/Issue.php, line: 307
+# File: inc/classes/Issue.php, line: 274
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -435,3 +435,34 @@ msgstr "diese Urne für die Abstimmung auswählen"
 # File: ballot_edit.php, line: 71
 msgid "Opening time"
 msgstr "Öffnung Uhrzeit"
+#
+# File: proposal.php, line: 140
+msgid "Add new pro argument"
+msgstr "neues Pro-Argument hinzufügen"
+#
+# File: proposal.php, line: 144
+msgid "Pro"
+msgstr "Pro"
+#
+# File: proposal.php, line: 151
+msgid "Add new contra argument"
+msgstr "neues Kontra-Argument hinzufügen"
+#
+# File: proposal.php, line: 155
+msgid "Contra"
+msgstr "Kontra"
+#
+# File: proposal.php, line: 287
+msgid "Reply"
+msgstr "antworten"
+#
+# File: proposal.php, line: 341
+msgid "save"
+msgstr "speichern"
+#
+# File: inc/classes/Issue.php, line: 225
+# File: inc/classes/Issue.php, line: 228
+# File: inc/classes/Issue.php, line: 231
+# File: inc/classes/Issue.php, line: 234
+msgid "until"
+msgstr "bis"
