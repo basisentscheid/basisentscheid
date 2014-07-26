@@ -54,7 +54,7 @@ html_head(strtr(_("Ballots for voting period %period%"), array('%period%'=>$peri
 
 if (Login::$admin) {
 ?>
-<form action="<?=URI?>" method="POST">
+<form action="<?=URI::$uri?>" method="POST">
 <?
 }
 
@@ -83,7 +83,7 @@ $line = $pager->firstline;
 while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 	$ballot = new Ballot($row);
 ?>
-	<tr<?=stripes()?>>
+	<tr class="<?=stripes()?>">
 		<td align="right"><?=$ballot->id?></td>
 		<td><?=h($ballot->name)?></td>
 		<td align="center"><?=timeformat($ballot->opening)?></td>
@@ -97,14 +97,14 @@ while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 <?
 			if ($row_voters['agent']=="t") { ?><?=_("You are agent for this ballot.")?><? } else { ?><?=_("You selected this ballot for voting.")?><? }
 ?>
-<form action="<?=URI?>" method="POST" class="button">
+<form action="<?=URI::$uri?>" method="POST" class="button">
 <input type="hidden" name="action" value="unselect">
 <input type="submit" value="<?=_("remove selection")?>">
 </form>
 <?
 		} elseif ($row_voters['agent']!="t") { // don't show select buttons if the member is agent for some ballot
 ?>
-<form action="<?=URI?>" method="POST" class="button">
+<form action="<?=URI::$uri?>" method="POST" class="button">
 <input type="hidden" name="ballot" value="<?=$ballot->id?>">
 <input type="hidden" name="action" value="select">
 <input type="submit" value="<?=_("select this ballot for voting")?>">
@@ -139,7 +139,7 @@ if (Login::$admin) {
 }
 
 
-$pager->output();
+$pager->display();
 
 if (Login::$member) {
 ?>

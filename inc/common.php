@@ -5,6 +5,7 @@
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  * @see admin.php
+ * @see admin_areas.php
  * @see areas.php
  * @see auth.php
  * @see ballot_edit.php
@@ -17,6 +18,7 @@
  * @see proposal_edit.php
  * @see proposals.php
  * @see share.php
+ * @see test_dbtableadmin.php
  * @see test_redirect_errors.php
  */
 
@@ -29,24 +31,19 @@ require "inc/functions.php";
 require "inc/functions_http.php";
 
 define("BN", basename($_SERVER['PHP_SELF']));
-define("URI", basename($_SERVER['REQUEST_URI']));
 
+// buffer output until it either gets displayed on this page or gets written to the session at a redirect
+ob_start();
 
-if (php_sapi_name()!="cli") {
+Login::init();
 
-	// Ausgabe puffern bis sie entweder auf der Seite ausgegeben oder bei einem Redirect in die Session geschrieben wird
-	ob_start();
+require "inc/locale.php";
 
-	Login::init();
+// all actions use this global variable
+$action = @$_POST['action'];
 
-	require "inc/locale.php";
-
-	$action = @$_POST['action'];
-
-	// action on all pages
-	if ($action=="logout") {
-		Login::logout();
-		redirect();
-	}
-
+// action on all pages
+if ($action=="logout") {
+	Login::logout();
+	redirect();
 }

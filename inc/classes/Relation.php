@@ -1,5 +1,6 @@
 <?
 /**
+ * to be inherited by every model class
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -12,12 +13,21 @@ abstract class Relation {
 
 	private $table;
 
+	protected $create_fields;
+	protected $update_fields;
+
+	/**
+	 * list of all boolean fields
+	 *
+	 * Boolean attributes must always be saved as PHP true/false/null instead of any database specific convention like "t"/"f" or "0"/"1".
+	 */
 	protected $boolean_fields = array();
 
 
 	/**
+	 * make an instance from a database record or from the provided array
 	 *
-	 * @param unknown $id_row (optional)
+	 * @param mixed   $id_row (optional)
 	 */
 	function __construct($id_row=0) {
 
@@ -39,10 +49,10 @@ abstract class Relation {
 
 
 	/**
-	 * Create a new proposal
+	 * save the current object as a new record in the database
 	 *
+	 * @param array   $fields (optional)
 	 * @return boolean
-	 * @param unknown $fields (optional)
 	 */
 	public function create( $fields=false ) {
 
@@ -51,14 +61,17 @@ abstract class Relation {
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
-		DB::insert($this->table, $fields_values, $this->id);
+
+		return DB::insert($this->table, $fields_values, $this->id);
 
 	}
 
 
 	/**
+	 * save the changed values to the record in the database
 	 *
-	 * @param unknown $fields (optional)
+	 * @param array   $fields (optional) save only these fields
+	 * @return unknown
 	 */
 	function update( $fields=false ) {
 
@@ -68,7 +81,19 @@ abstract class Relation {
 			$fields_values[$field] = $this->$field;
 		}
 
-		DB::update($this->table, "id=".intval($this->id), $fields_values);
+		return DB::update($this->table, "id=".intval($this->id), $fields_values);
+
+	}
+
+
+	/**
+	 * delete the record from the database
+	 *
+	 * @return unknown
+	 */
+	function delete() {
+
+		return DB::delete($this->table, "id=".intval($this->id));
 
 	}
 

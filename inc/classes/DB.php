@@ -134,6 +134,46 @@ abstract class DB {
 
 
 	/**
+	 *
+	 * @param unknown $result
+	 * @return unknown
+	 */
+	function num_rows($result) {
+		return pg_num_rows($result);
+	}
+
+
+	/**
+	 *
+	 * @param unknown $result
+	 * @return unknown
+	 */
+	function fetch_row($result) {
+		return pg_fetch_row($result);
+	}
+
+
+	/**
+	 *
+	 * @param unknown $result
+	 * @return unknown
+	 */
+	function fetch_assoc($result) {
+		return pg_fetch_assoc($result);
+	}
+
+
+	/**
+	 *
+	 * @param unknown $result
+	 * @return unknown
+	 */
+	function fetch_array($result) {
+		return pg_fetch_array($result);
+	}
+
+
+	/**
 	 * Direkte Abfrage eines Datensatzes
 	 *
 	 * @param string  $sql SQL-Statement
@@ -242,9 +282,7 @@ abstract class DB {
 	 */
 	public function update($table, $where, $fields_values=array(), $extra=false) {
 
-		foreach ($fields_values as $key => $value) {
-			$fields_values[$key] = $key."=".DB::m_null($value);
-		}
+		$fields_values = self::convert_fields_values($fields_values);
 
 		if ($extra) {
 			$fields_values[] = $extra;
@@ -293,12 +331,14 @@ abstract class DB {
 	/**
 	 *
 	 * @param unknown $fields_values
+	 * @return unknown
 	 */
 	public function convert_fields_values($fields_values) {
 		$converted = array();
 		foreach ( $fields_values as $key => $value ) {
 			$converted[] = $key."=".self::m_null($value);
 		}
+		return $converted;
 	}
 
 

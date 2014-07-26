@@ -169,7 +169,7 @@ class Issue extends Relation {
 		<th width="10%"><?=_("State")?></th>
 		<th width="10%"><?=_("Voting period")?></th>
 		<th width="10%"><?=_("Voting type")?></th>
-		<th width="10%"><?=_("Ergebnis")?></th>
+		<th width="10%"><?=_("Result")?></th>
 	</tr>
 <?
 	}

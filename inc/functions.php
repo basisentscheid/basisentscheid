@@ -55,6 +55,19 @@ function h($string) {
 
 
 /**
+ * convert HTML to UTF-8
+ *
+ * Vor allem für Strings von Gettext, die bereits HTML-Entities enthalten, und nicht ausgegeben, sondern anderweitig verwendet werden sollen.
+ *
+ * @param string  $string
+ * @return string
+ */
+function hd($string) {
+	return html_entity_decode($string, ENT_COMPAT, "utf-8");
+}
+
+
+/**
  * for debugging: display the content of a variable formatted
  *
  * @param mixed   $var  variable to display
@@ -115,27 +128,6 @@ function first() {
 		return false;
 	}
 }
-
-
-/**
- * Return CSS classes with alternating background colors
- *
- * @param mixed   $change (optional) if this value changes, the color changes
- * @param mixed   $suffix (optional) for subclasses
- * @return string
- */
-function stripes($change=false, $suffix="") {
-	static $colorid = 0;
-	static $change_last = null;
-	if ($change===false or $change_last != $change) {
-		$colorid = ($colorid + 1) % 2;
-	}
-	$change_last = $change;
-	return ' class="td'.$colorid.$suffix.'"';
-}
-
-
-
 
 
 /**

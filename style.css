@@ -1,25 +1,32 @@
+/*
+style guide:
+- font sizes as %
+- other sizes as px
+- font dependent sizes as px (for older browsers) and rem
+- colors upper case #07F or #0A7CF3
+*/
 
 /* 1. common definitions without id or class */
 
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	color:#000;
-	background-color:#ffeec7;
+	color: #000;
+	background-color: #FFEEC7;
 	padding: 5px 20px;
 }
 
 h1 {
-	font-size:1.5em;
-	margin-top:20px;
+	font-size: 150%;
+	margin-top: 20px;
 }
 h2 {
-	font-size:1.15em;
-	font-weight:normal;
-	margin-top:5px;
-	margin-bottom:0;
+	font-size: 115%;
+	font-weight: normal;
+	margin-top: 5px;
+	margin-bottom: 0;
 }
 h3 {
-	font-size:1em;
+	font-size: 100%;
 }
 
 table {
@@ -29,31 +36,34 @@ table {
 td, th {
 	padding: 3px 4px;
 }
-th {
-	background-color:#CCCCCC;
+.th,
+th,
+tfoot td {
+	background-color: #CCC;
 }
-
-input[type=submit]:hover {
-	background-color: #E8E8E8;
-	border-radius: 5px;
+.td0 {
+	background-color: #EEE;
+}
+.td1 {
+	background-color: #FFF;
 }
 
 a {
 	padding: 1px 3px;
 }
 a:link {
-	color:#0000AA;
+	color: #00A;
 }
 a:visited {
-	color:#770088;
+	color: #708;
 }
 a:hover {
-	color:#000;
-	outline: 1px solid #DDD;
-	background-color:#F8F8F8;
+	color: #000;
+	outline: 1px solid #ddd;
+	background-color: #F8F8F8;
 }
 a:focus, a:active {
-	background-color:#F3F3F3;
+	background-color: #F3F3F3;
 }
 
 
@@ -69,8 +79,8 @@ a:focus, a:active {
 }
 
 div.messages {
-	border: 1px solid #ccc;
-	background: #f5f5f5;
+	/*border: 1px solid #CCC;*/
+	background: #FFF;
 	padding: 5px;
 	margin-bottom: 20px;
 }
@@ -79,17 +89,17 @@ p.success, p.notice, p.warning, p.error {
 	padding: 2px 5px;
 }
 p.success {
-	background-color: #66FF66;
+	background-color: #6F6;
 }
 p.notice {
 	background-color: #FAFA33;
 }
 p.warning, p.error {
-	background-color: #FF6699;
+	background-color: #F69;
 	font-weight: bold;
 }
 p.syserror {
-	color: #990000;
+	color: #900;
 	font-weight: normal;
 }
 
@@ -108,19 +118,12 @@ div.bargraph div.clear {
 	clear: both;
 }
 
-td.td0, tr.td0 {
-	background-color:#EEEEEE;
-}
-td.td1, tr.td1 {
-	background-color:#FFFFFF;
-}
-
-td.current {
+.current {
 	font-weight: bold;
 }
-td.over {
+.over {
 	font-style:italic;
-	color:#666666;
+	color: #666;
 }
 
 form.button {
@@ -132,18 +135,33 @@ a.active:hover {
 	outline: 1px solid #999;
 }
 
-a.filter {
+div.filter a,
+div.pager a {
 	padding: 2px 4px;
 	text-decoration: none;
 }
-a.filter_active {
+div.filter a.active,
+div.pager a.active {
 	padding: 2px 4px;
 	text-decoration: none;
 	outline: 1px solid #999;
-	background-color:#FFF;
+	background-color: #FFF;
+	color: #000;
 }
-a.filter_active:hover {
-	background-color:#F8F8F8;
+
+div.pager {
+	margin: 10px 0;
+	margin: 1rem 0;
+}
+div.pager div.itemsperpage {
+	float: right;
+}
+
+form.filter,
+div.filter,
+#dbtableadmin div#add_record {
+	margin-bottom: 5px;
+	margin-bottom: 0.5rem;
 }
 
 
@@ -159,7 +177,7 @@ p.proposal {
 }
 p.proposal_title {
 	font-weight: bold;
-	font-size: 1.1em;
+	font-size: 110%;
 }
 div.quorum {
 	background-color: #DDF;
@@ -174,26 +192,26 @@ table.proposals {
 	border-spacing: 1px 2px;
 }
 table.proposals tr.proposal {
-	background-color:#FFFFFF;
+	background-color: #FFF;
 }
 
-table.proposals td.proposal_link {
-	cursor:pointer;cursor:hand;
+table.proposals td.proposal_link,
+table.proposals td.proposal_link_active {
+	cursor: pointer;
+	cursor: hand;
 	padding: 2px 3px;
 	border: 1px solid #FFF;
 }
-table.proposals td.proposal_link:hover {
-	background-color:#F8F8F8;
-	border-color: #DDD;
-}
 table.proposals td.proposal_link_active {
-	cursor:pointer;cursor:hand;
 	font-weight: bold;
-	padding: 2px 3px;
 	border: 1px solid #999;
 }
+table.proposals td.proposal_link:hover {
+	border-color: #DDD;
+}
+table.proposals td.proposal_link:hover,
 table.proposals td.proposal_link_active:hover {
-	background-color:#F8F8F8;
+	background-color: #F8F8F8;
 }
 table.proposals td.proposal_link a,
 table.proposals td.proposal_link_active a {
@@ -202,15 +220,18 @@ table.proposals td.proposal_link_active a {
 }
 table.proposals td.proposal_link:hover a,
 table.proposals td.proposal_link_active:hover a {
-	color:#000;
+	color: #000;
 }
 
 
-form.proposal input[type=text] {
-	width: 100%;
-}
+form.proposal input[type=text],
 form.proposal textarea {
 	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+form.proposal textarea {
 	height: 100px;
 }
 form.proposal input[type=submit] {
@@ -235,15 +256,15 @@ div.arguments_side ul li p {
 }
 div.arguments_side ul li h3 {
 	font-weight: bold;
-	background-color: #EEEEEE;
+	background-color: #EEE;
 }
 div.arguments_side ul li div.author {
-	float:right;
-	font-style:italic;
+	float: right;
+	font-style: italic;
 	padding-right: 3px;
 }
 div.arguments_side ul li div.reply {
-	float:right;
+	float: right;
 }
 div.arguments_side h2 {
 	margin-top: 0;
@@ -263,7 +284,7 @@ div.arguments_side form.argument textarea {
 	width: 100%;
 }
 div.arguments_side form.argument a {
-	padding:0;
+	padding: 0;
 }
 
 div.arguments_side span.plus {
@@ -271,7 +292,7 @@ div.arguments_side span.plus {
 	padding-left: 3px;
 }
 div.arguments_side span.minus {
-	color: #a00;
+	color: #A00;
 	padding-left: 3px;
 }
 div.arguments_side span.rating {
@@ -304,15 +325,15 @@ form.edit_ballot input[type=submit] {
 	float: left;
 	font-weight: bold;
 	font-size: 120%;
-	color:#FFFFFF;
-	background-color: #AAAAAA;
+	color: #FFF;
+	background-color: #AAA;
 }
 #nav {
 	padding: 9px 20px;
 	float: left;
 }
 #nav a {
-	font-size: 1.1em;
+	font-size: 110%;
 	padding: 2px 4px;
 	text-decoration: none;
 }
@@ -327,4 +348,92 @@ form.edit_ballot input[type=submit] {
 #user {
 	padding: 10px 10px 5px 10px;
 	float: right;
+}
+
+
+#dbtableadmin {
+	display: inline-block;
+}
+#dbtableadmin div.add_record {
+	float: right;
+}
+#dbtableadmin table {
+	clear: both;
+}
+#dbtableadmin tfoot td {
+	text-align: right;
+}
+
+/* columns parameter */
+#dbtableadmin td.nowrap {
+	white-space: nowrap;
+}
+#dbtableadmin td.center {
+	text-align: center;
+}
+#dbtableadmin td.right {
+	text-align: right;
+}
+
+/* manual order */
+#dbtableadmin span.arrow {
+	font-weight: bold;
+}
+#dbtableadmin div.moveup {
+	float: left;
+}
+#dbtableadmin div.movedown {
+	float: right;
+}
+
+#dbtableadmin h2 {
+	margin-left: 150px;
+	margin-left: 15rem;
+}
+#dbtableadmin_editform {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+#dbtableadmin_editform fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+#dbtableadmin_editform label,
+#dbtableadmin_editform div.buttons {
+	display: block;
+	margin: 1px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+#dbtableadmin_editform label span.label,
+#dbtableadmin_editform div.buttons span.cancel {
+	display: inline-block;
+	vertical-align: middle;
+	width: 140px;
+	width: 14rem;
+	margin: 2px    0 2px    5px;
+	margin: 0.2rem 0 0.2rem 0.5rem;
+}
+#dbtableadmin_editform label span.label {
+	text-align: right;
+}
+#dbtableadmin_editform label span.input,
+#dbtableadmin_editform div.buttons span.input {
+	display: inline-block;
+	vertical-align: middle;
+	width: calc(100% - 153px);
+	width: calc(100% - 15.3rem);
+	margin: 2px    3px    2px    5px;
+	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
+}
+#dbtableadmin_editform label input[type=text],
+#dbtableadmin_editform label textarea {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#dbtableadmin_editform div.buttons {
+	margin-top: 5px;
 }

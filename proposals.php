@@ -42,19 +42,20 @@ $filters = array(
 	'closed' => _("Closed")
 );
 
+?>
+<div class="filter">
+<?
 foreach ( $filters as $key => $name ) {
 	$params = array();
-	if ($key) $params['filter'] = $key;
+	if ($key)    $params['filter'] = $key;
 	if ($search) $params['search'] = $search;
 ?>
-<a href="<?=URI::build($params)?>" class="filter<?
-	if ($key==$filter) { ?>_active<? }
-	?>"><?=$name?></a>
+<a href="<?=URI::build($params)?>"<?
+	if ($key==$filter) { ?> class="active"<? }
+	?>><?=$name?></a>
 <?
 }
-
 ?>
-
 <form action="<?=BN?>" method="GET" style="display:inline; margin-left:20px">
 <?
 if ($filter) input_hidden("filter", $filter);
@@ -62,6 +63,7 @@ if ($filter) input_hidden("filter", $filter);
 <?=_("Search")?>: <input type="text" name="search" value="<?=h($search)?>">
 <input type="submit" value="<?=_("search")?>">
 </form>
+</div>
 
 <table border="0" cellspacing="1" class="proposals">
 <?
@@ -117,7 +119,7 @@ while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
 </table>
 
 <?
-$pager->output(_("Issues per page"));
+$pager->display(_("Issues per page"));
 
 
 html_foot();

@@ -62,7 +62,7 @@ $result = DB::query($sql);
 while ($row = pg_fetch_assoc($result)) {
 
 ?>
-	<tr<?=stripes()?>>
+	<tr class="<?=stripes()?>">
 		<td><?=$row['name']?></td>
 		<td align="center"><?=$row['participants']?></td>
 <? if (Login::$member) { ?>

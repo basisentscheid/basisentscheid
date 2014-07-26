@@ -13,7 +13,7 @@
  *   print_r($row);
  *   $line++;
  * }
- * $pager->output();
+ * $pager->display();
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -22,6 +22,9 @@
 
 class Pager {
 
+
+	public $separator = "\n";
+	public $ellipsis = "...";
 
 	public $page;
 	private $itemsperpage;
@@ -110,25 +113,28 @@ class Pager {
 	 * @param string  $itemsperpage_title (optional)
 	 * @param integer $pagelinksdist      (optional)
 	 */
-	public function output($itemsperpage_title=false, $pagelinksdist=3) {
+	public function display($itemsperpage_title=false, $pagelinksdist=3) {
+
+?>
+<div class="pager">
+<?
 
 		$showpagebegin = max(1, $this->page - $pagelinksdist);
 		$showpageend = min($this->pagescount, $this->page + $pagelinksdist);
 
-		$linkpart = URI::strip(array('page', 'itemsperpage'));
-		if (strpos($linkpart, "?")!==false) $linkpart .= "&amp;"; else $linkpart .= "?";
+		$linkpart = URI::linkpart(URI::strip(array('page', 'itemsperpage')));
 
 		if ( $this->linescount > 10 ) { // display the items-per-page switch only if it would change anything
 ?>
-<p style="float:right"><?=$itemsperpage_title?$itemsperpage_title:_("Records per page")?>: &nbsp;&nbsp; <?
+<div class="itemsperpage"><?=$itemsperpage_title?$itemsperpage_title:_("Records per page")?>: &nbsp;&nbsp;
+<?
 			foreach ( array(10, 20, 50, 100) as $i ) {
-				if ( $this->itemsperpage == $i ) {
-					?><b><?=$i?></b> <?
-				} else {
-					?><a href="<?=$linkpart?>itemsperpage=<?=$i?>"><?=$i?></a> <?
-				}
+				?><a href="<?=$linkpart?>itemsperpage=<?=$i?>"<?
+				if ( $this->itemsperpage == $i ) { ?> class="active"<? }
+				?>><?=$i?></a>
+<?
 			}
-			?></p>
+			?></div>
 <?
 		}
 
@@ -136,25 +142,31 @@ class Pager {
 
 		if ( $this->pagescount > 1 ) { // display the page only if there is more than 1 page
 ?>
-<p><?=_("Pages")?>: &nbsp;&nbsp; <?
+<div class="pages"><?=_("Pages")?>: &nbsp;&nbsp;
+<?
 			if ( $this->page > $pagelinksdist + 1) {
-				?><a href="<?=$linkpart2?>page=1">1</a> - <?
-				if ( $this->page > $pagelinksdist + 2 ) { ?> ... - <? }
+				?><a href="<?=$linkpart2?>page=1">1</a><?
+				echo $this->separator;
+				if ( $this->page > $pagelinksdist + 2 ) echo $this->ellipsis.$this->separator;
 			}
 			for ($i=$showpagebegin;$i<=$showpageend;$i++) {
-				if ( $this->page==$i ) { ?><?=$i?> <? } else { ?><a href="<?=$linkpart2?>page=<?=$i?>"><?=$i?></a><? }
-				if ( $i < $showpageend ) { ?> - <? }
+				?><a href="<?=$linkpart2?>page=<?=$i?>"<?
+				if ( $this->page==$i ) { ?> class="active"<? }
+				?>><?=$i?></a><?
+				if ( $i < $showpageend ) echo $this->separator;
 			}
 			if ( $this->page < $this->pagescount - $pagelinksdist ) {
-				if ( $this->page < $this->pagescount - ($pagelinksdist+1) ) { ?> - ... <? }
-				?> - <a href="<?=$linkpart2?>page=<?=$this->pagescount?>"><?=$this->pagescount?></a><?
+				if ( $this->page < $this->pagescount - ($pagelinksdist+1) ) echo $this->separator.$this->ellipsis;
+				echo $this->separator;
+				?><a href="<?=$linkpart2?>page=<?=$this->pagescount?>"><?=$this->pagescount?></a><?
 			}
-			?></p>
-		<?
+			?></div>
+<?
 		}
 
 ?>
 <div class="clearfix"></div>
+</div>
 <?
 
 	}

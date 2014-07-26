@@ -9,83 +9,30 @@
 
 require "inc/common.php";
 
+$d = new DbTableAdmin_Period("Period");
+$d->dbtable = "periods";
+$d->columns = array(
+	array("id", _("No."), "right", "", false),
+	array("debate",      _("Debate"),      "center", "timestamp", "timestamp"),
+	array("preparation", _("Preparation"), "center", "timestamp", "timestamp"),
+	array("voting",      _("Voting"),      "center", "timestamp", "timestamp"),
+	array("counting",    _("Counting"),    "center", "timestamp", "timestamp"),
+	array("online", _("Online"), "center", "boolean", "boolean", 'type'=>"boolean"),
+	array("secret", _("Secret"), "center", "boolean", "boolean", 'type'=>"boolean"),
+	array(false, _("Ballots"), "center", "ballots", false)
+);
+$d->enable_filter = false;
 
+if (Login::$admin) {
+	$d->action($action);
+} else {
+	$d->enable_insert = false;
+	$d->enable_edit   = false;
+	$d->enable_delete_single = false;
+}
 
 html_head(_("Periods"));
 
-
-
-?>
-<table border="0" cellspacing="1">
-	<tr>
-		<th>Nr</th>
-		<th><?=_("Debate")?></th>
-		<th><?=_("Preparation")?></th>
-		<th><?=_("Voting")?></th>
-		<th><?=_("Counting")?></th>
-		<th><?=_("Online")?></th>
-		<th><?=_("Secret")?></th>
-		<th><?=_("Ballots")?></th>
-	</tr>
-<?
-
-
-$sql = "SELECT *,
-		debate      <= now() AS debate_due,
-		preparation <= now() AS preparation_due,
-		voting      <= now() AS voting_due,
-		counting    <= now() AS counting_due
-  FROM periods ORDER BY id";
-$result = DB::query($sql);
-while ($row = pg_fetch_assoc($result)) {
-	$period = new Period($row);
-?>
-	<tr<?=stripes()?>>
-		<td align="right"><?=$period->id?></td>
-		<td<?
-	if ($row['debate_due']=="t") {
-		if ($row['preparation_due']=="t") {
-			?> class="over"<?
-		} else {
-			?> class="current"<?
-		}
-	}
-	?>><?=datetimeformat($period->debate)?></td>
-		<td<?
-	if ($row['preparation_due']=="t") {
-		if ($row['voting_due']=="t") {
-			?> class="over"<?
-		} else {
-			?> class="current"<?
-		}
-	}
-	?>><?=datetimeformat($period->preparation)?></td>
-		<td<?
-	if ($row['voting_due']=="t") {
-		if ($row['counting_due']=="t") {
-			?> class="over"<?
-		} else {
-			?> class="current"<?
-		}
-	}
-	?>><?=datetimeformat($period->voting)?></td>
-		<td<?
-	if ($row['counting_due']=="t") {
-		?> class="over"<?
-	}
-	?>><?=datetimeformat($period->counting)?></td>
-		<td align="center"><?=boolean($period->online)?></td>
-		<td align="center"><?=boolean($period->secret)?></td>
-		<td><a href="ballots.php?period=<?=$period->id?>"><?=_("Ballots")?></a></td>
-	</tr>
-<?
-
-}
-
-?>
-</table>
-
-<?
-
+$d->display();
 
 html_foot();
