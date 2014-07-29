@@ -33,6 +33,35 @@ class Period extends Relation {
 	}
 
 
+	/**
+	 * information about the current phase
+	 *
+	 * @return string
+	 */
+	public function current_period() {
+		$time = time();
+		if (strtotime($this->counting) <= $time) {
+			return _(strtr("Counting started at %datetime%.", array(
+						'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->counting))
+					)));
+		} elseif (strtotime($this->voting) <= $time) {
+			return _(strtr("Voting started at %datetime%.", array(
+						'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->voting))
+					)));
+		} elseif (strtotime($this->preparation) <= $time) {
+			return _(strtr("Voting preparation started at %datetime%.", array(
+						'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->preparation))
+					)));
+		} elseif (strtotime($this->voting) <= $time) {
+			return _(strtr("Debate started at %datetime%.", array(
+						'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->debate))
+					)));
+		}
+		return _(strtr("Debate starts at %datetime%.", array(
+					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->debate))
+				)));
+	}
+
 
 	/**
 	 *

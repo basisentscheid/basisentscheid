@@ -238,29 +238,7 @@ class Issue extends Relation {
 			if ($first) {
 ?>
 			<td rowspan="<?=$num_rows?>" align="center"><?
-				if (Login::$admin) {
-					if (@$_GET['edit_period']==$this->id) {
-?>
-<form action="<?=URI::strip(array('edit_period'))?>" method="POST">
-<?
-						// TODO: restrict available periods
-						$sql_periods = "SELECT * FROM periods";
-						$result_periods = DB::query($sql_periods);
-						$options = array();
-						while ( $row_periods = pg_fetch_assoc($result_periods) ) {
-							$options[$row_periods['id']] = $row_periods['id'];
-						}
-						input_select("period", $options, $this->period);
-						input_hidden("issue", $this->id);
-						input_hidden("action", "select_period");
-?>
-<input type="submit">
-</form>
-<?
-					} else {
-						?><?=$this->period?> <a href="<?=URI::append(array('edit_period'=>$this->id))?>"><?=_("edit")?></a><?
-					}
-				} else {
+				if ( !Login::$admin or !$this->display_edit_state() ) {
 					echo $this->period;
 				}
 				?></td>
@@ -307,6 +285,90 @@ class Issue extends Relation {
 			strtr( _("%value% of currently required %required% (%percent% of %population%)"), array('%value%'=>$this->secret_demanders, '%required%'=>$required, '%percent%'=>numden2percent($this->secret_level()), '%population%'=>$this->area()->population()) ),
 			"#FF0000"
 		);
+	}
+
+
+	/**
+	 * get all voting periods to which the issue may be assigned
+	 *
+	 * Issues, on which the voting already started, may not be postponed anymore.
+	 * Issues, which were not started debating, may only be moved into periods
+	 * where the debate has not yet started. Otherwise the debate time would be
+	 * shorter than for other issues.
+	 *
+	 * @return array list of options for drop down menu or false
+	 */
+	public function available_periods() {
+
+		// find out if the state may be changed
+		switch ($this->state) {
+		case "admission":
+			// At least one proposal has to be admitted.
+			$sql = "SELECT COUNT(1) FROM proposals WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
+			$result = DB::query($sql);
+			if ( !DB::num_rows($result) ) return false;
+		case "debate":
+		case "preparation":
+
+			// Issues, on which the voting already started, may not be postponed anymore.
+			// Issues, which were not started debating, may only be moved into periods where the debate has not yet started. Otherwise the debate time would be shorter than for other issues.
+
+			// read options once from the database
+			static $options_all = false;
+			static $options_admission = false;
+			if ($options_all===false) {
+				$sql_period = "SELECT *, debate > now() AS debate_not_started FROM periods WHERE voting > now() ORDER BY id";
+				$result_period = DB::query($sql_period);
+				$options_all = array();
+				$options_admission = array();
+				while ( $row_period = pg_fetch_assoc($result_period) ) {
+					$period = new Period($row_period);
+					$options_all[$period->id] = $period->id.": ".$period->current_period();
+					if ($row_period['debate_not_started']=="t") {
+						$options_admission[$period->id] = $options_all[$period->id];
+					}
+				}
+
+			}
+
+			if ($this->state=="admission") {
+				return $options_admission;
+			} else {
+				return $options_all;
+			}
+
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * admins select a voting period
+	 *
+	 * @return boolean true if the period may be changed
+	 */
+	private function display_edit_state() {
+
+		$options =& $this->available_periods();
+		if (!$options) return false;
+
+		if (@$_GET['edit_period']==$this->id) {
+?>
+<form action="<?=URI::strip(array('edit_period'))?>" method="POST">
+<?
+			input_select("period", $options, $this->period);
+			input_hidden("issue", $this->id);
+			input_hidden("action", "select_period");
+?>
+<input type="submit" value="<?=_("apply")?>">
+</form>
+<?
+		} else {
+			?><?=$this->period?> <a href="<?=URI::append(array('edit_period'=>$this->id))?>"><?=_("edit")?></a><?
+		}
+
+		return true;
 	}
 
 

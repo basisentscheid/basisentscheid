@@ -259,7 +259,7 @@ function action_required_parameters() {
 
 
 /**
- *
+ * used by proposals.php and proposal.php
  */
 function action_proposal_select_period() {
 
@@ -278,7 +278,11 @@ function action_proposal_select_period() {
 		redirect();
 	}
 
-	// TODO: restrict available periods
+	$available =& $issue->available_periods();
+	if (!isset($available[$period->id])) {
+		warning("The selected period is not available for the issue!");
+		redirect();
+	}
 
 	$issue->period = $period->id;
 	$issue->update(array("period"));
@@ -370,7 +374,7 @@ function input_select($name, $options, $selected=false) {
 	foreach ( $options as $key => $value ) {
 ?>
  <option value="<?=$key?>"<?
-		if ($key==$selected) { ?> selected<? }
+		if ($key==$selected) { ?> selected class="selected"<? }
 		?>><?=$value?></option>
 <?
 	}

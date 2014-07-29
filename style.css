@@ -122,8 +122,13 @@ div.bargraph div.clear {
 	font-weight: bold;
 }
 .over {
-	font-style:italic;
+	font-style: italic;
 	color: #666;
+}
+
+option.selected {
+	background-color: #DDD;
+	font-style: italic;
 }
 
 form.button {
