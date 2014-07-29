@@ -387,6 +387,40 @@ CREATE TABLE supporters (
 
 
 --
+-- Name: test_dbtableadmins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE test_dbtableadmins (
+    id integer NOT NULL,
+    manualorder integer DEFAULT 0 NOT NULL,
+    text text NOT NULL,
+    area text NOT NULL,
+    "int" integer NOT NULL,
+    "boolean" boolean NOT NULL,
+    dropdown integer NOT NULL
+);
+
+
+--
+-- Name: test_dbtableadmin_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE test_dbtableadmin_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_dbtableadmin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
+
+
+--
 -- Name: voters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -452,6 +486,13 @@ ALTER TABLE ONLY periods ALTER COLUMN id SET DEFAULT nextval('periods_id_seq'::r
 --
 
 ALTER TABLE ONLY proposals ALTER COLUMN id SET DEFAULT nextval('proposals_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY test_dbtableadmins ALTER COLUMN id SET DEFAULT nextval('test_dbtableadmin_id_seq'::regclass);
 
 
 --
@@ -564,6 +605,14 @@ ALTER TABLE ONLY ratings
 
 ALTER TABLE ONLY supporters
     ADD CONSTRAINT supporters_pkey PRIMARY KEY (proposal, member);
+
+
+--
+-- Name: test_dbtableadmin_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY test_dbtableadmins
+    ADD CONSTRAINT test_dbtableadmin_pkey PRIMARY KEY (id);
 
 
 --
