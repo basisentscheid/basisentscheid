@@ -93,12 +93,13 @@ abstract class DB {
 				if ($showsuccess===true) {
 					?><p>Die Eingaben wurden erfolgreich in die Datenbank geschrieben.</p><?
 				} else {
-					?><p><? echo $showsuccess?></p><?
+					?><p><?=$showsuccess?></p><?
 				}
 			}
-			if (false) { // Debug
-				?><p>SQL-Statement (erfolgreich):<br><? echo nl2br(htmlentities($sql))?></p><?
-			}
+			// DEBUG
+			// echo "<p>SQL statement (successful):<br>".nl2br(h($sql))."</p>";
+			// echo "SQL statement (successful):\n".$sql."\n";
+			// self::sql_error($sql, "SQL statement (successful): <i>".pg_last_error()."</i>");
 		} else {
 			self::sql_error($sql, "Postgres Error <i>".pg_last_error()."</i>");
 		}

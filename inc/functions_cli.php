@@ -127,14 +127,13 @@ function cron() {
 				$issue->state = "finished";
 				$issue->update(array("state"), "clear = current_date + ".DB::m(CLEAR_INTERVAL)."::INTERVAL");
 
-				// remove inactive participants from areas, whos last activation is before the counting of the period before the current one
+				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
 				$sql = "SELECT counting FROM periods WHERE counting <= now() ORDER BY counting DESC LIMIT 2";
 				$result = DB::query($sql);
 				pg_fetch_assoc($result); // skip the current counting
 				if ( $last_counting = pg_fetch_assoc($result) ) {
 					$sql = "DELETE FROM participants WHERE activated < ".DB::m($last_counting['counting']);
-					echo $sql;
 					DB::query($sql);
 				}
 
