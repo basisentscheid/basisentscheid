@@ -13,18 +13,18 @@ if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 define('DOCROOT', "../");
 require "../inc/common_cli.php";
 
-$date = date("Y-m-d_H-i-s");
-
 
 // delete everything
-DB::query("TRUNCATE periods CASCADE");
-DB::query("TRUNCATE members CASCADE");
-DB::query("TRUNCATE areas CASCADE");
+//DB::query("TRUNCATE periods CASCADE");
+//DB::query("TRUNCATE members CASCADE");
+//DB::query("TRUNCATE areas CASCADE");
 
+// to aviod conflicts with existing usernames
+$date = dechex(time());
 
 // create main member
 $login = new Member;
-$login->username = "test".$date."login";
+$login->username = "t".$date."login";
 $login->auid = $login->username;
 $login->create();
 
@@ -44,7 +44,7 @@ do {
  * create one test case
  *
  * @param integer $case
- * @param unknown $stopcase
+ * @param integer $stopcase
  * @return boolean true after last case
  */
 function create_case($case, $stopcase) {
@@ -68,7 +68,7 @@ function create_case($case, $stopcase) {
 	// create new proposal
 	$proposal = new Proposal;
 	$proposal->proponents = "Test proponent 1 #1001, Test proponent 2 #1002, Test proponent 3 #1003, Test proponent 4 #1004, Test proponent 5 #1005";
-	$proposal->title = "Test proposal case ".$casedesc;
+	$proposal->title = "Test ".$date." proposal case ".$casedesc;
 	$proposal->content = "Test content";
 	$proposal->reason = "Test reason";
 	$proposal->create($area);
@@ -85,7 +85,7 @@ function create_case($case, $stopcase) {
 	// create alternative proposal
 	$proposal2 = new Proposal;
 	$proposal2->proponents = "Test proponent 1 #1001, Test proponent 2 #1002, Test proponent 3 #1003, Test proponent 4 #1004, Test proponent 5 #1005";
-	$proposal2->title = "Test alternative proposal case ".$casedesc;
+	$proposal2->title = "Test ".$date." alternative proposal case ".$casedesc;
 	$proposal2->content = "Test content";
 	$proposal2->reason = "Test reason";
 	$proposal2->issue = $proposal->issue;
@@ -175,16 +175,17 @@ function create_case($case, $stopcase) {
 
 
 /**
+ * create a new member and let it support the supplied proposal
  *
- * @param unknown $proposal
- * @param unknown $case
- * @param unknown $i
+ * @param object  $proposal
+ * @param integer $case
+ * @param string  $i
  */
 function add_supporter($proposal, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
-	Login::$member->username = "testc".$case."p".$proposal->id.$i;
+	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
 	Login::$member->create();
 	$proposal->add_support();
@@ -192,16 +193,17 @@ function add_supporter($proposal, $case, $i) {
 
 
 /**
+ * create a new member and let it support secret voting for the supplied proposal
  *
- * @param unknown $proposal
- * @param unknown $case
- * @param unknown $i
+ * @param object  $proposal
+ * @param integer $case
+ * @param string  $i
  */
 function add_secretdemander($proposal, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
-	Login::$member->username = "testc".$case."p".$proposal->id.$i;
+	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
 	Login::$member->create();
 	$proposal->issue()->demand_secret();
