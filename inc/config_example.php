@@ -38,6 +38,10 @@ define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 20);
 define("QUORUM_SECRET_NUM", 1); // 5%
 define("QUORUM_SECRET_DEN", 20);
 
+// language, currently supported: "en" and "de"
+define("LANG", "en");
+
+// date and time format, see http://php.net/manual/en/function.date.php
 //define("TIME_FORMAT", "j.n.Y G:i:s T"); // with timezone
 define("DATETIME_FORMAT", "j.n.Y G:i"); // without timezone
 define("DATE_FORMAT", "j.n.Y");
@@ -47,3 +51,8 @@ define("OAUTH2_CLIENT_ID",     'example');
 define("OAUTH2_CLIENT_SECRET", 'example');
 define("OAUTH2_AUTHORIZATION_ENDPOINT", 'https://oauth2.example.com/authorize/');
 define("OAUTH2_TOKEN_ENDPOINT",         'https://oauth2.example.com/token/');
+
+define("SHARE_URL", "https://beoapi.example.com/shares/portal/");
+define("CAINFO",  DOCROOT."ssl/cacerts.pem");
+define("SSLCERT", DOCROOT."ssl/example.pem");
+define("SSLKEY",  DOCROOT."ssl/example_priv.pem");

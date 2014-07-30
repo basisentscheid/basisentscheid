@@ -1,6 +1,6 @@
 <?
 /**
- * inc/functions_cli.php
+ * functions used by command line scripts
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -8,7 +8,7 @@
 
 
 /**
- *
+ * called by cli/cron.php
  */
 function cron() {
 
@@ -21,16 +21,25 @@ function cron() {
 	$result_period = DB::query($sql_period);
 	while ( $row_period = pg_fetch_assoc($result_period) ) {
 
-		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues WHERE period=".intval($row_period['id']);
+		$issues_start_voting = array();
+
+		$period = new Period($row_period);
+		DB::pg2bool($period->debate_now);
+		DB::pg2bool($period->preparation_now);
+		DB::pg2bool($period->voting_now);
+		DB::pg2bool($period->counting_now);
+
+		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues WHERE period=".intval($period->id);
 		$result_issue = DB::query($sql_issue);
 		while ( $row_issue = pg_fetch_assoc($result_issue) ) {
 
 			$issue = new Issue($row_issue);
+			DB::pg2bool($period->clear_now);
 
 			// admitted -> debate
 			switch ($issue->state) {
 			case "admission":
-				if ($row_period['debate_now']=="f") break;
+				if (!$period->debate_now) break;
 
 				$all_proposals_revoked = true;
 				$admitted_proposals = false;
@@ -85,7 +94,7 @@ function cron() {
 				break;
 
 			case "debate":
-				if ($row_period['preparation_now']=="f") break;
+				if (!$period->preparation_now) break;
 
 				$issue->state = "preparation";
 				$issue->update(array("state"));
@@ -93,12 +102,13 @@ function cron() {
 				break;
 
 			case "preparation":
-				if ($row_period['voting_now']=="f") break;
+				if (!$period->voting_now) break;
 
 				// check if the period provides the right voting type
-				if ( ($issue->secret_reached and $row_period['secret']) or (!$issue->secret_reached and $row_period['online']) ) {
-					$issue->state = "voting";
-					$issue->update(array("state"));
+				if ( ($issue->secret_reached and $period->secret) or (!$issue->secret_reached and $period->online) ) {
+
+					$issues_start_voting[] = $issue;
+
 				} else {
 
 					// skip to next available period
@@ -117,15 +127,11 @@ function cron() {
 				break;
 
 			case "voting":
-				if ($row_period['counting_now']=="f") break;
+				if (!$period->counting_now) break;
 
+				// We just set the state, but don't actually do anything. The voting server has to detect hisself when the voting has to be closed and counted.
 				$issue->state = "counting";
 				$issue->update(array("state"));
-
-				// TODO Count
-
-				$issue->state = "finished";
-				$issue->update(array("state"), "clear = current_date + ".DB::m(CLEAR_INTERVAL)."::INTERVAL");
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
@@ -139,8 +145,10 @@ function cron() {
 
 				break;
 
+				// Case "counting" is handled by download_vote().
+
 			case "finished":
-				if ($row_issue['clear_now']=="f") break;
+				if (!$issue->clear_now) break;
 
 				// TODO Clear
 
@@ -153,14 +161,247 @@ function cron() {
 
 		}
 
+
+		// upload votings to the ID server
+		if ($issues_start_voting) {
+			$json_string = build_json($issues_start_voting, $period);
+			//echo $json_string."\n";
+			if ($json_string) {
+				if ( upload_voting_data($json_string) ) {
+					foreach ($issues_start_voting as $issue) {
+						$issue->state = "voting";
+						$issue->update(array("state"));
+					}
+				}
+			}
+		}
+
+
 	}
 
 
 	// cancel proposals, which have not been admitted within 6 months
 	$sql = "UPDATE proposals SET state='cancelled'
-	WHERE state='submitted'
-		AND submitted < current_date - interval ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL);
+		WHERE state='submitted'
+			AND submitted < current_date - interval ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL);
 	DB::query($sql);
 
 
+}
+
+
+/**
+ * build json string for the upload of voting data
+ *
+ * @param array   $issues array of objects
+ * @param object  $period
+ * @return string
+ */
+function build_json($issues, $period) {
+
+	/* from https://basisentscheid.piratenpad.de/testabstimmungsdaten
+
+Beschreibungen (je Gliederung und Termin): wer ist berechtigt
+ Basisentscheide
+   Optionen
+{
+ "ballotID":"GTVsdffgsdwt40QXffsd452re",
+ "votingStart": "2014-02-10T21:20:00Z",
+ "votingEnd": "2014-03-04T00:00:00Z",
+ "access":
+     {
+     "listID": "DEADBEEF",
+     "groups": [ 1,2,3]
+     },
+ "ballotName": "Abstimmungszeitraum A-B von Gliederung X",
+ "questions":
+    [
+        {
+         "questionID":1,
+         "questionWording":"Basisentscheid nummer 1 von Abstimmungszeitraum/Gliederung",
+         "voteSystem":
+             {
+             "type": "score",
+             "max-score": 1,
+             "abstention": true,
+             "single-step": true
+             },
+         "options":
+                 [
+                    { "optionID": "eughu5RBGG","optionText": "Ja, linksherum" },
+                    { "optionID": 2, "optionText": "Ja, rechtsherum" },
+                    { "optionID": 3, "optionText": "Nein. Ab durch die Mitte!" },
+                    { "optionID": 4, "optionText": "Jein. Wir drehen durch." }
+                 ],
+         "references":
+           [
+               { "referenceName":"Abschlussparty und Auflösung", "referenceAddress":"https://lqfb.piratenpartei.de/lf/initiative/show/5789.html" },
+               { "referenceName":"Bilder zur Motivation","referenceAddress":"https://startpage.com/do/search?cat=pics&cmd=process_search&language=deutsch&query=cat+content" }
+           ]
+        },
+        {
+        "questionID":2,
+        "questionWording":"Basisentscheid zum Thema Bringen uns Schuldzuweisungen irgendwas? in Basisentscheid-Sammlung drölf",
+         "voteSystem":
+             {
+             "type": "score",
+             "max-score": 1,
+             "abstention": false,
+             "single-step": true
+             },
+        "options":
+                [
+                    { "optionID":1, "optionText": "Ja. Befriedigung! Ha!"},
+                    { "optionID":2, "optionText": "Ja. Streit und Ärger."},
+                    { "optionID":3, "optionText": "nö, aber wir machen's dennoch" },
+                    { "optionID":4, "optionText": "Huch? Das macht noch jemand?" }
+                ],
+        "references":
+                [
+               { "referenceName":"piff paff puff kappotschießen", "referenceAddress":"https://twitter.com/czossi/status/436217916803911680/photo/1" },
+                ]
+        }
+    ],
+ "references":
+    [
+        {"referenceName":"Piratenpartei","referenceAddress":"https://piratenpartei.de/"}
+    ]
+}
+
+	*/
+
+	// enable gettext translation
+	include_once DOCROOT."inc/locale.php";
+
+	$json_questions = array();
+	foreach ($issues as $issue) {
+
+		$json_options = array();
+		foreach ($issue->proposals() as $proposal) {
+			$json_options[] = array(
+				"optionID"   => $proposal->id,
+				"optionText" => $proposal->title
+			);
+		}
+
+		$json_questions[] = array(
+			"questionID" => $issue->id,
+			"questionWording" => _(strtr("Basisentscheid %issue% of voting period %period%", array('%issue%'=>$issue->id, '%period%'=>$period->id))),
+			"voteSystem" => array(
+				"type" => "score",
+				"max-score" => 1,
+				"abstention" => true,
+				"single-step" => true
+			),
+			"options" => $json_options,
+			"references" => array(
+				array(
+					"referenceName" => "Abschlussparty und Auflösung",
+					"referenceAddress" => "https://lqfb.piratenpartei.de/lf/initiative/show/5789.html"
+				),
+				array(
+					"referenceName" => "Bilder zur Motivation",
+					"referenceAddress" => "https://startpage.com/do/search?cat=pics&cmd=process_search&language=deutsch&query=cat+content"
+				)
+			)
+		);
+
+	}
+
+	$json_array = array(
+		"ballotID" => $period->id,
+		"votingStart" => $period->voting,
+		"votingEnd"   => $period->counting,
+		"access" => array(
+			"listID" => "DEADBEEF",
+			"groups" => array(1, 2, 3)
+		),
+		"ballotName" => _(strtr("voting period %period%", array('%period%'=>$period->id))),
+		"questions" => $json_questions,
+		"references" => array(
+			array(
+				"referenceName" => "Piratenpartei",
+				"referenceAddress" => "https://piratenpartei.de/"
+			)
+		)
+	);
+
+	return json_encode($json_array);
+}
+
+
+/**
+ * upload voting data to the ID server
+ *
+ * @param string  $json
+ * @return boolean
+ */
+function upload_voting_data($json) {
+
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL, SHARE_URL);
+
+	// POST
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+	// https handling
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+	curl_setopt($ch, CURLOPT_CAINFO,  CAINFO);
+	curl_setopt($ch, CURLOPT_SSLCERT, SSLCERT);
+	curl_setopt($ch, CURLOPT_SSLKEY,  SSLKEY);
+
+	$result = curl_exec($ch);
+
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	$curl_error = curl_error($ch);
+	curl_close($ch);
+
+	if ($http_code==200 or $http_code==201) return true;
+
+	trigger_error("HTTP code other than 200/201", E_USER_NOTICE);
+	return false;
+}
+
+
+/**
+ * download voting result from the ID server
+ *
+ * @param object  $issue
+ * @return boolean
+ */
+function download_vote($issue) {
+
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL, SHARE_URL);
+
+	// https handling
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+	curl_setopt($ch, CURLOPT_CAINFO,  CAINFO);
+	curl_setopt($ch, CURLOPT_SSLCERT, SSLCERT);
+	curl_setopt($ch, CURLOPT_SSLKEY,  SSLKEY);
+
+	$result = curl_exec($ch);
+
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	$curl_error = curl_error($ch);
+	curl_close($ch);
+
+	if (!$result) {
+		trigger_error($curl_error, E_USER_NOTICE);
+		return false;
+	}
+
+	$issue->vote = $result;
+	$issue->state = "finished";
+	$issue->update(array("vote", "state"), "clear = current_date + ".DB::m(CLEAR_INTERVAL)."::INTERVAL");
+
+	return true;
 }

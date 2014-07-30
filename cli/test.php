@@ -22,24 +22,6 @@ DB::query("TRUNCATE members CASCADE");
 DB::query("TRUNCATE areas CASCADE");
 
 
-// create period
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, online, secret)
-	VALUES (
-		now() + '1 hours'::INTERVAL,
-		now() + '2 hours'::INTERVAL,
-		now() + '3 hours'::INTERVAL,
-		now() + '4 hours'::INTERVAL,
-		true,
-		true
-	) RETURNING id";
-$result = DB::query($sql);
-$row = pg_fetch_row($result);
-$period = $row[0];
-
-// create area
-$area = 0;
-DB::insert("areas", array('name'=>"Test ".$date." area"), $area);
-
 // create main member
 $login = new Member;
 $login->username = "test".$date."login";
@@ -58,11 +40,15 @@ while ( !create_case($case) ) $case++;
  * @return unknown
  */
 function create_case($case) {
-	global $date, $login, $area;
+	global $date, $login;
 
 	$stop = 0;
 
 	Login::$member = $login;
+
+	// create area
+	$area = 0;
+	DB::insert("areas", array('name'=>"Test ".$case." area"), $area);
 
 	// create new proposal
 	$proposal = new Proposal;
@@ -133,7 +119,7 @@ function create_case($case) {
 
 	if ($case == ++$stop) return;
 
-	// debate
+	// move on to state "debate"
 	time_warp($period);
 	cron();
 
@@ -156,25 +142,30 @@ function create_case($case) {
 
 	if ($case == ++$stop) return;
 
-	// preparation
+	// move on to state "preparation"
 	time_warp($period);
 	cron();
 
 	if ($case == ++$stop) return;
 
-	// voting
+	// move on to state "voting"
 	time_warp($period);
 	cron();
 
 	if ($case == ++$stop) return;
 
-	// counting
+	// move on to state "counting"
 	time_warp($period);
 	cron();
 
 	if ($case == ++$stop) return;
 
-	// clearing
+	// move on to state "finished"
+	download_vote($proposal->issue());
+
+	if ($case == ++$stop) return;
+
+	// move on to state "cleared"
 	time_warp_clear($period);
 	cron();
 

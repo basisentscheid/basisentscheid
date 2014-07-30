@@ -253,18 +253,15 @@ class Issue extends Relation {
 				}
 
 				?></td>
+			<td rowspan="<?=$num_rows?>"><?
+				if ($this->vote!==null) {
+					// voting results
+					echo $this->vote;
+				}
+				?>	</td>
 <?
 			}
 ?>
-			<td>
-<?
-			switch ($this->state) {
-			case "finished":
-			case "cleared":
-				// voting results
-			}
-?>
-			</td>
 		</tr>
 	<?
 
