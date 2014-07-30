@@ -34,7 +34,7 @@ function cron() {
 		while ( $row_issue = pg_fetch_assoc($result_issue) ) {
 
 			$issue = new Issue($row_issue);
-			DB::pg2bool($period->clear_now);
+			DB::pg2bool($issue->clear_now);
 
 			// admitted -> debate
 			switch ($issue->state) {
