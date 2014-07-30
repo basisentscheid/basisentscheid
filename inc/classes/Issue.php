@@ -246,7 +246,7 @@ class Issue extends Relation {
 
 				if ($this->secret_reached) {
 					echo _("Secret");
-				} elseif ($this->state=="debate" or $proposal->state=="admitted" or $proposal=="submitted") {
+				} elseif ($this->state=="debate" or $proposal->state=="admitted" or $proposal->state=="submitted") {
 					$this->bargraph_secret();
 				} else {
 					echo _("Online");
