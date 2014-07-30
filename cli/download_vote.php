@@ -26,4 +26,9 @@ if (!$issue->id) {
 	trigger_error("The requested issue does not exist!", E_USER_ERROR);
 }
 
-if ( !download_vote($issue) ) exit(1);
+$result = download_vote($issue);
+if ($result) {
+	$issue->save_result($result);
+} else {
+	exit(1);
+}

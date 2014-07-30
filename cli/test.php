@@ -168,7 +168,8 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	// move on to state "finished"
-	download_vote($proposal->issue());
+	$result = download_vote($issue);
+	$issue->save_vote($result);
 
 	if ($stopcase == ++$stop) return;
 
@@ -254,7 +255,7 @@ function time_warp_clear($issue) {
 /**
  * move the submitted time in the past to pretend we moved into the future
  *
- * @param object $proposal
+ * @param object  $proposal
  */
 function time_warp_cancel($proposal) {
 	$sql = "UPDATE proposals SET submitted = submitted - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL - '1 day'::INTERVAL

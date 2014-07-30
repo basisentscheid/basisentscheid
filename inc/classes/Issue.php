@@ -212,6 +212,18 @@ class Issue extends Relation {
 
 
 	/**
+	 * save the downloaded voting result and set date for clearing
+	 *
+	 * @param unknown $result
+	 */
+	public function save_vote($result) {
+		$this->vote = $result;
+		$this->state = "finished";
+		$this->update(array("vote", "state"), "clear = current_date + ".DB::m(CLEAR_INTERVAL)."::INTERVAL");
+	}
+
+
+	/**
 	 *
 	 */
 	public static function display_proposals_th() {

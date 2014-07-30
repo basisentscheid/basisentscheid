@@ -344,6 +344,9 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
  */
 function upload_voting_data($json) {
 
+	// for testing
+	//return true;
+
 	$ch = curl_init();
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -367,9 +370,9 @@ function upload_voting_data($json) {
 	$curl_error = curl_error($ch);
 	curl_close($ch);
 
-	if ($http_code==200 or $http_code==201) return true;
+	if ($http_code==201) return true;
 
-	trigger_error("HTTP code other than 200/201", E_USER_NOTICE);
+	trigger_error("HTTP code other than 201", E_USER_NOTICE);
 	return false;
 }
 
@@ -378,9 +381,14 @@ function upload_voting_data($json) {
  * download voting result from the ID server
  *
  * @param object  $issue
- * @return boolean
+ * @return string
  */
 function download_vote($issue) {
+
+	// for testing
+	//return "test result";
+
+	// TODO: The issue should probably be added to the URL.
 
 	$ch = curl_init();
 
@@ -405,9 +413,5 @@ function download_vote($issue) {
 		return false;
 	}
 
-	$issue->vote = $result;
-	$issue->state = "finished";
-	$issue->update(array("vote", "state"), "clear = current_date + ".DB::m(CLEAR_INTERVAL)."::INTERVAL");
-
-	return true;
+	return $result;
 }
