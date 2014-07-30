@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-07-28 20:33+0200\n"
+"PO-Revision-Date: 2014-07-30 18:27+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgid "Title"
 msgstr "Titel"
 #
 # File: proposal.php, line: 110
-# File: inc/classes/Issue.php, line: 202
+# File: inc/classes/Issue.php, line: 207
 msgid "Proposal"
 msgstr "Antrag"
 #
@@ -156,14 +156,14 @@ msgid "Counting"
 msgstr "Auszählung"
 #
 # File: periods.php, line: 20
-# File: inc/classes/Issue.php, line: 274
+# File: inc/classes/Issue.php, line: 284
 msgid "Online"
-msgstr "Online"
+msgstr "online"
 #
 # File: periods.php, line: 21
-# File: inc/classes/Issue.php, line: 270
+# File: inc/classes/Issue.php, line: 277
 msgid "Secret"
-msgstr "Geheim"
+msgstr "geheim"
 #
 # File: proposal_edit.php, line: 90
 # File: proposal.php, line: 116
@@ -180,23 +180,23 @@ msgstr "Entwurf"
 #
 # File: inc/functions.php, line: 211
 msgid "Submitted"
-msgstr "Eingereicht"
+msgstr "eingereicht"
 #
 # File: inc/functions.php, line: 212
 msgid "Admitted"
-msgstr "Zugelassen"
+msgstr "zugelassen"
 #
 # File: inc/functions.php, line: 221
 msgid "Revoked"
-msgstr "Zurückgezogen"
+msgstr "zurückgezogen"
 #
 # File: inc/functions.php, line: 222
 msgid "Cancelled"
-msgstr "Abgebrochen"
+msgstr "abgebrochen"
 #
 # File: inc/functions.php, line: 223
 msgid "Done otherwise"
-msgstr "Anderweitig erledigt"
+msgstr "anderweitig erledigt"
 #
 # File: inc/functions.php, line: 232
 msgid "Voting preparation"
@@ -204,11 +204,11 @@ msgstr "Abstimmungsvorbereitung"
 #
 # File: inc/functions.php, line: 235
 msgid "Finished"
-msgstr "Abgeschlossen"
+msgstr "abgeschlossen"
 #
 # File: inc/functions.php, line: 236
 msgid "Finished and cleared"
-msgstr "Abgeschlossen und bereinigt"
+msgstr "abgeschlossen und bereinigt"
 #
 # File: inc/functions_http.php, line: 235
 msgid "Error"
@@ -315,8 +315,8 @@ msgstr "Abstimmungsperiode"
 msgid "Voting type"
 msgstr "Abstimmungsart"
 #
-# File: inc/classes/Issue.php, line: 307
-# File: inc/classes/Proposal.php, line: 219
+# File: inc/classes/Issue.php, line: 314
+# File: inc/classes/Proposal.php, line: 222
 msgid "%value% of currently required %required% (%percent% of %population%)"
 msgstr "%value% von momentan erforderlichen %required% (%percent% von %population%)"
 #
@@ -426,7 +426,7 @@ msgid "Logged in as Admin"
 msgstr "Angemeldet als Admin"
 #
 # File: inc/classes/DbTableAdmin.php, line: 860
-# File: inc/classes/Issue.php, line: 261
+# File: inc/classes/Issue.php, line: 396
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -463,14 +463,10 @@ msgid "Reply"
 msgstr "antworten"
 #
 # File: proposal.php, line: 340
-# File: inc/classes/DbTableAdmin.php, line: 1078
+# File: inc/classes/DbTableAdmin.php, line: 1075
 msgid "save"
 msgstr "speichern"
 #
-# File: inc/classes/Issue.php, line: 221
-# File: inc/classes/Issue.php, line: 224
-# File: inc/classes/Issue.php, line: 227
-# File: inc/classes/Issue.php, line: 230
 msgid "until"
 msgstr "bis"
 #
@@ -558,48 +554,9 @@ msgstr "löschen"
 msgid "The record you want to edit does not exist."
 msgstr "Der zu löschende Datensatz existiert nicht."
 #
-# File: inc/classes/DbTableAdmin.php, line: 1077
+# File: inc/classes/DbTableAdmin.php, line: 1075
 msgid "cancel"
 msgstr "abbrechen"
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 70
-msgid "Das Bild %file% wurde erfolgreich gel&ouml;scht."
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 72
-# File: inc/classes/DbTableImagesAdmin.php, line: 186
-msgid "Das Bild %file% konnte nicht gel&ouml;scht werden!"
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 101
-# File: inc/classes/DbTableImagesAdmin.php, line: 124
-msgid "Das Bild wurde erfolgreich hochgeladen."
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 105
-# File: inc/classes/DbTableImagesAdmin.php, line: 128
-msgid "Das Bild konnte nicht kopiert werden!"
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 157
-msgid "Das Bild %file% wurde nach %newfile% kopiert."
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 161
-msgid "Fehler: Das Bild %file% konnte nicht nach %newfile% kopiert werden!"
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 248
-msgid "l&ouml;schen"
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 249
-msgid "neu&nbsp;hochladen"
-msgstr ""
-#
-# File: inc/classes/DbTableImagesAdmin.php, line: 255
-msgid "hochladen"
-msgstr ""
 #
 # File: inc/classes/Filter.php, line: 152
 msgid "search and filter"
@@ -616,3 +573,21 @@ msgstr "zurücksetzen"
 # File: inc/classes/Issue.php, line: 172
 msgid "Result"
 msgstr "Ergebnis"
+#
+# File: inc/classes/Issue.php, line: 245
+# File: inc/classes/Issue.php, line: 249
+# File: inc/classes/Issue.php, line: 253
+msgid "until %datetime%"
+msgstr "bis %datetime%"
+#
+# File: inc/classes/Issue.php, line: 257
+msgid "will be cleared on %date%"
+msgstr "wird bereinigt am %date%"
+#
+# File: inc/classes/Issue.php, line: 392
+msgid "apply"
+msgstr "übernehmen"
+#
+# File: inc/classes/Issue.php, line: 222
+msgid "Debate starts at %datetime%"
+msgstr "Debatte startet am %datetime%"

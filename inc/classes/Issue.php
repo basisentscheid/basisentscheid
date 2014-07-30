@@ -177,21 +177,26 @@ class Issue extends Relation {
 
 	/**
 	 *
-	 * @param unknown $selected_proposal (optional)
+	 * @param integer $selected_proposal (optional)
 	 */
 	function display_proposals($selected_proposal=0) {
 
 		$sql = "SELECT proposals.*
 			FROM proposals
 			WHERE issue=".intval($this->id)."
-			ORDER BY proposals.id";
+			ORDER BY proposals.state DESC, proposals.id";
 		$result = DB::query($sql);
-		$num_rows = pg_num_rows($result);
-		$first = true;
+		$proposals = array();
 		while ($row = pg_fetch_assoc($result)) {
-
 			$proposal = new Proposal($row);
 			$proposal->set_issue($this);
+			$proposals[] = $proposal;
+		}
+
+		$first = true;
+		$first_admitted = true;
+		$num_rows = count($proposals);
+		foreach ( $proposals as $proposal ) {
 
 			$link = "proposal.php?id=".$proposal->id;
 
@@ -201,16 +206,35 @@ class Issue extends Relation {
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
 			?>" onClick="location.href='<?=$link?>'"><?=_("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
+			// column "state"
 			if ($this->state=="admission") {
+				if ($proposal->state=="admitted") {
+					if ($first_admitted) {
+						// count admitted proposals for rowspan
+						$num_admitted_rows = 0;
+						foreach ($proposals as $p) {
+							if ($p->state=="admitted") $num_admitted_rows++;
+						}
+?>
+			<td rowspan="<?=$num_admitted_rows?>" align="center"><?=state_name($this->state, $proposal->state);
+						if ($this->period) {
+							?><br><span class="stateinfo"><?
+							echo strtr(_("Debate starts at %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->debate).'</span>'));
+							?></span><?
+						}
+						?></td>
+<?
+						$first_admitted = false;
+					}
+				} else {
 ?>
 			<td align="center"><?=state_name($this->state, $proposal->state);
-
-				if ($proposal->state=="submitted") {
-					$proposal->bargraph_quorum();
-				}
-
-				?></td>
+					if ($proposal->state=="submitted") {
+						$proposal->bargraph_quorum();
+					}
+					?></td>
 <?
+				}
 			} else {
 				if ($first) {
 ?>
@@ -218,20 +242,24 @@ class Issue extends Relation {
 
 					switch ($this->state) {
 					case "debate":
-						?><br><?
+						?><br><span class="stateinfo"><?
 						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>'));
+						?></span><?
 						break;
 					case "preparation":
-						?><br><?
+						?><br><span class="stateinfo"><?
 						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->voting).'</span>'));
+						?></span><?
 						break;
 					case "voting":
-						?><br><?
+						?><br><span class="stateinfo"><?
 						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->counting).'</span>'));
+						?></span><?
 						break;
 					case "finished":
-						?><br><?
+						?><br><span class="stateinfo"><?
 						echo strtr(_("will be cleared on %date%"), array('%date%'=>dateformat($this->clear)));
+						?></span><?
 						break;
 					}
 
@@ -239,11 +267,13 @@ class Issue extends Relation {
 <?
 				}
 			}
+			// columns "period", "voting type" and "result"
 			if ($first) {
 ?>
 			<td rowspan="<?=$num_rows?>" align="center"><?
 				if ( !Login::$admin or !$this->display_edit_state() ) {
 					echo $this->period;
+					//if ($this->period) {stateperiod=="") echo $this->period.": ".$this->period()->current_period();
 				}
 				?></td>
 			<td rowspan="<?=$num_rows?>" align="center"><?

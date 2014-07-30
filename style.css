@@ -121,6 +121,9 @@ div.bargraph div.clear {
 span.datetime {
 	white-space: nowrap;
 }
+span.stateinfo {
+	font-style: italic;
+}
 
 .current {
 	font-weight: bold;
