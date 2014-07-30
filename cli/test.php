@@ -107,6 +107,7 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	if ($stopcase == ++$stop) {
+		time_warp_cancel($proposal);
 		time_warp_cancel($proposal2);
 		cron();
 		return;
