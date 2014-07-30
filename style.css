@@ -118,6 +118,10 @@ div.bargraph div.clear {
 	clear: both;
 }
 
+span.datetime {
+	white-space: nowrap;
+}
+
 .current {
 	font-weight: bold;
 }

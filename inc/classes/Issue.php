@@ -218,16 +218,20 @@ class Issue extends Relation {
 
 					switch ($this->state) {
 					case "debate":
-						?><br><?=_("until")?> <?=datetimeformat($this->period()->preparation);
+						?><br><?
+						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>'));
 						break;
 					case "preparation":
-						?><br><?=_("until")?> <?=datetimeformat($this->period()->voting);
+						?><br><?
+						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->voting).'</span>'));
 						break;
 					case "voting":
-						?><br><?=_("until")?> <?=datetimeformat($this->period()->counting);
+						?><br><?
+						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->counting).'</span>'));
 						break;
 					case "finished":
-						?><br><?=_("until")?> <?=datetimeformat($this->clear);
+						?><br><?
+						echo strtr(_("will be cleared on %date%"), array('%date%'=>dateformat($this->clear)));
 						break;
 					}
 
