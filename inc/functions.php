@@ -195,53 +195,6 @@ function numden2percent(array $numden) {
 
 
 /**
- * human friendly state names
- *
- * @param string  $issue_state
- * @param string  $proposal_state
- * @return string
- */
-function state_name($issue_state, $proposal_state) {
-	static $proposal_states_admission, $proposal_states_cancelled, $issue_states;
-
-	if ($issue_state=="admission") {
-		if (!$proposal_states_admission) {
-			$proposal_states_admission = array(
-				'draft'     => _("Draft"),
-				'submitted' => _("Submitted"),
-				'admitted'  => _("Admitted")
-			);
-		}
-		return $proposal_states_admission[$proposal_state];
-	}
-
-	if ($issue_state=="cancelled") {
-		if (!$proposal_states_cancelled) {
-			$proposal_states_cancelled = array(
-				'revoke'    => _("Revoked"),
-				'cancelled' => _("Cancelled"),
-				'done'      => _("Done otherwise")
-			);
-		}
-		return $proposal_states_cancelled[$proposal_state];
-	}
-
-	if (!$issue_states) {
-		$issue_states = array(
-			'debate'      => _("Debate"),
-			'preparation' => _("Voting preparation"),
-			'voting'      => _("Voting"),
-			'counting'    => _("Counting"),
-			'finished'    => _("Finished"),
-			'cleared'     => _("Finished and cleared")
-		);
-	}
-	return $issue_states[$issue_state];
-
-}
-
-
-/**
  *
  * @param unknown $value
  * @return unknown

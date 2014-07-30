@@ -77,6 +77,58 @@ class Issue extends Relation {
 
 
 	/**
+	 * human friendly state names
+	 *
+	 * @return string
+	 */
+	public function state_name() {
+		static $states;
+		if (!$states) $states = array(
+				'admission'   => _("Admission"), // Usually proposal states are shown instead.
+				'debate'      => _("Debate"),
+				'preparation' => _("Voting preparation"),
+				'voting'      => _("Voting"),
+				'counting'    => _("Counting"),
+				'finished'    => _("Finished"),
+				'cleared'     => _("Finished and cleared"),
+				'cancelled'   => _("Cancelled") // when all proposals are 'cancelled', 'revoked' or 'done'
+			);
+		return $states[$this->state];
+	}
+
+
+	/**
+	 * additional info about the current state
+	 *
+	 * @return string
+	 */
+	private function state_info() {
+		switch ($this->state) {
+		case "debate":
+			return strtr(
+				_("until %datetime%"),
+				array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>')
+			);
+		case "preparation":
+			return strtr(
+				_("until %datetime%"),
+				array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->voting).'</span>')
+			);
+		case "voting":
+			return strtr(
+				_("until %datetime%"),
+				array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->counting).'</span>')
+			);
+		case "finished":
+			return strtr(
+				_("will be cleared on %date%"),
+				array('%date%' => dateformat($this->clear))
+			);
+		}
+	}
+
+
+	/**
 	 *
 	 */
 	function demand_secret() {
@@ -176,6 +228,7 @@ class Issue extends Relation {
 
 
 	/**
+	 * display table part for all proposals of the issue
 	 *
 	 * @param integer $selected_proposal (optional)
 	 */
@@ -204,10 +257,23 @@ class Issue extends Relation {
 		<tr class="proposal">
 			<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
+			switch ($proposal->state) {
+			case "revoked":
+				?> revoked<?
+				break;
+			case "cancelled":
+				?> cancelled<?
+				break;
+			case "done":
+				?> done<?
+				break;
+			}
 			?>" onClick="location.href='<?=$link?>'"><?=_("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
+
 			// column "state"
-			if ($this->state=="admission") {
+			if ($this->state=="admission" or $this->state=="cancelled") {
+				// individual proposal states
 				if ($proposal->state=="admitted") {
 					if ($first_admitted) {
 						// count admitted proposals for rowspan
@@ -216,10 +282,13 @@ class Issue extends Relation {
 							if ($p->state=="admitted") $num_admitted_rows++;
 						}
 ?>
-			<td rowspan="<?=$num_admitted_rows?>" align="center"><?=state_name($this->state, $proposal->state);
+			<td rowspan="<?=$num_admitted_rows?>" align="center"><?=$proposal->state_name();
 						if ($this->period) {
 							?><br><span class="stateinfo"><?
-							echo strtr(_("Debate starts at %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->debate).'</span>'));
+							echo strtr(
+								_("Debate starts at %datetime%"),
+								array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->debate).'</span>')
+							);
 							?></span><?
 						}
 						?></td>
@@ -227,8 +296,9 @@ class Issue extends Relation {
 						$first_admitted = false;
 					}
 				} else {
+					// submitted, cancelled, revoked, done
 ?>
-			<td align="center"><?=state_name($this->state, $proposal->state);
+			<td align="center"><?=$proposal->state_name();
 					if ($proposal->state=="submitted") {
 						$proposal->bargraph_quorum();
 					}
@@ -236,37 +306,18 @@ class Issue extends Relation {
 <?
 				}
 			} else {
+				// issue states
 				if ($first) {
 ?>
-			<td rowspan="<?=$num_rows?>" align="center"><?=state_name($this->state, $proposal->state);
-
-					switch ($this->state) {
-					case "debate":
-						?><br><span class="stateinfo"><?
-						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>'));
-						?></span><?
-						break;
-					case "preparation":
-						?><br><span class="stateinfo"><?
-						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->voting).'</span>'));
-						?></span><?
-						break;
-					case "voting":
-						?><br><span class="stateinfo"><?
-						echo strtr(_("until %datetime%"), array('%datetime%'=>'<span class="datetime">'.datetimeformat($this->period()->counting).'</span>'));
-						?></span><?
-						break;
-					case "finished":
-						?><br><span class="stateinfo"><?
-						echo strtr(_("will be cleared on %date%"), array('%date%'=>dateformat($this->clear)));
-						?></span><?
-						break;
+			<td rowspan="<?=$num_rows?>" align="center"><?=$this->state_name();
+					if ( $state_info = $this->state_info() ) {
+						?><br><span class="stateinfo"><?=$state_info?></span><?
 					}
-
 					?></td>
 <?
 				}
 			}
+
 			// columns "period", "voting type" and "result"
 			if ($first) {
 ?>
@@ -298,9 +349,10 @@ class Issue extends Relation {
 				?>	</td>
 <?
 			}
+
 ?>
 		</tr>
-	<?
+<?
 
 			$first = false;
 		}

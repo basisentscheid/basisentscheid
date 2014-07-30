@@ -124,6 +124,17 @@ span.datetime {
 span.stateinfo {
 	font-style: italic;
 }
+.revoked,
+.revoked a {
+	text-decoration: line-through;
+	color: #AAA;
+}
+.done,
+.done a,
+.cancelled,
+.cancelled a {
+	color: #AAA;
+}
 
 .current {
 	font-weight: bold;

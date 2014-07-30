@@ -82,6 +82,12 @@ function create_case($case, $stopcase) {
 
 	if ($stopcase == ++$stop) return;
 
+	if ($stopcase == ++$stop) {
+		time_warp_cancel($proposal);
+		cron();
+		return;
+	}
+
 	// create alternative proposal
 	$proposal2 = new Proposal;
 	$proposal2->proponents = "Test proponent 1 #1001, Test proponent 2 #1002, Test proponent 3 #1003, Test proponent 4 #1004, Test proponent 5 #1005";
@@ -99,6 +105,12 @@ function create_case($case, $stopcase) {
 	}
 
 	if ($stopcase == ++$stop) return;
+
+	if ($stopcase == ++$stop) {
+		time_warp_cancel($proposal2);
+		cron();
+		return;
+	}
 
 	// create period
 	$sql = "INSERT INTO periods (debate, preparation, voting, counting, online, secret)
@@ -211,7 +223,7 @@ function add_secretdemander($proposal, $case, $i) {
 
 
 /**
- * move the period times in the past to pretend we moved in the future
+ * move the period times in the past to pretend we moved into the future
  *
  * @param integer $period
  */
@@ -227,7 +239,7 @@ function time_warp($period) {
 
 
 /**
- * move the issue clearing time in the past to pretend we moved in the future
+ * move the issue clearing time in the past to pretend we moved into the future
  *
  * @param object  $issue
  */
@@ -235,5 +247,17 @@ function time_warp_clear($issue) {
 	$sql = "UPDATE issues SET clear = clear - ".DB::m(CLEAR_INTERVAL)."::INTERVAL
 		WHERE id=".intval($issue->id)."
 			AND clear IS NOT NULL";
+	DB::query($sql);
+}
+
+
+/**
+ * move the submitted time in the past to pretend we moved into the future
+ *
+ * @param object $proposal
+ */
+function time_warp_cancel($proposal) {
+	$sql = "UPDATE proposals SET submitted = submitted - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL - '1 day'::INTERVAL
+		WHERE id=".intval($proposal->id);
 	DB::query($sql);
 }

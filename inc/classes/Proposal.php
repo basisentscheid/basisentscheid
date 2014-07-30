@@ -79,6 +79,25 @@ class Proposal extends Relation {
 
 
 	/**
+	 * human friendly state names
+	 *
+	 * @return string
+	 */
+	public function state_name() {
+		static $states;
+		if (!$states) $states = array(
+				'draft'     => _("Draft"),
+				'submitted' => _("Submitted"),
+				'admitted'  => _("Admitted"),
+				'revoked'   => _("Revoked"),
+				'cancelled' => _("Cancelled"),
+				'done'      => _("Done otherwise")
+			);
+		return $states[$this->state];
+	}
+
+
+	/**
 	 *
 	 */
 	function add_support() {
@@ -117,6 +136,36 @@ class Proposal extends Relation {
 		} else {
 			$this->update(array("supporters"));
 		}
+
+	}
+
+
+	/**
+	 * cancel the proposal
+	 *
+	 * @param string  $state (optional) destination state: "cancelled", "revoked" or "done"
+	 */
+	public function cancel($state="cancelled") {
+
+		// cancel proposal
+		$this->state = $state;
+		$this->update(array("state"));
+
+		$issue = $this->issue();
+
+		// check if all proposals of the issue are cancelled, revoked or done
+		foreach ( $issue->proposals() as $proposal ) {
+			switch ($proposal->state) {
+			case "draft":
+			case "submitted":
+			case "admitted":
+				return;
+			}
+		}
+
+		// cancel issue
+		$issue->state = "cancelled";
+		$issue->update(array("state"));
 
 	}
 

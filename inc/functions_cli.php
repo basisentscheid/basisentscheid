@@ -181,10 +181,16 @@ function cron() {
 
 
 	// cancel proposals, which have not been admitted within 6 months
-	$sql = "UPDATE proposals SET state='cancelled'
+	// https://basisentscheid.piratenpad.de/entscheidsordnung
+	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
+	$sql = "SELECT * FROM proposals
 		WHERE state='submitted'
-			AND submitted < current_date - interval ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL);
-	DB::query($sql);
+			AND submitted < current_date - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
+	$result = DB::query($sql);
+	while ($row = pg_fetch_assoc($result)) {
+		$proposal = new Proposal($row);
+		$proposal->cancel();
+	}
 
 
 }
