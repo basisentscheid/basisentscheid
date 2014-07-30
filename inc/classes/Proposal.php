@@ -140,6 +140,9 @@ class Proposal extends Relation {
 	 */
 	private function select_period() {
 
+		// for now admins do this manually
+		return;
+
 		$issue = new Issue($this->issue);
 
 		// The period has already been set by another proposal in the same issue.
