@@ -211,7 +211,8 @@ CREATE TABLE issues (
     secret_demanders integer DEFAULT 0 NOT NULL,
     secret_reached boolean DEFAULT false,
     state issue_state DEFAULT 'admission'::issue_state NOT NULL,
-    clear date
+    clear date,
+    vote text
 );
 
 
