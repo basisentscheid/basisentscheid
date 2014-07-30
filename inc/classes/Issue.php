@@ -246,7 +246,10 @@ class Issue extends Relation {
 
 				if ($this->secret_reached) {
 					echo _("Secret");
-				} elseif ($this->state=="debate" or $proposal->state=="admitted" or $proposal->state=="submitted") {
+				} elseif (
+					($this->state=="admission" and ($proposal->state=="admitted" or $proposal->state=="submitted")) or
+					$this->state=="debate"
+				) {
 					$this->bargraph_secret();
 				} else {
 					echo _("Online");
@@ -325,7 +328,6 @@ class Issue extends Relation {
 						$options_admission[$period->id] = $options_all[$period->id];
 					}
 				}
-
 			}
 
 			if ($this->state=="admission") {
