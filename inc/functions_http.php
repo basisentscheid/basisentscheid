@@ -53,7 +53,6 @@ function html_head($title) {
 <html>
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
- <meta http-equiv="Content-Style-Type" content="text/css">
  <link rel="stylesheet" media="all" type="text/css" href="style.css">
 <? if (Login::$admin) { ?>
  <link rel="stylesheet" media="all" type="text/css" href="admin.css">
@@ -184,7 +183,7 @@ function html_user() {
 function html_foot() {
 ?>
 
-<hr>
+<div id="foot"><a href="about.php"><?=_("About")?></a></div>
 </body>
 </html>
 <?
