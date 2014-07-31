@@ -12,7 +12,8 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	color: #000;
 	background-color: #FFEEC7;
-	padding: 5px 20px;
+	margin: 5px 20px 5px 20px;
+	padding: 0;
 }
 
 h1 {
@@ -21,9 +22,7 @@ h1 {
 }
 h2 {
 	font-size: 115%;
-	font-weight: normal;
-	margin-top: 5px;
-	margin-bottom: 0;
+	margin-top: 20px;
 }
 h3 {
 	font-size: 100%;
@@ -240,7 +239,12 @@ table.proposals td.proposal_link_active:hover a {
 	color: #000;
 }
 
-
+form.proposal h2 {
+	font-size: 115%;
+	font-weight: normal;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
 form.proposal input[type=text],
 form.proposal textarea {
 	width: 100%;
@@ -382,12 +386,12 @@ form.login input[type=submit] {
 /* 3. id definitions */
 
 #head {
-	width: 100%;
 	background-color: #FFF;
+	margin: 0;
 }
 #logo {
 	padding: 9px 15px;
-	margin: 0px;
+	margin: 0;
 	float: left;
 	font-weight: bold;
 	font-size: 120%;
@@ -410,10 +414,18 @@ form.login input[type=submit] {
 #nav a.active:hover {
 	outline: 1px solid #999;
 }
-
 #user {
 	padding: 10px 10px 5px 10px;
 	float: right;
+}
+#foot {
+	margin: 20px 0 0 0;
+	padding: 0;
+	border-top: 2px #FFF solid;
+	text-align: right;
+}
+#foot a {
+	color: #888;
 }
 
 

@@ -4,6 +4,7 @@
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see about.php
  * @see admin.php
  * @see admin_areas.php
  * @see areas.php
