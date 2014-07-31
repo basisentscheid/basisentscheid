@@ -52,12 +52,21 @@ if ($action) {
 
 html_head(strtr(_("Ballots for voting period %period%"), array('%period%'=>$period->id)));
 
+?>
+<div class="tableblock">
+<?
+
+if (Login::$member) {
+?>
+<div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>"><?=_("Apply to operate a ballot")?></a></div>
+<?
+}
+
 if (Login::$admin) {
 ?>
 <form action="<?=URI::$uri?>" method="POST">
 <?
 }
-
 
 ?>
 
@@ -71,8 +80,6 @@ if (Login::$admin) {
 		<th><?=_("Approved")?></th>
 	</tr>
 <?
-
-
 
 $pager = new Pager;
 
@@ -138,13 +145,10 @@ if (Login::$admin) {
 <?
 }
 
-
 $pager->display();
 
-if (Login::$member) {
 ?>
-<a href="ballot_edit.php?period=<?=$period->id?>"><?=_("Apply to operate a ballot")?></a>
+</div>
 <?
-}
 
 html_foot();

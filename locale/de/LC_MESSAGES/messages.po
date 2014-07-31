@@ -415,7 +415,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 #
 # File: ballots.php, line: 146
 msgid "Apply to operate a ballot"
-msgstr "Urnenantrag"
+msgstr "Neuer Urnenantrag"
 #
 # File: proposals.php, line: 122
 msgid "Issues per page"

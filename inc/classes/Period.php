@@ -119,18 +119,15 @@ class Period extends Relation {
 
 
 	/**
-	 * text (default)
 	 *
 	 * @param string  $colname
-	 * @param string  $title
 	 * @param mixed   $default
 	 * @param integer $id
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	public function dbtableadmin_edit_timestamp($colname, $title, $default, $id, $disabled, $column) {
-		DbTableAdmin::display_column_title($title);
-		$default = date(DATETIME_FORMAT, strtotime($default));
+	public function dbtableadmin_edit_timestamp($colname, $default, $id, $disabled, $column) {
+		if ($default)  $default = date(DATETIME_FORMAT, strtotime($default));
 		input_text($colname, $default, $disabled, 'size="30"');
 	}
 

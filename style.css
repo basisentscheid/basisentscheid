@@ -83,6 +83,7 @@ div.messages {
 	background: #FFF;
 	padding: 5px;
 	margin-bottom: 20px;
+	display: inline-block;
 }
 p.success, p.notice, p.warning, p.error {
 	margin: 1px;
@@ -178,13 +179,6 @@ div.pager {
 }
 div.pager div.itemsperpage {
 	float: right;
-}
-
-form.filter,
-div.filter,
-#dbtableadmin div#add_record {
-	margin-bottom: 5px;
-	margin-bottom: 0.5rem;
 }
 
 
@@ -423,13 +417,21 @@ form.login input[type=submit] {
 }
 
 
-#dbtableadmin {
+#dbtableadmin,
+div.tableblock {
 	display: inline-block;
 }
-#dbtableadmin div.add_record {
+div.add_record {
 	float: right;
 }
-#dbtableadmin table {
+form.filter,
+div.filter,
+div.add_record {
+	margin-bottom: 5px;
+	margin-bottom: 0.5rem;
+}
+#dbtableadmin table,
+div.tableblock table {
 	clear: both;
 }
 #dbtableadmin tfoot td {

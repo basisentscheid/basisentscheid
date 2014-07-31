@@ -96,6 +96,7 @@ BN: <?=BN."\n"?>
 		if ($_SESSION['output']) {
 ?>
 <div class="messages"><?=$_SESSION['output']?></div>
+<div class="clearfix"></div>
 <?
 		}
 		unset($_SESSION['output']);
@@ -105,6 +106,7 @@ BN: <?=BN."\n"?>
 	if ($output) {
 ?>
 <div class="messages"><?=$output?></div>
+<div class="clearfix"></div>
 <?
 	}
 

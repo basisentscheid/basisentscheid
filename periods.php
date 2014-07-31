@@ -23,6 +23,14 @@ $d->columns = array(
 );
 $d->enable_filter = false;
 
+$d->msg_add_record          = _("New period");
+$d->msg_edit_record         = _("Edit period %id%");
+$d->msg_record_saved        = _("The new period %id% has been saved.");
+$d->msg_really_delete       = _("Do you really want to delete the period %id%?");
+$d->msg_record_deleted      = _("The period %id% has been deleted.");
+$d->msg_record              = _("Period");
+$d->msg_no_record_available = _("no period available for this view");
+
 if (Login::$admin) {
 	$d->action($action);
 } else {

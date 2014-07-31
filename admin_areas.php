@@ -14,7 +14,8 @@ $d = new DbTableAdmin("Area");
 $d->dbtable = "areas";
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
-	array("name", _("Name"))
+	array("name", _("Name")),
+	array("participants", _("Participants"), "center", "", false)
 );
 $d->enable_filter = false;
 
