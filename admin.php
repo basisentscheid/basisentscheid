@@ -47,10 +47,12 @@ html_head(_("Admin login"));
 
 ?>
 
-<form action="<?=BN?>" method="POST">
-<?=_("Username")?>: <input type="text" name="username"><br>
-<?=_("Password")?>: <input type="password" name="password"><br>
-<input type="submit">
+<form action="<?=BN?>" method="POST" class="login">
+<fieldset>
+<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username"></span></label>
+<label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span></label>
+<div class="th"><input type="submit" value="<?=_("submit")?>"></div>
+</fieldset>
 </form>
 
 <?

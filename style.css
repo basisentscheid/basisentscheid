@@ -336,6 +336,55 @@ form.edit_ballot input[type=submit] {
 }
 
 
+/*  2.2.4 login */
+
+form.login {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+form.login fieldset {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+form.login label {
+	display: block;
+	margin: 1px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+form.login label span.label {
+	display: inline-block;
+	vertical-align: middle;
+	width: 70px;
+	width: 7rem;
+	text-align: right;
+	margin: 2px    0 2px    5px;
+	margin: 0.2rem 0 0.2rem 0.5rem;
+}
+form.login label span.input {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 2px    3px    2px    5px;
+	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
+}
+form.login input[type=text],
+form.login input[type=password] {
+	width: 140px;
+	width: 14rem;
+}
+form.login div {
+	display: inline-block;
+	margin-top: 5px;
+	width: 229px;
+	width: 22.9rem;
+}
+form.login input[type=submit] {
+	margin-left: 7.9rem;
+}
+
+
 /* 3. id definitions */
 
 #head {
