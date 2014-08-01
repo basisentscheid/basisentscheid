@@ -1,25 +1,38 @@
 
+# UTF-8 for Apache and PHP
 AddDefaultCharset UTF-8
 php_value default_charset utf-8
 
+# Language Options
 php_flag short_open_tag on
 php_flag asp_tags off
 
+# Disable deprecated features 
 php_flag register_globals off
 php_flag register_long_arrays off
 php_flag register_argc_argv off
 php_flag magic_quotes_gpc off
 php_flag magic_quotes_runtime off
-php_flag magic_quotes_sybase off
+php_flag safe_mode off
 
-php_flag display_errors on
+# Error handling and logging
+php_value error_reporting E_ALL
+php_flag  display_errors on
+php_value log_errors on
 php_value error_log var/log/phperrors.log
 
+# Data Handling
+php_value arg_separator.output "&"
+php_value arg_separator.input "&"
+php_value variables_order "GPS"
+php_value request_order "GP"
+php_value enable_post_data_reading on
+php_value always_populate_raw_post_data off
+
+# File uploads
 #php_flag file_uploads on
 #php_value post_max_size 8M
 #php_value memory_limit 64M
 #php_value max_execution_time 600
 #php_value max_input_time 60
-
-php_flag safe_mode off
 

@@ -3,6 +3,9 @@
 /**
  * to be called by a regular cron job
  *
+ * crontab example:
+ * 0 *  * * *  <path>/cli/cron.php
+ *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

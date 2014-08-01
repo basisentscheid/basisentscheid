@@ -5,9 +5,19 @@
  * requires PHP >= 5.3
  *
  * recommended php.ini/.htaccess settings:
+ * - php_value error_log var/log/phperrors.log
+ * - display_errors = On/Off  (depending on whether you want to see errors before the error handler could be set)
  *
  * recommended php.ini settings cli:
  * - display_errors = Off     (otherwise the errors are displayed twice)
+ *
+ * The error log file should be rotated by rotatelog for example.
+ *
+ * crontab examples:
+ * # compress backtraces
+ * 0 1  * * *  find <path>/var/errors/ -name "*.txt" -exec gzip {} \;
+ * # delete backtraces after 30 days
+ * 0 2  * * *  find <path>/var/errors/ ! -mtime -30 -exec rm {} \;
  *
  * These functions use only native PHP functions and the functions in this file, because it can not be assumed, that other functions are accessible and work without errors.
  *
