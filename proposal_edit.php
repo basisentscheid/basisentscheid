@@ -52,7 +52,7 @@ if ($action) {
 	}
 	//}
 
-	$proposal->issue()->area()->subscribe();
+	$proposal->issue()->area()->activate_participation();
 
 	redirect("proposal.php?id=".$proposal->id);
 }

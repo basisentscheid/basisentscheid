@@ -19,11 +19,11 @@ if ($action) {
 	}
 	switch ($action) {
 	case "subscribe":
-		$area->subscribe();
+		$area->activate_participation();
 		redirect();
 		break;
 	case "unsubscribe":
-		$area->unsubscribe();
+		$area->deactivate_participation();
 		redirect();
 		break;
 	}

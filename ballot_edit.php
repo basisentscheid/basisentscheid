@@ -21,6 +21,10 @@ if (!empty($_GET['id'])) {
 	if (!$period) {
 		error("The requested period does not exist!");
 	}
+	if ($period->current_ballot_phase()!="") {
+		warning(_("In the current phase of the period ballot applications are not allowed anymore."));
+		redirect();
+	}
 	$ballot = new Ballot;
 	$ballot->period = $period->id;
 }
@@ -50,7 +54,7 @@ if ($action) {
 		}
 	}
 
-	$ballot->select(true);
+	$period->select_ballot($ballot, true);
 
 	redirect("ballots.php?period=".$period->id);
 }

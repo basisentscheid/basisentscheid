@@ -13,10 +13,12 @@ $d = new DbTableAdmin_Period("Period");
 $d->dbtable = "periods";
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
-	array("debate",      _("Debate"),      "center", "timestamp", "timestamp"),
-	array("preparation", _("Preparation"), "center", "timestamp", "timestamp"),
-	array("voting",      _("Voting"),      "center", "timestamp", "timestamp"),
-	array("counting",    _("Counting"),    "center", "timestamp", "timestamp"),
+	array("debate",             _("Debate"),                 "", "timestamp", "timestamp"), // 4 weeks before counting
+	array("preparation",        _("Voting preparation"),     "", "timestamp", "timestamp"), // 1 week before voting
+	array("voting",             _("Online voting"),          "", "timestamp", "timestamp"), // 2 weeks before counting
+	array("ballot_assignment",  _("Ballot assignment"),      "", "timestamp", "timestamp", 'null'=>true), // 3 weeks before counting
+	array("ballot_preparation", _("Ballot preparation"),     "", "timestamp", "timestamp", 'null'=>true), // 1 week before counting
+	array("counting",           _("Counting/End of period"), "", "timestamp", "timestamp"), // "Stichtag"
 	array("online", _("Online"), "center", "boolean", "boolean", 'type'=>"boolean"),
 	array("secret", _("Secret"), "center", "boolean", "boolean", 'type'=>"boolean"),
 	array(false, _("Ballots"), "center", "ballots", false)

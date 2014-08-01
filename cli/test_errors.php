@@ -9,9 +9,8 @@
 
 
 if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
-
 define('DOCROOT', "../");
-require "../inc/common_cli.php";
+require DOCROOT."inc/common_cli.php";
 
 
 trigger_error("Test", E_USER_NOTICE);

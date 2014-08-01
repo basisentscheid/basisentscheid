@@ -13,22 +13,56 @@
 function cron() {
 
 	$sql_period = "SELECT *,
-		debate      <= now() AS debate_now,
-		preparation <= now() AS preparation_now,
-		voting      <= now() AS voting_now,
-		counting    <= now() AS counting_now
+		debate             <= now() AS debate_now,
+		preparation        <= now() AS preparation_now,
+		voting             <= now() AS voting_now,
+		ballot_assignment  <= now() AS ballot_assignment_now,
+		ballot_preparation <= now() AS ballot_preparation_now,
+		counting           <= now() AS counting_now
 	FROM periods";
 	$result_period = DB::query($sql_period);
 	while ( $row_period = pg_fetch_assoc($result_period) ) {
 
+		// collect issues for upload to the ID server
 		$issues_start_voting = array();
 
 		$period = new Period($row_period);
 		DB::pg2bool($period->debate_now);
 		DB::pg2bool($period->preparation_now);
 		DB::pg2bool($period->voting_now);
+		DB::pg2bool($period->ballot_assignment_now);
+		DB::pg2bool($period->ballot_preparation_now);
 		DB::pg2bool($period->counting_now);
 
+		// ballots
+		switch ($period->state) {
+		case "ballot_application":
+			if (!$period->ballot_assignment_now) break;
+
+			// Zuordnung der noch nicht zugeordneten Mitglieder
+			$period->assign_members_to_ballots();
+
+			// Mitteilung über genehmigte Urnen an Urnenantragsteller
+
+			// Mitteilung an Mitglied über Zuordung zur Urne
+
+			$period->state = "ballot_assignment";
+			$period->update(array("state"));
+
+			break;
+
+		case "ballot_assignment":
+			if (!$period->ballot_preparation_now) break;
+
+			// Mitteilung der Teilnehmerliste und Wahlunterlagen an Urnenbeauftragte (per Post oder E-Mail?)
+
+			$period->state = "ballot_preparation";
+			$period->update(array("state"));
+
+			// ballot_preparation is the final state.
+		}
+
+		// proposals and issues
 		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues WHERE period=".intval($period->id);
 		$result_issue = DB::query($sql_issue);
 		while ( $row_issue = pg_fetch_assoc($result_issue) ) {
@@ -139,7 +173,11 @@ function cron() {
 				$result = DB::query($sql);
 				pg_fetch_assoc($result); // skip the current counting
 				if ( $last_counting = pg_fetch_assoc($result) ) {
+					// area participation
 					$sql = "DELETE FROM participants WHERE activated < ".DB::m($last_counting['counting']);
+					DB::query($sql);
+					// general participation
+					$sql = "UPDATE members SET participant=FALSE WHERE participant=TRUE AND activated < ".DB::m($last_counting['counting']);
 					DB::query($sql);
 				}
 
@@ -155,8 +193,7 @@ function cron() {
 				$issue->state = "cleared";
 				$issue->update(array("state"), "clear = NULL");
 
-				break;
-
+				// "cleared" and "cancelled" are the final issue states.
 			}
 
 		}

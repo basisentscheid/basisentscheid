@@ -11,6 +11,10 @@ class Member extends Relation {
 	public $auid;
 	public $username;
 
+	public $participant;
+	public $activated;
+
+	protected $boolean_fields = array("participant");
 	protected $create_fields = array("auid", "username");
 	protected $update_fields = array("username");
 
@@ -57,6 +61,24 @@ class Member extends Relation {
 	public static function username_static($username) {
 		if ($username) return $username;
 		return _("anonymous");
+	}
+
+
+	/**
+	 * activate general participation (distinct from area participation)
+	 */
+	public function activate_participation() {
+		$this->participant = true;
+		$this->update(array("participant"), "activated=now()");
+	}
+
+
+	/**
+	 * deactivate general participation
+	 */
+	public function deactivate_participation() {
+		$this->participant = false;
+		$this->update(array("participant"));
 	}
 
 

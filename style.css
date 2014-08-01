@@ -9,11 +9,15 @@ style guide:
 /* 1. common definitions without id or class */
 
 body {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 	color: #000;
 	background-color: #FFEEC7;
 	margin: 5px 20px 5px 20px;
 	padding: 0;
+}
+
+th, td {
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -41,14 +45,14 @@ tfoot td {
 	background-color: #CCC;
 }
 .td0 {
-	background-color: #EEE;
+	background-color: #FFF;
 }
 .td1 {
-	background-color: #FFF;
+	background-color: #EEE;
 }
 
 a {
-	padding: 1px 3px;
+	padding: 0 3px 1px 3px;
 }
 a:link {
 	color: #00A;
@@ -160,12 +164,12 @@ a.active:hover {
 
 div.filter a,
 div.pager a {
-	padding: 2px 4px;
+	padding: 0 4px 2px 4px;
 	text-decoration: none;
 }
 div.filter a.active,
 div.pager a.active {
-	padding: 2px 4px;
+	padding: 0 4px 2px 4px;
 	text-decoration: none;
 	outline: 1px solid #999;
 	background-color: #FFF;
@@ -178,6 +182,10 @@ div.pager {
 }
 div.pager div.itemsperpage {
 	float: right;
+}
+
+div.filter {
+	margin-left: 2px;
 }
 
 
@@ -355,8 +363,8 @@ form.login label {
 form.login label span.label {
 	display: inline-block;
 	vertical-align: middle;
-	width: 70px;
-	width: 7rem;
+	width: 100px;
+	width: 10rem;
 	text-align: right;
 	margin: 2px    0 2px    5px;
 	margin: 0.2rem 0 0.2rem 0.5rem;
@@ -375,11 +383,11 @@ form.login input[type=password] {
 form.login div {
 	display: inline-block;
 	margin-top: 5px;
-	width: 229px;
-	width: 22.9rem;
+	width: 259px;
+	width: 25.9rem;
 }
 form.login input[type=submit] {
-	margin-left: 7.9rem;
+	margin-left: 10.9rem;
 }
 
 

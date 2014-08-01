@@ -336,7 +336,7 @@ class Issue extends Relation {
 			<td rowspan="<?=$num_rows?>" align="center"><?
 				if ( !Login::$admin or !$this->display_edit_state() ) {
 					echo $this->period;
-					//if ($this->period) {stateperiod=="") echo $this->period.": ".$this->period()->current_period();
+					//if ($this->period) {stateperiod=="") echo $this->period.": ".$this->period()->current_phase();
 				}
 				?></td>
 			<td rowspan="<?=$num_rows?>" align="center"><?
@@ -421,7 +421,7 @@ class Issue extends Relation {
 				$options_admission = array();
 				while ( $row_period = pg_fetch_assoc($result_period) ) {
 					$period = new Period($row_period);
-					$options_all[$period->id] = $period->id.": ".$period->current_period();
+					$options_all[$period->id] = $period->id.": ".$period->current_phase();
 					if ($row_period['debate_not_started']=="t") {
 						$options_admission[$period->id] = $options_all[$period->id];
 					}

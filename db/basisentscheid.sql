@@ -38,6 +38,17 @@ CREATE TYPE issue_state AS ENUM (
 
 
 --
+-- Name: period_state; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE period_state AS ENUM (
+    'ballot_application',
+    'ballot_assignment',
+    'ballot_preparation'
+);
+
+
+--
 -- Name: proposal_state; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -242,7 +253,9 @@ ALTER SEQUENCE issues_id_seq OWNED BY issues.id;
 CREATE TABLE members (
     id integer NOT NULL,
     auid character(36) NOT NULL,
-    username character varying(32)
+    username character varying(32),
+    participant boolean DEFAULT false NOT NULL,
+    activated date
 );
 
 
@@ -297,7 +310,10 @@ CREATE TABLE periods (
     voting timestamp with time zone NOT NULL,
     counting timestamp with time zone NOT NULL,
     online boolean NOT NULL,
-    secret boolean NOT NULL
+    secret boolean NOT NULL,
+    ballot_assignment timestamp with time zone,
+    ballot_preparation timestamp with time zone,
+    state period_state DEFAULT 'ballot_application'::period_state NOT NULL
 );
 
 

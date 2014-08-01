@@ -9,9 +9,8 @@
 
 
 if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
-
 define('DOCROOT', "../");
-require "../inc/common_cli.php";
+require DOCROOT."inc/common_cli.php";
 
 
 // delete everything
@@ -51,11 +50,10 @@ function create_case($case, $stopcase) {
 	global $date, $login;
 
 	$stop = 0;
-
+	$branch = 0;
 	static $branch1 = 0;
 	static $branch2 = 0;
 	static $branch3 = 0;
-
 	$casedesc = $case." (".$stopcase."/".$branch3."/".$branch2."/".$branch1.")";
 	echo "Test case ".$casedesc."\n";
 
@@ -73,8 +71,8 @@ function create_case($case, $stopcase) {
 	$proposal->reason = "Test reason";
 	$proposal->create($area);
 
-	$branch1_array = array(0, 48, 49); // the first supporter is the proponent
-	$supporter_count = $branch1_array[$branch1];
+	${'branch'.++$branch.'_array'} = array(0, 48, 49); // the first supporter is the proponent
+	$supporter_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
 
 	for ( $i=1; $i<=$supporter_count; $i++ ) {
 		add_supporter($proposal, $case, "a".$supporter_count."i".$i);
@@ -97,8 +95,8 @@ function create_case($case, $stopcase) {
 	$proposal2->issue = $proposal->issue;
 	$proposal2->create($area);
 
-	$branch2_array = array(0, 23, 24); // the first supporter is the proponent
-	$supporter_count2 = $branch2_array[$branch2];
+	${'branch'.++$branch.'_array'} = array(0, 23, 24); // the first supporter is the proponent
+	$supporter_count2 = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
 
 	for ( $i=1; $i<=$supporter_count2; $i++ ) {
 		add_supporter($proposal2, $case, "a".$supporter_count."b".$supporter_count2."i".$i);
@@ -116,12 +114,12 @@ function create_case($case, $stopcase) {
 	// create period
 	$sql = "INSERT INTO periods (debate, preparation, voting, counting, online, secret)
 		VALUES (
-			now() + '1 hours'::INTERVAL,
-			now() + '2 hours'::INTERVAL,
-			now() + '3 hours'::INTERVAL,
-			now() + '4 hours'::INTERVAL,
+			now() + '1 week'::INTERVAL,
+			now() + '2 weeks'::INTERVAL,
+			now() + '3 weeks'::INTERVAL,
+			now() + '4 weeks'::INTERVAL,
 			true,
-			true
+			false
 		) RETURNING id";
 	$result = DB::query($sql);
 	$row = pg_fetch_row($result);
@@ -138,11 +136,11 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	// move on to state "debate"
-	time_warp($period);
+	time_warp($period, "1 week");
 	cron();
 
-	$branch3_array = array(0, 24, 25);
-	$secret_count = $branch3_array[$branch3];
+	${'branch'.++$branch.'_array'} = array(0, 24, 25);
+	$secret_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
 
 	for ( $i=1; $i<=$secret_count; $i++ ) {
 		add_secretdemander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$secret_count."i".$i);
@@ -151,19 +149,19 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	// move on to state "preparation"
-	time_warp($period);
+	time_warp($period, "1 week");
 	cron();
 
 	if ($stopcase == ++$stop) return;
 
 	// move on to state "voting"
-	time_warp($period);
+	time_warp($period, "1 week");
 	cron();
 
 	if ($stopcase == ++$stop) return;
 
 	// move on to state "counting"
-	time_warp($period);
+	time_warp($period, "1 week");
 	cron();
 
 	if ($stopcase == ++$stop) return;
@@ -179,9 +177,12 @@ function create_case($case, $stopcase) {
 	cron();
 
 	// continue with next case if branches are still available
-	if (isset($branch3_array[++$branch3])) return true;
-	if (isset($branch2_array[++$branch2])) { $branch3=0; return true; }
-	if (isset($branch1_array[++$branch1])) { $branch3=0; $branch2=0; return true; }
+	for ($i=1; $i<=$branch; $i++) {
+		if (isset(${'branch'.$i.'_array'}[++${'branch'.$i}])) {
+			for ($j=1; $j<$i; $j++) ${'branch'.$j}=0;
+			return true;
+		}
+	}
 
 	// end of last case
 	return "end";
@@ -195,7 +196,7 @@ function create_case($case, $stopcase) {
  * @param integer $case
  * @param string  $i
  */
-function add_supporter($proposal, $case, $i) {
+function add_supporter(Proposal $proposal, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
@@ -213,7 +214,7 @@ function add_supporter($proposal, $case, $i) {
  * @param integer $case
  * @param string  $i
  */
-function add_secretdemander($proposal, $case, $i) {
+function add_secretdemander(Proposal $proposal, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
@@ -228,13 +229,15 @@ function add_secretdemander($proposal, $case, $i) {
  * move the period times in the past to pretend we moved into the future
  *
  * @param integer $period
+ * @param string  $interval (optional)
  */
-function time_warp($period) {
+function time_warp($period, $interval="1 hour") {
+	$interval = "'".$interval."'::INTERVAL";
 	$sql = "UPDATE periods SET
-			debate      = debate      - '1 hour'::INTERVAL,
-			preparation = preparation - '1 hour'::INTERVAL,
-			voting      = voting      - '1 hour'::INTERVAL,
-			counting    = counting    - '1 hour'::INTERVAL
+			debate      = debate      - ".$interval.",
+			preparation = preparation - ".$interval.",
+			voting      = voting      - ".$interval.",
+			counting    = counting    - ".$interval."
 		WHERE id=".intval($period);
 	DB::query($sql);
 }
@@ -245,7 +248,7 @@ function time_warp($period) {
  *
  * @param object  $issue
  */
-function time_warp_clear($issue) {
+function time_warp_clear(Issue $issue) {
 	$sql = "UPDATE issues SET clear = clear - ".DB::m(CLEAR_INTERVAL)."::INTERVAL
 		WHERE id=".intval($issue->id)."
 			AND clear IS NOT NULL";
@@ -258,7 +261,7 @@ function time_warp_clear($issue) {
  *
  * @param object  $proposal
  */
-function time_warp_cancel($proposal) {
+function time_warp_cancel(Proposal $proposal) {
 	$sql = "UPDATE proposals SET submitted = submitted - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL - '1 day'::INTERVAL
 		WHERE id=".intval($proposal->id);
 	DB::query($sql);

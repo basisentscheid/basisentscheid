@@ -423,7 +423,7 @@ function bargraph($value, $required, $title, $color) {
  * @return string
  */
 function stripes($change=false, $suffix="") {
-	static $colorid = 0;
+	static $colorid = 1; // start with td0
 	static $change_last = null;
 	if ($change===false or $change_last != $change) {
 		$colorid = ($colorid + 1) % 2;

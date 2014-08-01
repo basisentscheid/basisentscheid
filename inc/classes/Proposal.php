@@ -27,20 +27,22 @@ class Proposal extends Relation {
 
 
 	/**
+	 * get the referenced issue (read it only once from the database)
 	 *
-	 * @return unknown
+	 * @return object
 	 */
-	function issue() {
+	public function issue() {
 		if (!is_object($this->issue_obj)) $this->issue_obj = new Issue($this->issue);
 		return $this->issue_obj;
 	}
 
 
 	/**
+	 * set the referenced issue (instead of reading it from the database)
 	 *
-	 * @param unknown $issue
+	 * @param object  $issue
 	 */
-	function set_issue($issue) {
+	public function set_issue(Issue $issue) {
 		$this->issue_obj = $issue;
 	}
 
@@ -104,7 +106,7 @@ class Proposal extends Relation {
 		$sql = "INSERT INTO supporters (proposal, member) VALUES (".intval($this->id).", ".intval(Login::$member->id).")";
 		DB::query($sql);
 		$this->update_supporters_cache();
-		$this->issue()->area()->subscribe();
+		$this->issue()->area()->activate_participation();
 	}
 
 
