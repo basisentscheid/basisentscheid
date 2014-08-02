@@ -105,6 +105,7 @@ p.warning, p.error {
 p.syserror {
 	color: #900;
 	font-weight: normal;
+	margin: 0.4em 0;
 }
 
 div.bargraph {

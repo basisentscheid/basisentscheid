@@ -4,14 +4,13 @@
  *
  * requires PHP >= 5.3
  *
- * recommended php.ini/.htaccess settings:
- * - php_value error_log var/log/phperrors.log
- * - display_errors = On/Off  (depending on whether you want to see errors before the error handler could be set)
+ * recommended .htaccess settings:
+ *   php_value error_reporting E_ALL
+ *   php_flag  display_errors on/off (depending on whether you want to see errors before the error handler could be set)
+ *   php_value log_errors on
+ *   php_value error_log var/log/phperrors.log
  *
- * recommended php.ini settings cli:
- * - display_errors = Off     (otherwise the errors are displayed twice)
- *
- * The error log file should be rotated by rotatelog for example.
+ * The error log files var/log/phperrors*.log should be rotated by rotatelog for example.
  *
  * crontab examples:
  * # compress backtraces
@@ -28,6 +27,14 @@
 
 
 // configuration
+
+// which errors to display on web pages
+// (On the command line all errors will be displayed.)
+// examples:
+//   all errors:        E_ALL
+//   important errors:  E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
+//   no errors:         0
+if (!defined("ERROR_DISPLAY"))             define("ERROR_DISPLAY", E_ALL);
 
 // mail address for error mails
 // Set to empty string to disable error mails.
@@ -52,6 +59,13 @@ if (!defined("ERROR_PRINT_BACKTRACE"))     define("ERROR_PRINT_BACKTRACE", false
 
 
 error_reporting(E_ALL);
+if (PHP_SAPI=="cli") {
+	// separate files for different users to avoid problems with file permissions
+	ini_set("error_log", DOCROOT."var/log/phperrors_cli_".getenv('USER').".log");
+} else {
+	ini_set("error_log", DOCROOT."var/log/phperrors.log");
+}
+ini_set("log_errors", "on");
 ini_set("display_errors", "off");
 set_error_handler("user_error_handler");
 register_shutdown_function("fatal_error_handler");
@@ -150,21 +164,19 @@ function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal) 
 		E_USER_DEPRECATED   => "User Deprecated Notice"
 	);
 
-	// don't show notices on live site
-	$show = true;
-	if (
-		($errno==E_NOTICE or $errno==E_USER_NOTICE) and
-		defined('DEBUG') and
-		!DEBUG
-	) $show = false;
+	$show = $errno & ERROR_DISPLAY;
 
 	// display error
-	if (PHP_SAPI!="cli" and $show) {
+	if (PHP_SAPI!="cli") {
+		if ($show) {
 ?>
 <p class="syserror">
 <b><?=$errortype[$errno]?></b>:  <?=$errstr?><br>
 in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 <?
+		}
+	} else {
+		echo $errortype[$errno].":  ".$errstr." in ".$errfile." on line ".$errline."\n";
 	}
 
 	// log error
