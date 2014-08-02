@@ -28,13 +28,13 @@ $login->create();
 
 
 // go through all cases
-$case = 1;
+$case = 0;
 do {
-	$stopcase = 1;
-	while ( ! $return = create_case($case, $stopcase) ) {
+	$stopcase = 0;
+	do {
 		$case++;
 		$stopcase++;
-	}
+	} while ( ! $return = create_case($case, $stopcase) );
 } while ( $return !== "end" );
 
 
