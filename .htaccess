@@ -24,7 +24,7 @@ php_value error_log var/log/phperrors.log
 # Data Handling
 php_value arg_separator.output "&"
 php_value arg_separator.input "&"
-php_value variables_order "GPS"
+php_value variables_order "GPCS"
 php_value request_order "GP"
 php_value enable_post_data_reading on
 php_value always_populate_raw_post_data off
