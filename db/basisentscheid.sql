@@ -212,6 +212,15 @@ ALTER SEQUENCE ballots_id_seq OWNED BY ballots.id;
 
 
 --
+-- Name: cron_lock; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE cron_lock (
+    pid integer NOT NULL
+);
+
+
+--
 -- Name: issues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -641,11 +650,11 @@ ALTER TABLE ONLY members
 
 
 --
--- Name: voters_member_period_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: voters_ballot_member_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY voters
-    ADD CONSTRAINT voters_member_period_key UNIQUE (member, period);
+    ADD CONSTRAINT voters_ballot_member_key UNIQUE (ballot, member);
 
 
 --
@@ -653,7 +662,7 @@ ALTER TABLE ONLY voters
 --
 
 ALTER TABLE ONLY voters
-    ADD CONSTRAINT voters_pkey PRIMARY KEY (member, ballot);
+    ADD CONSTRAINT voters_pkey PRIMARY KEY (period, member);
 
 
 --

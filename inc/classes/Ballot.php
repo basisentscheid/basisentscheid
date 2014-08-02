@@ -60,10 +60,10 @@ class Ballot extends Relation {
 			'member' => $member->id,
 			'period' => $this->period,
 			'ballot' => $this->id,
-			'agent'  => DB::bool2pg($agent)
+			'agent'  => $agent
 		);
-		$where = "member=".intval($member->id)." AND period=".intval($this->period);
-		DB::insert_or_update("voters", $fields_values, $where);
+		$keys = array("member", "period");
+		DB::insert_or_update("voters", $fields_values, $keys);
 	}
 
 

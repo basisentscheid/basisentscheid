@@ -9,8 +9,19 @@
 
 /**
  * called by cli/cron.php
+ *
+ * @param boolean $skip_if_locked (optional)
  */
-function cron() {
+function cron($skip_if_locked=false) {
+
+	if ($skip_if_locked) {
+		if (!cron_lock()) return;
+	} else {
+		while (!cron_lock()) {
+			echo "Waiting for lock ...\n";
+			sleep(5);
+		}
+	}
 
 	$sql_period = "SELECT *,
 		debate             <= now() AS debate_now,
@@ -229,6 +240,8 @@ function cron() {
 		$proposal->cancel();
 	}
 
+
+	cron_unlock();
 
 }
 
@@ -451,4 +464,42 @@ function download_vote($issue) {
 	}
 
 	return $result;
+}
+
+
+/**
+ * avoid more than one execution of cron() at the same time
+ *
+ * @return boolean
+ */
+function cron_lock() {
+
+	$pid = getmypid();
+	$ps = explode(PHP_EOL, `ps -e | awk '{print $1}'`);
+
+	DB::transaction_start();
+
+	$result = DB::query("SELECT pid FROM cron_lock");
+	if ( $row = pg_fetch_assoc($result) ) {
+		// check if process is still running
+		if (in_array($row['pid'], $ps)) {
+			DB::transaction_commit();
+			return false;
+		}
+		// remove lock for no longer running process
+		cron_unlock();
+	}
+
+	DB::query("INSERT INTO cron_lock (pid) VALUES (".intval($pid).")");
+	DB::transaction_commit();
+
+	return true;
+}
+
+
+/**
+ *
+ */
+function cron_unlock() {
+	DB::query("TRUNCATE cron_lock");
 }

@@ -246,8 +246,8 @@ abstract class DB {
 
 		//self::transaction_start();
 
-		foreach ($fields_values as $key => $value) {
-			$fields_values[$key] = DB::m_null($value);
+		foreach ($fields_values as &$value) {
+			$value = DB::m_null($value);
 		}
 
 		$sql = "INSERT INTO ".$table." (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
@@ -313,26 +313,45 @@ abstract class DB {
 
 
 	/**
+	 * simulate INSERT ON DUPLICATE KEY UPDATE
 	 *
-	 * @param unknown $table
-	 * @param unknown $fields_values
-	 * @param unknown $where
-	 * @param unknown $insert_id     (optional, reference)
+	 * @param string  $table
+	 * @param array   $fields_values
+	 * @param array   $keys
+	 * @param integer $insert_id     (optional, reference)
 	 * @return unknown
 	 */
-	function insert_or_update($table, $fields_values, $where, &$insert_id=false) {
+	function insert_or_update($table, array $fields_values, array $keys, &$insert_id=false) {
 
-		$result = self::update($table, $where, $fields_values);
-		if ( pg_affected_rows($result) ) return $result;
+		$fields_values_update = array();
+		$where = array();
+		foreach ($fields_values as $key => $value) {
+			if (in_array($key, $keys)) {
+				$where[$key] = $value;
+			} else {
+				$fields_values_update[$key] = $value;
+			}
+		}
+		$where = self::convert_fields_values($where);
 
-		return self::insert($table, $fields_values, $insert_id);
+		self::transaction_start();
+
+		$result = self::update($table, $where, $fields_values_update);
+		if ( !pg_affected_rows($result) ) {
+			$result = self::insert($table, $fields_values, $insert_id);
+		}
+
+		self::transaction_commit();
+
+		return $result;
 	}
 
 
 	/**
+	 * convert an associated array of field value pairs to an indexed array of SQL assignments
 	 *
-	 * @param unknown $fields_values
-	 * @return unknown
+	 * @param array   $fields_values array('col1'=>"value", 'col2'=>true)
+	 * @return array               array("column1='value'", "column2=TRUE")
 	 */
 	public function convert_fields_values($fields_values) {
 		$converted = array();

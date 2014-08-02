@@ -21,8 +21,8 @@ class Argument extends Relation {
 	 */
 	function set_rating($value) {
 		$fields_values = array('argument'=>$this->id, 'member'=>Login::$member->id, 'positive'=>$value);
-		$where = "argument=".intval($this->id)." AND member=".intval(Login::$member->id);
-		DB::insert_or_update("ratings", $fields_values, $where);
+		$keys = array("argument", "member");
+		DB::insert_or_update("ratings", $fields_values, $keys);
 		$this->update_ratings_cache();
 	}
 
