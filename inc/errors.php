@@ -366,12 +366,12 @@ function error_send_mail($subject, $mailbody) {
 	clearstatcache();
 	ignore_user_abort(true);
 	$date = date("Y-m-d-a");
-	$file = DOCROOT."var/errors/mail_counter_".$date;
+	$file = "var/errors/mail_counter_".$date;
 	// separate files for different users to avoid problems with file permissions
 	if (PHP_SAPI=="cli") {
 		$file .= "_cli_".getenv('USER');
 	}
-	if ( $fh = fopen($file, 'a+') ) {
+	if ( $fh = fopen(DOCROOT.$file, 'a+') ) {
 		if ( flock($fh, LOCK_EX) ) {
 			rewind($fh);
 			$count = intval(fgets($fh)) + 1;
