@@ -47,13 +47,6 @@ class Proposal extends Relation {
 	}
 
 
-	/*
-	function	 new_issue($row) {
-		$this->issue_obj = new Issue($row);
-	}
-	*/
-
-
 	/**
 	 * Create a new proposal
 	 *

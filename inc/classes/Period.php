@@ -136,8 +136,8 @@ class Period extends Relation {
 		$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($this->id)." AND approved=TRUE";
 		$result_ballot = DB::query($sql_ballot);
 		$ballots = array();
-		while ( $row_ballot = pg_fetch_assoc($result_ballot) ) {
-			$ballots[] = new Ballot($row_ballot);
+		while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
+			$ballots[] = $ballot;
 		}
 
 		if (!$ballots) return;
@@ -148,9 +148,7 @@ class Period extends Relation {
 			WHERE participant=TRUE
 				AND voters.member IS NULL";
 		$result = DB::query($sql);
-		while ( $row = pg_fetch_assoc($result) ) {
-
-			$member = new Member($row);
+		while ( $member = DB::fetch_object($result, "Member") ) {
 
 			// assign members to random ballots until we get the documentation about the groups supplied by the ID server
 			$ballots[rand(0, count($ballots)-1)]->assign_member($member);

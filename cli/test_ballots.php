@@ -109,8 +109,7 @@ function create_case($case, $stopcase) {
 	// approve ballots with 10 or more participants
 	$sql = "SELECT * FROM ballots WHERE period=".intval($period->id);
 	$result = DB::query($sql);
-	while ( $row = pg_fetch_assoc($result) ) {
-		$ballot = new Ballot($row);
+	while ( $ballot = DB::fetch_object($result, "Ballot") ) {
 		if ($ballot->voters < 10) continue;
 		$ballot->approved = true;
 		$ballot->update(array("approved"));

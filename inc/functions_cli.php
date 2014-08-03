@@ -32,18 +32,16 @@ function cron($skip_if_locked=false) {
 		counting           <= now() AS counting_now
 	FROM periods";
 	$result_period = DB::query($sql_period);
-	while ( $row_period = pg_fetch_assoc($result_period) ) {
-
-		// collect issues for upload to the ID server
-		$issues_start_voting = array();
-
-		$period = new Period($row_period);
+	while ( $period = DB::fetch_object($result_period, "Period") ) {
 		DB::pg2bool($period->debate_now);
 		DB::pg2bool($period->preparation_now);
 		DB::pg2bool($period->voting_now);
 		DB::pg2bool($period->ballot_assignment_now);
 		DB::pg2bool($period->ballot_preparation_now);
 		DB::pg2bool($period->counting_now);
+
+		// collect issues for upload to the ID server
+		$issues_start_voting = array();
 
 		// ballots
 		switch ($period->state) {
@@ -76,9 +74,7 @@ function cron($skip_if_locked=false) {
 		// proposals and issues
 		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues WHERE period=".intval($period->id);
 		$result_issue = DB::query($sql_issue);
-		while ( $row_issue = pg_fetch_assoc($result_issue) ) {
-
-			$issue = new Issue($row_issue);
+		while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
 			DB::pg2bool($issue->clear_now);
 
 			// admitted -> debate
@@ -235,8 +231,7 @@ function cron($skip_if_locked=false) {
 		WHERE state='submitted'
 			AND submitted < current_date - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
 	$result = DB::query($sql);
-	while ($row = pg_fetch_assoc($result)) {
-		$proposal = new Proposal($row);
+	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		$proposal->cancel();
 	}
 

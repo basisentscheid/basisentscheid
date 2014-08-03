@@ -122,8 +122,7 @@ if (!$pager->linescount) {
 } else {
 
 	$line = $pager->firstline;
-	while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
-		$ballot = new Ballot($row);
+	while ( $ballot = DB::fetch_object($result, "Ballot") and $line <= $pager->lastline ) {
 ?>
 	<tr class="<?=stripes()?>">
 		<td align="right"><?=$ballot->id?></td>

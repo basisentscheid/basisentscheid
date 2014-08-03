@@ -10,7 +10,7 @@
 abstract class DB {
 
 	/**
-	 * Nummer of levels into transaction. To avoid nested transactions.
+	 * nummer of levels into transaction - to avoid nested transactions
 	 *
 	 * @var integer
 	 * @access private
@@ -19,7 +19,7 @@ abstract class DB {
 
 
 	/**
-	 * Class constructor
+	 * class constructor
 	 */
 	public static function __static() {
 		$dbconn = pg_connect(DATABASE_CONNECT);
@@ -27,10 +27,10 @@ abstract class DB {
 
 
 	/**
-	 * Escape strings for SQL-statements and add singlequotes
+	 * escape strings for SQL statements
 	 *
-	 * @param string  $str Input string
-	 * @return string      Output string; Quotes (" / ') and \ will be backslashed
+	 * @param string  $str
+	 * @return string
 	 */
 	public function m($str) {
 		return "'".pg_escape_string($str)."'";
@@ -38,10 +38,10 @@ abstract class DB {
 
 
 	/**
-	 * Escape strings for SQL-statements, add singlequotes and handle NULL values
+	 * escape strings for SQL statements, add singlequotes and handle boolean and NULL values
 	 *
-	 * @param mixed   $value Input
-	 * @return string      Output string; Quotes (" / ') and \ will be backslashed
+	 * @param mixed   $value
+	 * @return string
 	 */
 	public function m_null($value) {
 		if (is_null($value)) return "NULL";
@@ -57,18 +57,19 @@ abstract class DB {
 	 * @param mixed   $value (reference)
 	 */
 	public function pg2bool(&$value) {
-		if ($value=="f") {
+		if ($value==="f") {
 			$value = false;
-		} elseif ($value=="t") {
+		} elseif ($value==="t") {
 			$value = true;
 		}
 	}
 
 
 	/**
+	 * convert values for boolean Postgres columns
 	 *
-	 * @param unknown $value
-	 * @return unknown
+	 * @param string  $value
+	 * @return mixed
 	 */
 	public function bool2pg($value) {
 		if ($value) return "TRUE";
@@ -175,9 +176,21 @@ abstract class DB {
 
 
 	/**
-	 * Direkte Abfrage eines Datensatzes
+	 * call the constructor with $from_fetch_object
 	 *
-	 * @param string  $sql SQL-Statement
+	 * @param resource $result
+	 * @param string  $classname
+	 * @return object
+	 */
+	function fetch_object($result, $classname) {
+		return pg_fetch_object($result, null, $classname, array(0, true));
+	}
+
+
+	/**
+	 * query and fetch one row
+	 *
+	 * @param string  $sql
 	 * @return mixed
 	 */
 	public function fetchassoc($sql) {
@@ -192,9 +205,9 @@ abstract class DB {
 
 
 	/**
-	 * Ein Feld aus der Datenbank auslesen (vor allem für COUNT(*))
+	 * query and fetch one field
 	 *
-	 * @param string  $sql SQL-Statement
+	 * @param string  $sql
 	 * @return mixed
 	 */
 	public function fetchfield($sql) {
@@ -206,9 +219,9 @@ abstract class DB {
 
 
 	/**
-	 * Alle Werte eines Feldes as Array zurückgeben (vor allem für SHOW TABLES u.ä.)
+	 * query and fetch all rows at once
 	 *
-	 * @param string  $sql SQL-Statement
+	 * @param string  $sql
 	 * @return array
 	 */
 	public function fetchfieldarray($sql) {
@@ -221,9 +234,9 @@ abstract class DB {
 
 
 	/**
-	 * Ein Feld aus der Datenbank auslesen (vor allem für COUNT(*))
+	 * query and get number of found rows
 	 *
-	 * @param string  $sql SQL-Statement
+	 * @param string  $sql
 	 * @return mixed
 	 */
 	public function numrows($sql) {
@@ -363,7 +376,7 @@ abstract class DB {
 
 
 	/**
-	 * Combines conditions with WHERE and AND
+	 * combines conditions with WHERE and AND
 	 *
 	 * Conditions have to be strings "uid=1", not assoc arrays ("uid"=>1)!
 	 *
@@ -385,7 +398,7 @@ abstract class DB {
 
 
 	/**
-	 * Converts a multidimensional indexed array to singledimensional array
+	 * converts a multidimensional indexed array to singledimensional array
 	 *
 	 * @param array   $array
 	 * @return array

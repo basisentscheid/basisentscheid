@@ -25,25 +25,31 @@ abstract class Relation {
 
 
 	/**
-	 * make an instance from a database record or from the provided array
+	 * make an instance from a database record or convert boolean values after fetch_object
 	 *
-	 * @param mixed   $id_row (optional)
+	 * @param integer $id                (optional)
+	 * @param boolean $from_fetch_object (optional)
 	 */
-	function __construct($id_row=0) {
+	function __construct($id=0, $from_fetch_object=false) {
+
+		if (is_array($id)) {
+			trigger_error("Constructor called with array", E_USER_ERROR);
+		}
 
 		$this->table = strtolower(get_class($this))."s";
 
-		if (!$id_row) return;
+		if (!$from_fetch_object) {
 
-		if (!is_array($id_row)) {
-			$sql = "SELECT * FROM ".$this->table." WHERE id=".intval($id_row);
-			if ( ! $id_row = DB::fetchassoc($sql) ) return;
+			if (!$id) return;
+
+			$sql = "SELECT * FROM ".$this->table." WHERE id=".intval($id);
+			if ( ! $row = DB::fetchassoc($sql) ) return;
+
+			foreach ( $row as $key => $value ) $this->$key = $value;
+
 		}
 
-		foreach ( $id_row as $key => $value ) {
-			$this->$key = $value;
-			if (in_array($key, $this->boolean_fields)) DB::pg2bool($this->$key);
-		}
+		foreach ( $this->boolean_fields as $key ) DB::pg2bool($this->$key);
 
 	}
 

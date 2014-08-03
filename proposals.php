@@ -106,8 +106,7 @@ $sql .= " ORDER BY issues.id DESC";
 $result = DB::query($sql);
 $pager->seek($result);
 $line = $pager->firstline;
-while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
-	$issue = new Issue($row);
+while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastline ) {
 ?>
 			<tr><td colspan="6" style="height:5px"></td></tr>
 <?

@@ -69,8 +69,8 @@ class Issue extends Relation {
 		$sql = "SELECT * FROM proposals WHERE issue=".intval($this->id);
 		$result = DB::query($sql);
 		$proposals = array();
-		while ( $row = pg_fetch_assoc($result) ) {
-			$proposals[] = new Proposal($row);
+		while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+			$proposals[] = $proposal;
 		}
 		return $proposals;
 	}
@@ -246,14 +246,12 @@ class Issue extends Relation {
 	 */
 	function display_proposals($selected_proposal=0) {
 
-		$sql = "SELECT proposals.*
-			FROM proposals
+		$sql = "SELECT * FROM proposals
 			WHERE issue=".intval($this->id)."
-			ORDER BY proposals.state DESC, proposals.id";
+			ORDER BY state DESC, id";
 		$result = DB::query($sql);
 		$proposals = array();
-		while ($row = pg_fetch_assoc($result)) {
-			$proposal = new Proposal($row);
+		while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 			$proposal->set_issue($this);
 			$proposals[] = $proposal;
 		}
@@ -419,10 +417,10 @@ class Issue extends Relation {
 				$result_period = DB::query($sql_period);
 				$options_all = array();
 				$options_admission = array();
-				while ( $row_period = pg_fetch_assoc($result_period) ) {
-					$period = new Period($row_period);
+				while ( $period = DB::fetch_object($result_period, "Period") ) {
+					DB::pg2bool($period->debate_not_started);
 					$options_all[$period->id] = $period->id.": ".$period->current_phase();
-					if ($row_period['debate_not_started']=="t") {
+					if ($period->debate_not_started) {
 						$options_admission[$period->id] = $options_all[$period->id];
 					}
 				}

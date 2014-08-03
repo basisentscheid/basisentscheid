@@ -373,7 +373,7 @@ class DbTableAdmin {
 					$columns = $this->convert_input($object, @$_POST['directedit'][$object->id], $save_columns, $msg_prefix);
 					if ($columns===false) {
 						// save the rejected object to fill the direct edit form fields again
-						$this->objects_directedit[$object->id] = $object;
+						$this->directedit_objects[$object->id] = $object;
 						$failed++;
 						continue;
 					}
@@ -807,15 +807,14 @@ class DbTableAdmin {
 		} else {
 			$line = 0;
 		}
-		while ( $row = DB::fetch_assoc($result) and (!$this->enable_pager or $line <= $this->pager->lastline) ) {
+		while ( $object = DB::fetch_object($result, $this->classname) and (!$this->enable_pager or $line <= $this->pager->lastline) ) {
 ?>
 	<tr class="<?=stripes($line)?>">
 <?
 
+			// use the submitted values instead of the the record from the database
 			if ($direct_edit and isset($this->directedit_objects[$row['id']])) {
-				$object =  $this->directedit_objects[$row['id']];
-			} else {
-				$object = new $this->classname($row);
+				$object = $this->directedit_objects[$object->id];
 			}
 
 			foreach ( $this->columns as $column ) {

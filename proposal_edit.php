@@ -92,7 +92,7 @@ if (isset($_GET['issue'])) {
 if ($issue) {
 	echo $issue->area()->name;
 } else {
-	$sql = "SELECT * FROM areas ORDER BY name";
+	$sql = "SELECT id, name FROM areas ORDER BY name";
 	$result = DB::query($sql);
 	$options = array();
 	while ( $row = pg_fetch_assoc($result) ) {
