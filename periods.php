@@ -43,6 +43,19 @@ if (Login::$admin) {
 
 html_head(_("Periods"));
 
+$help = <<<HELP
+Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
+
+Bevor ein Abstimmungsperiode beginnt, ordnen die Verantwortlichen die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die Debatte. Während der Debatte kann bei jedem Antrag eine Urnenabstimmung gefordert werden. Wenn bis zur Abstimmungsvorbereitung das Quorum zur Urnenabstimmung erreicht ist, findet zu diesem Antrag eine Urnenabstimmung statt.
+
+Parallel zur Debatte, Abstimmungsvorbereitung und Online-Abstimmung findet die Vorbereitung der Urnenabstimmung statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Bei ausreichender Teilnehmerzahl genehmigen die Verantworlichen die Urnen bis spätestens zum Zeitpunkt "Urnenzuordnung", an dem alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet werden. Bis zum Zeitpunkt der "Urnenvorbereitung" können die Teilnehmer noch eine andere Urne auswählen.
+
+Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der Auszählung am Stichtag. Die Urnenabstimmung findet nur am Stichtag zu den bei der Urne angegebenen Öffnungszeiten statt.
+
+Nicht bei jeder Abstimmungsperiode werden sowohl Online- als auch Urnenabstimmung durchgeführt. Falls erforderlich werden dann alle Anträge per Urne abgestimmt oder die für Urnenabstimmung vorgesehenen Anträge auf eine spätere Abstimmungsperiode verschoben.
+HELP;
+help($help);
+
 $d->display();
 
 html_foot();

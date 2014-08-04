@@ -434,3 +434,17 @@ function stripes($change=false, $suffix="") {
 	$change_last = $change;
 	return "td".$colorid.$suffix;
 }
+
+
+/**
+ * display help text
+ *
+ * @param string  $text
+ */
+function help($text) {
+?>
+<div class="help">
+<?=strtr($text, array("\n\n"=>"<p>"))?>
+</div>
+<?
+}

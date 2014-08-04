@@ -108,6 +108,15 @@ p.syserror {
 	margin: 0.4em 0;
 }
 
+div.help {
+	background-color: #FFF;
+	padding: 2px 5px;
+	margin-bottom: 10px;
+}
+div.help p {
+	margin: 5px 0;
+}
+
 div.bargraph {
 	border: 2px groove black;
 	width: 100px;
