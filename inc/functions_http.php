@@ -45,6 +45,9 @@ function redirect($target="") {
  */
 function html_head($title) {
 
+	// switch between stylesheets
+	if (isset($_GET['style'])) $_SESSION['style'] = $_GET['style'];
+
 	$output = ob_get_clean();
 
 	// we use HTML 5
@@ -53,9 +56,9 @@ function html_head($title) {
 <html>
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
- <link rel="stylesheet" media="all" type="text/css" href="style.css">
+ <link rel="stylesheet" media="all" type="text/css" href="style<?=@$_SESSION['style']?>.css">
 <? if (Login::$admin) { ?>
- <link rel="stylesheet" media="all" type="text/css" href="admin.css">
+ <link rel="stylesheet" media="all" type="text/css" href="admin<?=@$_SESSION['style']?>.css">
 <? } ?>
  <link rel="icon" href="/favicon.ico" type="image/x-icon">
  <title><?=h($title)?></title>
