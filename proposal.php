@@ -273,7 +273,7 @@ function arguments($side, $parent) {
 <ul>
 <?
 
-	while ( $member = pg_fetch_assoc($result) ) {
+	while ( $row = pg_fetch_assoc($result) ) {
 		$member = new Member($row['member']);
 ?>
 	<li>
