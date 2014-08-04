@@ -57,7 +57,7 @@ if (Login::$member) {
 	$sql = "SELECT areas.*
 		FROM areas";
 }
-$sql .= "	ORDER BY areas.name";
+$sql .= "	ORDER BY areas.name, areas.id";
 $result = DB::query($sql);
 while ($row = pg_fetch_assoc($result)) {
 
