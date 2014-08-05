@@ -288,10 +288,10 @@ function arguments($side, $parent) {
 <?
 		}
 		if ($row['plus']) {
-			?><span class="plus<? if ($row['positive']=="t") { ?> me<? } ?>">+<?=$row['plus']?></span> <?
+			?><span class="plus<? if (@$row['positive']=="t") { ?> me<? } ?>">+<?=$row['plus']?></span> <?
 		}
 		if ($row['minus']) {
-			?><span class="minus<? if ($row['positive']=="f") { ?> me<? } ?>">-<?=$row['minus']?></span> <?
+			?><span class="minus<? if (@$row['positive']=="f") { ?> me<? } ?>">-<?=$row['minus']?></span> <?
 		}
 		if ($row['plus'] and $row['minus']) {
 			?><span class="rating">=<?=$row['rating']?></span> <?
