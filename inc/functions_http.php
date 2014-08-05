@@ -158,12 +158,12 @@ function html_user() {
 	<?=_("Logged in as Admin")?> <a href="admin_profile.php"><?=Login::$admin->username?></a>
 <?
 		}
+		form(URI::$uri, 'class="button" style="margin-left: 10px"');
 ?>
-	<form action="<?=URI::$uri?>" method="post" class="button" style="margin-left: 10px">
-	<input type="hidden" name="action" value="logout">
-	<input type="submit" value="<?=_("Logout")?>">
-	</form>
-	<?
+<input type="hidden" name="action" value="logout">
+<input type="submit" value="<?=_("Logout")?>">
+</form>
+<?
 	} else {
 		// These two links are for development and demonstration purposes only and have to be removed in live environment!
 ?>
@@ -171,11 +171,11 @@ function html_user() {
 	<a href="local_member_login.php">Login as local member</a>
 <?
 		// login as member via ID server
+		form("login.php", 'class="button"');
 ?>
-	<form action="login.php" method="post" class="button">
-	<input type="hidden" name="origin" value="<?=h($_SERVER['REQUEST_URI'])?>">
-	<input type="submit" value="<?=_("Login")?>">
-	</form>
+<input type="hidden" name="origin" value="<?=h($_SERVER['REQUEST_URI'])?>">
+<input type="submit" value="<?=_("Login")?>">
+</form>
 <?
 	}
 }
@@ -293,6 +293,22 @@ function action_proposal_select_period() {
 	$issue->update(array("period"));
 
 	redirect();
+}
+
+
+/**
+ * POST form open tag with CSRF token
+ *
+ * @param string  $url
+ * @param string  $attributes (optional)
+ */
+function form($url, $attributes="") {
+?>
+<form action="<?=$url?>" method="POST"<?
+	if ($attributes) { ?> <?=$attributes; }
+	?>>
+<input type="hidden" name="csrf" value="<?=$_SESSION['csrf']?>">
+<?
 }
 
 

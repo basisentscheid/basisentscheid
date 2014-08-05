@@ -74,9 +74,7 @@ if (isset($_GET['issue'])) {
 }
 //}
 
-?>
-<form action="<?=BN; if ($proposal->id) { ?>?id=<?=$proposal->id; } ?>" method="post" class="proposal">
-<?
+form(BN.($proposal->id?"?id=".$proposal->id:""), 'class="proposal"');
 
 if (isset($_GET['issue'])) {
 ?>

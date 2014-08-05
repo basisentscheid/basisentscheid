@@ -66,8 +66,8 @@ if ($ballot->id) {
 	html_head(_("New ballot"));
 }
 
+form(URI::$uri, 'class="edit_ballot"');
 ?>
-<form action="<?=URI::$uri?>" method="post" class="edit_ballot">
 <h2><?=_("Name or location of the ballot")?></h2>
 <input type="text" name="name" value="<?=h($ballot->name)?>"><br>
 <h2><?=_("Agents")?></h2>

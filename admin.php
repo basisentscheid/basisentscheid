@@ -36,9 +36,8 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 
 html_head(_("Admin login"));
 
+form(BN, 'class="login"');
 ?>
-
-<form action="<?=BN?>" method="POST" class="login">
 <fieldset>
 <label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username"></span></label>
 <label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span></label>

@@ -45,6 +45,16 @@ require "inc/locale.php";
 // all actions use this global variable
 $action = @$_POST['action'];
 
+// detect CSRF attacks
+if ($action) {
+	if (empty($_POST['csrf'])) {
+		error("CSRF token missing in POST request!");
+	}
+	if ($_POST['csrf'] != $_SESSION['csrf']) {
+		error("CSRF token does not match!");
+	}
+}
+
 // action on all pages
 if ($action=="logout") {
 	Login::logout();

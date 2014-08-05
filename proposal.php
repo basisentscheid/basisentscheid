@@ -170,16 +170,16 @@ if (Login::$member and $proposal->state=="submitted") {
 <br clear="both">
 <?
 	if ($supported_by_member) {
+		form(URI::$uri, 'style="background-color:green; display:inline-block"');
 ?>
-<form action="<?=URI::$uri?>" method="POST" style="background-color:green; display:inline-block">
 &#10003; <?=_("You support this proposal.")?>
 <input type="hidden" name="action" value="revoke_support">
 <input type="submit" value="<?=_("Revoke your support for this proposal")?>">
 </form>
 <?
 	} else {
+		form(URI::$uri, 'style="display:inline-block"');
 ?>
-<form action="<?=URI::$uri?>" method="POST" style="display:inline-block">
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
 </form>
@@ -202,16 +202,16 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 <br clear="both">
 <?
 	if ($demanded_by_member) {
+		form(URI::$uri, 'style="background-color:red; display:inline-block"');
 ?>
-<form action="<?=URI::$uri?>" method="POST" style="background-color:red; display:inline-block">
 &#10003; <?=_("You demand secret voting for this issue.")?>
 <input type="hidden" name="action" value="revoke_demand_offline">
 <input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
 </form>
 <?
 	} else {
+		form(URI::$uri, 'style="display:inline-block"');
 ?>
-<form action="<?=URI::$uri?>" method="POST" style="display:inline-block">
 <input type="hidden" name="action" value="demand_offline">
 <input type="submit" value="<?=_("Demand secret voting for this issue")?>">
 </form>
@@ -298,25 +298,27 @@ function arguments($side, $parent) {
 		}
 		if (Login::$member and $row['member']!=Login::$member->id) { // don't allow to rate ones own arguments
 			if ($row['positive']) {
+				form(URI::$uri, 'class="button"');
 ?>
-		<form action="<?=URI::$uri?>" method="POST" class="button">
-		<input type="hidden" name="argument" value="<?=$row['id']?>">
-		<input type="hidden" name="action" value="rating_reset">
-		<input type="submit" value="reset">
-		</form>
+<input type="hidden" name="argument" value="<?=$row['id']?>">
+<input type="hidden" name="action" value="rating_reset">
+<input type="submit" value="reset">
+</form>
 <?
 			} else {
+				form(URI::$uri, 'class="button"');
 ?>
-		<form action="<?=URI::$uri?>" method="POST" class="button">
-		<input type="hidden" name="argument" value="<?=$row['id']?>">
-		<input type="hidden" name="action" value="rating_plus">
-		<input type="submit" value="+1">
-		</form>
-		<form action="<?=URI::$uri?>" method="POST" class="button">
-		<input type="hidden" name="argument" value="<?=$row['id']?>">
-		<input type="hidden" name="action" value="rating_minus">
-		<input type="submit" value="-1">
-		</form>
+<input type="hidden" name="argument" value="<?=$row['id']?>">
+<input type="hidden" name="action" value="rating_plus">
+<input type="submit" value="+1">
+</form>
+<?
+				form(URI::$uri, 'class="button"');
+?>
+<input type="hidden" name="argument" value="<?=$row['id']?>">
+<input type="hidden" name="action" value="rating_minus">
+<input type="submit" value="-1">
+</form>
 <?
 			}
 		}
@@ -332,14 +334,16 @@ function arguments($side, $parent) {
 	if (Login::$member and @$_GET['argument_parent']==$parent) {
 ?>
 	<li>
-		<form action="<?=URI::strip(array('argument_parent'))?>" method="POST" class="argument">
-		<a name="form"></a>
-		<input name="title" type="text"><br>
-		<textarea name="content" rows="5"></textarea><br>
-		<input type="hidden" name="action" value="add_argument">
-		<input type="hidden" name="parent" value="<?=$parent?>">
-		<input type="submit" value="<?=_("save")?>">
-		</form>
+<?
+		form(URI::strip(array('argument_parent')), 'class="argument"');
+?>
+<a name="form"></a>
+<input name="title" type="text"><br>
+<textarea name="content" rows="5"></textarea><br>
+<input type="hidden" name="action" value="add_argument">
+<input type="hidden" name="parent" value="<?=$parent?>">
+<input type="submit" value="<?=_("save")?>">
+</form>
 	</li>
 <?
 	}

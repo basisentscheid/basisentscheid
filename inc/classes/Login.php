@@ -27,6 +27,8 @@ abstract class Login {
 		ini_set("session.use_only_cookies", "on");
 		session_start();
 
+		if (!isset($_SESSION['csrf'])) $_SESSION['csrf'] = self::generate_token(32);
+
 		// get logged in member or admin
 		if (!empty($_SESSION['member'])) {
 			self::$member = new Member($_SESSION['member']);
@@ -84,6 +86,21 @@ abstract class Login {
 	 */
 	public static function access_action($allowed_users) {
 		self::access($allowed_users, true);
+	}
+
+
+	/**
+	 * generate random token
+	 *
+	 * @param integer $length
+	 * @param string  $chars  (optional)
+	 * @return string
+	 */
+	public static function generate_token($length, $chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
+		$max = strlen($chars) - 1;
+		$token = "";
+		while ( $length-- > 0 ) $token .= $chars{ mt_rand(0, $max) };
+		return $token;
 	}
 
 

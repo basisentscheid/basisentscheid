@@ -34,8 +34,8 @@ trigger_error("Test notice after html_head", E_USER_NOTICE);
 trigger_error("Test warning after html_head", E_USER_WARNING);
 // trigger_error("Test error after html_head", E_USER_ERROR);
 
+form(BN);
 ?>
-<form action="<?=BN?>" method="post">
 <input type="checkbox" name="fatal_php_error_before_action" value="1"> Fatal PHP error before action<br>
 <input type="checkbox" name="fatal_error_msg" value="1"> Fatal error message<br>
 <input type="checkbox" name="fatal_php_error_after_msg" value="1"> Fatal PHP error after message<br>

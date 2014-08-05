@@ -467,9 +467,7 @@ class Issue extends Relation {
 		if (!$options) return false;
 
 		if (@$_GET['edit_period']==$this->id) {
-?>
-<form action="<?=URI::strip(array('edit_period'))?>" method="POST">
-<?
+			form(URI::strip(array('edit_period')));
 			input_select("period", $options, $this->period);
 			input_hidden("issue", $this->id);
 			input_hidden("action", "select_period");

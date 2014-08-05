@@ -42,8 +42,8 @@ if ($action) {
 
 html_head(_("Member"));
 
+form(BN);
 ?>
-<form action="<?=BN?>" method="post">
 <?=_("Username")?> (leave empty to be displayed as "anonymous"): <input type="text" name="username" value="<?=h(Login::$member->username)?>"><br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">

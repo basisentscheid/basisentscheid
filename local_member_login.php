@@ -34,9 +34,8 @@ if ( !empty($_POST['username']) ) {
 
 html_head(_("Local member login"));
 
+form(BN);
 ?>
-
-<form action="<?=BN?>" method="POST">
 <?=_("Username")?>: <input type="text" name="username"><br>
 <input type="submit">
 </form>

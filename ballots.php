@@ -82,9 +82,7 @@ if (Login::$member and $period->state=="ballot_application") {
 }
 
 if (Login::$admin) {
-?>
-<form action="<?=URI::$uri?>" method="POST">
-<?
+	form(URI::$uri);
 }
 
 $colspan = 6;
@@ -145,8 +143,8 @@ if (!$pager->linescount) {
 					?><?=_("You selected this ballot for voting.")?><?
 				}
 				if ($period->state!="ballot_preparation") {
+					form(URI::$uri, 'class="button"');
 ?>
-<form action="<?=URI::$uri?>" method="POST" class="button">
 <input type="hidden" name="action" value="unselect">
 <input type="submit" value="<?=_("remove selection")?>">
 </form>
@@ -159,8 +157,8 @@ if (!$pager->linescount) {
 					($period->state=="ballot_assignment" and $ballot->approved)
 				)
 			) {
+				form(URI::$uri, 'class="button"');
 ?>
-<form action="<?=URI::$uri?>" method="POST" class="button">
 <input type="hidden" name="ballot" value="<?=$ballot->id?>">
 <input type="hidden" name="action" value="select">
 <input type="submit" value="<?=_("select this ballot for voting")?>">

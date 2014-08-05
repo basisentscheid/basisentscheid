@@ -725,8 +725,8 @@ class DbTableAdmin {
 		}
 
 		if ($button_js) {
+			form(URI::$uri, 'name="dbtableadmin_jsform"');
 ?>
-<form action="<?=URI::$uri?>" method="post" name="dbtableadmin_jsform">
 	<input type="hidden" name="action" value="">
 	<input type="hidden" name="id" value="">
 </form>
@@ -736,9 +736,7 @@ class DbTableAdmin {
 			$this->display_list_javascript($button_js);
 		}
 		if ($show_form) {
-?>
-<form action="<?=URI::$uri?>" method="post" name="dbtableadmin_listform" id="dbtableadmin_listform">
-<?
+			form(URI::$uri, 'name="dbtableadmin_listform" id="dbtableadmin_listform"');
 		}
 
 ?>
@@ -1108,9 +1106,7 @@ function submit_delete_checked() {
 	 * @param string  $form_action
 	 */
 	protected function display_edit_form_top($form_action) {
-?>
-<form action="<?=$form_action?>" method="post" name="dbtableadmin_editform" id="dbtableadmin_editform" onsubmit="return <?=$this->js_submit_edit?>;">
-<?
+		form($form_action, 'name="dbtableadmin_editform" id="dbtableadmin_editform" onsubmit="return '.$this->js_submit_edit.';"');
 	}
 
 

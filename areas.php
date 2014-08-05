@@ -76,19 +76,21 @@ while ($row = pg_fetch_assoc($result)) {
 		if ($row['activated']) {
 ?>
 			&#10003; <?=_("last time activated")?>: <?=dateformat($row['activated'])?>
-			<form action="<?=BN?>" method="POST" class="button">
-			<input type="hidden" name="area" value="<?=$row['id']?>">
-			<input type="hidden" name="action" value="unsubscribe">
-			<input type="submit" value="<?=_("unsubscribe")?>">
-			</form>
+<?
+			form(BN, 'class="button"');
+?>
+<input type="hidden" name="area" value="<?=$row['id']?>">
+<input type="hidden" name="action" value="unsubscribe">
+<input type="submit" value="<?=_("unsubscribe")?>">
+</form>
 <?
 		}
+		form(BN, 'class="button"');
 ?>
-			<form action="<?=BN?>" method="POST" class="button">
-			<input type="hidden" name="area" value="<?=$row['id']?>">
-			<input type="hidden" name="action" value="subscribe">
-			<input type="submit" value="<?=$row['activated']?_("subscribe anew"):_("subscribe")?>">
-			</form>
+<input type="hidden" name="area" value="<?=$row['id']?>">
+<input type="hidden" name="action" value="subscribe">
+<input type="submit" value="<?=$row['activated']?_("subscribe anew"):_("subscribe")?>">
+</form>
 		</td>
 <? } ?>
 	</tr>
