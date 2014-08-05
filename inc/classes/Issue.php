@@ -264,10 +264,10 @@ class Issue extends Relation {
 	 * display table part for all proposals of the issue
 	 *
 	 * @param array   $proposals         array of objects
+	 * @param integer $period_rowspan
 	 * @param integer $selected_proposal (optional)
-	 * @param integer $period_rowspan    (optional)
 	 */
-	function display_proposals($proposals, $selected_proposal=0, $period_rowspan=1) {
+	function display_proposals($proposals, $period_rowspan, $selected_proposal=0) {
 
 		$first = true;
 		$first_admitted = true;

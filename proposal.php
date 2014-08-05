@@ -234,7 +234,7 @@ if (Login::$member) {
 <?
 Issue::display_proposals_th();
 $proposals = $issue->proposals_list();
-$issue->display_proposals($proposals, $proposal->id);
+$issue->display_proposals($proposals, count($proposals), $proposal->id);
 ?>
 </table>
 </div>

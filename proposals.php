@@ -139,7 +139,7 @@ foreach ( $issues as $i => $issue ) {
 ?>
 		<tr><td colspan="<?= $period_rowspan[$i] ? 6 : 5 ?>" class="issue_separator"></td></tr>
 <?
-	$issue->display_proposals($proposals_issue[$i], 0, $period_rowspan[$i]);
+	$issue->display_proposals($proposals_issue[$i], $period_rowspan[$i]);
 }
 
 ?>
