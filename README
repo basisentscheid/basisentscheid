@@ -1,0 +1,38 @@
+
+=== Installation ===
+
+requirements:
+- PHP >= 5.4 with modules: apache2 (or whatever webserver you use), cli, postgres, gettext, session, curl, ssl, unicode
+- PostgreSQL
+
+configuration:
+$ cd inc/
+$ cp config_example.php config.php
+$ vi config.php
+
+create database:
+$ cd ../db/
+$ ./recreate_schema.sh
+
+The directory /var/ and all subdirectories need write access for the users as which PHP runs for web and cli:
+$ find var/ -type d -exec chmod a+rwx {} \;
+
+You can use the provided .htaccess files for configuration or copy their contents to the webserver config.
+
+
+=== License ===
+
+Copyright 2014 Magnus Rosenbaum <dev@cmr.cx>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
