@@ -116,7 +116,7 @@ html_head(_("Proposal")." ".$proposal->id);
 <h2><?=_("Area")?></h2>
 <p class="proposal"><?=h($issue->area()->name)?></p>
 <h2><?=_("Proponents")?></h2>
-<p class="proposal"><?=h($proposal->proponents)?></p>
+<p class="proposal"><?=content2html($proposal->proponents)?></p>
 </div>
 
 <div style="overflow:hidden">
@@ -124,9 +124,9 @@ html_head(_("Proposal")." ".$proposal->id);
 <h2><?=_("Title")?></h2>
 <p class="proposal proposal_title"><?=h($proposal->title)?></p>
 <h2><?=_("Content")?></h2>
-<p class="proposal"><?=nl2br(h($proposal->content))?></p>
+<p class="proposal"><?=content2html($proposal->content)?></p>
 <h2><?=_("Reason")?></h2>
-<p class="proposal"><?=nl2br(h($proposal->reason))?></p>
+<p class="proposal"><?=content2html($proposal->reason)?></p>
 </div>
 
 <br style="clear:both">
@@ -280,7 +280,7 @@ function arguments($side, $parent) {
 	<li>
 		<div class="author"><?=$member->username()?> <?=datetimeformat($row['created'])?></div>
 		<h3><?=h($row['title'])?></h3>
-		<p><?=nl2br(h($row['content']), false)?></p>
+		<p><?=content2html($row['content'])?></p>
 <?
 		if (Login::$member and @$_GET['argument_parent']!=$row['id']) {
 ?>

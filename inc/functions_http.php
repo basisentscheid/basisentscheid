@@ -465,3 +465,18 @@ function help($text) {
 </div>
 <?
 }
+
+
+/**
+ * format content without changing it
+ *
+ * @param string  $text
+ * @return string
+ */
+function content2html($text) {
+	return preg_replace(
+		array('#https?://\S+#',      "#''[^'\n]+''#"),
+		array('<a href="$0">$0</a>', '<i>$0</i>'    ),
+		nl2br(h($text), false)
+	);
+}
