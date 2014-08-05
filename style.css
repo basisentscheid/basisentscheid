@@ -228,6 +228,10 @@ table.proposals {
 table.proposals tr.proposal {
 	background-color: #FFF;
 }
+table.proposals td.issue_separator {
+	height: 3px;
+	padding: 0;
+}
 
 table.proposals td.proposal_link,
 table.proposals td.proposal_link_active {

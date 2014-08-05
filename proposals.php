@@ -75,6 +75,7 @@ $sql = "SELECT issues.*
 	FROM issues";
 
 $where = array();
+$order_by = " ORDER BY issues.id DESC";
 
 switch (@$_GET['filter']) {
 case "admission":
@@ -82,9 +83,11 @@ case "admission":
 	break;
 case "debate":
 	$where[] = "issues.state='debate'";
+	$order_by = " ORDER BY issues.period DESC, issues.id DESC";
 	break;
 case "voting":
 	$where[] = "(issues.state='voting' OR issues.state='preparation' OR issues.state='counting')";
+	$order_by = " ORDER BY issues.period DESC, issues.id DESC";
 	break;
 case "closed":
 	$where[] = "(issues.state='finished' OR issues.state='cleared' OR issues.state='cancelled')";
@@ -101,17 +104,42 @@ if ($search) {
 	$sql .= DB::where_and($where);
 }
 
-$sql .= " ORDER BY issues.id DESC";
+$sql .= $order_by;
 
 $result = DB::query($sql);
 $pager->seek($result);
 $line = $pager->firstline;
+
+// collect issues and proposals
+$issues = array();
+$proposals_issue = array();
+$period = 0;
+$period_rowspan = array();
+$i = 0;
+$i_first = 0;
 while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastline ) {
-?>
-			<tr><td colspan="6" style="height:5px"></td></tr>
-<?
-	$issue->display_proposals();
+	$issues[] = $issue;
+	$proposals = $issue->proposals_list();
+	$proposals_issue[] = $proposals;
+	// calculate period rowspan
+	if ($period and $issue->period == $period) {
+		$period_rowspan[$i] = 0;
+		$period_rowspan[$i_first] += count($proposals) + 1;
+	} else {
+		$period_rowspan[$i] = count($proposals);
+		$i_first = $i;
+		$period = $issue->period;
+	}
+	$i++;
 	$line++;
+}
+
+// display issues and proposals
+foreach ( $issues as $i => $issue ) {
+?>
+		<tr><td colspan="<?= $period_rowspan[$i] ? 6 : 5 ?>" class="issue_separator"></td></tr>
+<?
+	$issue->display_proposals($proposals_issue[$i], 0, $period_rowspan[$i]);
 }
 
 ?>

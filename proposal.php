@@ -233,7 +233,8 @@ if (Login::$member) {
 <table border="0" cellspacing="1" class="proposals">
 <?
 Issue::display_proposals_th();
-$issue->display_proposals($proposal->id);
+$proposals = $issue->proposals_list();
+$issue->display_proposals($proposals, $proposal->id);
 ?>
 </table>
 </div>

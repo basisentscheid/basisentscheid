@@ -229,7 +229,7 @@ class Issue extends Relation {
 	public static function display_proposals_th() {
 ?>
 	<tr>
-		<th width="60%"><?=_("Proposals")?></th>
+		<th width="60%"><?=_("Proposal")?></th>
 		<th width="10%"><?=_("State")?></th>
 		<th width="10%"><?=_("Voting period")?></th>
 		<th width="10%"><?=_("Voting type")?></th>
@@ -240,11 +240,11 @@ class Issue extends Relation {
 
 
 	/**
-	 * display table part for all proposals of the issue
+	 * proposals to display in the list
 	 *
-	 * @param integer $selected_proposal (optional)
+	 * @return array
 	 */
-	function display_proposals($selected_proposal=0) {
+	public function proposals_list() {
 
 		$sql = "SELECT * FROM proposals
 			WHERE issue=".intval($this->id)."
@@ -255,6 +255,19 @@ class Issue extends Relation {
 			$proposal->set_issue($this);
 			$proposals[] = $proposal;
 		}
+
+		return $proposals;
+	}
+
+
+	/**
+	 * display table part for all proposals of the issue
+	 *
+	 * @param array   $proposals         array of objects
+	 * @param integer $selected_proposal (optional)
+	 * @param integer $period_rowspan    (optional)
+	 */
+	function display_proposals($proposals, $selected_proposal=0, $period_rowspan=1) {
 
 		$first = true;
 		$first_admitted = true;
@@ -330,13 +343,18 @@ class Issue extends Relation {
 
 			// columns "period", "voting type" and "result"
 			if ($first) {
+				if (Login::$admin) {
 ?>
 			<td rowspan="<?=$num_rows?>" align="center"><?
-				if ( !Login::$admin or !$this->display_edit_state() ) {
-					echo $this->period;
-					//if ($this->period) {stateperiod=="") echo $this->period.": ".$this->period()->current_phase();
+					if ( !$this->display_edit_state() ) echo $this->period;
+					?></td>
+<?
+				} elseif ($period_rowspan) {
+?>
+			<td rowspan="<?=$period_rowspan?>" align="center"><?=$this->period?></td>
+<?
 				}
-				?></td>
+?>
 			<td rowspan="<?=$num_rows?>" align="center"><?
 
 				if ($this->secret_reached) {
