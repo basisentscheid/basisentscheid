@@ -229,11 +229,11 @@ class Issue extends Relation {
 	public static function display_proposals_th() {
 ?>
 	<tr>
-		<th width="60%"><?=_("Proposal")?></th>
-		<th width="10%"><?=_("State")?></th>
-		<th width="10%"><?=_("Voting period")?></th>
-		<th width="10%"><?=_("Voting type")?></th>
-		<th width="10%"><?=_("Result")?></th>
+		<th style="width:64%"><?=_("Proposal")?></th>
+		<th style="width:10%"><?=_("State")?></th>
+		<th style="width:1%"><?=_("Period")?></th>
+		<th style="width:7%"><?=_("Voting type")?></th>
+		<th style="width:18%"><?=_("Result")?></th>
 	</tr>
 <?
 	}
