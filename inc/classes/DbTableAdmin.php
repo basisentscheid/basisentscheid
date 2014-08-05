@@ -614,7 +614,19 @@ class DbTableAdmin {
 
 			// per column beforesave method
 			if ( !empty($column['beforesave']) ) {
-				if (!$this->{"beforesave_".$column['beforesave']}($object->$column[0], $column, $msg_prefix)) $success=false;
+				$method = "beforesave_".$column['beforesave'];
+				if (method_exists($this, $method)) {
+					$callee = $this;
+				} else {
+					$callee = $object;
+					$method = "dbtableadmin_".$method;
+				}
+				if ( !$callee->$method(
+						// parameters for column beforesave methods:
+						$object->$column[0], // column name
+						$column,             // column description (array)
+						$msg_prefix          // prefix to show at direct edit
+					) ) $success=false;
 			}
 
 			$save_columns[] = $column[0];
@@ -625,8 +637,20 @@ class DbTableAdmin {
 		if (!$success) return false;
 
 		// global beforesave method
-		if ( method_exists($this, "beforesave") ) {
-			if (!$this->beforesave($save_columns, $msg_prefix)) return false;
+		$method = "beforesave";
+		if (method_exists($this, $method)) {
+			if ( !$this->$method(
+					// parameters for general beforesave methods:
+					$save_columns, // columns to be saved (indexed array)
+					$msg_prefix    // prefix to show at direct edit
+				) ) return false;
+		} elseif (method_exists($object, "dbtableadmin_".$method)) {
+			$method = "dbtableadmin_".$method;
+			if ( !$object->$method(
+					// parameters for general beforesave methods:
+					$save_columns, // columns to be saved (indexed array)
+					$msg_prefix    // prefix to show at direct edit
+				) ) return false;
 		}
 
 		return $save_columns;
@@ -825,23 +849,21 @@ class DbTableAdmin {
 				$method = "print_".(!empty($column[3])?$column[3]:"text");
 				if (method_exists($this, $method)) {
 					$this->$method(
-						// parameters for print_-methods:
+						// parameters for print methods:
 						($column[0]?$object->$column[0]:null), // 1 content
 						$object,                               // 2 object
 						$column,                               // 3 column description (array)
 						$line,                                 // 4 line number (starting at 0)
-						$linescount,                           // 5 count of lines selected in the database
-						$this
+						$linescount                            // 5 count of lines selected in the database
 					);
 				} else {
 					$method = "dbtableadmin_".$method;
 					$object->$method(
-						// parameters for print_-methods:
+						// parameters for print methods:
 						($column[0]?$object->$column[0]:null), // 1 content
 						$column,                               // 2 column description (array)
 						$line,                                 // 3 line number (starting at 0)
-						$linescount,                           // 4 count of lines selected in the database
-						$this
+						$linescount                            // 4 count of lines selected in the database
 					);
 				}
 				?>	</td>
@@ -1100,7 +1122,7 @@ function submit_delete_checked() {
 		foreach ($this->columns as $index => $column) {
 			if (isset($column[4]) and $column[4]===false) continue;
 ?>
-<label class="<?=stripes($index)?>"><span class="label"><?=$column[1]?></span><span class="input"><?
+<div class="input <?=stripes($index)?>"><label for="<?=$column[0]?>"><?=$column[1]?></label><span class="input"><?
 			$method = "edit_".(!empty($column[4])?$column[4]:'text');
 			if (method_exists($this, $method)) {
 				$callee = $this;
@@ -1114,10 +1136,9 @@ function submit_delete_checked() {
 				$this->object->$column[0],   // 2 default
 				$this->object->id,           // 3 ID
 				!empty($column['disabled']), // 4 disabled (not editable)
-				$column,                     // 5 (array) column description
-				$this
+				$column                      // 5 (array) column description
 			);
-			?></span></label>
+			?></span></div>
 <?
 		}
 

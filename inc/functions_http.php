@@ -121,12 +121,13 @@ BN: <?=BN."\n"?>
  */
 function html_navigation() {
 	navlink('proposals.php', _("Proposals"));
+	navlink('periods.php', _("Periods"));
 	if (Login::$admin) {
 		navlink( 'admin_areas.php', _("Areas"));
+		navlink( 'admins.php', _("Admins"));
 	} else {
 		navlink( 'areas.php', _("Areas"));
 	}
-	navlink('periods.php', _("Periods"));
 }
 
 
@@ -154,7 +155,7 @@ function html_user() {
 <?
 		} else {
 ?>
-	<?=_("Logged in as Admin")?> <a href="admin_.php"><?=Login::$admin->username?></a>
+	<?=_("Logged in as Admin")?> <a href="admin_profile.php"><?=Login::$admin->username?></a>
 <?
 		}
 ?>
