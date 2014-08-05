@@ -422,8 +422,13 @@ form.login input[type=submit] {
 	float: left;
 	font-weight: bold;
 	font-size: 120%;
+}
+#logo,
+#logo a:link,
+#logo a:visited {
 	color: #FFF;
 	background-color: #AAA;
+	text-decoration: none;
 }
 #nav {
 	padding: 9px 20px;

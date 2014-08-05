@@ -79,7 +79,7 @@ BN: <?=BN."\n"?>
 ?>
 
 <div id="head">
-	<div id="logo">Basisentscheid</div>
+	<div id="logo"><a href="<?=DOCROOT?>index.php">Basisentscheid</a></div>
 	<div id="nav">
 <? html_navigation(); ?>
 	</div>
