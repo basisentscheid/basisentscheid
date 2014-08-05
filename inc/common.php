@@ -11,6 +11,7 @@
  * @see auth.php
  * @see ballot_edit.php
  * @see ballots.php
+ * @see index.php
  * @see local_member_login.php
  * @see login.php
  * @see member.php
