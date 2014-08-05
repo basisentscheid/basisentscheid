@@ -12,15 +12,6 @@
 require "inc/common.php";
 
 
-/*
-DB::query("TRUNCATE admins");
-$a = new Admin;
-$a->username = "test";
-$a->password = crypt("test");
-$a->create();
-*/
-
-
 // login
 
 if ( isset($_POST['username']) and isset($_POST['password']) ) {
