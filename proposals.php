@@ -27,7 +27,7 @@ html_head(_("Proposals"));
 
 if (Login::$member) {
 ?>
-<div style="float:right"><a href="proposal_edit.php"><?=_("Add proposal")?></a></div>
+<div class="add_record"><a href="proposal_edit.php"><?=_("Add proposal")?></a></div>
 <?
 }
 

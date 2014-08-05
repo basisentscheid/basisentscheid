@@ -11,7 +11,7 @@ style guide:
 body {
 	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 	color: #000;
-	background-color: #FFEEC7;
+	background-color: #F4EEF7;
 	margin: 5px 20px 5px 20px;
 	padding: 0;
 }
@@ -54,15 +54,20 @@ tfoot td {
 a {
 	padding: 0 3px 1px 3px;
 }
-a:link {
-	color: #00A;
-}
 a:visited {
 	color: #708;
 }
+a:link,
+div.filter a:visited,
+div.add_record a:visited,
+table th a:visited,
+#head a:link,
+div.arguments_side a:link {
+	color: #00A;
+}
 a:hover {
 	color: #000;
-	outline: 1px solid #ddd;
+	outline: 1px solid #DDD;
 	background-color: #F8F8F8;
 }
 a:focus, a:active {
