@@ -11,12 +11,13 @@ abstract class URI {
 
 	// current relative URI without html entities
 	public static $uri_plain;
-
 	// current relative URI with html entities
 	public static $uri;
 
-	// query array without empty values
+	// query array without empty values and one time parameters
 	private static $query = array();
+	// uri built from $query
+	private static $uri_query;
 
 
 	/**
@@ -30,6 +31,8 @@ abstract class URI {
 		// strip empty parameters ("0" is not empty)
 		self::$query = $_GET;
 		self::strip_empty(self::$query);
+
+		self::$uri_query = self::build(self::$query);
 
 	}
 
@@ -56,6 +59,21 @@ abstract class URI {
 
 
 	/**
+	 * remove the one time GET parameters from further URIs
+	 *
+	 * @param array   $keys one time parameters
+	 */
+	public static function strip_one_time_params($keys) {
+		foreach ( $keys as $key ) {
+			if (isset(self::$query[$key])) unset(self::$query[$key]);
+		}
+		// if all elements are unset, the array behaves not as an array anymore
+		if (!count(self::$query)) self::$query = array();
+		self::$uri_query = self::build(self::$query);
+	}
+
+
+	/**
 	 * build new URI
 	 *
 	 * Parameters with value null will be skipped.
@@ -69,6 +87,18 @@ abstract class URI {
 		if ($params and $query = http_build_query($params)) $uri .= "?".$query;
 		if ($plain) return $uri;
 		return h($uri);
+	}
+
+
+	/**
+	 * build the current URI
+	 *
+	 * On pages with one time parameters this method has to be used instead of URI::$uri.
+	 *
+	 * @return string URI with html entities
+	 */
+	public static function same() {
+		return self::$uri_query;
 	}
 
 

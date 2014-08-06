@@ -9,6 +9,8 @@
 
 require "inc/common.php";
 
+URI::strip_one_time_params(array('argument_parent', 'argument_edit'));
+
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
 	error("The requested proposal does not exist!");
@@ -89,7 +91,7 @@ if ($action) {
 			break;
 		}
 		$argument->create();
-		redirect(URI::strip(array("argument_parent"))."#argument".$argument->id);
+		redirect(URI::same()."#argument".$argument->id);
 		break;
 	case "update_argument":
 		Login::access_action("member");
@@ -118,26 +120,55 @@ if ($action) {
 			break;
 		}
 		$argument->update(array("title", "content"), "updated=now()");
-		redirect(URI::strip(array("argument_edit"))."#argument".$argument->id);
+		redirect(URI::same()."#argument".$argument->id);
+		break;
+	case "remove_argument":
+	case "restore_argument":
+		Login::access_action("admin");
+		action_required_parameters("id");
+		$argument = new Argument($_POST['id']);
+		if (!$argument->id) {
+			warning("This argument does not exist.");
+			redirect();
+		}
+		$argument->removed = ($action=="remove_argument");
+		$argument->update(array("removed"));
+		redirect(URI::same()."#argument".$argument->id);
 		break;
 	case "rating_plus":
 	case "rating_minus":
 		Login::access_action("member");
 		action_required_parameters("argument");
 		$argument = new Argument($_POST['argument']);
+		if (!$argument->id) {
+			warning("This argument does not exist.");
+			redirect();
+		}
 		if ($argument->member==Login::$member->id) {
 			warning("Rating your own arguments is not allowed.");
 			redirect();
 		}
+		if ($argument->removed) {
+			warning("The argument has been removed.");
+			redirect();
+		}
 		$argument->set_rating($action=="rating_plus");
-		redirect(URI::$uri."#argument".$argument->id);
+		redirect(URI::same()."#argument".$argument->id);
 		break;
 	case "rating_reset":
 		Login::access_action("member");
 		action_required_parameters("argument");
 		$argument = new Argument($_POST['argument']);
+		if (!$argument->id) {
+			warning("This argument does not exist.");
+			redirect();
+		}
+		if ($argument->removed) {
+			warning("The argument has been removed.");
+			redirect();
+		}
 		$argument->delete_rating();
-		redirect(URI::$uri."#argument".$argument->id);
+		redirect(URI::same()."#argument".$argument->id);
 		break;
 	default:
 		warning("Unknown action");
@@ -209,7 +240,7 @@ if (Login::$member and $proposal->state=="submitted") {
 <br clear="both">
 <?
 	if ($supported_by_member) {
-		form(URI::$uri, 'style="background-color:green; display:inline-block"');
+		form(URI::same(), 'style="background-color:green; display:inline-block"');
 ?>
 &#10003; <?=_("You support this proposal.")?>
 <input type="hidden" name="action" value="revoke_support">
@@ -217,7 +248,7 @@ if (Login::$member and $proposal->state=="submitted") {
 </form>
 <?
 	} else {
-		form(URI::$uri, 'style="display:inline-block"');
+		form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
@@ -241,7 +272,7 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 <br clear="both">
 <?
 	if ($demanded_by_member) {
-		form(URI::$uri, 'style="background-color:red; display:inline-block"');
+		form(URI::same(), 'style="background-color:red; display:inline-block"');
 ?>
 &#10003; <?=_("You demand secret voting for this issue.")?>
 <input type="hidden" name="action" value="revoke_demand_offline">
@@ -249,7 +280,7 @@ if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admi
 </form>
 <?
 	} else {
-		form(URI::$uri, 'style="display:inline-block"');
+		form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="demand_offline">
 <input type="submit" value="<?=_("Demand secret voting for this issue")?>">
@@ -305,7 +336,7 @@ function arguments($side, $parent) {
 	$sql .= "	WHERE proposal=".intval($proposal->id)."
 			AND side=".m($side)."
 			AND parent=".intval($parent)."
-		ORDER BY rating DESC, arguments.created";
+		ORDER BY removed, rating DESC, arguments.created";
 	$result = DB::query($sql);
 	if (!pg_num_rows($result) and @$_GET['argument_parent']!=$parent) return;
 
@@ -321,7 +352,7 @@ function arguments($side, $parent) {
 <?
 
 		// author and form
-		if (Login::$member and $member->id==Login::$member->id and @$_GET['argument_edit']==$argument->id) {
+		if (Login::$member and $member->id==Login::$member->id and @$_GET['argument_edit']==$argument->id and !$argument->removed) {
 ?>
 		<div class="author"><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
 <?
@@ -329,7 +360,7 @@ function arguments($side, $parent) {
 ?>
 		<div class="time"><?=strtr(_("This argument can be updated until %datetime%."), array('%datetime%'=>datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL)))?></div>
 <?
-				form(URI::$uri, 'class="argument"');
+				form(URI::append(array('argument_edit'=>$argument->id)), 'class="argument"');
 ?>
 <a name="argument<?=$argument->id?>"></a>
 <input name="title" type="text" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
@@ -348,8 +379,8 @@ function arguments($side, $parent) {
 			}
 		} else {
 ?>
-		<div class="author"><?
-			if (Login::$member and $member->id==Login::$member->id and strtotime($argument->created) > $edit_limit) {
+		<div class="author<?=$argument->removed?' removed':''?>"><?
+			if (Login::$member and $member->id==Login::$member->id and strtotime($argument->created) > $edit_limit and !$argument->removed) {
 				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>"><?=_("edit")?></a> <?
 			}
 			?><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
@@ -361,21 +392,29 @@ function arguments($side, $parent) {
 		if ($display_content) {
 			if ($argument->updated) {
 ?>
-		<div class="author"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
+		<div class="author<?=$argument->removed?' removed':''?>"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
 <?
 			}
+			if ($argument->removed) {
+?>
+		<h3 class="removed"><a class="anchor" name="argument<?=$argument->id?>"></a>&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
+<?
+			} else {
 ?>
 		<h3><a class="anchor" name="argument<?=$argument->id?>"></a><?=h($argument->title)?></h3>
 		<p><?=content2html($argument->content)?></p>
 <?
+			}
 		}
 
-		// rating and reply
-		if (Login::$member and @$_GET['argument_parent']!=$argument->id) {
+		// reply
+		if (Login::$member and @$_GET['argument_parent']!=$argument->id and !$argument->removed) {
 ?>
 		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form"><?=_("Reply")?></a></div>
 <?
 		}
+
+		// rating and remove/restore
 		if ($argument->plus) {
 			?><span class="plus<? if (Login::$member and $argument->positive===true) { ?> me<? } ?>">+<?=$argument->plus?></span> <?
 		}
@@ -385,31 +424,58 @@ function arguments($side, $parent) {
 		if ($argument->plus and $argument->minus) {
 			?><span class="rating">=<?=$argument->rating?></span> <?
 		}
-		if (Login::$member and $argument->member!=Login::$member->id) { // don't allow to rate ones own arguments
-			if ($argument->positive!==null) {
-				form(URI::$uri, 'class="button"');
+		if (Login::$member) {
+			if (
+				// don't allow to rate ones own arguments
+				$argument->member!=Login::$member->id and
+				// don't allow to rate removed arguments
+				!$argument->removed
+			) {
+				$uri = URI::same();
+				if ($argument->positive!==null) {
+					form($uri, 'class="button"');
 ?>
 <input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="rating_reset">
 <input type="submit" value="<?=_("reset")?>">
 </form>
 <?
-			} else {
-				form(URI::$uri, 'class="button"');
+				} else {
+					form($uri, 'class="button"');
 ?>
 <input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="rating_plus">
 <input type="submit" value="+1">
 </form>
 <?
-				form(URI::$uri, 'class="button"');
+					form($uri, 'class="button"');
 ?>
 <input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="rating_minus">
 <input type="submit" value="-1">
 </form>
 <?
+				}
 			}
+		} elseif (Login::$admin) {
+			form(URI::same(), 'class="button"');
+?>
+<input type="hidden" name="id" value="<?=$argument->id?>">
+<?
+			if ($argument->removed) {
+?>
+<input type="hidden" name="action" value="restore_argument">
+<input type="submit" value="<?=_("restore")?>">
+<?
+			} else {
+?>
+<input type="hidden" name="action" value="remove_argument">
+<input type="submit" value="<?=_("remove")?>">
+<?
+			}
+?>
+</form>
+<?
 		}
 
 ?>
@@ -425,7 +491,7 @@ function arguments($side, $parent) {
 ?>
 	<li>
 <?
-		form(URI::$uri, 'class="argument"');
+		form(URI::append(array('argument_parent'=>$parent)), 'class="argument"');
 ?>
 <a name="form"></a>
 <div class="time"><?=_("New argument")?></div>

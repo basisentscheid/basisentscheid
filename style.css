@@ -333,6 +333,11 @@ div.arguments_side ul li p {
 div.arguments_side ul li h3 {
 	font-weight: bold;
 	background-color: #EEE;
+	margin-top: 1px;
+}
+div.arguments_side ul li h3.removed {
+	font-weight: normal;
+	font-style: italic;
 }
 div.arguments_side ul li div.time {
 	padding-left: 3px;
@@ -346,6 +351,9 @@ div.arguments_side ul li div.author {
 	padding-right: 3px;
 	padding-left: 3px;
 	background-color: #EEE;
+}
+div.arguments_side ul li .removed {
+	color: #999;
 }
 div.arguments_side ul li div.reply {
 	float: right;
