@@ -68,9 +68,6 @@ msgstr "Titel"
 msgid "Proposal"
 msgstr "Antrag"
 #
-msgid "Apply to become proponent"
-msgstr "Beantragen, als Antragsteller aufgenommen zu werden"
-#
 # File: proposal.php, line: 216
 msgid "Revoke your support for this proposal"
 msgstr "Antrag nicht mehr unterstützen"
@@ -78,12 +75,6 @@ msgstr "Antrag nicht mehr unterstützen"
 # File: proposal.php, line: 223
 msgid "Support this proposal"
 msgstr "Diesen Antrag unterstützen"
-#
-msgid "Revoke your demand for offline voting"
-msgstr "Keine geheime Abstimmung mehr fordern"
-#
-msgid "Demand offline voting"
-msgstr "Geheime Abstimmung fordern"
 #
 # File: proposal_edit.php, line: 104
 # File: proposal.php, line: 165
@@ -94,12 +85,6 @@ msgstr "Antragstext"
 # File: proposal.php, line: 167
 msgid "Reason"
 msgstr "Begründung"
-#
-msgid "Edit"
-msgstr "Bearbeiten"
-#
-msgid "Add competing proposal"
-msgstr "Konkurrierenden Antrag hinzufügen"
 #
 # File: proposals.php, line: 26
 # File: inc/functions_http.php, line: 123
@@ -115,13 +100,13 @@ msgstr "Antrag hinzufügen"
 msgid "Areas"
 msgstr "Themenbereiche"
 #
-# File: inc/functions_http.php, line: 164
+# File: inc/functions_http.php, line: 166
 msgid "Logout"
-msgstr "Abmelden"
+msgstr "abmelden"
 #
-# File: inc/functions_http.php, line: 177
+# File: inc/functions_http.php, line: 179
 msgid "Login"
-msgstr "Anmelden"
+msgstr "anmelden"
 #
 # File: inc/classes/Member.php, line: 63
 msgid "anonymous"
@@ -210,15 +195,9 @@ msgstr "abgeschlossen"
 msgid "Finished and cleared"
 msgstr "abgeschlossen und bereinigt"
 #
-# File: inc/functions_http.php, line: 240
+# File: inc/functions_http.php, line: 242
 msgid "Error"
 msgstr "Fehler"
-#
-msgid "A system error occurred"
-msgstr "Ein Systemfehler ist aufgetreten"
-#
-msgid "System Error"
-msgstr "Systemfehler"
 #
 # File: admin_areas.php, line: 17
 # File: areas.php, line: 47
@@ -291,10 +270,6 @@ msgstr "Dieser und dazu konkurrierende Anträge"
 msgid "Add alternative proposal"
 msgstr "Konkurrierenden Antrag hinzufügen"
 #
-# File: inc/functions_http.php, line: 154
-msgid "Logged in as"
-msgstr "Angemeldet als"
-#
 # File: admin_areas.php, line: 16
 # File: admins.php, line: 16
 # File: ballots.php, line: 93
@@ -346,7 +321,7 @@ msgstr "suchen"
 #
 # File: admin.php, line: 24
 msgid "Login successful"
-msgstr ""
+msgstr "Anmeldung erfolgreich"
 #
 # File: admin.php, line: 31
 msgid "Login failed"
@@ -354,7 +329,7 @@ msgstr "Anmeldung fehlgeschlagen"
 #
 # File: admin.php, line: 37
 msgid "Admin login"
-msgstr ""
+msgstr "Anmeldung als Verantwortlicher"
 #
 # File: admin.php, line: 43
 msgid "Password"
@@ -421,10 +396,6 @@ msgstr "Neuer Urnenantrag"
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
-# File: inc/functions_http.php, line: 158
-msgid "Logged in as Admin"
-msgstr "Angemeldet als Admin"
-#
 # File: proposal.php, line: 353
 # File: inc/classes/DbTableAdmin.php, line: 879
 # File: inc/classes/Issue.php, line: 487
@@ -468,15 +439,9 @@ msgstr "antworten"
 msgid "save"
 msgstr "speichern"
 #
-msgid "until"
-msgstr "bis"
-#
-msgid "Nr."
-msgstr ""
-#
 # File: local_member_login.php, line: 35
 msgid "Local member login"
-msgstr "Login als lokaler Benutzer"
+msgstr "Anmeldung als lokales Mitglied"
 #
 # File: inc/classes/DbTableAdmin.php, line: 194
 msgid "New record"
@@ -596,7 +561,7 @@ msgid "Debate starts at %datetime%"
 msgstr "Debatte startet am %datetime%"
 #
 # File: about.php, line: 12
-# File: inc/functions_http.php, line: 190
+# File: inc/functions_http.php, line: 192
 msgid "About"
 msgstr "Impressum"
 #
@@ -797,3 +762,19 @@ msgstr "%value% von momentan für geheime Abstimmung erforderlichen %required% (
 # File: inc/classes/Proposal.php, line: 267
 msgid "%value% of currently required %required% (%percent% of %population%) for admission"
 msgstr "%value% von momentan zur Zulassung erforderlichen %required% (%percent% von %population%)"
+#
+# File: inc/functions_http.php, line: 154
+msgid "logged in as %username%"
+msgstr "angemeldet als %username%"
+#
+# File: inc/functions_http.php, line: 159
+msgid "logged in as admin %username%"
+msgstr "angemeldet als Verantwortlicher %username%"
+#
+# File: inc/functions_http.php, line: 172
+msgid "Login as admin"
+msgstr "als Verantwortlicher anmelden"
+#
+# File: inc/functions_http.php, line: 173
+msgid "Login as local member"
+msgstr "als lokales Mitglied anmelden"

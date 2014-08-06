@@ -150,13 +150,15 @@ function navlink($file, $title) {
 function html_user() {
 	if (Login::$member or Login::$admin) {
 		if (Login::$member) {
-?>
-	<?=_("Logged in as")?> <a href="member.php"><?=Member::username_static(Login::$member->username)?></a>
-<?
+			echo strtr(
+				_("logged in as %username%"),
+				array("%username%"=>'<a href="member.php" class="user">'.Member::username_static(Login::$member->username).'</a>')
+			);
 		} else {
-?>
-	<?=_("Logged in as Admin")?> <a href="admin_profile.php"><?=Login::$admin->username?></a>
-<?
+			echo strtr(
+				_("logged in as admin %username%"),
+				array("%username%"=>'<span class="admin">'.Login::$admin->username.'</span>')
+			);
 		}
 		form(URI::$uri, 'class="button" style="margin-left: 10px"');
 ?>
@@ -167,8 +169,8 @@ function html_user() {
 	} else {
 		// These two links are for development and demonstration purposes only and have to be removed in live environment!
 ?>
-	<a href="admin.php">Login as admin</a>
-	<a href="local_member_login.php">Login as local member</a>
+	<a href="admin.php"><?=_("Login as admin")?></a>
+	<a href="local_member_login.php"><?=_("Login as local member")?></a>
 <?
 		// login as member via ID server
 		form("login.php", 'class="button"');

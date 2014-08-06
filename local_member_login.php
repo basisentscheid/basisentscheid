@@ -36,7 +36,7 @@ html_head(_("Local member login"));
 
 form(BN);
 ?>
-<?=_("Username")?>: <input type="text" name="username"><br>
+<?=_("Username")?>: <input type="text" name="username">
 <input type="submit">
 </form>
 

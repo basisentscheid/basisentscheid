@@ -479,6 +479,10 @@ form.login input[type=submit] {
 	padding: 10px 10px 5px 10px;
 	float: right;
 }
+#user a.user,
+#user span.admin {
+	font-weight: bold;
+}
 #foot {
 	margin: 20px 0 0 0;
 	padding: 0;
