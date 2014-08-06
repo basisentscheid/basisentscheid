@@ -65,12 +65,13 @@ table th a:visited,
 div.arguments_side a:link {
 	color: #00A;
 }
-a:hover {
+a:hover,
+a:focus {
 	color: #000;
 	outline: 1px solid #DDD;
 	background-color: #F8F8F8;
 }
-a:focus, a:active {
+a:active {
 	background-color: #F3F3F3;
 }
 
@@ -189,7 +190,8 @@ form.button {
 }
 
 a.active,
-a.active:hover {
+a.active:hover,
+a.active:focus {
 	outline: 1px solid #999;
 }
 
@@ -263,23 +265,33 @@ table.proposals td.proposal_link_active {
 }
 table.proposals td.proposal_link_active {
 	font-weight: bold;
-	border: 1px solid #999;
-}
-table.proposals td.proposal_link:hover {
-	border-color: #DDD;
+	border-color: #999;
 }
 table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link_active:hover {
-	background-color: #F8F8F8;
+table.proposals td.proposal_link:focus {
+	border-color: #DDD;
 }
 table.proposals td.proposal_link a,
 table.proposals td.proposal_link_active a {
 	text-decoration: none;
 	outline: none;
 }
+table.proposals td.proposal_link:hover,
+table.proposals td.proposal_link:focus,
+table.proposals td.proposal_link_active:hover,
+table.proposals td.proposal_link_active:focus,
 table.proposals td.proposal_link:hover a,
-table.proposals td.proposal_link_active:hover a {
+table.proposals td.proposal_link:focus a,
+table.proposals td.proposal_link_active:hover a,
+table.proposals td.proposal_link_active:focus a {
 	color: #000;
+	background-color: #F8F8F8;
+}
+table.proposals td.proposal_link:active,
+table.proposals td.proposal_link_active:active,
+table.proposals td.proposal_link:active a,
+table.proposals td.proposal_link_active:active a {
+	background-color: #F3F3F3;
 }
 
 form.proposal h2 {
@@ -468,11 +480,13 @@ form.login input[type=submit] {
 	padding: 2px 4px;
 	text-decoration: none;
 }
-#nav a:hover {
+#nav a:hover,
+#nav a:focus {
 	outline: 1px solid #EEE;
 }
 #nav a.active,
-#nav a.active:hover {
+#nav a.active:hover,
+#nav a.active:focus {
 	outline: 1px solid #999;
 }
 #user {
