@@ -291,7 +291,7 @@ abstract class DB {
 	 * @param string  $table
 	 * @param string  $where         WHERE part of the SQL statement
 	 * @param array   $fields_values (optional) Associative array with database fields as keys and unescaped values as values (optional)
-	 * @param unknown $extra         (optional)
+	 * @param string  $extra         (optional)
 	 * @return unknown
 	 */
 	public function update($table, $where, $fields_values=array(), $extra=false) {

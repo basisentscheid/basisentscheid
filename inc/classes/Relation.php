@@ -77,9 +77,10 @@ abstract class Relation {
 	 * save the changed values to the record in the database
 	 *
 	 * @param array   $fields (optional) save only these fields
+	 * @param string  $extra  (optional)
 	 * @return unknown
 	 */
-	function update( $fields=false ) {
+	function update($fields=false, $extra=false) {
 
 		if (!$fields) $fields = $this->update_fields;
 
@@ -87,7 +88,7 @@ abstract class Relation {
 			$fields_values[$field] = $this->$field;
 		}
 
-		return DB::update($this->table, "id=".intval($this->id), $fields_values);
+		return DB::update($this->table, "id=".intval($this->id), $fields_values, $extra);
 
 	}
 

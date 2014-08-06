@@ -16,6 +16,8 @@ if (!$proposal->id) {
 
 $issue = $proposal->issue();
 
+if (Login::$member) $edit_limit = strtotime("- ".ARGUMENT_EDIT_INTERVAL);
+
 if ($action) {
 	switch ($action) {
 	case "add_support":
@@ -68,7 +70,7 @@ if ($action) {
 		} else {
 			$parent = new Argument($_POST['parent']);
 			if (!$parent->id) {
-				warning("Invalid parent");
+				warning("Parent argument does not exist.");
 				redirect();
 			}
 			$argument->parent = $parent->id;
@@ -77,9 +79,46 @@ if ($action) {
 		$argument->proposal = $proposal->id;
 		$argument->member = Login::$member->id;
 		$argument->title = trim($_POST['title']);
+		if (!$argument->title) {
+			warning("The title of the argument must be not empty.");
+			break;
+		}
 		$argument->content = trim($_POST['content']);
+		if (!$argument->content) {
+			warning("The content of the argument must be not empty.");
+			break;
+		}
 		$argument->create();
-		redirect();
+		redirect(URI::strip(array("argument_parent"))."#argument".$argument->id);
+		break;
+	case "update_argument":
+		Login::access_action("member");
+		action_required_parameters("title", "content", "id");
+		$argument = new Argument($_POST['id']);
+		if (!$argument->id) {
+			warning("This argument does not exist.");
+			redirect();
+		}
+		if ($argument->member!=Login::$member->id) {
+			warning("You are not the author of the argument.");
+			redirect();
+		}
+		if (strtotime($argument->created) < $edit_limit) {
+			warning("This argument may not be updated any longer.");
+			redirect();
+		}
+		$argument->title = trim($_POST['title']);
+		if (!$argument->title) {
+			warning("The title of the argument must be not empty.");
+			break;
+		}
+		$argument->content = trim($_POST['content']);
+		if (!$argument->content) {
+			warning("The content of the argument must be not empty.");
+			break;
+		}
+		$argument->update(array("title", "content"), "updated=now()");
+		redirect(URI::strip(array("argument_edit"))."#argument".$argument->id);
 		break;
 	case "rating_plus":
 	case "rating_minus":
@@ -91,14 +130,14 @@ if ($action) {
 			redirect();
 		}
 		$argument->set_rating($action=="rating_plus");
-		redirect();
+		redirect(URI::$uri."#argument".$argument->id);
 		break;
 	case "rating_reset":
 		Login::access_action("member");
 		action_required_parameters("argument");
 		$argument = new Argument($_POST['argument']);
 		$argument->delete_rating();
-		redirect();
+		redirect(URI::$uri."#argument".$argument->id);
 		break;
 	default:
 		warning("Unknown action");
@@ -251,7 +290,7 @@ html_foot();
  * @param mixed   $parent ID of parent argument or "pro" or "contra"
  */
 function arguments($side, $parent) {
-	global $proposal;
+	global $proposal, $edit_limit;
 
 	$sql = "SELECT arguments.*, (arguments.plus - arguments.minus) AS rating";
 	if (Login::$member) {
@@ -274,58 +313,109 @@ function arguments($side, $parent) {
 <ul>
 <?
 
-	while ( $row = pg_fetch_assoc($result) ) {
-		$member = new Member($row['member']);
+	while ( $argument = DB::fetch_object($result, "Argument") ) {
+		if (Login::$member) DB::pg2bool($argument->positive);
+		$member = new Member($argument->member);
 ?>
 	<li>
-		<div class="author"><?=$member->username()?> <?=datetimeformat($row['created'])?></div>
-		<h3><?=h($row['title'])?></h3>
-		<p><?=content2html($row['content'])?></p>
 <?
-		if (Login::$member and @$_GET['argument_parent']!=$row['id']) {
+
+		// author and form
+		if (Login::$member and $member->id==Login::$member->id and @$_GET['argument_edit']==$argument->id) {
 ?>
-		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$row['id']))?>#form"><?=_("Reply")?></a></div>
+		<div class="author"><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
+<?
+			if (strtotime($argument->created) > $edit_limit) {
+?>
+		<div class="time"><?=strtr(_("This argument can be updated until %datetime%."), array('%datetime%'=>datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL)))?></div>
+<?
+				form(URI::$uri, 'class="argument"');
+?>
+<a name="argument<?=$argument->id?>"></a>
+<input name="title" type="text" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
+<textarea name="content" rows="5"><?=h(!empty($_POST['content'])?$_POST['content']:$argument->content)?></textarea><br>
+<input type="hidden" name="action" value="update_argument">
+<input type="hidden" name="id" value="<?=$argument->id?>">
+<input type="submit" value="<?=_("apply changes")?>">
+</form>
+<?
+				$display_content = false;
+			} else {
+?>
+		<div class="time"><?=_("This argument may not be updated any longer!")?></div>
+<?
+				$display_content = true;
+			}
+		} else {
+?>
+		<div class="author"><?
+			if (Login::$member and $member->id==Login::$member->id and strtotime($argument->created) > $edit_limit) {
+				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>"><?=_("edit")?></a> <?
+			}
+			?><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
+<?
+			$display_content = true;
+		}
+
+		// title and content
+		if ($display_content) {
+			if ($argument->updated) {
+?>
+		<div class="author"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
+<?
+			}
+?>
+		<h3><a class="anchor" name="argument<?=$argument->id?>"></a><?=h($argument->title)?></h3>
+		<p><?=content2html($argument->content)?></p>
 <?
 		}
-		if ($row['plus']) {
-			?><span class="plus<? if (@$row['positive']=="t") { ?> me<? } ?>">+<?=$row['plus']?></span> <?
+
+		// rating and reply
+		if (Login::$member and @$_GET['argument_parent']!=$argument->id) {
+?>
+		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form"><?=_("Reply")?></a></div>
+<?
 		}
-		if ($row['minus']) {
-			?><span class="minus<? if (@$row['positive']=="f") { ?> me<? } ?>">-<?=$row['minus']?></span> <?
+		if ($argument->plus) {
+			?><span class="plus<? if (Login::$member and $argument->positive===true) { ?> me<? } ?>">+<?=$argument->plus?></span> <?
 		}
-		if ($row['plus'] and $row['minus']) {
-			?><span class="rating">=<?=$row['rating']?></span> <?
+		if ($argument->minus) {
+			?><span class="minus<? if (Login::$member and $argument->positive===false) { ?> me<? } ?>">-<?=$argument->minus?></span> <?
 		}
-		if (Login::$member and $row['member']!=Login::$member->id) { // don't allow to rate ones own arguments
-			if ($row['positive']) {
+		if ($argument->plus and $argument->minus) {
+			?><span class="rating">=<?=$argument->rating?></span> <?
+		}
+		if (Login::$member and $argument->member!=Login::$member->id) { // don't allow to rate ones own arguments
+			if ($argument->positive!==null) {
 				form(URI::$uri, 'class="button"');
 ?>
-<input type="hidden" name="argument" value="<?=$row['id']?>">
+<input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="rating_reset">
-<input type="submit" value="reset">
+<input type="submit" value="<?=_("reset")?>">
 </form>
 <?
 			} else {
 				form(URI::$uri, 'class="button"');
 ?>
-<input type="hidden" name="argument" value="<?=$row['id']?>">
+<input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="rating_plus">
 <input type="submit" value="+1">
 </form>
 <?
 				form(URI::$uri, 'class="button"');
 ?>
-<input type="hidden" name="argument" value="<?=$row['id']?>">
+<input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="rating_minus">
 <input type="submit" value="-1">
 </form>
 <?
 			}
 		}
+
 ?>
 		<div class="clearfix"></div>
 <?
-		arguments($side, $row['id']);
+		arguments($side, $argument->id);
 ?>
 	</li>
 <?
@@ -335,11 +425,12 @@ function arguments($side, $parent) {
 ?>
 	<li>
 <?
-		form(URI::strip(array('argument_parent')), 'class="argument"');
+		form(URI::$uri, 'class="argument"');
 ?>
 <a name="form"></a>
-<input name="title" type="text"><br>
-<textarea name="content" rows="5"></textarea><br>
+<div class="time"><?=_("New argument")?></div>
+<input name="title" type="text" value="<?=h(@$_POST['title'])?>"><br>
+<textarea name="content" rows="5"><?=h(@$_POST['content'])?></textarea><br>
 <input type="hidden" name="action" value="add_argument">
 <input type="hidden" name="parent" value="<?=$parent?>">
 <input type="submit" value="<?=_("save")?>">

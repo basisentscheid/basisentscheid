@@ -47,6 +47,8 @@ define("DATETIME_FORMAT", "j.n.Y G:i"); // without timezone
 define("DATE_FORMAT", "j.n.Y");
 define("TIME_FORMAT", "G:i");
 
+define("ARGUMENT_EDIT_INTERVAL", "1 hour");
+
 define("OAUTH2_CLIENT_ID",     'example');
 define("OAUTH2_CLIENT_SECRET", 'example');
 define("OAUTH2_AUTHORIZATION_ENDPOINT", 'https://oauth2.example.com/authorize/');

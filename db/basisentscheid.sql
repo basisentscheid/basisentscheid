@@ -147,7 +147,8 @@ CREATE TABLE arguments (
     content text NOT NULL,
     plus integer DEFAULT 0 NOT NULL,
     minus integer DEFAULT 0 NOT NULL,
-    side argument_side NOT NULL
+    side argument_side NOT NULL,
+    updated timestamp with time zone
 );
 
 
