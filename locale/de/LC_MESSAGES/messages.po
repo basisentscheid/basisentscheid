@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-06 03:55+0200\n"
+"PO-Revision-Date: 2014-08-06 14:51+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -316,8 +316,6 @@ msgstr "Abstimmungsperiode"
 msgid "Voting type"
 msgstr "Abstimmungsart"
 #
-# File: inc/classes/Issue.php, line: 399
-# File: inc/classes/Proposal.php, line: 266
 msgid "%value% of currently required %required% (%percent% of %population%)"
 msgstr "%value% von momentan erforderlichen %required% (%percent% von %population%)"
 #
@@ -429,7 +427,7 @@ msgstr "Angemeldet als Admin"
 #
 # File: proposal.php, line: 353
 # File: inc/classes/DbTableAdmin.php, line: 879
-# File: inc/classes/Issue.php, line: 479
+# File: inc/classes/Issue.php, line: 487
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -589,7 +587,7 @@ msgstr "bis %datetime%"
 msgid "will be cleared on %date%"
 msgstr "wird bereinigt am %date%"
 #
-# File: inc/classes/Issue.php, line: 475
+# File: inc/classes/Issue.php, line: 483
 msgid "apply"
 msgstr "übernehmen"
 #
@@ -791,3 +789,11 @@ msgstr "bearbeitet"
 # File: proposal.php, line: 431
 msgid "New argument"
 msgstr "Neues Argument"
+#
+# File: inc/classes/Issue.php, line: 400
+msgid "%value% of currently required %required% (%percent% of %population%) for secret voting"
+msgstr "%value% von momentan für geheime Abstimmung erforderlichen %required% (%percent% von %population%)"
+#
+# File: inc/classes/Proposal.php, line: 267
+msgid "%value% of currently required %required% (%percent% of %population%) for admission"
+msgstr "%value% von momentan zur Zulassung erforderlichen %required% (%percent% von %population%)"

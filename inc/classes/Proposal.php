@@ -256,14 +256,22 @@ class Proposal extends Relation {
 
 
 	/**
-	 *
+	 * display bargraph
 	 */
 	public function bargraph_quorum() {
 		$required = $this->quorum_required();
 		bargraph(
 			$this->supporters,
 			$required,
-			strtr( _("%value% of currently required %required% (%percent% of %population%)"), array('%value%'=>$this->supporters, '%required%'=>$required, '%percent%'=>numden2percent($this->quorum_level()), '%population%'=>$this->issue()->area()->population()) ),
+			strtr(
+				_("%value% of currently required %required% (%percent% of %population%) for admission"),
+				array(
+					'%value%'      => $this->supporters,
+					'%required%'   => $required,
+					'%percent%'    => numden2percent($this->quorum_level()),
+					'%population%' => $this->issue()->area()->population()
+				)
+			),
 			"#00AA00"
 		);
 	}

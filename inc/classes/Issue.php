@@ -389,14 +389,22 @@ class Issue extends Relation {
 
 
 	/**
-	 *
+	 * display bargraph
 	 */
 	public function bargraph_secret() {
 		$required = $this->secret_required();
 		bargraph(
 			$this->secret_demanders,
 			$required,
-			strtr( _("%value% of currently required %required% (%percent% of %population%)"), array('%value%'=>$this->secret_demanders, '%required%'=>$required, '%percent%'=>numden2percent($this->secret_level()), '%population%'=>$this->area()->population()) ),
+			strtr(
+				_("%value% of currently required %required% (%percent% of %population%) for secret voting"),
+				array(
+					'%value%'      => $this->secret_demanders,
+					'%required%'   => $required,
+					'%percent%'    => numden2percent($this->secret_level()),
+					'%population%' => $this->area()->population()
+				)
+			),
 			"#FF0000"
 		);
 	}
