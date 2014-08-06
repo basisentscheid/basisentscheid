@@ -135,6 +135,18 @@ div.bargraph {
 div.bargraph div.bar {
 	float: left;
 	height: 1.8ex;
+	background-color: #EEE;
+}
+div.bargraph div.legend {
+	position: absolute;
+	z-index: 1;
+	padding: 0 2px;
+	margin: 0;
+	height: 1.8ex;
+	line-height: 1.2em;
+	font-size: 0.8em;
+	vertical-align: middle;
+	text-align: center;
 }
 div.bargraph div.clear {
 	height: 0;

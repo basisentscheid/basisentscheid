@@ -429,7 +429,7 @@ function bargraph($value, $required, $title, $color) {
 	$width_empty = $width - $width_filled;
 
 ?>
-<div class="bargraph" title="<?=$title?>"><div class="bar" style="background-color:<?=$color?>; width:<?=$width_filled?>px">&nbsp;</div><div class="bar" style="background-color:#FFFFFF; width:<?=$width_empty?>px">&nbsp;</div><div class="clear"></div></div>
+<div class="bargraph" title="<?=$title?>"><div class="bar" style="background-color:<?=$color?>; width:<?=$width_filled?>px">&nbsp;</div><div class="bar" style="width:<?=$width_empty?>px">&nbsp;</div><div class="legend" style="width:<?=$width-4?>px"><?=$value?>/<?=$required?></div><div class="clear"></div></div>
 <?
 
 }
