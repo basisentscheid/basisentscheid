@@ -368,12 +368,14 @@ class Issue extends Relation {
 				if (Login::$admin) {
 ?>
 		<td rowspan="<?=$num_rows?>" align="center"><?
-					if ( !$this->display_edit_state() ) echo $this->period;
+					if ( !$this->display_edit_state() ) {
+						?><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a><?
+					}
 					?></td>
 <?
 				} elseif ($period_rowspan) {
 ?>
-		<td rowspan="<?=$period_rowspan?>" align="center"><?=$this->period?></td>
+		<td rowspan="<?=$period_rowspan?>" align="center"><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a></td>
 <?
 				}
 ?>

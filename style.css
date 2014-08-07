@@ -123,6 +123,9 @@ tfoot td {
 .td1 {
 	background-color: #EEE;
 }
+tr.highlight {
+	background-color: #F8B;
+}
 
 a {
 	padding: 0 3px 1px 3px;

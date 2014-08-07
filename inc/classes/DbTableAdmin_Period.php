@@ -11,6 +11,107 @@ class DbTableAdmin_Period extends DbTableAdmin {
 
 
 	/**
+	 * table body
+	 *
+	 * overload method for line highlighting
+	 *
+	 * @param resource $result
+	 * @param boolean $direct_edit
+	 * @param boolean $show_edit_column
+	 * @param integer $linescount
+	 */
+	protected function display_list_tbody($result, $direct_edit, $show_edit_column, $linescount) {
+?>
+<tbody>
+<?
+
+		if ($this->enable_pager) {
+			$this->pager->seek($result);
+			$line = $this->pager->firstline;
+		} else {
+			$line = 0;
+		}
+		while ( $object = DB::fetch_object($result, $this->classname) and (!$this->enable_pager or $line <= $this->pager->lastline) ) {
+?>
+	<tr class="<?=stripes($line);
+			if (isset($_GET['hl']) and $_GET['hl']==$object->id) { ?> highlight<? }
+			?>">
+<?
+
+			// use the submitted values instead of the the record from the database
+			if ($direct_edit and isset($this->directedit_objects[$row['id']])) {
+				$object = $this->directedit_objects[$object->id];
+			}
+
+			foreach ( $this->columns as $column ) {
+				if (isset($column[3]) and $column[3]===false) continue;
+?>
+		<td<?=$this->cellclass($column)?>><?
+
+				$method = "print_".(!empty($column[3])?$column[3]:"text");
+				if (method_exists($this, $method)) {
+					$this->$method(
+						// parameters for print methods:
+						($column[0]?$object->$column[0]:null), // 1 content
+						$object,                               // 2 object
+						$column,                               // 3 column description (array)
+						$line,                                 // 4 line number (starting at 0)
+						$linescount                            // 5 count of lines selected in the database
+					);
+				} else {
+					$method = "dbtableadmin_".$method;
+					$object->$method(
+						// parameters for print methods:
+						($column[0]?$object->$column[0]:null), // 1 content
+						$column,                               // 2 column description (array)
+						$line,                                 // 3 line number (starting at 0)
+						$linescount                            // 4 count of lines selected in the database
+					);
+				}
+				?>	</td>
+<?
+			}
+
+			// right column for edit, delete, duplicate
+			if ($show_edit_column) {
+?>
+		<td class="nowrap">
+<?
+				// edit
+				if ($this->enable_edit) {
+?>
+			<a href="<?=URI::append(array('id'=>$object->id))?>"><?=_("edit")?></a>
+<?
+				}
+				// duplicate
+				if ($this->enable_duplicate) {
+?>
+			<input type="button" value="<?=_("duplicate")?>" onclick="submit_button('duplicate', <?=$object->id?>);">
+<?
+				}
+				// delete
+				if ( $this->enable_delete_single or $this->enable_delete_checked ) {
+					$this->display_list_delete($object);
+				}
+?>
+		</td>
+<?
+			}
+
+?>
+	</tr>
+<?
+			$line++;
+		} // end while
+
+?>
+</tbody>
+<?
+	}
+
+
+
+	/**
 	 * link to ballots page
 	 *
 	 * @param mixed   $content
