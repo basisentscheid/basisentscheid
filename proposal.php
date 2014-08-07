@@ -304,7 +304,7 @@ if (Login::$member) {
 <?
 Issue::display_proposals_th();
 $proposals = $issue->proposals_list();
-$issue->read_secret_by_member();
+if (Login::$member) $issue->read_secret_by_member();
 $issue->display_proposals($proposals, count($proposals), $proposal->id);
 ?>
 </table>
