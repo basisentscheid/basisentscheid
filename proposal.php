@@ -227,69 +227,74 @@ if (Login::$member and @$_GET['argument_parent']!="contra") {
 	<div style="clear:both"></div>
 </div>
 
+<?
+if (Login::$member or Login::$admin) {
+?>
 <div class="quorum">
 <div style="float:left; margin-right:10px">
 <?
-$proposal->bargraph_quorum();
+	$proposal->bargraph_quorum();
 ?>
 </div>
 <b><?=_("Supporters")?>:</b> <?
-$supported_by_member = $proposal->show_supporters();
-if (Login::$member and $proposal->state=="submitted") {
+	$supported_by_member = $proposal->show_supporters();
+	if (Login::$member and $proposal->state=="submitted") {
 ?>
 <br clear="both">
 <?
-	if ($supported_by_member) {
-		form(URI::same(), 'style="background-color:green; display:inline-block"');
+		if ($supported_by_member) {
+			form(URI::same(), 'style="background-color:green; display:inline-block"');
 ?>
 &#10003; <?=_("You support this proposal.")?>
 <input type="hidden" name="action" value="revoke_support">
 <input type="submit" value="<?=_("Revoke your support for this proposal")?>">
 </form>
 <?
-	} else {
-		form(URI::same(), 'style="display:inline-block"');
+		} else {
+			form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
 </form>
 <?
+		}
 	}
-}
 ?>
 </div>
-
 <div class="quorum">
 <div style="float:left; margin-right:10px">
 <?
-$issue->bargraph_secret();
+	$issue->bargraph_secret();
 ?>
 </div>
 <b><?=_("Secret voting demanders")?>:</b> <?
-$demanded_by_member = $issue->show_offline_demanders();
-if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
+	$demanded_by_member = $issue->show_offline_demanders();
+	if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
 ?>
 <br clear="both">
 <?
-	if ($demanded_by_member) {
-		form(URI::same(), 'style="background-color:red; display:inline-block"');
+		if ($demanded_by_member) {
+			form(URI::same(), 'style="background-color:red; display:inline-block"');
 ?>
 &#10003; <?=_("You demand secret voting for this issue.")?>
 <input type="hidden" name="action" value="revoke_demand_offline">
 <input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
 </form>
 <?
-	} else {
-		form(URI::same(), 'style="display:inline-block"');
+		} else {
+			form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="demand_offline">
 <input type="submit" value="<?=_("Demand secret voting for this issue")?>">
 </form>
 <?
+		}
 	}
-}
 ?>
 </div>
+<?
+}
+?>
 
 <div style="margin-top:20px">
 <?
