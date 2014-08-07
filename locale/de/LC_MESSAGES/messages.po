@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-07 22:54+0200\n"
+"PO-Revision-Date: 2014-08-07 0:29+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -294,7 +294,6 @@ msgstr "Abstimmungsart"
 msgid "%value% of currently required %required% (%percent% of %population%)"
 msgstr "%value% von momentan erforderlichen %required% (%percent% von %population%)"
 #
-# File: proposals.php, line: 38
 msgid "All"
 msgstr "Alle"
 #
@@ -392,7 +391,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Neuer Urnenantrag"
 #
-# File: proposals.php, line: 155
+# File: proposals.php, line: 157
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -806,3 +805,7 @@ msgstr "verbleibendes Argument zeigen"
 # File: proposal.php, line: 377
 msgid "show remaining %count% arguments"
 msgstr "verbleibende %count% Argumente zeigen"
+#
+# File: proposals.php, line: 38
+msgid "Open"
+msgstr "Offen"

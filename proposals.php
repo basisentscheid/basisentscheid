@@ -35,7 +35,7 @@ $filter = @$_GET['filter'];
 $search = trim(@$_GET['search']);
 
 $filters = array(
-	'' => _("All"),
+	'' => _("Open"),
 	'admission' => _("Admission"),
 	'debate' => _("Debate"),
 	'voting' => _("Voting"),
@@ -98,6 +98,8 @@ case "voting":
 case "closed":
 	$where[] = "(issues.state='finished' OR issues.state='cleared' OR issues.state='cancelled')";
 	break;
+default: // open
+	$where[] = "(issues.state!='finished' AND issues.state!='cleared' AND issues.state!='cancelled')";
 }
 
 if ($search) {
