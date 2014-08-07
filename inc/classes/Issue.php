@@ -18,7 +18,7 @@ class Issue extends Relation {
 	private $area_obj;
 	private $period_obj;
 
-	protected $boolean_fields = array("secret_reached");
+	protected $boolean_fields = array("secret_reached", "secret_by_member");
 	protected $create_fields = array("area");
 
 
@@ -73,6 +73,18 @@ class Issue extends Relation {
 			$proposals[] = $proposal;
 		}
 		return $proposals;
+	}
+
+
+	/**
+	 * look if the logged in member demands secret voting
+	 */
+	public function read_secret_by_member() {
+
+		$sql = "SELECT * FROM offline_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
+		$result = DB::query($sql);
+		$this->secret_by_member = ( pg_num_rows($result) == true );
+
 	}
 
 
@@ -246,9 +258,16 @@ class Issue extends Relation {
 	 */
 	public function proposals_list() {
 
-		$sql = "SELECT * FROM proposals
-			WHERE issue=".intval($this->id)."
-			ORDER BY state DESC, id";
+		if (Login::$member) {
+			$sql = "SELECT proposals.*, supporters.member AS supported_by_member FROM proposals
+					LEFT JOIN supporters ON proposals.id = supporters.proposal AND supporters.member = ".intval(Login::$member->id)."
+				WHERE issue=".intval($this->id)."
+				ORDER BY state DESC, id";
+		} else {
+			$sql = "SELECT * FROM proposals
+				WHERE issue=".intval($this->id)."
+				ORDER BY state DESC, id";
+		}
 		$result = DB::query($sql);
 		$proposals = array();
 		while ( $proposal = DB::fetch_object($result, "Proposal") ) {
@@ -325,6 +344,9 @@ class Issue extends Relation {
 					if ($proposal->state=="submitted") {
 						$proposal->bargraph_quorum();
 					}
+					if ($proposal->supported_by_member) {
+						?> &#10003;<?
+					}
 					?></td>
 <?
 				}
@@ -364,6 +386,9 @@ class Issue extends Relation {
 					$this->state=="debate"
 				) {
 					$this->bargraph_secret();
+					if ($this->secret_by_member) {
+						?> &#10003;<?
+					}
 				} else {
 					echo _("Online");
 				}

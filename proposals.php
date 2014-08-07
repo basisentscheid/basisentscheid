@@ -71,8 +71,14 @@ Issue::display_proposals_th();
 
 $pager = new Pager;
 
-$sql = "SELECT issues.*
-	FROM issues";
+if (Login::$member) {
+	$sql = "SELECT issues.*, offline_demanders.member AS secret_by_member
+		FROM issues
+		LEFT JOIN offline_demanders ON issues.id = offline_demanders.issue AND offline_demanders.member = ".intval(Login::$member->id);
+} else {
+	$sql = "SELECT issues.*
+		FROM issues";
+}
 
 $where = array();
 $order_by = " ORDER BY issues.id DESC";

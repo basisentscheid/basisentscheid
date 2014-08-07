@@ -22,7 +22,7 @@ class Proposal extends Relation {
 
 	private $issue_obj;
 
-	protected $boolean_fields = array("quorum_reached");
+	protected $boolean_fields = array("quorum_reached", "supported_by_member");
 	protected $update_fields = array("proponents", "title", "content", "reason");
 
 
