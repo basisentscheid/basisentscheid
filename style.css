@@ -197,6 +197,18 @@ div.help {
 div.help p {
 	margin: 5px 0;
 }
+div.help form.hide_help {
+	background-color: #FFE;
+	padding: 0 0 3px 5px;
+	margin: 0;
+	float: right;
+}
+form.show_help {
+	background-color: #FFE;
+	padding: 2px 5px;
+	margin: 0 0 5px 3px;
+	float: right;
+}
 
 div.bargraph {
 	border: 2px groove black;

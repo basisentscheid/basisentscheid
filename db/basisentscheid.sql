@@ -266,7 +266,8 @@ CREATE TABLE members (
     auid character(36) NOT NULL,
     username character varying(32),
     participant boolean DEFAULT false NOT NULL,
-    activated date
+    activated date,
+    hide_help text DEFAULT ''::text NOT NULL
 );
 
 

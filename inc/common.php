@@ -56,7 +56,16 @@ if ($action) {
 }
 
 // action on all pages
-if ($action=="logout") {
+switch ($action) {
+case "logout":
 	Login::logout();
+	redirect();
+case "hide_help":
+	Login::access_action("member");
+	Login::$member->hide_help(BN);
+	redirect();
+case "show_help":
+	Login::access_action("member");
+	Login::$member->show_help(BN);
 	redirect();
 }

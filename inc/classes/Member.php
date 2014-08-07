@@ -82,4 +82,33 @@ class Member extends Relation {
 	}
 
 
+	/**
+	 * hide help on a page
+	 *
+	 * @param string  $bn
+	 */
+	public function hide_help($bn) {
+		$pages = explode_no_empty(",", $this->hide_help);
+		$pages[] = $bn;
+		$pages = array_unique($pages);
+		$this->hide_help = join(",", $pages);
+		$this->update(array("hide_help"));
+	}
+
+
+	/**
+	 * hide help on a page
+	 *
+	 * @param string  $bn
+	 */
+	public function show_help($bn) {
+		$pages = explode_no_empty(",", $this->hide_help);
+		foreach ( $pages as $key => $page ) {
+			if ($page==$bn) unset($pages[$key]);
+		}
+		$this->hide_help = join(",", $pages);
+		$this->update(array("hide_help"));
+	}
+
+
 }

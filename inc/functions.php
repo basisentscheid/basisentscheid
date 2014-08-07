@@ -202,3 +202,16 @@ function numden2percent(array $numden) {
 function boolean($value) {
 	if ($value=="t") return "&#10003;";
 }
+
+
+/**
+ * split a string into an array
+ *
+ * @param string  $delimiter
+ * @param string  $string
+ * @return array
+ */
+function explode_no_empty($delimiter, $string) {
+	if ($string) return explode($delimiter, $string);
+	return array();
+}

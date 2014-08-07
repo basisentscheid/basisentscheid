@@ -454,14 +454,34 @@ function stripes($change=false, $suffix="") {
 /**
  * display help text
  *
+ * This function should not be used on pages with forms, because users will lose their already filled in data if they click on the help buttons.
+ *
  * @param string  $text
  */
 function help($text) {
+	if (Login::$member) {
+		$pages = explode_no_empty(",", Login::$member->hide_help);
+		if (in_array(BN, $pages)) {
+			form(URI::same(), 'class="show_help"');
+?>
+<input type="hidden" name="action" value="show_help">
+<input type="submit" value="<?=_("show help")?>">
+</form>
+<?
+		} else {
 ?>
 <div class="help">
+<?
+			form(URI::same(), 'class="hide_help"');
+?>
+<input type="hidden" name="action" value="hide_help">
+<input type="submit" value="<?=_("hide help")?>">
+</form>
 <?=strtr($text, array("\n\n"=>"<p>"))?>
 </div>
 <?
+		}
+	}
 }
 
 
