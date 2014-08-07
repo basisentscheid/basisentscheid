@@ -6,7 +6,7 @@ style guide:
 - colors upper case #07F or #0A7CF3
 */
 
-/* 1. common definitions without id or class */
+/* 1. common page layout */
 
 body {
 	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
@@ -15,6 +15,79 @@ body {
 	margin: 5px 20px 5px 20px;
 	padding: 0;
 }
+
+/* for compatibility with older browsers */
+header, footer, nav {
+	display: block;
+}
+
+header {
+	background-color: #FFF;
+	margin: 0;
+}
+
+#logo {
+	padding: 9px 15px;
+	margin: 0;
+	float: left;
+	font-weight: bold;
+	font-size: 120%;
+}
+#logo,
+#logo a:link,
+#logo a:visited {
+	color: #FFF;
+	background-color: #AAA;
+	text-decoration: none;
+}
+
+nav {
+	padding: 9px 20px;
+	float: left;
+}
+nav ul,
+nav li {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+nav a {
+	font-size: 110%;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+nav a:hover,
+nav a:focus {
+	outline: 1px solid #EEE;
+}
+nav a.active,
+nav a.active:hover,
+nav a.active:focus {
+	outline: 1px solid #999;
+}
+
+#user {
+	padding: 10px 10px 5px 10px;
+	float: right;
+}
+#user a.user,
+#user span.admin {
+	font-weight: bold;
+}
+
+footer {
+	margin: 20px 0 0 0;
+	padding: 0;
+	border-top: 2px #FFF solid;
+	text-align: right;
+}
+footer a:link,
+footer a:visited {
+	color: #888;
+}
+
+
+/* 2. common definitions without id or class */
 
 th, td {
 	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
@@ -61,7 +134,7 @@ a:link,
 div.filter a:visited,
 div.add_record a:visited,
 table th a:visited,
-#head a:link,
+header a:link,
 div.arguments_side a:link {
 	color: #00A;
 }
@@ -75,14 +148,12 @@ a:active {
 	background-color: #F3F3F3;
 }
 
+
+/* 3. common class definitions */
+
 a.anchor {
 	padding: 0;
 }
-
-
-/* 2. class definitions */
-
-/* 2.1 common classes */
 
 .clearfix {
 	display: block;
@@ -222,299 +293,7 @@ div.filter {
 }
 
 
-/* 2.2 classes for specific pages */
-
-/* 2.2.1 proposals */
-
-p.proposal {
-	background-color: #FFF;
-	padding: 5px 10px;
-	margin-top: 0;
-	margin-bottom: 5px;
-}
-p.proposal_title {
-	font-weight: bold;
-	font-size: 110%;
-}
-div.quorum {
-	background-color: #DDF;
-	padding: 5px 10px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-
-table.proposals {
-	width:100%;
-	border-spacing: 1px 2px;
-}
-table.proposals tr.proposal {
-	background-color: #FFF;
-}
-table.proposals td.issue_separator {
-	height: 3px;
-	padding: 0;
-}
-
-table.proposals td.proposal_link,
-table.proposals td.proposal_link_active {
-	cursor: pointer;
-	cursor: hand;
-	padding: 2px 3px;
-	border: 1px solid #FFF;
-}
-table.proposals td.proposal_link_active {
-	font-weight: bold;
-	border-color: #999;
-}
-table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link:focus {
-	border-color: #DDD;
-}
-table.proposals td.proposal_link a,
-table.proposals td.proposal_link_active a {
-	text-decoration: none;
-	outline: none;
-}
-table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link:focus,
-table.proposals td.proposal_link_active:hover,
-table.proposals td.proposal_link_active:focus,
-table.proposals td.proposal_link:hover a,
-table.proposals td.proposal_link:focus a,
-table.proposals td.proposal_link_active:hover a,
-table.proposals td.proposal_link_active:focus a {
-	color: #000;
-	background-color: #F8F8F8;
-}
-table.proposals td.proposal_link:active,
-table.proposals td.proposal_link_active:active,
-table.proposals td.proposal_link:active a,
-table.proposals td.proposal_link_active:active a {
-	background-color: #F3F3F3;
-}
-
-form.proposal h2 {
-	font-size: 115%;
-	font-weight: normal;
-	margin-top: 5px;
-	margin-bottom: 0;
-}
-form.proposal input[type=text],
-form.proposal textarea {
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-form.proposal textarea {
-	height: 100px;
-}
-form.proposal input[type=submit] {
-	margin-top: 10px;
-}
-
-
-/* 2.2.2 arguments */
-
-div.arguments_side {
-	background-color: white;
-	width: 47%;
-	padding: 5px 10px;
-	margin: 5px 0 5px 0;
-}
-
-div.arguments_side ul li h3,
-div.arguments_side ul li p {
-	padding-left: 3px;
-	padding-right: 3px;
-	margin: 0;
-}
-div.arguments_side ul li h3 {
-	font-weight: bold;
-	background-color: #EEE;
-	margin-top: 1px;
-}
-div.arguments_side ul li h3.removed {
-	font-weight: normal;
-	font-style: italic;
-}
-div.arguments_side ul li div.time {
-	padding-left: 3px;
-	background-color: #EEE;
-	color: #666	;
-}
-div.arguments_side ul li div.author {
-	float: right;
-	clear: right;
-	font-style: italic;
-	padding-right: 3px;
-	padding-left: 3px;
-	background-color: #EEE;
-}
-div.arguments_side ul li .removed {
-	color: #999;
-}
-div.arguments_side ul li div.reply {
-	float: right;
-	clear: right;
-	margin-bottom: 4px;
-}
-div.arguments_side h2 {
-	margin-top: 0;
-}
-
-div.arguments_side ul {
-	list-style-type: none;
-	margin-left: 0px;
-	padding-left: 20px;
-}
-div.arguments_side > ul {
-	padding-left: 0;
-}
-
-div.arguments_side form.argument input[type=text],
-div.arguments_side form.argument textarea {
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-div.arguments_side form.argument a {
-	padding: 0;
-}
-
-div.arguments_side span.plus {
-	color: #080;
-	padding-left: 3px;
-}
-div.arguments_side span.minus {
-	color: #A00;
-	padding-left: 3px;
-}
-div.arguments_side span.rating {
-	color: #666;
-}
-div.arguments_side span.me {
-	font-weight: bold;
-}
-
-
-/* 2.2.3 ballots */
-
-form.edit_ballot input[type=text] {
-	width: 100%;
-}
-form.edit_ballot input[type=submit] {
-	margin-top: 10px;
-}
-
-
-/*  2.2.4 login */
-
-form.login {
-	margin-top: 10px;
-	margin-bottom: 20px;
-}
-form.login fieldset {
-	display: inline-block;
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-form.login label {
-	display: block;
-	margin: 1px 0;
-	padding: 0;
-	white-space: nowrap;
-}
-form.login label span.label {
-	display: inline-block;
-	vertical-align: middle;
-	width: 100px;
-	width: 10rem;
-	text-align: right;
-	margin: 2px    0 2px    5px;
-	margin: 0.2rem 0 0.2rem 0.5rem;
-}
-form.login label span.input {
-	display: inline-block;
-	vertical-align: middle;
-	margin: 2px    3px    2px    5px;
-	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
-}
-form.login input[type=text],
-form.login input[type=password] {
-	width: 140px;
-	width: 14rem;
-}
-form.login div {
-	display: inline-block;
-	margin-top: 5px;
-	width: 259px;
-	width: 25.9rem;
-}
-form.login input[type=submit] {
-	margin-left: 10.9rem;
-}
-
-
-/* 3. id definitions */
-
-#head {
-	background-color: #FFF;
-	margin: 0;
-}
-#logo {
-	padding: 9px 15px;
-	margin: 0;
-	float: left;
-	font-weight: bold;
-	font-size: 120%;
-}
-#logo,
-#logo a:link,
-#logo a:visited {
-	color: #FFF;
-	background-color: #AAA;
-	text-decoration: none;
-}
-#nav {
-	padding: 9px 20px;
-	float: left;
-}
-#nav a {
-	font-size: 110%;
-	padding: 2px 4px;
-	text-decoration: none;
-}
-#nav a:hover,
-#nav a:focus {
-	outline: 1px solid #EEE;
-}
-#nav a.active,
-#nav a.active:hover,
-#nav a.active:focus {
-	outline: 1px solid #999;
-}
-#user {
-	padding: 10px 10px 5px 10px;
-	float: right;
-}
-#user a.user,
-#user span.admin {
-	font-weight: bold;
-}
-#foot {
-	margin: 20px 0 0 0;
-	padding: 0;
-	border-top: 2px #FFF solid;
-	text-align: right;
-}
-#foot a {
-	color: #888;
-}
-
+/* 4. id definitions */
 
 #dbtableadmin,
 div.tableblock {
@@ -609,4 +388,241 @@ div.tableblock table {
 }
 #dbtableadmin_editform div.buttons {
 	margin-top: 5px;
+}
+
+
+/* 5. classes for specific pages */
+
+/* 5.1 proposals */
+
+p.proposal {
+	background-color: #FFF;
+	padding: 5px 10px;
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+p.proposal_title {
+	font-weight: bold;
+	font-size: 110%;
+}
+div.quorum {
+	background-color: #DDF;
+	padding: 5px 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+
+table.proposals {
+	width:100%;
+	border-spacing: 1px 2px;
+}
+table.proposals tr.proposal {
+	background-color: #FFF;
+}
+table.proposals td.issue_separator {
+	height: 3px;
+	padding: 0;
+}
+
+table.proposals td.proposal_link,
+table.proposals td.proposal_link_active {
+	cursor: pointer;
+	cursor: hand;
+	padding: 2px 3px;
+	border: 1px solid #FFF;
+}
+table.proposals td.proposal_link_active {
+	font-weight: bold;
+	border-color: #999;
+}
+table.proposals td.proposal_link:hover,
+table.proposals td.proposal_link:focus {
+	border-color: #DDD;
+}
+table.proposals td.proposal_link a,
+table.proposals td.proposal_link_active a {
+	text-decoration: none;
+	outline: none;
+}
+table.proposals td.proposal_link:hover,
+table.proposals td.proposal_link:focus,
+table.proposals td.proposal_link_active:hover,
+table.proposals td.proposal_link_active:focus,
+table.proposals td.proposal_link:hover a,
+table.proposals td.proposal_link:focus a,
+table.proposals td.proposal_link_active:hover a,
+table.proposals td.proposal_link_active:focus a {
+	color: #000;
+	background-color: #F8F8F8;
+}
+table.proposals td.proposal_link:active,
+table.proposals td.proposal_link_active:active,
+table.proposals td.proposal_link:active a,
+table.proposals td.proposal_link_active:active a {
+	background-color: #F3F3F3;
+}
+
+form.proposal h2 {
+	font-size: 115%;
+	font-weight: normal;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+form.proposal input[type=text],
+form.proposal textarea {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+form.proposal textarea {
+	height: 100px;
+}
+form.proposal input[type=submit] {
+	margin-top: 10px;
+}
+
+
+/* 5.2 arguments */
+
+div.arguments_side {
+	background-color: white;
+	width: 47%;
+	padding: 5px 10px;
+	margin: 5px 0 5px 0;
+}
+
+div.arguments_side ul li h3,
+div.arguments_side ul li p {
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0;
+}
+div.arguments_side ul li h3 {
+	font-weight: bold;
+	background-color: #EEE;
+	margin-top: 1px;
+}
+div.arguments_side ul li h3.removed {
+	font-weight: normal;
+	font-style: italic;
+}
+div.arguments_side ul li div.time {
+	padding-left: 3px;
+	background-color: #EEE;
+	color: #666	;
+}
+div.arguments_side ul li div.author {
+	float: right;
+	clear: right;
+	font-style: italic;
+	padding-right: 3px;
+	padding-left: 3px;
+	background-color: #EEE;
+}
+div.arguments_side ul li .removed {
+	color: #999;
+}
+div.arguments_side ul li div.reply {
+	float: right;
+	clear: right;
+	margin-bottom: 4px;
+}
+div.arguments_side h2 {
+	margin-top: 0;
+}
+
+div.arguments_side ul {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 20px;
+}
+div.arguments_side > ul {
+	padding-left: 0;
+}
+
+div.arguments_side form.argument input[type=text],
+div.arguments_side form.argument textarea {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+div.arguments_side form.argument a {
+	padding: 0;
+}
+
+div.arguments_side span.plus {
+	color: #080;
+	padding-left: 3px;
+}
+div.arguments_side span.minus {
+	color: #A00;
+	padding-left: 3px;
+}
+div.arguments_side span.rating {
+	color: #666;
+}
+div.arguments_side span.me {
+	font-weight: bold;
+}
+
+
+/* 5.3 ballots */
+
+form.edit_ballot input[type=text] {
+	width: 100%;
+}
+form.edit_ballot input[type=submit] {
+	margin-top: 10px;
+}
+
+
+/* 5.4 login */
+
+form.login {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+form.login fieldset {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+form.login label {
+	display: block;
+	margin: 1px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+form.login label span.label {
+	display: inline-block;
+	vertical-align: middle;
+	width: 100px;
+	width: 10rem;
+	text-align: right;
+	margin: 2px    0 2px    5px;
+	margin: 0.2rem 0 0.2rem 0.5rem;
+}
+form.login label span.input {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 2px    3px    2px    5px;
+	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
+}
+form.login input[type=text],
+form.login input[type=password] {
+	width: 140px;
+	width: 14rem;
+}
+form.login div {
+	display: inline-block;
+	margin-top: 5px;
+	width: 259px;
+	width: 25.9rem;
+}
+form.login input[type=submit] {
+	margin-left: 10.9rem;
 }

@@ -137,7 +137,7 @@ while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastlin
 // display issues and proposals
 foreach ( $issues as $i => $issue ) {
 ?>
-		<tr><td colspan="<?= $period_rowspan[$i] ? 6 : 5 ?>" class="issue_separator"></td></tr>
+	<tr><td colspan="<?= $period_rowspan[$i] ? 6 : 5 ?>" class="issue_separator"></td></tr>
 <?
 	$issue->display_proposals($proposals_issue[$i], $period_rowspan[$i]);
 }

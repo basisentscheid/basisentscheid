@@ -55,13 +55,13 @@ function html_head($title) {
 <!DOCTYPE html>
 <html>
 <head>
- <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
- <link rel="stylesheet" media="all" type="text/css" href="style<?=@$_SESSION['style']?>.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" media="all" type="text/css" href="style<?=@$_SESSION['style']?>.css">
 <? if (Login::$admin) { ?>
- <link rel="stylesheet" media="all" type="text/css" href="admin<?=@$_SESSION['style']?>.css">
+	<link rel="stylesheet" media="all" type="text/css" href="admin<?=@$_SESSION['style']?>.css">
 <? } ?>
- <link rel="icon" href="/favicon.ico" type="image/x-icon">
- <title><?=h($title)?></title>
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+	<title><?=h($title)?></title>
 </head>
 <body>
 
@@ -78,16 +78,27 @@ BN: <?=BN."\n"?>
 	}
 ?>
 
-<div id="head">
+<header>
 	<div id="logo"><a href="<?=DOCROOT?>index.php">Basisentscheid</a></div>
-	<div id="nav">
-<? html_navigation(); ?>
-	</div>
+	<nav>
+		<ul>
+<?
+	navlink('proposals.php', _("Proposals"));
+	navlink('periods.php', _("Periods"));
+	if (Login::$admin) {
+		navlink( 'admin_areas.php', _("Areas"));
+		navlink( 'admins.php', _("Admins"));
+	} else {
+		navlink( 'areas.php', _("Areas"));
+	}
+?>
+		</ul>
+	</nav>
 	<div id="user">
 <? html_user(); ?>
 	</div>
 	<div class="clearfix"></div>
-</div>
+</header>
 
 <h1><?=h($title)?></h1>
 
@@ -117,21 +128,6 @@ BN: <?=BN."\n"?>
 
 
 /**
- * display the navigation
- */
-function html_navigation() {
-	navlink('proposals.php', _("Proposals"));
-	navlink('periods.php', _("Periods"));
-	if (Login::$admin) {
-		navlink( 'admin_areas.php', _("Areas"));
-		navlink( 'admins.php', _("Admins"));
-	} else {
-		navlink( 'areas.php', _("Areas"));
-	}
-}
-
-
-/**
  * one navigation link
  *
  * @param string  $file
@@ -139,7 +135,7 @@ function html_navigation() {
  */
 function navlink($file, $title) {
 ?>
-		<a href="<?=$file?>"<? if (BN==$file) { ?> class="active"<? } ?>><?=$title?></a>
+			<li><a href="<?=$file?>"<? if (BN==$file) { ?> class="active"<? } ?>><?=$title?></a></li>
 <?
 }
 
@@ -189,7 +185,7 @@ function html_user() {
 function html_foot() {
 ?>
 
-<div id="foot"><a href="about.php"><?=_("About")?></a></div>
+<footer><a href="about.php"><?=_("About")?></a></footer>
 </body>
 </html>
 <?

@@ -277,8 +277,8 @@ class Issue extends Relation {
 			$link = "proposal.php?id=".$proposal->id;
 
 ?>
-		<tr class="proposal">
-			<td class="proposal_link<?
+	<tr class="proposal">
+		<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
 			switch ($proposal->state) {
 			case "revoked":
@@ -305,7 +305,7 @@ class Issue extends Relation {
 							if ($p->state=="admitted") $num_admitted_rows++;
 						}
 ?>
-			<td rowspan="<?=$num_admitted_rows?>" align="center"><?=$proposal->state_name();
+		<td rowspan="<?=$num_admitted_rows?>" align="center"><?=$proposal->state_name();
 						if ($this->period) {
 							?><br><span class="stateinfo"><?
 							echo strtr(
@@ -321,7 +321,7 @@ class Issue extends Relation {
 				} else {
 					// submitted, cancelled, revoked, done
 ?>
-			<td align="center"><?=$proposal->state_name();
+		<td align="center"><?=$proposal->state_name();
 					if ($proposal->state=="submitted") {
 						$proposal->bargraph_quorum();
 					}
@@ -332,7 +332,7 @@ class Issue extends Relation {
 				// issue states
 				if ($first) {
 ?>
-			<td rowspan="<?=$num_rows?>" align="center"><?=$this->state_name();
+		<td rowspan="<?=$num_rows?>" align="center"><?=$this->state_name();
 					if ( $state_info = $this->state_info() ) {
 						?><br><span class="stateinfo"><?=$state_info?></span><?
 					}
@@ -345,17 +345,17 @@ class Issue extends Relation {
 			if ($first) {
 				if (Login::$admin) {
 ?>
-			<td rowspan="<?=$num_rows?>" align="center"><?
+		<td rowspan="<?=$num_rows?>" align="center"><?
 					if ( !$this->display_edit_state() ) echo $this->period;
 					?></td>
 <?
 				} elseif ($period_rowspan) {
 ?>
-			<td rowspan="<?=$period_rowspan?>" align="center"><?=$this->period?></td>
+		<td rowspan="<?=$period_rowspan?>" align="center"><?=$this->period?></td>
 <?
 				}
 ?>
-			<td rowspan="<?=$num_rows?>" align="center"><?
+		<td rowspan="<?=$num_rows?>" align="center"><?
 
 				if ($this->secret_reached) {
 					echo _("Secret");
@@ -369,7 +369,7 @@ class Issue extends Relation {
 				}
 
 				?></td>
-			<td rowspan="<?=$num_rows?>"><?
+		<td rowspan="<?=$num_rows?>"><?
 				if ($this->vote!==null) {
 					// voting results
 					echo $this->vote;
@@ -379,7 +379,7 @@ class Issue extends Relation {
 			}
 
 ?>
-		</tr>
+	</tr>
 <?
 
 			$first = false;
