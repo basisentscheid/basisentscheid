@@ -68,11 +68,11 @@ msgstr "Titel"
 msgid "Proposal"
 msgstr "Antrag"
 #
-# File: proposal.php, line: 247
+# File: proposal.php, line: 250
 msgid "Revoke your support for this proposal"
 msgstr "Antrag nicht mehr unterstützen"
 #
-# File: proposal.php, line: 254
+# File: proposal.php, line: 257
 msgid "Support this proposal"
 msgstr "Diesen Antrag unterstützen"
 #
@@ -223,7 +223,7 @@ msgstr "zuletzt aktiviert"
 msgid "Proponents"
 msgstr "Antragsteller"
 #
-# File: proposal.php, line: 236
+# File: proposal.php, line: 239
 msgid "Supporters"
 msgstr "Unterstützer"
 #
@@ -242,31 +242,31 @@ msgstr "Neuer Antrag"
 msgid "Edit proposal"
 msgstr "Antrag bearbeiten"
 #
-# File: proposal.php, line: 245
+# File: proposal.php, line: 248
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 #
-# File: proposal.php, line: 268
+# File: proposal.php, line: 270
 msgid "Secret voting demanders"
 msgstr "Unterstützer für geheime Abstimmung"
 #
-# File: proposal.php, line: 277
+# File: proposal.php, line: 279
 msgid "You demand secret voting for this issue."
 msgstr "Du forderst eine geheime Abstimmung bei diesem Thema"
 #
-# File: proposal.php, line: 279
+# File: proposal.php, line: 281
 msgid "Revoke your demand for secret voting"
 msgstr "Forderung nach geheimer Abstimmung zurückziehen"
 #
-# File: proposal.php, line: 286
+# File: proposal.php, line: 288
 msgid "Demand secret voting for this issue"
 msgstr "Geheime Abstimmung zu diesem Thema fordern"
 #
-# File: proposal.php, line: 302
+# File: proposal.php, line: 307
 msgid "This and alternative proposals"
 msgstr "Dieser und dazu konkurrierende Anträge"
 #
-# File: proposal.php, line: 298
+# File: proposal.php, line: 303
 msgid "Add alternative proposal"
 msgstr "Konkurrierenden Antrag hinzufügen"
 #
@@ -396,7 +396,7 @@ msgstr "Neuer Urnenantrag"
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
-# File: proposal.php, line: 385
+# File: proposal.php, line: 420
 # File: inc/classes/DbTableAdmin.php, line: 879
 # File: inc/classes/Issue.php, line: 512
 msgid "edit"
@@ -430,11 +430,11 @@ msgstr "neues Kontra-Argument hinzufügen"
 msgid "Contra"
 msgstr "Kontra"
 #
-# File: proposal.php, line: 414
+# File: proposal.php, line: 449
 msgid "Reply"
 msgstr "antworten"
 #
-# File: proposal.php, line: 503
+# File: proposal.php, line: 538
 # File: inc/classes/DbTableAdmin.php, line: 1094
 msgid "save"
 msgstr "speichern"
@@ -504,7 +504,7 @@ msgstr "Der Datensatz %id% wurde dupliziert. ID der Kopie: %insertid%"
 msgid "duplicate"
 msgstr "duplizieren"
 #
-# File: proposal.php, line: 371
+# File: proposal.php, line: 406
 # File: inc/classes/DbTableAdmin.php, line: 943
 msgid "apply changes"
 msgstr "Änderungen übernehmen"
@@ -533,7 +533,7 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposal.php, line: 441
+# File: proposal.php, line: 476
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
@@ -739,19 +739,19 @@ msgstr "Passwort (2x)"
 msgid "Admins"
 msgstr "Verantwortliche"
 #
-# File: proposal.php, line: 362
+# File: proposal.php, line: 397
 msgid "This argument can be updated until %datetime%."
 msgstr "Dieses Argument kann bis %datetime% bearbeitet werden."
 #
-# File: proposal.php, line: 377
+# File: proposal.php, line: 412
 msgid "This argument may not be updated any longer!"
 msgstr "Dieses Argument kann nicht mehr bearbeitet werden!"
 #
-# File: proposal.php, line: 396
+# File: proposal.php, line: 431
 msgid "updated"
 msgstr "bearbeitet"
 #
-# File: proposal.php, line: 498
+# File: proposal.php, line: 533
 msgid "New argument"
 msgstr "Neues Argument"
 #
@@ -779,15 +779,15 @@ msgstr "als Verantwortlicher anmelden"
 msgid "Login as local member"
 msgstr "als lokales Mitglied anmelden"
 #
-# File: proposal.php, line: 401
+# File: proposal.php, line: 436
 msgid "argument removed by admin"
 msgstr "Argument entfernt durch Verantwortliche"
 #
-# File: proposal.php, line: 469
+# File: proposal.php, line: 504
 msgid "restore"
 msgstr "zurücksetzen"
 #
-# File: proposal.php, line: 474
+# File: proposal.php, line: 509
 msgid "remove"
 msgstr "entfernen"
 #
@@ -798,3 +798,11 @@ msgstr "Hilfe zeigen"
 # File: inc/functions_http.php, line: 478
 msgid "hide help"
 msgstr "Hilfe ausblenden"
+#
+# File: proposal.php, line: 375
+msgid "show remaining argument"
+msgstr "verbleibendes Argument zeigen"
+#
+# File: proposal.php, line: 377
+msgid "show remaining %count% arguments"
+msgstr "verbleibende %count% Argumente zeigen"

@@ -211,7 +211,7 @@ if (Login::$member and @$_GET['argument_parent']!="pro") {
 }
 ?>
 		<h2><?=_("Pro")?></h2>
-		<? arguments("pro", "pro"); ?>
+		<? arguments("pro", "pro", 0); ?>
 	</div>
 	<div class="arguments_side" style="float:right">
 <?
@@ -222,7 +222,7 @@ if (Login::$member and @$_GET['argument_parent']!="contra") {
 }
 ?>
 		<h2><?=_("Contra")?></h2>
-		<? arguments("contra", "contra"); ?>
+		<? arguments("contra", "contra", 0); ?>
 	</div>
 	<div style="clear:both"></div>
 </div>
@@ -325,8 +325,9 @@ html_foot();
  *
  * @param string  $side   "pro" or "contra"
  * @param mixed   $parent ID of parent argument or "pro" or "contra"
+ * @param integer $level
  */
-function arguments($side, $parent) {
+function arguments($side, $parent, $level) {
 	global $proposal, $edit_limit;
 
 	$sql = "SELECT arguments.*, (arguments.plus - arguments.minus) AS rating";
@@ -344,13 +345,42 @@ function arguments($side, $parent) {
 			AND parent=".intval($parent)."
 		ORDER BY removed, rating DESC, arguments.created";
 	$result = DB::query($sql);
-	if (!pg_num_rows($result) and @$_GET['argument_parent']!=$parent) return;
+	$num_rows = pg_num_rows($result);
+	if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
 
 ?>
 <ul>
 <?
 
+	$i = 0;
 	while ( $argument = DB::fetch_object($result, "Argument") ) {
+		$i++;
+
+		// open remaining arguments
+		if (
+			(!defined('ARGUMENTS_LIMIT_'.$level) or $i > constant('ARGUMENTS_LIMIT_'.$level)) and
+			(!isset($_GET['open']) or !is_array($_GET['open']) or !in_array($parent, $_GET['open']))
+		) {
+			if (isset($_GET['open']) and is_array($_GET['open'])) {
+				$open = $_GET['open'];
+			} else {
+				$open = array();
+			}
+			$open[] = $parent;
+			$open = array_unique($open);
+?>
+		<a href="<?=URI::append(array('open'=>$open))?>"><?
+			$remaining = $num_rows - $i + 1;
+			if ($remaining==1) {
+				echo _("show remaining argument");
+			} else {
+				echo strtr(_("show remaining %count% arguments"), array('%count%'=>$remaining));
+			}
+			?></a>
+<?
+			break; // break while loop
+		}
+
 		if (Login::$member) DB::pg2bool($argument->positive);
 		$member = new Member($argument->member);
 ?>
@@ -487,7 +517,7 @@ function arguments($side, $parent) {
 ?>
 		<div class="clearfix"></div>
 <?
-		arguments($side, $argument->id);
+		arguments($side, $argument->id, $level+1);
 ?>
 	</li>
 <?
