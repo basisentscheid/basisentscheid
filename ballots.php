@@ -197,6 +197,7 @@ if (Login::$admin and $period->state=="ballot_application" and $pager->linescoun
 <?
 }
 
+$pager->msg_itemsperpage = _("Ballots per page");
 $pager->display();
 
 ?>

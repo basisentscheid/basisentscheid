@@ -59,6 +59,9 @@ class Pager {
 		$this->page = intval(@$_GET['page']);
 		if ( ! $this->page > 0 ) $this->page = 1; // start with page 1
 
+		// default messages
+		$this->msg_itemsperpage = _("Records per page");
+
 	}
 
 
@@ -110,10 +113,9 @@ class Pager {
 	/**
 	 * display pager
 	 *
-	 * @param string  $itemsperpage_title (optional)
-	 * @param integer $pagelinksdist      (optional)
+	 * @param integer $pagelinksdist (optional)
 	 */
-	public function display($itemsperpage_title=false, $pagelinksdist=3) {
+	public function display($pagelinksdist=3) {
 
 ?>
 <div class="pager">
@@ -126,7 +128,7 @@ class Pager {
 
 		if ( $this->linescount > 10 ) { // display the items-per-page switch only if it would change anything
 ?>
-<div class="itemsperpage"><?=$itemsperpage_title?$itemsperpage_title:_("Records per page")?>: &nbsp;&nbsp;
+<div class="itemsperpage"><?=$this->msg_itemsperpage?>: &nbsp;&nbsp;
 <?
 			foreach ( array(10, 20, 50, 100) as $i ) {
 				?><a href="<?=$linkpart?>itemsperpage=<?=$i?>"<?

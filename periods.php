@@ -32,6 +32,7 @@ $d->msg_really_delete       = _("Do you really want to delete the period %id%?")
 $d->msg_record_deleted      = _("The period %id% has been deleted.");
 $d->msg_record              = _("Period");
 $d->msg_no_record_available = _("no period available for this view");
+$d->pager->msg_itemsperpage = _("Periods per page");
 
 if (Login::$admin) {
 	$d->action($action);

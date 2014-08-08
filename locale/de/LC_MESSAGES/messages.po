@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-07 0:29+0200\n"
+"PO-Revision-Date: 2014-08-08 8:05+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr "Benutzername"
 msgid "Save"
 msgstr "Speichern"
 #
-# File: periods.php, line: 44
+# File: periods.php, line: 45
 # File: inc/functions_http.php, line: 87
 msgid "Periods"
 msgstr "Abstimmungsperioden"
@@ -112,11 +112,11 @@ msgstr "anmelden"
 msgid "anonymous"
 msgstr "anonym"
 #
-# File: inc/classes/Pager.php, line: 145
+# File: inc/classes/Pager.php, line: 147
 msgid "Pages"
 msgstr "Seiten"
 #
-# File: inc/classes/Pager.php, line: 129
+# File: inc/classes/Pager.php, line: 63
 msgid "Records per page"
 msgstr "Datensätze pro Seite"
 #
@@ -139,12 +139,12 @@ msgid "Counting"
 msgstr "Auszählung"
 #
 # File: periods.php, line: 22
-# File: inc/classes/Issue.php, line: 393
+# File: inc/classes/Issue.php, line: 395
 msgid "Online"
 msgstr "online"
 #
 # File: periods.php, line: 23
-# File: inc/classes/Issue.php, line: 383
+# File: inc/classes/Issue.php, line: 385
 msgid "Secret"
 msgstr "geheim"
 #
@@ -356,7 +356,7 @@ msgid "Opening"
 msgstr "Öffnung"
 #
 # File: periods.php, line: 24
-# File: inc/classes/DbTableAdmin_Period.php, line: 22
+# File: inc/classes/DbTableAdmin_Period.php, line: 123
 msgid "Ballots"
 msgstr "Urnen"
 #
@@ -393,11 +393,12 @@ msgstr "Neuer Urnenantrag"
 #
 # File: proposals.php, line: 157
 msgid "Issues per page"
-msgstr "Themen pro Seite"
+msgstr "Antragsblöcke pro Seite"
 #
 # File: proposal.php, line: 420
+# File: inc/classes/DbTableAdmin_Period.php, line: 83
 # File: inc/classes/DbTableAdmin.php, line: 879
-# File: inc/classes/Issue.php, line: 512
+# File: inc/classes/Issue.php, line: 514
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -499,6 +500,7 @@ msgstr "Der zu duplizierende Datensatz existiert nicht."
 msgid "The record %id% has been duplicated. ID of the copy: %insertid%"
 msgstr "Der Datensatz %id% wurde dupliziert. ID der Kopie: %insertid%"
 #
+# File: inc/classes/DbTableAdmin_Period.php, line: 89
 # File: inc/classes/DbTableAdmin.php, line: 885
 msgid "duplicate"
 msgstr "duplizieren"
@@ -551,7 +553,7 @@ msgstr "bis %datetime%"
 msgid "will be cleared on %date%"
 msgstr "wird bereinigt am %date%"
 #
-# File: inc/classes/Issue.php, line: 508
+# File: inc/classes/Issue.php, line: 510
 msgid "apply"
 msgstr "übernehmen"
 #
@@ -597,31 +599,31 @@ msgstr "Periode"
 msgid "no period available for this view"
 msgstr "In dieser Ansicht ist keine Abstimmungsperiode verfügbar."
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 39
+# File: inc/classes/DbTableAdmin_Period.php, line: 140
 msgid "The debate time is not valid!"
 msgstr "Die Zeitangabe zur Debatte ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 43
+# File: inc/classes/DbTableAdmin_Period.php, line: 144
 msgid "The preparation time is not valid!"
 msgstr "Die Zeitangabe zur Abstimmungsvorbereitung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 47
+# File: inc/classes/DbTableAdmin_Period.php, line: 148
 msgid "The voting time is not valid!"
 msgstr "Die Zeitangabe zur Abstimmung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 51
+# File: inc/classes/DbTableAdmin_Period.php, line: 152
 msgid "The counting time is not valid!"
 msgstr "Die Zeitangabe zur Auszählung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 56
+# File: inc/classes/DbTableAdmin_Period.php, line: 157
 msgid "The debate must start before the preparation!"
 msgstr "Die Debatte muss vor der Abstimmungsvorbereitung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 60
+# File: inc/classes/DbTableAdmin_Period.php, line: 161
 msgid "The preparation must start before the voting!"
 msgstr "Die Abstimmungsvorbereitung muss vor der Abstimmung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 64
+# File: inc/classes/DbTableAdmin_Period.php, line: 165
 msgid "The voting must start before the counting!"
 msgstr "Die Abstimmung muss vor der Auszählung beginnen!"
 #
@@ -673,27 +675,27 @@ msgstr "Es gab keine Urnenanträge."
 msgid "Counting/End of period"
 msgstr "Auszählung/Stichtag"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 73
+# File: inc/classes/DbTableAdmin_Period.php, line: 174
 msgid "The ballot assignment time is not valid!"
 msgstr "Die Zeitangabe zur Urnenzuordnung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 80
+# File: inc/classes/DbTableAdmin_Period.php, line: 181
 msgid "The ballot preparation time is not valid!"
 msgstr "Die Zeitangabe zur Urnenvorbereitung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 86
+# File: inc/classes/DbTableAdmin_Period.php, line: 187
 msgid "The ballot assignment must start before the ballot preparation!"
 msgstr "Die Urnenzuordnung muss vor der Urnenvorbereitung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 90
+# File: inc/classes/DbTableAdmin_Period.php, line: 191
 msgid "The ballot preparation must start before the counting!"
 msgstr "Die Urnenvorbereitung muss vor der Auszählung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 95
+# File: inc/classes/DbTableAdmin_Period.php, line: 196
 msgid "If secret voting is activated, also the ballot assignment and preparation times have to be entered!"
 msgstr "Wenn geheime Abstimmung aktiviert ist, müssen auch die Zeiten zur Urnenzuordnung und Urnenvorbereitung angegeben werden!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 103
+# File: inc/classes/DbTableAdmin_Period.php, line: 204
 msgid "Since there are already ballot applications you can not deactivate secret voting!"
 msgstr "Da bereits Urnenanträge vorhanden sind, kann die geheime Abstimmung nicht mehr deaktiviert werden!"
 #
@@ -754,7 +756,7 @@ msgstr "bearbeitet"
 msgid "New argument"
 msgstr "Neues Argument"
 #
-# File: inc/classes/Issue.php, line: 425
+# File: inc/classes/Issue.php, line: 427
 msgid "%value% of currently required %required% (%percent% of %population%) for secret voting"
 msgstr "%value% von momentan für geheime Abstimmung erforderlichen %required% (%percent% von %population%)"
 #
@@ -809,3 +811,11 @@ msgstr "verbleibende %count% Argumente zeigen"
 # File: proposals.php, line: 38
 msgid "Open"
 msgstr "Offen"
+#
+# File: ballots.php, line: 200
+msgid "Ballots per page"
+msgstr "Urnen pro Seite"
+#
+# File: periods.php, line: 35
+msgid "Periods per page"
+msgstr "Perioden pro Seite"

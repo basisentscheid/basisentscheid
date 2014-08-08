@@ -154,7 +154,8 @@ foreach ( $issues as $i => $issue ) {
 </table>
 
 <?
-$pager->display(_("Issues per page"));
+$pager->msg_itemsperpage = _("Issues per page");
+$pager->display();
 
 
 html_foot();
