@@ -7,6 +7,7 @@
  * @see about.php
  * @see admin.php
  * @see admin_areas.php
+ * @see admin_members.php
  * @see admins.php
  * @see areas.php
  * @see auth.php
@@ -16,6 +17,7 @@
  * @see local_member_login.php
  * @see login.php
  * @see member.php
+ * @see members.php
  * @see periods.php
  * @see proposal.php
  * @see proposal_edit.php

@@ -87,9 +87,11 @@ BN: <?=BN."\n"?>
 	navlink('periods.php', _("Periods"));
 	if (Login::$admin) {
 		navlink( 'admin_areas.php', _("Areas"));
+		navlink( 'admin_members.php', _("Members"));
 		navlink( 'admins.php', _("Admins"));
 	} else {
 		navlink( 'areas.php', _("Areas"));
+		navlink( 'members.php', _("Members"));
 	}
 ?>
 		</ul>
