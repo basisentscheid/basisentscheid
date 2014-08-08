@@ -16,7 +16,9 @@ if (!$period->id) {
 
 if (Login::$member) {
 	$sql = "SELECT * FROM voters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
-	$row_voters = DB::fetchassoc($sql);
+	if ( $row_voters = DB::fetchassoc($sql) ) {
+		DB::pg2bool($row_voters['agent']);
+	}
 }
 
 if ($action) {
@@ -133,11 +135,11 @@ if (!$pager->linescount) {
 ?>
 		<td>
 <?
-			if ($row_voters['ballot']==$ballot->id) {
+			if ($row_voters and $row_voters['ballot']==$ballot->id) {
 ?>
 				&#10003;
 <?
-				if ($row_voters['agent']=="t") {
+				if ($row_voters['agent']) {
 					?><?=_("You are agent for this ballot.")?><?
 				} else {
 					?><?=_("You selected this ballot for voting.")?><?
@@ -152,7 +154,7 @@ if (!$pager->linescount) {
 				}
 			} elseif (
 				// don't show select buttons if the member is agent for some ballot
-				$row_voters['agent']!="t" and (
+				(!$row_voters or !$row_voters['agent']) and (
 					$period->state=="ballot_application" or
 					($period->state=="ballot_assignment" and $ballot->approved)
 				)

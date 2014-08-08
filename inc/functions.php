@@ -200,7 +200,7 @@ function numden2percent(array $numden) {
  * @return unknown
  */
 function boolean($value) {
-	if ($value=="t") return "&#10003;";
+	if ($value) return "&#10003;";
 }
 
 
