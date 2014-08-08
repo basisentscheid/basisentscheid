@@ -21,7 +21,7 @@ if (!empty($_GET['id'])) {
 	if (!$period) {
 		error("The requested period does not exist!");
 	}
-	if ($period->current_ballot_phase()!="") {
+	if ($period->state=="ballot_assignment" or $period->state=="ballot_preparation") {
 		warning(_("In the current phase of the period ballot applications are not allowed anymore."));
 		redirect();
 	}
