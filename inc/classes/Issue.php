@@ -142,9 +142,11 @@ class Issue extends Relation {
 
 	/**
 	 *
+	 * @param boolean $anonymous
 	 */
-	function demand_secret() {
-		$sql = "INSERT INTO offline_demanders (issue, member) VALUES (".intval($this->id).", ".intval(Login::$member->id).")";
+	function demand_secret($anonymous) {
+		$sql = "INSERT INTO offline_demanders (issue, member, anonymous)
+			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).")";
 		DB::query($sql);
 		$this->update_secret_cache();
 	}
@@ -161,19 +163,33 @@ class Issue extends Relation {
 
 
 	/**
+	 * display a list of members demanding offline voting and find out if the logged in member demands offline voting fot the issue
 	 *
-	 * @return unknown
+	 * @return mixed
 	 */
 	public function show_offline_demanders() {
 		$demanded_by_member = false;
-		$sql = "SELECT member FROM offline_demanders WHERE issue=".intval($this->id);
+		$sql = "SELECT member, anonymous FROM offline_demanders WHERE issue=".intval($this->id);
 		$result = DB::query($sql);
 		resetfirst();
 		while ( $row = pg_fetch_assoc($result) ) {
-			$member = new Member($row['member']);
-			if (Login::$member and $member->id==Login::$member->id) $demanded_by_member = true;
 			if (!first()) echo ", ";
-			echo $member->username();
+			$member = new Member($row['member']);
+			if (Login::$member and $member->id==Login::$member->id) {
+				if ($row['anonymous']==DB::value_true) {
+					$demanded_by_member = "anonymous";
+					?><span class="self"><?=_("anonymous")?></span><?
+				} else {
+					$demanded_by_member = true;
+					?><span class="self"><?=$member->username()?></span><?
+				}
+			} else {
+				if ($row['anonymous']==DB::value_true) {
+					echo _("anonymous");
+				} else {
+					echo $member->username();
+				}
+			}
 		}
 		return $demanded_by_member;
 	}

@@ -9,6 +9,10 @@
 
 abstract class DB {
 
+	// values returned by fetch functions for boolean columns
+	const value_true  = "t";
+	const value_false = "f";
+
 	/**
 	 * nummer of levels into transaction - to avoid nested transactions
 	 *
@@ -57,9 +61,9 @@ abstract class DB {
 	 * @param mixed   $value (reference)
 	 */
 	public function pg2bool(&$value) {
-		if ($value==="f") {
+		if ($value===self::value_false) {
 			$value = false;
-		} elseif ($value==="t") {
+		} elseif ($value===self::value_true) {
 			$value = true;
 		}
 	}

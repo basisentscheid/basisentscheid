@@ -296,7 +296,8 @@ ALTER SEQUENCE members_id_seq OWNED BY members.id;
 
 CREATE TABLE offline_demanders (
     member integer NOT NULL,
-    issue integer NOT NULL
+    issue integer NOT NULL,
+    anonymous boolean DEFAULT false NOT NULL
 );
 
 
@@ -411,7 +412,8 @@ CREATE TABLE ratings (
 CREATE TABLE supporters (
     proposal integer NOT NULL,
     member integer NOT NULL,
-    created date DEFAULT ('now'::text)::date NOT NULL
+    created date DEFAULT ('now'::text)::date NOT NULL,
+    anonymous boolean DEFAULT false NOT NULL
 );
 
 

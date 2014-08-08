@@ -94,9 +94,11 @@ class Proposal extends Relation {
 
 	/**
 	 *
+	 * @param boolean $anonymous
 	 */
-	function add_support() {
-		$sql = "INSERT INTO supporters (proposal, member) VALUES (".intval($this->id).", ".intval(Login::$member->id).")";
+	function add_support($anonymous) {
+		$sql = "INSERT INTO supporters (proposal, member, anonymous)
+			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).")";
 		DB::query($sql);
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
@@ -205,19 +207,33 @@ class Proposal extends Relation {
 
 
 	/**
+	 * display a list of supporters and find out if the logged in member supports the proposal
 	 *
-	 * @return unknown
+	 * @return mixed
 	 */
 	public function show_supporters() {
 		$supported_by_member = false;
-		$sql = "SELECT member FROM supporters WHERE proposal=".intval($this->id);
+		$sql = "SELECT member, anonymous FROM supporters WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
 		resetfirst();
 		while ( $row = pg_fetch_assoc($result) ) {
-			$member = new Member($row['member']);
-			if (Login::$member and $member->id==Login::$member->id) $supported_by_member = true;
 			if (!first()) echo ", ";
-			echo $member->username();
+			$member = new Member($row['member']);
+			if (Login::$member and $member->id==Login::$member->id) {
+				if ($row['anonymous']===DB::value_true) {
+					$supported_by_member = "anonymous";
+					?><span class="self"><?=_("anonymous")?></span><?
+				} else {
+					$supported_by_member = true;
+					?><span class="self"><?=$member->username()?></span><?
+				}
+			} else {
+				if ($row['anonymous']===DB::value_true) {
+					echo _("anonymous");
+				} else {
+					echo $member->username();
+				}
+			}
 		}
 		return $supported_by_member;
 	}

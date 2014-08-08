@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-08 8:05+0200\n"
+"PO-Revision-Date: 2014-08-08 9:37+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -63,16 +63,16 @@ msgid "Title"
 msgstr "Titel"
 #
 # File: proposal.php, line: 180
-# File: inc/classes/Issue.php, line: 244
-# File: inc/classes/Issue.php, line: 313
+# File: inc/classes/Issue.php, line: 259
+# File: inc/classes/Issue.php, line: 328
 msgid "Proposal"
 msgstr "Antrag"
 #
-# File: proposal.php, line: 250
+# File: proposal.php, line: 256
 msgid "Revoke your support for this proposal"
 msgstr "Antrag nicht mehr unterstützen"
 #
-# File: proposal.php, line: 257
+# File: proposal.php, line: 264
 msgid "Support this proposal"
 msgstr "Diesen Antrag unterstützen"
 #
@@ -108,15 +108,21 @@ msgstr "abmelden"
 msgid "Login"
 msgstr "anmelden"
 #
+# File: proposal.php, line: 263
+# File: proposal.php, line: 301
+# File: inc/classes/Issue.php, line: 180
+# File: inc/classes/Issue.php, line: 187
 # File: inc/classes/Member.php, line: 63
+# File: inc/classes/Proposal.php, line: 224
+# File: inc/classes/Proposal.php, line: 231
 msgid "anonymous"
 msgstr "anonym"
 #
-# File: inc/classes/Pager.php, line: 147
+# File: inc/classes/Pager.php, line: 159
 msgid "Pages"
 msgstr "Seiten"
 #
-# File: inc/classes/Pager.php, line: 63
+# File: inc/classes/Pager.php, line: 64
 msgid "Records per page"
 msgstr "Datensätze pro Seite"
 #
@@ -139,12 +145,12 @@ msgid "Counting"
 msgstr "Auszählung"
 #
 # File: periods.php, line: 22
-# File: inc/classes/Issue.php, line: 395
+# File: inc/classes/Issue.php, line: 410
 msgid "Online"
 msgstr "online"
 #
 # File: periods.php, line: 23
-# File: inc/classes/Issue.php, line: 385
+# File: inc/classes/Issue.php, line: 400
 msgid "Secret"
 msgstr "geheim"
 #
@@ -242,31 +248,31 @@ msgstr "Neuer Antrag"
 msgid "Edit proposal"
 msgstr "Antrag bearbeiten"
 #
-# File: proposal.php, line: 248
+# File: proposal.php, line: 252
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 #
-# File: proposal.php, line: 270
+# File: proposal.php, line: 277
 msgid "Secret voting demanders"
 msgstr "Unterstützer für geheime Abstimmung"
 #
-# File: proposal.php, line: 279
+# File: proposal.php, line: 290
 msgid "You demand secret voting for this issue."
-msgstr "Du forderst eine geheime Abstimmung bei diesem Thema"
+msgstr "Du forderst eine geheime Abstimmung bei diesem Antragsblock"
 #
-# File: proposal.php, line: 281
+# File: proposal.php, line: 294
 msgid "Revoke your demand for secret voting"
 msgstr "Forderung nach geheimer Abstimmung zurückziehen"
 #
-# File: proposal.php, line: 288
+# File: proposal.php, line: 302
 msgid "Demand secret voting for this issue"
-msgstr "Geheime Abstimmung zu diesem Thema fordern"
+msgstr "Geheime Abstimmung zu diesem Antragsblock fordern"
 #
-# File: proposal.php, line: 307
+# File: proposal.php, line: 321
 msgid "This and alternative proposals"
 msgstr "Dieser und dazu konkurrierende Anträge"
 #
-# File: proposal.php, line: 303
+# File: proposal.php, line: 317
 msgid "Add alternative proposal"
 msgstr "Konkurrierenden Antrag hinzufügen"
 #
@@ -277,7 +283,7 @@ msgstr "Konkurrierenden Antrag hinzufügen"
 msgid "No."
 msgstr "Nr."
 #
-# File: inc/classes/Issue.php, line: 245
+# File: inc/classes/Issue.php, line: 260
 msgid "State"
 msgstr "Status"
 #
@@ -287,7 +293,7 @@ msgstr "Details"
 msgid "Voting period"
 msgstr "Abstimmungsperiode"
 #
-# File: inc/classes/Issue.php, line: 247
+# File: inc/classes/Issue.php, line: 262
 msgid "Voting type"
 msgstr "Abstimmungsart"
 #
@@ -356,7 +362,7 @@ msgid "Opening"
 msgstr "Öffnung"
 #
 # File: periods.php, line: 24
-# File: inc/classes/DbTableAdmin_Period.php, line: 123
+# File: inc/classes/DbTableAdmin_Period.php, line: 136
 msgid "Ballots"
 msgstr "Urnen"
 #
@@ -395,10 +401,10 @@ msgstr "Neuer Urnenantrag"
 msgid "Issues per page"
 msgstr "Antragsblöcke pro Seite"
 #
-# File: proposal.php, line: 420
-# File: inc/classes/DbTableAdmin_Period.php, line: 83
+# File: proposal.php, line: 434
+# File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 879
-# File: inc/classes/Issue.php, line: 514
+# File: inc/classes/Issue.php, line: 529
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -430,11 +436,11 @@ msgstr "neues Kontra-Argument hinzufügen"
 msgid "Contra"
 msgstr "Kontra"
 #
-# File: proposal.php, line: 449
+# File: proposal.php, line: 463
 msgid "Reply"
 msgstr "antworten"
 #
-# File: proposal.php, line: 538
+# File: proposal.php, line: 552
 # File: inc/classes/DbTableAdmin.php, line: 1094
 msgid "save"
 msgstr "speichern"
@@ -500,12 +506,12 @@ msgstr "Der zu duplizierende Datensatz existiert nicht."
 msgid "The record %id% has been duplicated. ID of the copy: %insertid%"
 msgstr "Der Datensatz %id% wurde dupliziert. ID der Kopie: %insertid%"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 89
+# File: inc/classes/DbTableAdmin_Period.php, line: 102
 # File: inc/classes/DbTableAdmin.php, line: 885
 msgid "duplicate"
 msgstr "duplizieren"
 #
-# File: proposal.php, line: 406
+# File: proposal.php, line: 420
 # File: inc/classes/DbTableAdmin.php, line: 943
 msgid "apply changes"
 msgstr "Änderungen übernehmen"
@@ -534,12 +540,12 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposal.php, line: 476
+# File: proposal.php, line: 490
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
 #
-# File: inc/classes/Issue.php, line: 248
+# File: inc/classes/Issue.php, line: 263
 msgid "Result"
 msgstr "Ergebnis"
 #
@@ -553,11 +559,11 @@ msgstr "bis %datetime%"
 msgid "will be cleared on %date%"
 msgstr "wird bereinigt am %date%"
 #
-# File: inc/classes/Issue.php, line: 510
+# File: inc/classes/Issue.php, line: 525
 msgid "apply"
 msgstr "übernehmen"
 #
-# File: inc/classes/Issue.php, line: 331
+# File: inc/classes/Issue.php, line: 346
 msgid "Debate starts at %datetime%"
 msgstr "Debatte startet am %datetime%"
 #
@@ -591,7 +597,7 @@ msgid "The period %id% has been deleted."
 msgstr "Die Abstimmungsperiode %id% wurde gelöscht."
 #
 # File: periods.php, line: 33
-# File: inc/classes/Issue.php, line: 246
+# File: inc/classes/Issue.php, line: 261
 msgid "Period"
 msgstr "Periode"
 #
@@ -599,31 +605,31 @@ msgstr "Periode"
 msgid "no period available for this view"
 msgstr "In dieser Ansicht ist keine Abstimmungsperiode verfügbar."
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 140
+# File: inc/classes/DbTableAdmin_Period.php, line: 153
 msgid "The debate time is not valid!"
 msgstr "Die Zeitangabe zur Debatte ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 144
+# File: inc/classes/DbTableAdmin_Period.php, line: 157
 msgid "The preparation time is not valid!"
 msgstr "Die Zeitangabe zur Abstimmungsvorbereitung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 148
+# File: inc/classes/DbTableAdmin_Period.php, line: 161
 msgid "The voting time is not valid!"
 msgstr "Die Zeitangabe zur Abstimmung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 152
+# File: inc/classes/DbTableAdmin_Period.php, line: 165
 msgid "The counting time is not valid!"
 msgstr "Die Zeitangabe zur Auszählung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 157
+# File: inc/classes/DbTableAdmin_Period.php, line: 170
 msgid "The debate must start before the preparation!"
 msgstr "Die Debatte muss vor der Abstimmungsvorbereitung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 161
+# File: inc/classes/DbTableAdmin_Period.php, line: 174
 msgid "The preparation must start before the voting!"
 msgstr "Die Abstimmungsvorbereitung muss vor der Abstimmung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 165
+# File: inc/classes/DbTableAdmin_Period.php, line: 178
 msgid "The voting must start before the counting!"
 msgstr "Die Abstimmung muss vor der Auszählung beginnen!"
 #
@@ -675,27 +681,27 @@ msgstr "Es gab keine Urnenanträge."
 msgid "Counting/End of period"
 msgstr "Auszählung/Stichtag"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 174
+# File: inc/classes/DbTableAdmin_Period.php, line: 187
 msgid "The ballot assignment time is not valid!"
 msgstr "Die Zeitangabe zur Urnenzuordnung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 181
+# File: inc/classes/DbTableAdmin_Period.php, line: 194
 msgid "The ballot preparation time is not valid!"
 msgstr "Die Zeitangabe zur Urnenvorbereitung ist nicht gültig!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 187
+# File: inc/classes/DbTableAdmin_Period.php, line: 200
 msgid "The ballot assignment must start before the ballot preparation!"
 msgstr "Die Urnenzuordnung muss vor der Urnenvorbereitung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 191
+# File: inc/classes/DbTableAdmin_Period.php, line: 204
 msgid "The ballot preparation must start before the counting!"
 msgstr "Die Urnenvorbereitung muss vor der Auszählung beginnen!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 196
+# File: inc/classes/DbTableAdmin_Period.php, line: 209
 msgid "If secret voting is activated, also the ballot assignment and preparation times have to be entered!"
 msgstr "Wenn geheime Abstimmung aktiviert ist, müssen auch die Zeiten zur Urnenzuordnung und Urnenvorbereitung angegeben werden!"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 204
+# File: inc/classes/DbTableAdmin_Period.php, line: 217
 msgid "Since there are already ballot applications you can not deactivate secret voting!"
 msgstr "Da bereits Urnenanträge vorhanden sind, kann die geheime Abstimmung nicht mehr deaktiviert werden!"
 #
@@ -740,27 +746,27 @@ msgstr "Passwort (2x)"
 msgid "Admins"
 msgstr "Verantwortliche"
 #
-# File: proposal.php, line: 397
+# File: proposal.php, line: 411
 msgid "This argument can be updated until %datetime%."
 msgstr "Dieses Argument kann bis %datetime% bearbeitet werden."
 #
-# File: proposal.php, line: 412
+# File: proposal.php, line: 426
 msgid "This argument may not be updated any longer!"
 msgstr "Dieses Argument kann nicht mehr bearbeitet werden!"
 #
-# File: proposal.php, line: 431
+# File: proposal.php, line: 445
 msgid "updated"
 msgstr "bearbeitet"
 #
-# File: proposal.php, line: 533
+# File: proposal.php, line: 547
 msgid "New argument"
 msgstr "Neues Argument"
 #
-# File: inc/classes/Issue.php, line: 427
+# File: inc/classes/Issue.php, line: 442
 msgid "%value% of currently required %required% (%percent% of %population%) for secret voting"
 msgstr "%value% von momentan für geheime Abstimmung erforderlichen %required% (%percent% von %population%)"
 #
-# File: inc/classes/Proposal.php, line: 267
+# File: inc/classes/Proposal.php, line: 282
 msgid "%value% of currently required %required% (%percent% of %population%) for admission"
 msgstr "%value% von momentan zur Zulassung erforderlichen %required% (%percent% von %population%)"
 #
@@ -780,15 +786,15 @@ msgstr "als Verantwortlicher anmelden"
 msgid "Login as local member"
 msgstr "als lokales Mitglied anmelden"
 #
-# File: proposal.php, line: 436
+# File: proposal.php, line: 450
 msgid "argument removed by admin"
 msgstr "Argument entfernt durch Verantwortliche"
 #
-# File: proposal.php, line: 504
+# File: proposal.php, line: 518
 msgid "restore"
 msgstr "zurücksetzen"
 #
-# File: proposal.php, line: 509
+# File: proposal.php, line: 523
 msgid "remove"
 msgstr "entfernen"
 #
@@ -800,11 +806,11 @@ msgstr "Hilfe zeigen"
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
-# File: proposal.php, line: 375
+# File: proposal.php, line: 389
 msgid "show remaining argument"
 msgstr "verbleibendes Argument zeigen"
 #
-# File: proposal.php, line: 377
+# File: proposal.php, line: 391
 msgid "show remaining %count% arguments"
 msgstr "verbleibende %count% Argumente zeigen"
 #
@@ -819,3 +825,11 @@ msgstr "Urnen pro Seite"
 # File: periods.php, line: 35
 msgid "Periods per page"
 msgstr "Perioden pro Seite"
+#
+# File: proposal.php, line: 250
+msgid "You support this proposal anonymously."
+msgstr "Du unterstützt diesen Antrag anonym."
+#
+# File: proposal.php, line: 288
+msgid "You demand secret voting for this issue anonymously."
+msgstr "Du forderst anonym eine geheime Abstimmung bei diesem Antragsblock."

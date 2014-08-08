@@ -25,7 +25,7 @@ if ($action) {
 	case "add_support":
 		Login::access_action("member");
 		if ($proposal->state=="submitted") {
-			$proposal->add_support();
+			$proposal->add_support(@$_POST['anonymous']==1);
 		} else {
 			warning("Support for this proposal can not be added, because it is not in the submitted phase!");
 		}
@@ -43,7 +43,7 @@ if ($action) {
 	case "demand_offline":
 		Login::access_action("member");
 		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
-			$issue->demand_secret();
+			$issue->demand_secret(@$_POST['anonymous']==1);
 		} else {
 			warning("Support for secret voting can not be added, because the proposal is not in submitted, admitted or debate phase!");
 		}
@@ -245,7 +245,13 @@ if (Login::$member or Login::$admin) {
 		if ($supported_by_member) {
 			form(URI::same(), 'style="background-color:green; display:inline-block"');
 ?>
-&#10003; <?=_("You support this proposal.")?>
+&#10003; <?
+			if ($supported_by_member==="anonymous") {
+				echo _("You support this proposal anonymously.");
+			} else {
+				echo _("You support this proposal.");
+			}
+?>
 <input type="hidden" name="action" value="revoke_support">
 <input type="submit" value="<?=_("Revoke your support for this proposal")?>">
 </form>
@@ -254,6 +260,7 @@ if (Login::$member or Login::$admin) {
 			form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support">
+<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
 <input type="submit" value="<?=_("Support this proposal")?>">
 </form>
 <?
@@ -276,7 +283,13 @@ if (Login::$member or Login::$admin) {
 		if ($demanded_by_member) {
 			form(URI::same(), 'style="background-color:red; display:inline-block"');
 ?>
-&#10003; <?=_("You demand secret voting for this issue.")?>
+&#10003; <?
+			if ($demanded_by_member==="anonymous") {
+				echo _("You demand secret voting for this issue anonymously.");
+			} else {
+				echo _("You demand secret voting for this issue.");
+			}
+?>
 <input type="hidden" name="action" value="revoke_demand_offline">
 <input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
 </form>
@@ -285,6 +298,7 @@ if (Login::$member or Login::$admin) {
 			form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="demand_offline">
+<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
 <input type="submit" value="<?=_("Demand secret voting for this issue")?>">
 </form>
 <?

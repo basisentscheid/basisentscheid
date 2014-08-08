@@ -240,6 +240,10 @@ div.bargraph div.clear {
 	clear: both;
 }
 
+span.self {
+	font-weight: bold;
+}
+
 span.datetime {
 	white-space: nowrap;
 }
