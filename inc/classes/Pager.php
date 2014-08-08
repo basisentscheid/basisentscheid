@@ -26,6 +26,7 @@ class Pager {
 	public $separator = "\n";
 	public $ellipsis = "...";
 
+	// page numbers start at 1
 	public $page;
 	private $itemsperpage;
 	public $linescount;
@@ -89,6 +90,17 @@ class Pager {
 			$this->lasthline = $this->lastline + 1;
 		}
 
+	}
+
+
+	/**
+	 * get the page on which the line will appear
+	 *
+	 * @param integer $line line number starting at 0
+	 * @return integer      page number starting at 1
+	 */
+	public function page_for_line($line) {
+		return floor($line / $this->itemsperpage) + 1;
 	}
 
 

@@ -26,6 +26,19 @@ class DbTableAdmin_Period extends DbTableAdmin {
 <?
 
 		if ($this->enable_pager) {
+
+			if (!isset($_GET['page']) and isset($_GET['hl'])) {
+				// go to the page with the record to be highlighted
+				$line = 0;
+				while ( $object = DB::fetch_object($result, $this->classname) ) {
+					if ($_GET['hl']==$object->id) {
+						$this->pager->page = $this->pager->page_for_line($line);
+						break;
+					}
+					$line++;
+				}
+			}
+
 			$this->pager->seek($result);
 			$line = $this->pager->firstline;
 		} else {
