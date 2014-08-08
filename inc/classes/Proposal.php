@@ -11,8 +11,11 @@ class Proposal extends Relation {
 
 	public $proponents;
 	public $title;
+	const title_length = 300;
 	public $content;
+	const content_length = 100000;
 	public $reason;
+	const reason_length = 100000;
 	public $issue;
 	public $state;
 	public $supporters;
@@ -96,7 +99,7 @@ class Proposal extends Relation {
 	 *
 	 * @param boolean $anonymous
 	 */
-	function add_support($anonymous) {
+	function add_support($anonymous=false) {
 		$sql = "INSERT INTO supporters (proposal, member, anonymous)
 			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).")";
 		DB::query($sql);

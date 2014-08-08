@@ -144,7 +144,7 @@ class Issue extends Relation {
 	 *
 	 * @param boolean $anonymous
 	 */
-	function demand_secret($anonymous) {
+	function demand_secret($anonymous=false) {
 		$sql = "INSERT INTO offline_demanders (issue, member, anonymous)
 			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).")";
 		DB::query($sql);

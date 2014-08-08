@@ -12,6 +12,11 @@ class Argument extends Relation {
 	public $parent;
 	public $proposal;
 
+	public $title;
+	const title_length = 100;
+	public $content;
+	const content_length = 2000;
+
 	protected $boolean_fields = array("removed");
 	protected $create_fields = array("title", "content", "proposal", "parent", "side", "member");
 

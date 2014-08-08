@@ -31,9 +31,34 @@ if ($action) {
 	action_required_parameters('proponents', 'title', 'content', 'reason');
 
 	$proposal->proponents = trim($_POST['proponents']);
+
 	$proposal->title      = trim($_POST['title']);
+	if (mb_strlen($proposal->title) > Proposal::title_length) {
+		$proposal->title = limitstr($proposal->title, Proposal::title_length);
+		warning(strtr(
+				_("The title has been truncated to the maximum allowed length of %length% characters!"),
+				array('%length%'=>Proposal::title_length)
+			));
+	}
+
 	$proposal->content    = trim($_POST['content']);
+	if (mb_strlen($proposal->content) > Proposal::content_length) {
+		$proposal->content = limitstr($proposal->content, Proposal::content_length);
+		warning(strtr(
+				_("The content has been truncated to the maximum allowed length of %length% characters!"),
+				array('%length%'=>Proposal::content_length)
+			));
+	}
+
 	$proposal->reason     = trim($_POST['reason']);
+	if (mb_strlen($proposal->reason) > Proposal::reason_length) {
+		$proposal->reason = limitstr($proposal->reason, Proposal::reason_length);
+		warning(strtr(
+				_("The reason has been truncated to the maximum allowed length of %length% characters!"),
+				array('%length%'=>Proposal::reason_length)
+			));
+	}
+
 	/*if ($proposal->id) {
 		$proposal->update();
 	} else {*/
@@ -100,11 +125,11 @@ if ($issue) {
 }
 ?>
 <h2><?=_("Title")?></h2>
-<input type="text" name="title" value="<?=h($proposal->title)?>"><br>
+<input type="text" name="title" value="<?=h($proposal->title)?>" maxlength="<?=Proposal::title_length?>"><br>
 <h2><?=_("Content")?></h2>
-<textarea name="content"><?=h($proposal->content)?></textarea><br>
+<textarea name="content" maxlength="<?=Proposal::content_length?>"><?=h($proposal->content)?></textarea><br>
 <h2><?=_("Reason")?></h2>
-<textarea name="reason"><?=h($proposal->reason)?></textarea><br>
+<textarea name="reason" maxlength="<?=Proposal::reason_length?>"><?=h($proposal->reason)?></textarea><br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
 </form>

@@ -22,6 +22,7 @@ if (Login::$member) $edit_limit = strtotime("- ".ARGUMENT_EDIT_INTERVAL);
 
 if ($action) {
 	switch ($action) {
+
 	case "add_support":
 		Login::access_action("member");
 		if ($proposal->state=="submitted") {
@@ -58,10 +59,12 @@ if ($action) {
 		}
 		redirect();
 		break;
+
 	case "select_period":
 		Login::access_action("admin");
 		action_proposal_select_period();
 		break;
+
 	case "add_argument":
 		Login::access_action("member");
 		action_required_parameters("title", "content", "parent");
@@ -80,19 +83,37 @@ if ($action) {
 		}
 		$argument->proposal = $proposal->id;
 		$argument->member = Login::$member->id;
+
 		$argument->title = trim($_POST['title']);
 		if (!$argument->title) {
 			warning("The title of the argument must be not empty.");
 			break;
 		}
+		if (mb_strlen($argument->title) > Argument::title_length) {
+			$argument->title = limitstr($argument->title, Argument::title_length);
+			warning(strtr(
+					_("The title has been truncated to the maximum allowed length of %length% characters!"),
+					array('%length%'=>Argument::title_length)
+				));
+		}
+
 		$argument->content = trim($_POST['content']);
 		if (!$argument->content) {
 			warning("The content of the argument must be not empty.");
 			break;
 		}
+		if (mb_strlen($argument->content) > Argument::content_length) {
+			$argument->content = limitstr($argument->content, Argument::content_length);
+			warning(strtr(
+					_("The content has been truncated to the maximum allowed length of %length% characters!"),
+					array('%length%'=>Argument::content_length)
+				));
+		}
+
 		$argument->create();
 		redirect(URI::same()."#argument".$argument->id);
 		break;
+
 	case "update_argument":
 		Login::access_action("member");
 		action_required_parameters("title", "content", "id");
@@ -122,6 +143,7 @@ if ($action) {
 		$argument->update(array("title", "content"), "updated=now()");
 		redirect(URI::same()."#argument".$argument->id);
 		break;
+
 	case "remove_argument":
 	case "restore_argument":
 		Login::access_action("admin");
@@ -135,6 +157,7 @@ if ($action) {
 		$argument->update(array("removed"));
 		redirect(URI::same()."#argument".$argument->id);
 		break;
+
 	case "rating_plus":
 	case "rating_minus":
 		Login::access_action("member");
@@ -155,6 +178,7 @@ if ($action) {
 		$argument->set_rating($action=="rating_plus");
 		redirect(URI::same()."#argument".$argument->id);
 		break;
+
 	case "rating_reset":
 		Login::access_action("member");
 		action_required_parameters("argument");
@@ -170,6 +194,7 @@ if ($action) {
 		$argument->delete_rating();
 		redirect(URI::same()."#argument".$argument->id);
 		break;
+
 	default:
 		warning("Unknown action");
 		redirect();
@@ -413,8 +438,8 @@ function arguments($side, $parent, $level) {
 				form(URI::append(array('argument_edit'=>$argument->id)), 'class="argument"');
 ?>
 <a name="argument<?=$argument->id?>"></a>
-<input name="title" type="text" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
-<textarea name="content" rows="5"><?=h(!empty($_POST['content'])?$_POST['content']:$argument->content)?></textarea><br>
+<input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
+<textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(!empty($_POST['content'])?$_POST['content']:$argument->content)?></textarea><br>
 <input type="hidden" name="action" value="update_argument">
 <input type="hidden" name="id" value="<?=$argument->id?>">
 <input type="submit" value="<?=_("apply changes")?>">
@@ -545,8 +570,8 @@ function arguments($side, $parent, $level) {
 ?>
 <a name="form"></a>
 <div class="time"><?=_("New argument")?></div>
-<input name="title" type="text" value="<?=h(@$_POST['title'])?>"><br>
-<textarea name="content" rows="5"><?=h(@$_POST['content'])?></textarea><br>
+<input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(@$_POST['title'])?>"><br>
+<textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(@$_POST['content'])?></textarea><br>
 <input type="hidden" name="action" value="add_argument">
 <input type="hidden" name="parent" value="<?=$parent?>">
 <input type="submit" value="<?=_("save")?>">

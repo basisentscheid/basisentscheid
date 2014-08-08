@@ -215,3 +215,17 @@ function explode_no_empty($delimiter, $string) {
 	if ($string) return explode($delimiter, $string);
 	return array();
 }
+
+
+/**
+ * truncate a string and add dots
+ *
+ * @param string  $string
+ * @param integer $length maximum length
+ * @return string
+ */
+function limitstr($string, $length) {
+	$string = trim($string);
+	if ( mb_strlen($string) > $length ) return mb_substr($string, 0, $length)."...";
+	return $string;
+}
