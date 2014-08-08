@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-08 10:29+0200\n"
+"PO-Revision-Date: 2014-08-08 12:44+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +44,7 @@ msgstr "Benutzername"
 #
 # File: ballot_edit.php, line: 107
 # File: member.php, line: 49
-# File: proposal_edit.php, line: 109
+# File: proposal_edit.php, line: 134
 msgid "Save"
 msgstr "Speichern"
 #
@@ -59,32 +59,32 @@ msgstr "Antrag bearbeiten"
 msgid "New Proposal"
 msgstr "Neuer Antrag"
 #
-# File: proposal_edit.php, line: 102
-# File: proposal.php, line: 194
+# File: proposal_edit.php, line: 127
+# File: proposal.php, line: 219
 msgid "Title"
 msgstr "Titel"
 #
-# File: proposal.php, line: 180
+# File: proposal.php, line: 205
 # File: inc/classes/Issue.php, line: 260
 # File: inc/classes/Issue.php, line: 329
 msgid "Proposal"
 msgstr "Antrag"
 #
-# File: proposal.php, line: 256
+# File: proposal.php, line: 281
 msgid "Revoke your support for this proposal"
 msgstr "Antrag nicht mehr unterstützen"
 #
-# File: proposal.php, line: 264
+# File: proposal.php, line: 289
 msgid "Support this proposal"
 msgstr "Diesen Antrag unterstützen"
 #
-# File: proposal_edit.php, line: 104
-# File: proposal.php, line: 196
+# File: proposal_edit.php, line: 129
+# File: proposal.php, line: 221
 msgid "Content"
 msgstr "Antragstext"
 #
-# File: proposal_edit.php, line: 106
-# File: proposal.php, line: 198
+# File: proposal_edit.php, line: 131
+# File: proposal.php, line: 223
 msgid "Reason"
 msgstr "Begründung"
 #
@@ -110,13 +110,13 @@ msgstr "abmelden"
 msgid "Login"
 msgstr "anmelden"
 #
-# File: proposal.php, line: 263
-# File: proposal.php, line: 301
+# File: proposal.php, line: 288
+# File: proposal.php, line: 326
 # File: inc/classes/Issue.php, line: 181
 # File: inc/classes/Issue.php, line: 188
 # File: inc/classes/Member.php, line: 63
-# File: inc/classes/Proposal.php, line: 225
-# File: inc/classes/Proposal.php, line: 232
+# File: inc/classes/Proposal.php, line: 228
+# File: inc/classes/Proposal.php, line: 235
 msgid "anonymous"
 msgstr "anonym"
 #
@@ -156,8 +156,8 @@ msgstr "online"
 msgid "Secret"
 msgstr "geheim"
 #
-# File: proposal_edit.php, line: 88
-# File: proposal.php, line: 186
+# File: proposal_edit.php, line: 113
+# File: proposal.php, line: 211
 msgid "Area"
 msgstr "Themenbereich"
 #
@@ -165,28 +165,28 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
-# File: inc/classes/Proposal.php, line: 84
+# File: inc/classes/Proposal.php, line: 87
 msgid "Draft"
 msgstr "Entwurf"
 #
-# File: inc/classes/Proposal.php, line: 85
+# File: inc/classes/Proposal.php, line: 88
 msgid "Submitted"
-msgstr "eingereicht"
+msgstr "Zulassung"
 #
-# File: inc/classes/Proposal.php, line: 86
+# File: inc/classes/Proposal.php, line: 89
 msgid "Admitted"
 msgstr "zugelassen"
 #
-# File: inc/classes/Proposal.php, line: 87
+# File: inc/classes/Proposal.php, line: 90
 msgid "Revoked"
 msgstr "zurückgezogen"
 #
 # File: inc/classes/Issue.php, line: 106
-# File: inc/classes/Proposal.php, line: 88
+# File: inc/classes/Proposal.php, line: 91
 msgid "Cancelled"
 msgstr "abgebrochen"
 #
-# File: inc/classes/Proposal.php, line: 89
+# File: inc/classes/Proposal.php, line: 92
 msgid "Done otherwise"
 msgstr "anderweitig erledigt"
 #
@@ -226,55 +226,55 @@ msgstr "Teilnahme"
 msgid "last time activated"
 msgstr "zuletzt aktiviert"
 #
-# File: proposal_edit.php, line: 86
-# File: proposal.php, line: 188
+# File: proposal_edit.php, line: 111
+# File: proposal.php, line: 213
 msgid "Proponents"
 msgstr "Antragsteller"
 #
-# File: proposal.php, line: 239
+# File: proposal.php, line: 264
 msgid "Supporters"
 msgstr "Unterstützer"
 #
 msgid "Offline demanders"
 msgstr "Geheime Abstimmung"
 #
-# File: proposal_edit.php, line: 66
+# File: proposal_edit.php, line: 91
 msgid "New alternative proposal"
 msgstr "Neuer konkurrierender Antrag"
 #
-# File: proposal_edit.php, line: 72
+# File: proposal_edit.php, line: 97
 msgid "New proposal"
 msgstr "Neuer Antrag"
 #
-# File: proposal.php, line: 193
+# File: proposal.php, line: 218
 msgid "Edit proposal"
 msgstr "Antrag bearbeiten"
 #
-# File: proposal.php, line: 252
+# File: proposal.php, line: 277
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 #
-# File: proposal.php, line: 277
+# File: proposal.php, line: 302
 msgid "Secret voting demanders"
 msgstr "Unterstützer für geheime Abstimmung"
 #
-# File: proposal.php, line: 290
+# File: proposal.php, line: 315
 msgid "You demand secret voting for this issue."
 msgstr "Du forderst eine geheime Abstimmung bei diesem Antragsblock"
 #
-# File: proposal.php, line: 294
+# File: proposal.php, line: 319
 msgid "Revoke your demand for secret voting"
 msgstr "Forderung nach geheimer Abstimmung zurückziehen"
 #
-# File: proposal.php, line: 302
+# File: proposal.php, line: 327
 msgid "Demand secret voting for this issue"
 msgstr "Geheime Abstimmung zu diesem Antragsblock fordern"
 #
-# File: proposal.php, line: 321
+# File: proposal.php, line: 346
 msgid "This and alternative proposals"
 msgstr "Dieser und dazu konkurrierende Anträge"
 #
-# File: proposal.php, line: 317
+# File: proposal.php, line: 342
 msgid "Add alternative proposal"
 msgstr "Konkurrierenden Antrag hinzufügen"
 #
@@ -405,7 +405,7 @@ msgstr "Neuer Urnenantrag"
 msgid "Issues per page"
 msgstr "Antragsblöcke pro Seite"
 #
-# File: proposal.php, line: 434
+# File: proposal.php, line: 459
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 879
 # File: inc/classes/Issue.php, line: 530
@@ -424,27 +424,27 @@ msgstr "diese Urne für die Abstimmung auswählen"
 msgid "Opening time"
 msgstr "Öffnung Uhrzeit"
 #
-# File: proposal.php, line: 209
+# File: proposal.php, line: 234
 msgid "Add new pro argument"
 msgstr "neues Pro-Argument hinzufügen"
 #
-# File: proposal.php, line: 213
+# File: proposal.php, line: 238
 msgid "Pro"
 msgstr "Pro"
 #
-# File: proposal.php, line: 220
+# File: proposal.php, line: 245
 msgid "Add new contra argument"
 msgstr "neues Kontra-Argument hinzufügen"
 #
-# File: proposal.php, line: 224
+# File: proposal.php, line: 249
 msgid "Contra"
 msgstr "Kontra"
 #
-# File: proposal.php, line: 463
+# File: proposal.php, line: 488
 msgid "Reply"
 msgstr "antworten"
 #
-# File: proposal.php, line: 552
+# File: proposal.php, line: 577
 # File: inc/classes/DbTableAdmin.php, line: 1094
 msgid "save"
 msgstr "speichern"
@@ -515,7 +515,7 @@ msgstr "Der Datensatz %id% wurde dupliziert. ID der Kopie: %insertid%"
 msgid "duplicate"
 msgstr "duplizieren"
 #
-# File: proposal.php, line: 420
+# File: proposal.php, line: 445
 # File: inc/classes/DbTableAdmin.php, line: 943
 msgid "apply changes"
 msgstr "Änderungen übernehmen"
@@ -544,7 +544,7 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposal.php, line: 490
+# File: proposal.php, line: 515
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
@@ -750,19 +750,19 @@ msgstr "Passwort (2x)"
 msgid "Admins"
 msgstr "Verantwortliche"
 #
-# File: proposal.php, line: 411
+# File: proposal.php, line: 436
 msgid "This argument can be updated until %datetime%."
 msgstr "Dieses Argument kann bis %datetime% bearbeitet werden."
 #
-# File: proposal.php, line: 426
+# File: proposal.php, line: 451
 msgid "This argument may not be updated any longer!"
 msgstr "Dieses Argument kann nicht mehr bearbeitet werden!"
 #
-# File: proposal.php, line: 445
+# File: proposal.php, line: 470
 msgid "updated"
 msgstr "bearbeitet"
 #
-# File: proposal.php, line: 547
+# File: proposal.php, line: 572
 msgid "New argument"
 msgstr "Neues Argument"
 #
@@ -770,7 +770,7 @@ msgstr "Neues Argument"
 msgid "%value% of currently required %required% (%percent% of %population%) for secret voting"
 msgstr "%value% von momentan für geheime Abstimmung erforderlichen %required% (%percent% von %population%)"
 #
-# File: inc/classes/Proposal.php, line: 283
+# File: inc/classes/Proposal.php, line: 286
 msgid "%value% of currently required %required% (%percent% of %population%) for admission"
 msgstr "%value% von momentan zur Zulassung erforderlichen %required% (%percent% von %population%)"
 #
@@ -790,15 +790,15 @@ msgstr "als Verantwortlicher anmelden"
 msgid "Login as local member"
 msgstr "als lokales Mitglied anmelden"
 #
-# File: proposal.php, line: 450
+# File: proposal.php, line: 475
 msgid "argument removed by admin"
 msgstr "Argument entfernt durch Verantwortliche"
 #
-# File: proposal.php, line: 518
+# File: proposal.php, line: 543
 msgid "restore"
 msgstr "zurücksetzen"
 #
-# File: proposal.php, line: 523
+# File: proposal.php, line: 548
 msgid "remove"
 msgstr "entfernen"
 #
@@ -810,11 +810,11 @@ msgstr "Hilfe zeigen"
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
-# File: proposal.php, line: 389
+# File: proposal.php, line: 414
 msgid "show remaining argument"
 msgstr "verbleibendes Argument zeigen"
 #
-# File: proposal.php, line: 391
+# File: proposal.php, line: 416
 msgid "show remaining %count% arguments"
 msgstr "verbleibende %count% Argumente zeigen"
 #
@@ -830,11 +830,11 @@ msgstr "Urnen pro Seite"
 msgid "Periods per page"
 msgstr "Perioden pro Seite"
 #
-# File: proposal.php, line: 250
+# File: proposal.php, line: 275
 msgid "You support this proposal anonymously."
 msgstr "Du unterstützt diesen Antrag anonym."
 #
-# File: proposal.php, line: 288
+# File: proposal.php, line: 313
 msgid "You demand secret voting for this issue anonymously."
 msgstr "Du forderst anonym eine geheime Abstimmung bei diesem Antragsblock."
 #
@@ -852,3 +852,20 @@ msgstr "Mitglieder"
 # File: admin_members.php, line: 20
 msgid "Participation activated"
 msgstr "Teilnahme aktiviert"
+#
+# File: proposal_edit.php, line: 39
+# File: proposal.php, line: 95
+#, php-format
+msgid "The title has been truncated to the maximum allowed length of %length% characters!"
+msgstr "Der Titel wurde auf die maximal erlaubte Länge von %length% Zeichen gekürzt!"
+#
+# File: proposal_edit.php, line: 48
+# File: proposal.php, line: 108
+#, php-format
+msgid "The content has been truncated to the maximum allowed length of %length% characters!"
+msgstr "Der Inhalt wurde auf die maximal erlaubte Länge von %length% Zeichen gekürzt!"
+#
+# File: proposal_edit.php, line: 57
+#, php-format
+msgid "The reason has been truncated to the maximum allowed length of %length% characters!"
+msgstr "Die Begründung wurde auf die maximal erlaubte Länge von %length% Zeichen gekürzt!"
