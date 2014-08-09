@@ -346,10 +346,11 @@ if (Login::$member) {
 <h2><?=_("This and alternative proposals")?></h2>
 <table border="0" cellspacing="1" class="proposals">
 <?
-Issue::display_proposals_th();
 $proposals = $issue->proposals_list();
 if (Login::$member) $issue->read_secret_by_member();
-$issue->display_proposals($proposals, count($proposals), $proposal->id);
+$show_results = in_array($issue->state, array('finished', 'cleared', 'cancelled'));
+Issue::display_proposals_th($show_results);
+$issue->display_proposals($proposals, count($proposals), $show_results, $proposal->id);
 ?>
 </table>
 </div>

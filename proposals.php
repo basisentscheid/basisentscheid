@@ -67,7 +67,6 @@ if ($filter) input_hidden("filter", $filter);
 
 <table border="0" cellspacing="1" class="proposals">
 <?
-Issue::display_proposals_th();
 
 $pager = new Pager;
 
@@ -82,6 +81,7 @@ if (Login::$member) {
 
 $where = array();
 $order_by = " ORDER BY issues.id DESC";
+$show_results = false;
 
 switch (@$_GET['filter']) {
 case "admission":
@@ -97,6 +97,7 @@ case "voting":
 	break;
 case "closed":
 	$where[] = "(issues.state='finished' OR issues.state='cleared' OR issues.state='cancelled')";
+	$show_results = true;
 	break;
 default: // open
 	$where[] = "(issues.state!='finished' AND issues.state!='cleared' AND issues.state!='cancelled')";
@@ -142,12 +143,14 @@ while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastlin
 	$line++;
 }
 
+Issue::display_proposals_th($show_results);
+
 // display issues and proposals
 foreach ( $issues as $i => $issue ) {
 ?>
 	<tr><td colspan="<?= $period_rowspan[$i] ? 6 : 5 ?>" class="issue_separator"></td></tr>
 <?
-	$issue->display_proposals($proposals_issue[$i], $period_rowspan[$i]);
+	$issue->display_proposals($proposals_issue[$i], $period_rowspan[$i], $show_results);
 }
 
 ?>

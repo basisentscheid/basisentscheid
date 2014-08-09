@@ -253,15 +253,18 @@ class Issue extends Relation {
 
 	/**
 	 *
+	 * @param boolean $show_results display the result column
 	 */
-	public static function display_proposals_th() {
+	public static function display_proposals_th($show_results) {
 ?>
 	<tr>
 		<th style="width:64%"><?=_("Proposal")?></th>
 		<th style="width:10%"><?=_("State")?></th>
 		<th style="width:1%"><?=_("Period")?></th>
 		<th style="width:7%"><?=_("Voting type")?></th>
+<? if ($show_results) { ?>
 		<th style="width:18%"><?=_("Result")?></th>
+<? } ?>
 	</tr>
 <?
 	}
@@ -300,9 +303,10 @@ class Issue extends Relation {
 	 *
 	 * @param array   $proposals         array of objects
 	 * @param integer $period_rowspan
+	 * @param boolean $show_results      display the result column
 	 * @param integer $selected_proposal (optional)
 	 */
-	function display_proposals($proposals, $period_rowspan, $selected_proposal=0) {
+	function display_proposals($proposals, $period_rowspan, $show_results, $selected_proposal=0) {
 
 		$first = true;
 		$first_admitted = true;
@@ -415,13 +419,17 @@ class Issue extends Relation {
 				}
 
 				?></td>
-		<td rowspan="<?=$num_rows?>"><?
-				if ($this->vote!==null) {
-					// voting results
-					echo $this->vote;
-				}
-				?>	</td>
 <?
+				if ($show_results) {
+?>
+		<td rowspan="<?=$num_rows?>"><?
+					if ($this->vote!==null) {
+						// voting results
+						echo $this->vote;
+					}
+					?>	</td>
+<?
+				}
 			}
 
 ?>
