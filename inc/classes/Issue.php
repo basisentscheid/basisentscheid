@@ -358,10 +358,11 @@ class Issue extends Relation {
 ?>
 		<td align="center"><?=$proposal->state_name();
 					if ($proposal->state=="submitted") {
+						?><br><?
 						$proposal->bargraph_quorum();
 					}
 					if ($proposal->supported_by_member) {
-						?> &#10003;<?
+						?><br>&#10003;<?
 					}
 					?></td>
 <?
