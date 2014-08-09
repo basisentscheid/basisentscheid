@@ -93,7 +93,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				// edit
 				if ($this->enable_edit) {
 ?>
-			<a href="<?=URI::append(array('id'=>$object->id))?>"><?=_("edit")?></a>
+			<a href="<?=URI::append(array('id'=>$object->id))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
 <?
 				}
 				// duplicate

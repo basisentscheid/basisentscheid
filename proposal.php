@@ -231,7 +231,7 @@ html_head(_("Proposal")." ".$proposal->id);
 <?
 if (Login::$member and @$_GET['argument_parent']!="pro") {
 ?>
-		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form"><?=_("Add new pro argument")?></a></div>
+		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
 }
 ?>
@@ -242,7 +242,7 @@ if (Login::$member and @$_GET['argument_parent']!="pro") {
 <?
 if (Login::$member and @$_GET['argument_parent']!="contra") {
 ?>
-		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form"><?=_("Add new contra argument")?></a></div>
+		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
 }
 ?>
@@ -339,7 +339,7 @@ if (Login::$member or Login::$admin) {
 <?
 if (Login::$member) {
 ?>
-<div style="float:right"><a href="proposal_edit.php?issue=<?=$proposal->issue?>"><?=_("Add alternative proposal")?></a></div>
+<div style="float:right"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
 }
 ?>
@@ -456,7 +456,7 @@ function arguments($side, $parent, $level) {
 ?>
 		<div class="author<?=$argument->removed?' removed':''?>"><?
 			if (Login::$member and $member->id==Login::$member->id and strtotime($argument->created) > $edit_limit and !$argument->removed) {
-				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>"><?=_("edit")?></a> <?
+				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
 			}
 			?><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
 <?

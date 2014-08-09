@@ -27,7 +27,7 @@ html_head(_("Proposals"));
 
 if (Login::$member) {
 ?>
-<div class="add_record"><a href="proposal_edit.php"><?=_("Add proposal")?></a></div>
+<div class="add_record"><a href="proposal_edit.php" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add proposal")?></a></div>
 <?
 }
 

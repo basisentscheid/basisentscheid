@@ -151,6 +151,38 @@ a:active {
 	background-color: #F3F3F3;
 }
 
+a.icontextlink {
+	padding-left: 0;
+	text-decoration: none;
+}
+a.icontextlink img {
+	vertical-align: middle;
+	margin-right: 5px;
+	border: 0;
+}
+
+a.iconlink {
+	margin: 0;
+	padding: 0 1px 0 0;
+}
+a.iconlink img {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	vertical-align: bottom;
+	border: 0;
+}
+
+img.iconbutton {
+	cursor: pointer;
+	cursor: hand;
+	vertical-align: bottom;
+}
+img.iconbutton:hover {
+	outline: 1px solid #DDD;
+	background-color: #F8F8F8;
+}
+
 
 /* 3. common class definitions */
 
@@ -214,6 +246,8 @@ form.show_help {
 }
 
 div.bargraph {
+	display: inline-block;
+	vertical-align: middle;
 	border: 2px groove black;
 	width: 100px;
 	margin-top: 0;
@@ -311,6 +345,15 @@ div.filter {
 	margin-left: 2px;
 }
 
+img.online_small {
+	margin: 0 3px 0 3px;
+	vertical-align: middle;
+}
+img.ballot_small {
+	margin: 0 0 0 2px;
+	vertical-align: middle;
+}
+
 
 /* 4. id definitions */
 
@@ -336,7 +379,7 @@ div.tableblock table {
 }
 
 /* columns parameter */
-#dbtableadmin td.nowrap {
+.nowrap {
 	white-space: nowrap;
 }
 #dbtableadmin td.center {

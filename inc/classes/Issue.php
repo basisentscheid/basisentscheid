@@ -395,20 +395,22 @@ class Issue extends Relation {
 <?
 				}
 ?>
-		<td rowspan="<?=$num_rows?>" align="center"><?
+		<td rowspan="<?=$num_rows?>" align="center" class="nowrap"><?
 
 				if ($this->secret_reached) {
-					echo _("Secret");
+					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("Secret"))?>><?
 				} elseif (
 					($this->state=="admission" and ($proposal->state=="admitted" or $proposal->state=="submitted")) or
 					$this->state=="debate"
 				) {
+					?><img src="img/online16.png" width="13" height="16" class="online_small" <?alt(_("Online"))?>><?
 					$this->bargraph_secret();
+					?><img src="img/ballot16.png" width="20" height="16" class="ballot_small" <?alt(_("Secret"))?>><?
 					if ($this->secret_by_member) {
-						?> &#10003;<?
+						?><br>&#10003;<?
 					}
 				} else {
-					echo _("Online");
+					?><img src="img/online30.png" width="24" height="30" <?alt(_("Online"))?>><?
 				}
 
 				?></td>

@@ -876,7 +876,7 @@ class DbTableAdmin {
 				// edit
 				if ($this->enable_edit) {
 ?>
-			<a href="<?=URI::append(array('id'=>$object->id))?>"><?=_("edit")?></a>
+			<a href="<?=URI::append(array('id'=>$object->id))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
 <?
 				}
 				// duplicate
@@ -977,7 +977,7 @@ class DbTableAdmin {
 
 		if ($this->enable_delete_single) {
 ?>
-			<input type="button" value="<?=_("delete")?>" onclick="return submit_delete_button(<?=$object->id?>);">
+			<img src="img/delete.png" width="21" height="16" class="iconbutton" <?alt(_("delete"))?> onclick="return submit_delete_button(<?=$object->id?>);">
 <?
 		}
 		if ($this->enable_delete_checked) {
@@ -1146,7 +1146,7 @@ function submit_delete_checked() {
 	 */
 	protected function display_add_record() {
 ?>
-<div class="add_record"><a href="<?=URI::append(array('id'=>0))?>"><?=$this->msg_add_record?></a></div>
+<div class="add_record"><a href="<?=URI::append(array('id'=>0))?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=$this->msg_add_record?></a></div>
 <?
 	}
 

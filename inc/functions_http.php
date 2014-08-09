@@ -428,9 +428,7 @@ function bargraph($value, $required, $title, $color) {
 	$width_filled = round( min($value, $required) / $required * $width );
 	$width_empty = $width - $width_filled;
 
-?>
-<div class="bargraph" title="<?=$title?>"><div class="bar" style="background-color:<?=$color?>; width:<?=$width_filled?>px">&nbsp;</div><div class="bar" style="width:<?=$width_empty?>px">&nbsp;</div><div class="legend" style="width:<?=$width-4?>px"><?=$value?>/<?=$required?></div><div class="clear"></div></div>
-<?
+	?><div class="bargraph" title="<?=$title?>"><div class="bar" style="background-color:<?=$color?>; width:<?=$width_filled?>px">&nbsp;</div><div class="bar" style="width:<?=$width_empty?>px">&nbsp;</div><div class="legend" style="width:<?=$width-4?>px"><?=$value?>/<?=$required?></div><div class="clear"></div></div><?
 
 }
 
@@ -499,4 +497,14 @@ function content2html($text) {
 		array('<a href="$0">$0</a>', '<i>$0</i>'    ),
 		nl2br(h($text), false)
 	);
+}
+
+
+/**
+ * output alt and title attributes for images at once
+ *
+ * @param string  $text
+ */
+function alt($text) {
+	?>alt="<?=$text?>" title="<?=$text?>"<?
 }
