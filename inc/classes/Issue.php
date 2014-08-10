@@ -481,8 +481,7 @@ class Issue extends Relation {
 		case "admission":
 			// At least one proposal has to be admitted.
 			$sql = "SELECT COUNT(1) FROM proposals WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
-			$result = DB::query($sql);
-			if ( !DB::num_rows($result) ) return false;
+			if ( !DB::fetchfield($sql) ) return false;
 		case "debate":
 		case "preparation":
 
