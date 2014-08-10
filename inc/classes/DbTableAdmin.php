@@ -740,7 +740,7 @@ class DbTableAdmin {
 		}
 
 ?>
-<table cellspacing="1" id="dbtableadmin_list">
+<table id="dbtableadmin_list">
 <?
 		$this->display_list_thead($show_edit_column);
 		if ($linescount) {
@@ -864,7 +864,7 @@ class DbTableAdmin {
 						$linescount                            // 4 count of lines selected in the database
 					);
 				}
-				?>	</td>
+				?></td>
 <?
 			}
 
@@ -936,7 +936,7 @@ class DbTableAdmin {
 ?>
 <tfoot>
 	<tr>
-		<td colspan="<?=count($this->columns)?>" style="text-align:right">
+		<td colspan="<?=count($this->columns)?>" class="right">
 <?
 		if ($direct_edit) {
 ?>
@@ -948,7 +948,7 @@ class DbTableAdmin {
 <?
 		if ($show_edit_column) {
 ?>
-		<td style="text-align:right">
+		<td class="right">
 <?
 			if ($this->enable_delete_checked) {
 ?>

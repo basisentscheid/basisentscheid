@@ -56,7 +56,7 @@ foreach ( $filters as $key => $name ) {
 <?
 }
 ?>
-<form action="<?=BN?>" method="GET" style="display:inline; margin-left:20px">
+<form action="<?=BN?>" method="GET">
 <?
 if ($filter) input_hidden("filter", $filter);
 ?>
@@ -65,7 +65,7 @@ if ($filter) input_hidden("filter", $filter);
 </form>
 </div>
 
-<table border="0" cellspacing="1" class="proposals">
+<table class="proposals">
 <?
 
 $pager = new Pager;

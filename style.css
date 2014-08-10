@@ -108,6 +108,7 @@ h3 {
 table {
 	border-spacing: 1px;
 	border-collapse: separate;
+	border: none;
 }
 td, th {
 	padding: 3px 4px;
@@ -195,6 +196,16 @@ a.anchor {
 	height: 0;
 	clear: both;
 	visibility: hidden;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+.center {
+	text-align: center;
+}
+.right {
+	text-align: right;
 }
 
 div.messages {
@@ -344,6 +355,10 @@ div.pager div.itemsperpage {
 div.filter {
 	margin-left: 2px;
 }
+div.filter form {
+	display: inline;
+	margin-left: 20px;
+}
 
 img.online_small {
 	margin: 0 3px 0 3px;
@@ -375,17 +390,6 @@ div.tableblock table {
 	clear: both;
 }
 #dbtableadmin tfoot td {
-	text-align: right;
-}
-
-/* columns parameter */
-.nowrap {
-	white-space: nowrap;
-}
-#dbtableadmin td.center {
-	text-align: center;
-}
-#dbtableadmin td.right {
 	text-align: right;
 }
 
@@ -467,18 +471,52 @@ p.proposal_title {
 	font-weight: bold;
 	font-size: 110%;
 }
+div.proposal_info {
+	float: right;
+	margin-left: 20px;
+	width: 20%;
+}
+div.proposal_content {
+	overflow: hidden;
+}
 div.quorum {
 	background-color: #DDF;
 	padding: 5px 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-
+div.quorum div.bargraph_container {
+	float: left;
+	margin-right: 10px;
+}
+div.issue {
+	margin-top: 20px;
+}
+div.issue div.add {
+	float: right;
+}
 
 table.proposals {
-	width:100%;
+	width: 100%;
 	border-spacing: 1px 2px;
 }
+
+table.proposals th.proposal {
+	width: 67%;
+}
+table.proposals th.state {
+	width: 7%;
+}
+table.proposals th.period {
+	width: 1%;
+}
+table.proposals th.secret {
+	width: 7%;
+}
+table.proposals th.result {
+	width: 18%;
+}
+
 table.proposals tr.proposal {
 	background-color: #FFF;
 }
@@ -554,7 +592,15 @@ div.arguments_side {
 	padding: 5px 10px;
 	margin: 5px 0 5px 0;
 }
-
+div.arguments_pro {
+	float: left;
+}
+div.arguments_contra {
+	float: right;
+}
+div.arguments_side div.add {
+	float: right;
+}
 div.arguments_side ul li h3,
 div.arguments_side ul li p {
 	padding-left: 3px;

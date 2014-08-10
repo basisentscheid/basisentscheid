@@ -81,7 +81,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 						$linescount                            // 4 count of lines selected in the database
 					);
 				}
-				?>	</td>
+				?></td>
 <?
 			}
 

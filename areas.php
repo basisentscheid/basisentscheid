@@ -42,7 +42,7 @@ HELP;
 help($help);
 
 ?>
-<table border="0" cellspacing="1">
+<table>
 	<tr>
 		<th><?=_("Name")?></th>
 		<th><?=_("Participants")?></th>
@@ -69,7 +69,7 @@ while ($row = pg_fetch_assoc($result)) {
 ?>
 	<tr class="<?=stripes()?>">
 		<td><?=$row['name']?></td>
-		<td align="center"><?=$row['participants']?></td>
+		<td class="center"><?=$row['participants']?></td>
 <? if (Login::$member) { ?>
 		<td>
 <?

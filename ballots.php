@@ -90,7 +90,7 @@ if (Login::$admin) {
 $colspan = 6;
 ?>
 
-<table border="0" cellspacing="1">
+<table>
 	<tr>
 		<th><?=_("No.")?></th>
 		<th><?=_("Name")?></th>
@@ -111,7 +111,7 @@ $result = DB::query($sql);
 $pager->seek($result);
 if (!$pager->linescount) {
 ?>
-	<tr class="td0"><td colspan="<?=$colspan?>" align="center"><?
+	<tr class="td0"><td colspan="<?=$colspan?>" class="center"><?
 	if ($period->state=="ballot_application") {
 		echo _("There are no applications for ballots yet.");
 	} else {
@@ -125,11 +125,11 @@ if (!$pager->linescount) {
 	while ( $ballot = DB::fetch_object($result, "Ballot") and $line <= $pager->lastline ) {
 ?>
 	<tr class="<?=stripes()?>">
-		<td align="right"><?=$ballot->id?></td>
+		<td class="right"><?=$ballot->id?></td>
 		<td><?=h($ballot->name)?></td>
-		<td align="center"><?=timeformat($ballot->opening)?></td>
+		<td class="center"><?=timeformat($ballot->opening)?></td>
 		<td><?=h($ballot->agents)?></td>
-		<td align="center"><?=$ballot->voters?></td>
+		<td class="center"><?=$ballot->voters?></td>
 <?
 		if (Login::$member) {
 ?>
@@ -172,7 +172,7 @@ if (!$pager->linescount) {
 <?
 		}
 ?>
-		<td align="center"><?
+		<td class="center"><?
 		if (Login::$admin and $period->state=="ballot_application") {
 			?><input type="checkbox" name="approved[<?=$ballot->id?>]" value="1"<? if ($ballot->approved) { ?> checked<? } ?>><input type="hidden" name="approved_id[<?=$ballot->id?>]" value="<?=$ballot->id?>"><?
 		} else {

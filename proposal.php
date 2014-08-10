@@ -207,14 +207,14 @@ html_head(_("Proposal")." ".$proposal->id);
 ?>
 
 
-<div style="float:right; margin-left:20px; width:20%">
+<div class="proposal_info">
 <h2><?=_("Area")?></h2>
 <p class="proposal"><?=h($issue->area()->name)?></p>
 <h2><?=_("Proponents")?></h2>
 <p class="proposal"><?=content2html($proposal->proponents)?></p>
 </div>
 
-<div style="overflow:hidden">
+<div class="proposal_content">
 <!--<div style="float:right"><a href="proposal_edit.php?id=<?=$proposal->id?>"><?=_("Edit proposal")?></a></div>-->
 <h2><?=_("Title")?></h2>
 <p class="proposal proposal_title"><?=h($proposal->title)?></p>
@@ -224,39 +224,39 @@ html_head(_("Proposal")." ".$proposal->id);
 <p class="proposal"><?=content2html($proposal->reason)?></p>
 </div>
 
-<br style="clear:both">
+<div class="clearfix"></div>
 
 <div>
-	<div class="arguments_side" style="float:left">
+	<div class="arguments_side arguments_pro">
 <?
 if (Login::$member and @$_GET['argument_parent']!="pro") {
 ?>
-		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
+		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
 }
 ?>
 		<h2><?=_("Pro")?></h2>
 		<? arguments("pro", "pro", 0); ?>
 	</div>
-	<div class="arguments_side" style="float:right">
+	<div class="arguments_side arguments_contra">
 <?
 if (Login::$member and @$_GET['argument_parent']!="contra") {
 ?>
-		<div style="float:right"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
+		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
 }
 ?>
 		<h2><?=_("Contra")?></h2>
 		<? arguments("contra", "contra", 0); ?>
 	</div>
-	<div style="clear:both"></div>
+	<div class="clearfix"></div>
 </div>
 
 <?
 if (Login::$member or Login::$admin) {
 ?>
 <div class="quorum">
-<div style="float:left; margin-right:10px">
+<div class="bargraph_container">
 <?
 	$proposal->bargraph_quorum();
 ?>
@@ -294,7 +294,7 @@ if (Login::$member or Login::$admin) {
 ?>
 </div>
 <div class="quorum">
-<div style="float:left; margin-right:10px">
+<div class="bargraph_container">
 <?
 	$issue->bargraph_secret();
 ?>
@@ -335,16 +335,16 @@ if (Login::$member or Login::$admin) {
 }
 ?>
 
-<div style="margin-top:20px">
+<div class="issue">
 <?
 if (Login::$member) {
 ?>
-<div style="float:right"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
+<div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
 }
 ?>
 <h2><?=_("This and alternative proposals")?></h2>
-<table border="0" cellspacing="1" class="proposals">
+<table class="proposals">
 <?
 $proposals = $issue->proposals_list();
 if (Login::$member) $issue->read_secret_by_member();

@@ -258,12 +258,12 @@ class Issue extends Relation {
 	public static function display_proposals_th($show_results) {
 ?>
 	<tr>
-		<th style="width:64%"><?=_("Proposal")?></th>
-		<th style="width:10%"><?=_("State")?></th>
-		<th style="width:1%"><?=_("Period")?></th>
-		<th style="width:7%"><?=_("Voting type")?></th>
+		<th class="proposal"><?=_("Proposal")?></th>
+		<th class="state"><?=_("State")?></th>
+		<th class="period"><?=_("Period")?></th>
+		<th class="secret"><?=_("Voting type")?></th>
 <? if ($show_results) { ?>
-		<th style="width:18%"><?=_("Result")?></th>
+		<th class="result"><?=_("Result")?></th>
 <? } ?>
 	</tr>
 <?
@@ -344,7 +344,7 @@ class Issue extends Relation {
 							if ($p->state=="admitted") $num_admitted_rows++;
 						}
 ?>
-		<td rowspan="<?=$num_admitted_rows?>" align="center"><?=$proposal->state_name();
+		<td rowspan="<?=$num_admitted_rows?>" class="center"><?=$proposal->state_name();
 						if ($this->period) {
 							?><br><span class="stateinfo"><?
 							echo strtr(
@@ -360,7 +360,7 @@ class Issue extends Relation {
 				} else {
 					// submitted, cancelled, revoked, done
 ?>
-		<td align="center"><?=$proposal->state_name();
+		<td class="center"><?=$proposal->state_name();
 					if ($proposal->state=="submitted") {
 						?><br><?
 						$proposal->bargraph_quorum();
@@ -375,7 +375,7 @@ class Issue extends Relation {
 				// issue states
 				if ($first) {
 ?>
-		<td rowspan="<?=$num_rows?>" align="center"><?=$this->state_name();
+		<td rowspan="<?=$num_rows?>" class="center"><?=$this->state_name();
 					if ( $state_info = $this->state_info() ) {
 						?><br><span class="stateinfo"><?=$state_info?></span><?
 					}
@@ -388,7 +388,7 @@ class Issue extends Relation {
 			if ($first) {
 				if (Login::$admin) {
 ?>
-		<td rowspan="<?=$num_rows?>" align="center"><?
+		<td rowspan="<?=$num_rows?>" class="center"><?
 					if ( !$this->display_edit_state() ) {
 						?><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a><?
 					}
@@ -396,11 +396,11 @@ class Issue extends Relation {
 <?
 				} elseif ($period_rowspan) {
 ?>
-		<td rowspan="<?=$period_rowspan?>" align="center"><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a></td>
+		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a></td>
 <?
 				}
 ?>
-		<td rowspan="<?=$num_rows?>" align="center" class="nowrap"><?
+		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
 
 				if ($this->secret_reached) {
 					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("Secret"))?>><?
@@ -427,7 +427,7 @@ class Issue extends Relation {
 						// voting results
 						echo $this->vote;
 					}
-					?>	</td>
+					?></td>
 <?
 				}
 			}
