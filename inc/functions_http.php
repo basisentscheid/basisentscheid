@@ -11,7 +11,7 @@
 /**
  * http redirect
  *
- * @param string  $target (optional)
+ * @param string  $target (optional) relative or absolute URI
  */
 function redirect($target="") {
 
@@ -24,6 +24,17 @@ function redirect($target="") {
 	} else {
 		// reload the page to get rid of POST data
 		$target = $_SERVER['REQUEST_URI'];
+	}
+
+	if (DEBUG) {
+		// save page infos to show them in the debug output on the next page
+		if (!isset($_SESSION['redirects'])) $_SESSION['redirects'] = array();
+		$_SESSION['redirects'][] = array(
+			'BN'          => BN,
+			'REQUEST_URI' => $_SERVER['REQUEST_URI'],
+			'GET'         => $_GET,
+			'POST'        => $_POST
+		);
 	}
 
 	// save not yet displayed output to display it on the next page
@@ -69,10 +80,17 @@ function html_head($title) {
 	if (DEBUG) {
 ?>
 <!--
-GET: <? print_r($_GET); echo "\n"; ?>
-POST: <? print_r($_POST); echo "\n"; ?>
-SESSION: <? if (isset($_SESSION)) { print_r($_SESSION); } echo "\n"; ?>
-BN: <?=BN."\n"?>
+<?=strtr( print_r(
+				array(
+					'BN'          => BN,
+					'REQUEST_URI' => $_SERVER['REQUEST_URI'],
+					'GET'         => $_GET,
+					'POST'        => $_POST,
+					'SESSION'     => $_SESSION
+				),
+				true ), array("<!--"=>"<!-", "-->"=>"->") );
+		unset($_SESSION['redirects']);
+?>
 -->
 <?
 	}
