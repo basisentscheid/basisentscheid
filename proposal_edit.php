@@ -41,28 +41,19 @@ if ($action) {
 	$proposal->title      = trim($_POST['title']);
 	if (mb_strlen($proposal->title) > Proposal::title_length) {
 		$proposal->title = limitstr($proposal->title, Proposal::title_length);
-		warning(strtr(
-				_("The title has been truncated to the maximum allowed length of %length% characters!"),
-				array('%length%'=>Proposal::title_length)
-			));
+		warning(sprintf(_("The title has been truncated to the maximum allowed length of %d characters!"), Proposal::title_length));
 	}
 
 	$proposal->content    = trim($_POST['content']);
 	if (mb_strlen($proposal->content) > Proposal::content_length) {
 		$proposal->content = limitstr($proposal->content, Proposal::content_length);
-		warning(strtr(
-				_("The content has been truncated to the maximum allowed length of %length% characters!"),
-				array('%length%'=>Proposal::content_length)
-			));
+		warning(sprintf(_("The content has been truncated to the maximum allowed length of %d characters!"), Proposal::content_length));
 	}
 
 	$proposal->reason     = trim($_POST['reason']);
 	if (mb_strlen($proposal->reason) > Proposal::reason_length) {
 		$proposal->reason = limitstr($proposal->reason, Proposal::reason_length);
-		warning(strtr(
-				_("The reason has been truncated to the maximum allowed length of %length% characters!"),
-				array('%length%'=>Proposal::reason_length)
-			));
+		warning(sprintf(_("The reason has been truncated to the maximum allowed length of %d characters!"), Proposal::reason_length));
 	}
 
 	if ($proposal->id) {
@@ -103,7 +94,7 @@ if ($action) {
 
 
 if ($proposal->id) {
-	html_head( strtr( _("Edit Proposal %id%"), array('%id%'=>$proposal->id) ) );
+	html_head(sprintf(_("Edit Proposal %d"), $proposal->id));
 	$issue = $proposal->issue();
 } else {
 	if (isset($_GET['issue'])) {

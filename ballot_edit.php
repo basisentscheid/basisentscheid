@@ -43,7 +43,7 @@ if ($action) {
 
 	$ballot->name = trim($_POST['name']);
 	$ballot->agents = trim($_POST['agents']);
-	$ballot->opening = sprintf("%02d", $_POST['opening_hour']).":".sprintf("%02d", $_POST['opening_minute']).":00";
+	$ballot->opening = sprintf("%02d:%02d:00", $_POST['opening_hour'], $_POST['opening_minute']);
 	if ($ballot->id) {
 		$ballot->update();
 	} else {
@@ -61,7 +61,7 @@ if ($action) {
 
 
 if ($ballot->id) {
-	html_head( strtr( _("Edit Ballot %id%"), array('%id%'=>$ballot->id) ) );
+	html_head(sprintf(_("Edit Ballot %d"), $ballot->id));
 } else {
 	html_head(_("New ballot"));
 }

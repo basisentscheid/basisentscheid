@@ -166,14 +166,14 @@ function navlink($file, $title) {
 function html_user() {
 	if (Login::$member or Login::$admin) {
 		if (Login::$member) {
-			echo strtr(
-				_("logged in as %username%"),
-				array("%username%"=>'<a href="member.php" class="user">'.Member::username_static(Login::$member->username).'</a>')
+			printf(
+				_("logged in as %s"),
+				'<a href="member.php" class="user">'.Member::username_static(Login::$member->username).'</a>'
 			);
 		} else {
-			echo strtr(
-				_("logged in as admin %username%"),
-				array("%username%"=>'<span class="admin">'.Login::$admin->username.'</span>')
+			printf(
+				_("logged in as admin %s"),
+				'<span class="admin">'.Login::$admin->username.'</span>'
 			);
 		}
 		form(URI::$uri, 'class="button" style="margin-left: 10px"');

@@ -68,7 +68,7 @@ if ($action) {
 }
 
 
-html_head(strtr(_("Ballots for voting period %period%"), array('%period%'=>$period->id)));
+html_head(sprintf(_("Ballots for voting period %d"), $period->id));
 
 ?>
 

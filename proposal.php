@@ -129,10 +129,7 @@ if ($action) {
 		}
 		if (mb_strlen($argument->title) > Argument::title_length) {
 			$argument->title = limitstr($argument->title, Argument::title_length);
-			warning(strtr(
-					_("The title has been truncated to the maximum allowed length of %length% characters!"),
-					array('%length%'=>Argument::title_length)
-				));
+			warning(sprintf(_("The title has been truncated to the maximum allowed length of %d characters!"), Argument::title_length));
 		}
 
 		$argument->content = trim($_POST['content']);
@@ -142,10 +139,7 @@ if ($action) {
 		}
 		if (mb_strlen($argument->content) > Argument::content_length) {
 			$argument->content = limitstr($argument->content, Argument::content_length);
-			warning(strtr(
-					_("The content has been truncated to the maximum allowed length of %length% characters!"),
-					array('%length%'=>Argument::content_length)
-				));
+			warning(sprintf(_("The content has been truncated to the maximum allowed length of %d characters!"), Argument::content_length));
 		}
 
 		$argument->create();
@@ -253,7 +247,7 @@ if (isset($_GET['draft'])) {
 	if ($draft->proposal != $proposal->id) {
 		error("The requested draft does not exist!");
 	}
-	html_head(strtr(_("Proposal %id%, draft from %time%"), array('%id%'=>$proposal->id, '%time%'=>datetimeformat($draft->created))));
+	html_head(sprintf(_("Proposal %d, draft from %s"), $proposal->id, datetimeformat($draft->created)));
 	$content_obj = $draft;
 } else {
 	html_head(_("Proposal")." ".$proposal->id);
@@ -476,7 +470,7 @@ function display_arguments($side, $parent, $level) {
 			if ($remaining==1) {
 				echo _("show remaining argument");
 			} else {
-				echo strtr(_("show remaining %count% arguments"), array('%count%'=>$remaining));
+				printf(_("show remaining %d arguments"), $remaining);
 			}
 			?></a>
 <?
@@ -500,7 +494,7 @@ function display_arguments($side, $parent, $level) {
 <?
 			if (strtotime($argument->created) > $edit_limit) {
 ?>
-		<div class="time"><?=strtr(_("This argument can be updated until %datetime%."), array('%datetime%'=>datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL)))?></div>
+		<div class="time"><?printf(_("This argument can be updated until %s."), datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL))?></div>
 <?
 				form(URI::append(array('argument_edit'=>$argument->id)), 'class="argument"');
 ?>

@@ -337,7 +337,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 
 		$json_questions[] = array(
 			"questionID" => $issue->id,
-			"questionWording" => _(strtr("Basisentscheid %issue% of voting period %period%", array('%issue%'=>$issue->id, '%period%'=>$period->id))),
+			"questionWording" => sprintf(_("Basisentscheid %d of voting period %d", $issue->id, $period->id)),
 			"voteSystem" => array(
 				"type" => "score",
 				"max-score" => 1,
@@ -367,7 +367,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 			"listID" => "DEADBEEF",
 			"groups" => array(1, 2, 3)
 		),
-		"ballotName" => _(strtr("voting period %period%", array('%period%'=>$period->id))),
+		"ballotName" => sprintf(_("voting period %d", $period->id)),
 		"questions" => $json_questions,
 		"references" => array(
 			array(

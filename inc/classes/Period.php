@@ -29,25 +29,25 @@ class Period extends Relation {
 	public function current_phase() {
 		$time = time();
 		if (strtotime($this->counting) <= $time) {
-			return strtr(_("Counting started at %datetime%."), array(
-					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->counting))
-				));
+			return sprintf(_("Counting started at %s."),
+				date(DATETIME_FORMAT, strtotime($this->counting))
+			);
 		} elseif (strtotime($this->voting) <= $time) {
-			return strtr(_("Voting started at %datetime%."), array(
-					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->voting))
-				));
+			return sprintf(_("Voting started at %s."),
+				date(DATETIME_FORMAT, strtotime($this->voting))
+			);
 		} elseif (strtotime($this->preparation) <= $time) {
-			return strtr(_("Voting preparation started at %datetime%."), array(
-					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->preparation))
-				));
+			return sprintf(_("Voting preparation started at %s."),
+				date(DATETIME_FORMAT, strtotime($this->preparation))
+			);
 		} elseif (strtotime($this->debate) <= $time) {
-			return strtr(_("Debate started at %datetime%."), array(
-					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->debate))
-				));
+			return sprintf(_("Debate started at %s."),
+				date(DATETIME_FORMAT, strtotime($this->debate))
+			);
 		}
-		return strtr(_("Debate starts at %datetime%."), array(
-				'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->debate))
-			));
+		return sprintf(_("Debate starts at %s."),
+			date(DATETIME_FORMAT, strtotime($this->debate))
+		);
 	}
 
 
@@ -59,18 +59,18 @@ class Period extends Relation {
 	public function ballot_phase_info() {
 		switch ($this->state) {
 		case "ballot_preparation":
-			return strtr(_("Ballot preparation started at %datetime%."), array(
-					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->ballot_preparation))
-				));
+			return sprintf(_("Ballot preparation started at %s."),
+				date(DATETIME_FORMAT, strtotime($this->ballot_preparation))
+			);
 		case "ballot_assignment":
-			return strtr(_("Ballot assignment started at %datetime% and goes until %enddatetime%."), array(
-					'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->ballot_assignment)),
-					'%enddatetime%'=>date(DATETIME_FORMAT, strtotime($this->ballot_preparation))
-				));
+			return sprintf(_("Ballot assignment started at %s and goes until %s."),
+				date(DATETIME_FORMAT, strtotime($this->ballot_assignment)),
+				date(DATETIME_FORMAT, strtotime($this->ballot_preparation))
+			);
 		}
-		return strtr(_("Ballot assignment starts at %datetime%."), array(
-				'%datetime%'=>date(DATETIME_FORMAT, strtotime($this->ballot_assignment))
-			));
+		return sprintf(_("Ballot assignment starts at %s."),
+			date(DATETIME_FORMAT, strtotime($this->ballot_assignment))
+		);
 	}
 
 

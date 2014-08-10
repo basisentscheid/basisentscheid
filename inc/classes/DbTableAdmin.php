@@ -433,7 +433,7 @@ class DbTableAdmin {
 		if (!$object->id) return;
 
 		if ($this->reference_check($object->id)) {
-			warning(strtr(_("The record %id% can not be deleted!"), array('%id%'=>$object->id)));
+			warning(sprintf(_("The record %d can not be deleted!"), $object->id));
 			return;
 		}
 
@@ -482,7 +482,7 @@ class DbTableAdmin {
 		}
 
 		if ($object->create($save_columns)) {
-			success(strtr(_("The record %id% has been duplicated. ID of the copy: %insertid%"), array('%id%'=>$id, '%insertid%'=>$object->id)));
+			success(sprintf(_("The record %d has been duplicated. ID of the copy: %d"), $id, $object->id));
 			$this->duplicate_images($id, $object->id);
 		}
 

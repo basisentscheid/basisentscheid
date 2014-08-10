@@ -356,14 +356,9 @@ class Proposal extends Relation {
 		bargraph(
 			$this->supporters,
 			$required,
-			strtr(
-				_("%value% of currently required %required% (%percent% of %population%) for admission"),
-				array(
-					'%value%'      => $this->supporters,
-					'%required%'   => $required,
-					'%percent%'    => numden2percent($this->quorum_level()),
-					'%population%' => $this->issue()->area()->population()
-				)
+			sprintf(
+				_("%d of currently required %d (%s of %d) for admission"),
+				$this->supporters, $required, numden2percent($this->quorum_level()), $this->issue()->area()->population()
 			),
 			"#00AA00"
 		);

@@ -117,24 +117,24 @@ class Issue extends Relation {
 	private function state_info() {
 		switch ($this->state) {
 		case "debate":
-			return strtr(
-				_("until %datetime%"),
-				array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>')
+			return sprintf(
+				_("until %s"),
+				'<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>'
 			);
 		case "preparation":
-			return strtr(
-				_("until %datetime%"),
-				array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->voting).'</span>')
+			return sprintf(
+				_("until %s"),
+				'<span class="datetime">'.datetimeformat($this->period()->voting).'</span>'
 			);
 		case "voting":
-			return strtr(
-				_("until %datetime%"),
-				array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->counting).'</span>')
+			return sprintf(
+				_("until %s"),
+				'<span class="datetime">'.datetimeformat($this->period()->counting).'</span>'
 			);
 		case "finished":
-			return strtr(
-				_("will be cleared on %date%"),
-				array('%date%' => dateformat($this->clear))
+			return sprintf(
+				_("will be cleared on %s"),
+				dateformat($this->clear)
 			);
 		}
 	}
@@ -356,9 +356,9 @@ class Issue extends Relation {
 		<td rowspan="<?=$num_admitted_rows?>" class="center"><?=$proposal->state_name();
 						if ($this->period) {
 							?><br><span class="stateinfo"><?
-							echo strtr(
-								_("Debate starts at %datetime%"),
-								array('%datetime%' => '<span class="datetime">'.datetimeformat($this->period()->debate).'</span>')
+							printf(
+								_("Debate starts at %s"),
+								'<span class="datetime">'.datetimeformat($this->period()->debate).'</span>'
 							);
 							?></span><?
 						}
@@ -459,14 +459,9 @@ class Issue extends Relation {
 		bargraph(
 			$this->secret_demanders,
 			$required,
-			strtr(
-				_("%value% of currently required %required% (%percent% of %population%) for secret voting"),
-				array(
-					'%value%'      => $this->secret_demanders,
-					'%required%'   => $required,
-					'%percent%'    => numden2percent($this->secret_level()),
-					'%population%' => $this->area()->population()
-				)
+			sprintf(
+				_("%d of currently required %d (%s of %d) for secret voting"),
+				$this->secret_demanders, $required, numden2percent($this->secret_level()), $this->area()->population()
 			),
 			"#FF0000"
 		);
