@@ -388,7 +388,7 @@ class Issue extends Relation {
 			if ($first) {
 				if (Login::$admin) {
 ?>
-		<td rowspan="<?=$num_rows?>" class="center"><?
+		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
 					if ( !$this->display_edit_state() ) {
 						?><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a><?
 					}
@@ -537,7 +537,10 @@ class Issue extends Relation {
 </form>
 <?
 		} else {
-			?><?=$this->period?> <a href="<?=URI::append(array('edit_period'=>$this->id))?>"><?=_("edit")?></a><?
+			if ($this->period) {
+				?><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a><?
+			}
+			?><a href="<?=URI::append(array('edit_period'=>$this->id))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}
 
 		return true;
