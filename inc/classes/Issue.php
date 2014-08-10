@@ -308,6 +308,15 @@ class Issue extends Relation {
 	 */
 	function display_proposals($proposals, $period_rowspan, $show_results, $selected_proposal=0) {
 
+		// look if there is at least one already submitted proposal
+		$submitted = false;
+		foreach ( $proposals as $proposal ) {
+			if ($proposal->state!="draft") {
+				$submitted = true;
+				break;
+			}
+		}
+
 		$first = true;
 		$first_admitted = true;
 		$num_rows = count($proposals);
@@ -364,9 +373,9 @@ class Issue extends Relation {
 					if ($proposal->state=="submitted") {
 						?><br><?
 						$proposal->bargraph_quorum();
-					}
-					if ($proposal->supported_by_member) {
-						?><br>&#10003;<?
+						if ($proposal->supported_by_member) {
+							?><br>&#10003;<?
+						}
 					}
 					?></td>
 <?
@@ -405,7 +414,7 @@ class Issue extends Relation {
 				if ($this->secret_reached) {
 					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("Secret"))?>><?
 				} elseif (
-					($this->state=="admission" and ($proposal->state=="admitted" or $proposal->state=="submitted")) or
+					($this->state=="admission" and $submitted) or
 					$this->state=="debate"
 				) {
 					?><img src="img/online16.png" width="13" height="16" class="online_small" <?alt(_("Online"))?>><?
@@ -414,7 +423,7 @@ class Issue extends Relation {
 					if ($this->secret_by_member) {
 						?><br>&#10003;<?
 					}
-				} else {
+				} elseif ($this->state!="admission") {
 					?><img src="img/online30.png" width="24" height="30" <?alt(_("Online"))?>><?
 				}
 
@@ -461,6 +470,17 @@ class Issue extends Relation {
 			),
 			"#FF0000"
 		);
+	}
+
+
+	/**
+	 * check if it's allowed to add an alternative proposal
+	 *
+	 * @return boolean
+	 */
+	public function allowed_add_alternative_proposal() {
+		if ($this->state=="admission") return true;
+		return false;
 	}
 
 

@@ -9,7 +9,6 @@
 
 class Proposal extends Relation {
 
-	public $proponents;
 	public $title;
 	const title_length = 300;
 	public $content;
@@ -26,7 +25,7 @@ class Proposal extends Relation {
 	private $issue_obj;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member");
-	protected $update_fields = array("proponents", "title", "content", "reason");
+	protected $update_fields = array("title", "content", "reason");
 
 
 	/**
@@ -57,7 +56,7 @@ class Proposal extends Relation {
 	 * @param unknown $area
 	 * @param unknown $fields (optional)
 	 */
-	public function create( $area=false, $fields = array("proponents", "title", "content", "reason", "issue") ) {
+	public function create( $area=false, $fields = array("title", "content", "reason", "issue") ) {
 
 		if (!$this->issue) {
 			$issue = new Issue;
@@ -71,7 +70,25 @@ class Proposal extends Relation {
 		}
 		DB::insert("proposals", $fields_values, $this->id);
 
-		$this->add_support();
+		$this->create_draft();
+
+		$this->add_support(false, true);
+
+	}
+
+
+	/**
+	 *
+	 */
+	public function create_draft() {
+
+		$draft = new Draft;
+		$draft->proposal = $this->id;
+		$draft->title   = $this->title;
+		$draft->content = $this->content;
+		$draft->reason  = $this->reason;
+		$draft->author = Login::$member->id;
+		$draft->create();
 
 	}
 
@@ -96,12 +113,23 @@ class Proposal extends Relation {
 
 
 	/**
-	 *
-	 * @param boolean $anonymous
+	 * submit the proposal
 	 */
-	function add_support($anonymous=false) {
-		$sql = "INSERT INTO supporters (proposal, member, anonymous)
-			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).")";
+	public function submit() {
+		$this->state = "submitted";
+		$this->update(array('state'));
+	}
+
+
+	/**
+	 * add the logged in member as supporter or proponent
+	 *
+	 * @param boolean $anonymous (optional)
+	 * @param boolean $proponent (optional)
+	 */
+	function add_support($anonymous=false, $proponent=false) {
+		$sql = "INSERT INTO supporters (proposal, member, anonymous, proponent)
+			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).", ".DB::bool2pg($proponent).")";
 		DB::query($sql);
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
@@ -214,35 +242,77 @@ class Proposal extends Relation {
 
 
 	/**
-	 * display a list of supporters and find out if the logged in member supports the proposal
+	 * make lists of supporters and proponents and find out if the logged in member is supporter or proponent
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function show_supporters() {
-		$supported_by_member = false;
-		$sql = "SELECT member, anonymous FROM supporters WHERE proposal=".intval($this->id);
+	public function supporters() {
+		$supporters = array();
+		$proponents = array();
+		$is_supporter = false;
+		$is_proponent = false;
+		$sql = "SELECT member, anonymous, proponent FROM supporters WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
-		resetfirst();
 		while ( $row = pg_fetch_assoc($result) ) {
-			if (!first()) echo ", ";
 			$member = new Member($row['member']);
 			if (Login::$member and $member->id==Login::$member->id) {
-				if ($row['anonymous']===DB::value_true) {
-					$supported_by_member = "anonymous";
-					?><span class="self"><?=_("anonymous")?></span><?
+				if ($row['proponent']===DB::value_true) {
+					$proponents[] = $member;
+					$is_proponent = true;
+					$supporters[] = '<span class="proponent">'.$member->username().'</span>';
+				} elseif ($row['anonymous']===DB::value_true) {
+					$is_supporter = "anonymous";
+					$supporters[] = '<span class="self">'._("anonymous").'</span>';
 				} else {
-					$supported_by_member = true;
-					?><span class="self"><?=$member->username()?></span><?
+					$is_supporter = true;
+					$supporters[] = '<span class="self">'.$member->username().'</span>';
 				}
 			} else {
 				if ($row['anonymous']===DB::value_true) {
-					echo _("anonymous");
+					$supporters[] = _("anonymous");
 				} else {
-					echo $member->username();
+					$supporters[] = $member->username();
 				}
 			}
 		}
-		return $supported_by_member;
+		return array($supporters, $proponents, $is_supporter, $is_proponent);
+	}
+
+
+	/**
+	 * look if the supplied member is a proponent of this proposal
+	 *
+	 * @param object  $member
+	 * @return boolean
+	 */
+	public function is_proponent(Member $member) {
+		$sql = "SELECT COUNT(1) FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval($member->id)." AND proponent=TRUE";
+		if ( DB::fetchfield($sql) ) return true;
+		return false;
+	}
+
+
+	/**
+	 * check if it's allowed to add or rate arguments
+	 *
+	 * @return boolean
+	 */
+	public function allowed_add_arguments() {
+		switch ($this->issue()->state) {
+		case "counting":
+		case "finished":
+		case "cleared":
+		case "cancelled":
+			return false;
+		}
+		switch ($this->state) {
+		case "draft":
+		case "revoked":
+		case "cancelled":
+		case "done":
+			return false;
+		}
+		return true;
 	}
 
 

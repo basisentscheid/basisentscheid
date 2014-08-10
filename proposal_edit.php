@@ -16,6 +16,14 @@ if (!empty($_GET['id'])) {
 	if (!$proposal->id) {
 		error("This proposal does not exist!");
 	}
+	if ($proposal->state!="draft") {
+		warning(_("The proposal has already been submitted and may not be changed anymore."));
+		redirect("proposal.php?id=".$proposal->id);
+	}
+	if (!$proposal->is_proponent(Login::$member)) {
+		warning(_("Your are not a proponent of this proposal."));
+		redirect("proposal.php?id=".$proposal->id);
+	}
 } else {
 	$proposal = new Proposal;
 }
@@ -28,9 +36,7 @@ if ($action) {
 		redirect();
 	}
 
-	action_required_parameters('proponents', 'title', 'content', 'reason');
-
-	$proposal->proponents = trim($_POST['proponents']);
+	action_required_parameters('title', 'content', 'reason');
 
 	$proposal->title      = trim($_POST['title']);
 	if (mb_strlen($proposal->title) > Proposal::title_length) {
@@ -59,23 +65,36 @@ if ($action) {
 			));
 	}
 
-	/*if ($proposal->id) {
+	if ($proposal->id) {
+		// update existing proposal
+		$proposal->create_draft();
 		$proposal->update();
-	} else {*/
-	if (!empty($_POST['issue'])) {
-		$proposal->issue = intval($_POST['issue']);
-		$proposal->create();
-	} elseif (!empty($_POST['area'])) {
-		$proposal->create($_POST['area']);
 	} else {
-		warning("Missing parameters");
-		redirect();
+		if (!empty($_POST['issue'])) {
+			// add alternative proposal
+			$issue = new Issue($_POST['issue']);
+			if (!$issue->id) {
+				error(_("The supplied issue does not exist."));
+			}
+			if (!$issue->allowed_add_alternative_proposal()) {
+				warning(_("In this phase it is not allowed to create an alternative proposal. Thus a new proposal has been created instead."));
+				$proposal->create($issue->area);
+				redirect();
+			}
+			$proposal->issue = $issue->id;
+			$proposal->create();
+		} elseif (!empty($_POST['area'])) {
+			// add new proposal
+			$proposal->create($_POST['area']);
+		} else {
+			warning("Missing parameters");
+			redirect();
+		}
+		if (!$proposal->id) {
+			warning("The proposal could not be created!");
+			redirect();
+		}
 	}
-	if (!$proposal->id) {
-		warning("The proposal could not be created!");
-		redirect();
-	}
-	//}
 
 	$proposal->issue()->area()->activate_participation();
 
@@ -83,21 +102,21 @@ if ($action) {
 }
 
 
-/*if ($proposal->id) {
+if ($proposal->id) {
 	html_head( strtr( _("Edit Proposal %id%"), array('%id%'=>$proposal->id) ) );
 	$issue = $proposal->issue();
-} else {*/
-if (isset($_GET['issue'])) {
-	html_head(_("New alternative proposal"));
-	$issue = new Issue($_GET['issue']);
-	if (!$issue) {
-		error("The selected issue does not exist!");
-	}
 } else {
-	html_head(_("New proposal"));
-	$issue = false;
+	if (isset($_GET['issue'])) {
+		html_head(_("New alternative proposal"));
+		$issue = new Issue($_GET['issue']);
+		if (!$issue) {
+			error("The selected issue does not exist!");
+		}
+	} else {
+		html_head(_("New proposal"));
+		$issue = false;
+	}
 }
-//}
 
 form(BN.($proposal->id?"?id=".$proposal->id:""), 'class="proposal"');
 
@@ -108,8 +127,6 @@ if (isset($_GET['issue'])) {
 }
 
 ?>
-<h2><?=_("Proponents")?></h2>
-<input type="text" name="proponents" value="<?=h($proposal->proponents)?>"><br>
 <h2><?=_("Area")?></h2>
 <?
 if ($issue) {

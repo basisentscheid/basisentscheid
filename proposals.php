@@ -106,7 +106,7 @@ default: // open
 if ($search) {
 	$sql .= " JOIN proposals ON proposals.issue = issues.id";
 	$pattern = DB::m("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
-	$where[] = "(proponents ILIKE ".$pattern." OR title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
+	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
 	$sql .= DB::where_and($where);
 	$sql .= " GROUP BY issues.id";
 } else {

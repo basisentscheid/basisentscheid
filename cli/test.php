@@ -65,11 +65,14 @@ function create_case($case, $stopcase) {
 
 	// create new proposal
 	$proposal = new Proposal;
-	$proposal->proponents = "Test proponent 1 #1001, Test proponent 2 #1002, Test proponent 3 #1003, Test proponent 4 #1004, Test proponent 5 #1005";
 	$proposal->title = "Test ".$date." proposal case ".$casedesc;
 	$proposal->content = "Test content";
 	$proposal->reason = "Test reason";
 	$proposal->create($area);
+
+	if ($stopcase == ++$stop) return;
+
+	$proposal->submit();
 
 	${'branch'.++$branch.'_array'} = array(0, 48, 49); // the first supporter is the proponent
 	$supporter_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
@@ -88,12 +91,15 @@ function create_case($case, $stopcase) {
 
 	// create alternative proposal
 	$proposal2 = new Proposal;
-	$proposal2->proponents = "Test proponent 1 #1001, Test proponent 2 #1002, Test proponent 3 #1003, Test proponent 4 #1004, Test proponent 5 #1005";
 	$proposal2->title = "Test ".$date." alternative proposal case ".$casedesc;
 	$proposal2->content = "Test content";
 	$proposal2->reason = "Test reason";
 	$proposal2->issue = $proposal->issue;
 	$proposal2->create($area);
+
+	if ($stopcase == ++$stop) return;
+
+	$proposal2->submit();
 
 	${'branch'.++$branch.'_array'} = array(0, 23, 24); // the first supporter is the proponent
 	$supporter_count2 = ${'branch'.$branch.'_array'}[${'branch'.$branch}];

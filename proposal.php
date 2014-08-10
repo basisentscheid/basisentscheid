@@ -9,7 +9,7 @@
 
 require "inc/common.php";
 
-URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision'));
+URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision', 'show_drafts'));
 
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
@@ -22,6 +22,33 @@ if (Login::$member) $edit_limit = strtotime("- ".ARGUMENT_EDIT_INTERVAL);
 
 if ($action) {
 	switch ($action) {
+
+	case "submit_proposal":
+		Login::access_action("member");
+		if ($proposal->state!="draft") {
+			warning(_("The proposal has already been submitted."));
+			redirect("proposal.php?id=".$proposal->id);
+		}
+		if (!$proposal->is_proponent(Login::$member)) {
+			warning(_("Your are not a proponent of this proposal."));
+			redirect();
+		}
+		$proposal->submit();
+		redirect();
+		break;
+	case "revoke_proposal":
+		Login::access_action("member");
+		if ($issue->state != "admission" and $issue->state != "debate") {
+			warning(_("In the current phase the proposal can not be revoked anymore."));
+			redirect();
+		}
+		if (!$proposal->is_proponent(Login::$member)) {
+			warning(_("Your are not a proponent of this proposal."));
+			redirect();
+		}
+		$proposal->cancel("revoked");
+		redirect();
+		break;
 
 	case "add_support":
 		Login::access_action("member");
@@ -75,6 +102,10 @@ if ($action) {
 	case "add_argument":
 		Login::access_action("member");
 		action_required_parameters("title", "content", "parent");
+		if (!$proposal->allowed_add_arguments()) {
+			warning(_("Adding or rating arguments is allowed in this phase."));
+			redirect();
+		}
 		$argument = new Argument;
 		if ($_POST['parent']=="pro" or $_POST['parent']=="contra") {
 			$argument->parent = 0;
@@ -169,6 +200,10 @@ if ($action) {
 	case "rating_minus":
 		Login::access_action("member");
 		action_required_parameters("argument");
+		if (!$proposal->allowed_add_arguments()) {
+			warning(_("Adding or rating arguments is allowed in this phase."));
+			redirect();
+		}
 		$argument = new Argument($_POST['argument']);
 		if (!$argument->id) {
 			warning("This argument does not exist.");
@@ -189,6 +224,10 @@ if ($action) {
 	case "rating_reset":
 		Login::access_action("member");
 		action_required_parameters("argument");
+		if (!$proposal->allowed_add_arguments()) {
+			warning(_("Adding or rating arguments is allowed in this phase."));
+			redirect();
+		}
 		$argument = new Argument($_POST['argument']);
 		if (!$argument->id) {
 			warning("This argument does not exist.");
@@ -209,193 +248,158 @@ if ($action) {
 }
 
 
-html_head(_("Proposal")." ".$proposal->id);
+if (isset($_GET['draft'])) {
+	$draft = new Draft($_GET['draft']);
+	if ($draft->proposal != $proposal->id) {
+		error("The requested draft does not exist!");
+	}
+	html_head(strtr(_("Proposal %id%, draft from %time%"), array('%id%'=>$proposal->id, '%time%'=>datetimeformat($draft->created))));
+	$content_obj = $draft;
+} else {
+	html_head(_("Proposal")." ".$proposal->id);
+	$content_obj = $proposal;
+}
+
+
+list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
 ?>
-
 
 <div class="proposal_info">
 <h2><?=_("Area")?></h2>
 <p class="proposal"><?=h($issue->area()->name)?></p>
 <h2><?=_("Proponents")?></h2>
-<p class="proposal"><?=content2html($proposal->proponents)?></p>
+<table>
+<?
+foreach ( $proponents as $proponent ) {
+?>
+<tr class="<?=stripes()?>">
+	<td><?=$proponent->username()?></td>
+</tr>
+<?
+}
+?>
+</table>
+<?
+
+if (Login::$member or Login::$admin) {
+
+?>
+<h2><?=_("Drafts")?></h2>
+<?
+	if ($proposal->state=="draft" or !empty($_GET['show_drafts'])) {
+?>
+<table>
+<?
+		$sql = "SELECT * FROM drafts WHERE proposal=".intval($proposal->id)." ORDER BY created DESC";
+		$result = DB::query($sql);
+		$i = DB::num_rows($result);
+		while ( $draft = DB::fetch_object($result, "Draft") ) {
+			$author = new Member($draft->author);
+?>
+<tr class="<?=stripes()?>">
+	<td class="right"><?=$i?></td>
+	<td><a href="<?=URI::append(array('draft'=>$draft->id))?>"><?=datetimeformat($draft->created)?></a></td>
+	<td><?=$author->username()?></td>
+</tr>
+<?
+			$i--;
+		}
+?>
+</table>
+<?
+	} else {
+?>
+<a href="<?=URI::append(array('show_drafts'=>1))?>"><?=_("Drafts")?></a>
+<?
+	}
+
+	// actions
+	if ($is_proponent) {
+		if ($proposal->state=="draft") {
+?>
+<h2><?=_("Actions")?></h2>
+<?
+			form(URI::same());
+?>
+<input type="hidden" name="action" value="submit_proposal">
+<input type="submit" value="<?=_("submit proposal")?>">
+</form>
+<?
+		}
+		if ($issue->state=="admission" or $issue->state=="debate") {
+?>
+<h2><?=_("Actions")?></h2>
+<?
+			form(URI::same());
+?>
+<input type="hidden" name="action" value="revoke_proposal">
+<input type="submit" value="<?=_("revoke proposal")?>">
+</form>
+<?
+		}
+	}
+
+}
+
+?>
 </div>
 
 <div class="proposal_content">
-<!--<div style="float:right"><a href="proposal_edit.php?id=<?=$proposal->id?>"><?=_("Edit proposal")?></a></div>-->
+<?
+if ($proposal->state=="draft" and $is_proponent) {
+?>
+<div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>"><?=_("Edit proposal")?></a></div>
+<?
+}
+?>
 <h2><?=_("Title")?></h2>
-<p class="proposal proposal_title"><?=h($proposal->title)?></p>
+<p class="proposal proposal_title"><?=h($content_obj->title)?></p>
 <h2><?=_("Content")?></h2>
-<p class="proposal"><?=content2html($proposal->content)?></p>
+<p class="proposal"><?=content2html($content_obj->content)?></p>
 <h2><?=_("Reason")?></h2>
-<p class="proposal"><?=content2html($proposal->reason)?></p>
+<p class="proposal"><?=content2html($content_obj->reason)?></p>
 </div>
 
 <div class="clearfix"></div>
 
+<?
+if ($proposal->state != "draft" and !isset($_GET['draft'])) {
+?>
 <div>
 	<div class="arguments_side arguments_pro">
 <?
-if (Login::$member and @$_GET['argument_parent']!="pro") {
+	if (Login::$member and @$_GET['argument_parent']!="pro" and $proposal->allowed_add_arguments()) {
 ?>
 		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
-}
+	}
 ?>
 		<h2><?=_("Pro")?></h2>
-		<? arguments("pro", "pro", 0); ?>
+		<? display_arguments("pro", "pro", 0); ?>
 	</div>
 	<div class="arguments_side arguments_contra">
 <?
-if (Login::$member and @$_GET['argument_parent']!="contra") {
+	if (Login::$member and @$_GET['argument_parent']!="contra" and $proposal->allowed_add_arguments()) {
 ?>
 		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
-}
+	}
 ?>
 		<h2><?=_("Contra")?></h2>
-		<? arguments("contra", "contra", 0); ?>
+		<? display_arguments("contra", "contra", 0); ?>
 	</div>
 	<div class="clearfix"></div>
 </div>
 
-<div class="quorum">
-<div class="bargraph_container">
 <?
-$proposal->bargraph_quorum();
-?>
-</div>
-<?
-
-if (Login::$member or Login::$admin) {
-?>
-<b><?=_("Supporters")?>:</b> <?
-	$supported_by_member = $proposal->show_supporters();
-	if (Login::$member and $proposal->state=="submitted") {
-?>
-<br clear="both">
-<?
-		if ($supported_by_member) {
-			form(URI::same(), 'style="background-color:green; display:inline-block"');
-?>
-&#10003; <?
-			if ($supported_by_member==="anonymous") {
-				echo _("You support this proposal anonymously.");
-			} else {
-				echo _("You support this proposal.");
-			}
-?>
-<input type="hidden" name="action" value="revoke_support">
-<input type="submit" value="<?=_("Revoke your support for this proposal")?>">
-</form>
-<?
-		} else {
-			form(URI::same(), 'style="display:inline-block"');
-?>
-<input type="hidden" name="action" value="add_support">
-<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
-<input type="submit" value="<?=_("Support this proposal")?>">
-</form>
-<?
-		}
-	}
-}
-
-// admission by decision
-if (Login::$admin and !empty($_GET['edit_admission_decision'])) {
-	if ($proposal->admission_decision!==null) {
-		form(URI::same()."#admission_decision", 'class="admission_decision"');
-?>
-<a name="admission_decision" class="anchor"></a>
-<b><?=_("Admitted by decision")?>:</b><br>
-<input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>"><br>
-<input type="submit" value="<?=_("apply changes")?>">
-<input type="hidden" name="action" value="admission_decision">
-</form>
-<?
-	} elseif ($proposal->state=="submitted") {
-		form(URI::same()."#admission_decision", 'class="admission_decision"');
-?>
-<a name="admission_decision" class="anchor"></a>
-<b><?=_("Admit proposal due to a decision")?>:</b><br>
-<input type="text" name="admission_decision"><br>
-<input type="submit" value="<?=_("admit proposal")?>">
-<input type="hidden" name="action" value="admission_decision">
-</form>
-<?
-	}
-} elseif (Login::$admin and $proposal->state=="submitted" and $proposal->admission_decision===null) {
-?>
-<div class="admission_decision">
-<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
-</div>
-<?
-} elseif ($proposal->admission_decision!==null) {
-?>
-<div class="admission_decision">
-<a name="admission_decision" class="anchor"></a>
-<b><?=_("Admitted by decision")?>:</b>
-<?=content2html($proposal->admission_decision)?>
-<?
-	if (Login::$admin) {
-?>
-&nbsp;
-<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
-<?
-	}
-?>
-</div>
-<?
-}
-
-?>
-</div>
-<div class="quorum">
-<div class="bargraph_container">
-<?
-$issue->bargraph_secret();
-?>
-</div>
-<?
-if (Login::$member or Login::$admin) {
-?>
-<b><?=_("Secret voting demanders")?>:</b> <?
-	$demanded_by_member = $issue->show_offline_demanders();
-	if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
-?>
-<br clear="both">
-<?
-		if ($demanded_by_member) {
-			form(URI::same(), 'style="background-color:red; display:inline-block"');
-?>
-&#10003; <?
-			if ($demanded_by_member==="anonymous") {
-				echo _("You demand secret voting for this issue anonymously.");
-			} else {
-				echo _("You demand secret voting for this issue.");
-			}
-?>
-<input type="hidden" name="action" value="revoke_demand_offline">
-<input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
-</form>
-<?
-		} else {
-			form(URI::same(), 'style="display:inline-block"');
-?>
-<input type="hidden" name="action" value="demand_offline">
-<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
-<input type="submit" value="<?=_("Demand secret voting for this issue")?>">
-</form>
-<?
-		}
-	}
+	display_quorum($proposal, $issue, $supporters, $is_supporter);
 }
 ?>
-</div>
 
 <div class="issue">
 <?
-if (Login::$member) {
+if (Login::$member and $issue->allowed_add_alternative_proposal()) {
 ?>
 <div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
@@ -425,7 +429,7 @@ html_foot();
  * @param mixed   $parent ID of parent argument or "pro" or "contra"
  * @param integer $level
  */
-function arguments($side, $parent, $level) {
+function display_arguments($side, $parent, $level) {
 	global $proposal, $edit_limit;
 
 	$sql = "SELECT arguments.*, (arguments.plus - arguments.minus) AS rating";
@@ -486,7 +490,11 @@ function arguments($side, $parent, $level) {
 <?
 
 		// author and form
-		if (Login::$member and $member->id==Login::$member->id and @$_GET['argument_edit']==$argument->id and !$argument->removed) {
+		if (
+			Login::$member and $member->id==Login::$member->id and
+			@$_GET['argument_edit']==$argument->id and
+			!$argument->removed
+		) {
 ?>
 		<div class="author"><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
 <?
@@ -514,7 +522,12 @@ function arguments($side, $parent, $level) {
 		} else {
 ?>
 		<div class="author<?=$argument->removed?' removed':''?>"><?
-			if (Login::$member and $member->id==Login::$member->id and strtotime($argument->created) > $edit_limit and !$argument->removed) {
+			if (
+				Login::$member and $member->id==Login::$member->id and
+				strtotime($argument->created) > $edit_limit and
+				!$argument->removed and
+				$proposal->allowed_add_arguments()
+			) {
 				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
 			}
 			?><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
@@ -542,7 +555,12 @@ function arguments($side, $parent, $level) {
 		}
 
 		// reply
-		if (Login::$member and @$_GET['argument_parent']!=$argument->id and !$argument->removed) {
+		if (
+			Login::$member and
+			@$_GET['argument_parent']!=$argument->id and
+			!$argument->removed and
+			$proposal->allowed_add_arguments()
+		) {
 ?>
 		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form"><?=_("Reply")?></a></div>
 <?
@@ -563,7 +581,8 @@ function arguments($side, $parent, $level) {
 				// don't allow to rate ones own arguments
 				$argument->member!=Login::$member->id and
 				// don't allow to rate removed arguments
-				!$argument->removed
+				!$argument->removed and
+				$proposal->allowed_add_arguments()
 			) {
 				$uri = URI::same();
 				if ($argument->positive!==null) {
@@ -615,13 +634,13 @@ function arguments($side, $parent, $level) {
 ?>
 		<div class="clearfix"></div>
 <?
-		arguments($side, $argument->id, $level+1);
+		display_arguments($side, $argument->id, $level+1);
 ?>
 	</li>
 <?
 	}
 
-	if (Login::$member and @$_GET['argument_parent']==$parent) {
+	if (Login::$member and @$_GET['argument_parent']==$parent and $proposal->allowed_add_arguments()) {
 ?>
 	<li>
 <?
@@ -641,5 +660,151 @@ function arguments($side, $parent, $level) {
 
 ?>
 </ul>
+<?
+}
+
+
+/**
+ * display supporters and secret voting demanders
+ *
+ * @param object  $proposal
+ * @param object  $issue
+ * @param array   $supporters
+ * @param mixed   $is_supporter
+ */
+function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is_supporter) {
+?>
+<div class="quorum">
+<div class="bargraph_container">
+<?
+	$proposal->bargraph_quorum();
+?>
+</div>
+<?
+
+	if (Login::$member or Login::$admin) {
+?>
+<b><?=_("Supporters")?>:</b> <?=join(", ", $supporters);
+		if (Login::$member and $proposal->state=="submitted") {
+?>
+<br clear="both">
+<?
+			if ($is_supporter) {
+				form(URI::same(), 'style="background-color:green; display:inline-block"');
+?>
+&#10003; <?
+				if ($is_supporter==="anonymous") {
+					echo _("You support this proposal anonymously.");
+				} else {
+					echo _("You support this proposal.");
+				}
+?>
+<input type="hidden" name="action" value="revoke_support">
+<input type="submit" value="<?=_("Revoke your support for this proposal")?>">
+</form>
+<?
+			} else {
+				form(URI::same(), 'style="display:inline-block"');
+?>
+<input type="hidden" name="action" value="add_support">
+<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
+<input type="submit" value="<?=_("Support this proposal")?>">
+</form>
+<?
+			}
+		}
+	}
+
+	// admission by decision
+	if (Login::$admin and !empty($_GET['edit_admission_decision'])) {
+		if ($proposal->admission_decision!==null) {
+			form(URI::same()."#admission_decision", 'class="admission_decision"');
+?>
+<a name="admission_decision" class="anchor"></a>
+<b><?=_("Admitted by decision")?>:</b><br>
+<input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>"><br>
+<input type="submit" value="<?=_("apply changes")?>">
+<input type="hidden" name="action" value="admission_decision">
+</form>
+<?
+		} elseif ($proposal->state=="submitted") {
+			form(URI::same()."#admission_decision", 'class="admission_decision"');
+?>
+<a name="admission_decision" class="anchor"></a>
+<b><?=_("Admit proposal due to a decision")?>:</b><br>
+<input type="text" name="admission_decision"><br>
+<input type="submit" value="<?=_("admit proposal")?>">
+<input type="hidden" name="action" value="admission_decision">
+</form>
+<?
+		}
+	} elseif (Login::$admin and $proposal->state=="submitted" and $proposal->admission_decision===null) {
+?>
+<div class="admission_decision">
+<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
+</div>
+<?
+	} elseif ($proposal->admission_decision!==null) {
+?>
+<div class="admission_decision">
+<a name="admission_decision" class="anchor"></a>
+<b><?=_("Admitted by decision")?>:</b>
+<?=content2html($proposal->admission_decision)?>
+<?
+		if (Login::$admin) {
+?>
+&nbsp;
+<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+<?
+		}
+?>
+</div>
+<?
+	}
+
+?>
+</div>
+<div class="quorum">
+<div class="bargraph_container">
+<?
+	$issue->bargraph_secret();
+?>
+</div>
+<?
+	if (Login::$member or Login::$admin) {
+?>
+<b><?=_("Secret voting demanders")?>:</b> <?
+		$demanded_by_member = $issue->show_offline_demanders();
+		if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
+?>
+<br clear="both">
+<?
+			if ($demanded_by_member) {
+				form(URI::same(), 'style="background-color:red; display:inline-block"');
+?>
+&#10003; <?
+				if ($demanded_by_member==="anonymous") {
+					echo _("You demand secret voting for this issue anonymously.");
+				} else {
+					echo _("You demand secret voting for this issue.");
+				}
+?>
+<input type="hidden" name="action" value="revoke_demand_offline">
+<input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
+</form>
+<?
+			} else {
+				form(URI::same(), 'style="display:inline-block"');
+?>
+<input type="hidden" name="action" value="demand_offline">
+<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
+<input type="submit" value="<?=_("Demand secret voting for this issue")?>">
+</form>
+<?
+			}
+		}
+	}
+?>
+</div>
 <?
 }

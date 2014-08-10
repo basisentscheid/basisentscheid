@@ -376,7 +376,8 @@ img.ballot_small {
 div.tableblock {
 	display: inline-block;
 }
-div.add_record {
+div.add_record,
+div.add {
 	float: right;
 }
 form.filter,
@@ -474,6 +475,7 @@ p.proposal_title {
 div.proposal_info {
 	float: right;
 	margin-left: 20px;
+	margin-bottom: 5px;
 	width: 20%;
 }
 div.proposal_content {
@@ -504,9 +506,6 @@ form.admission_decision input[type=text] {
 
 div.issue {
 	margin-top: 20px;
-}
-div.issue div.add {
-	float: right;
 }
 
 table.proposals {
@@ -576,7 +575,9 @@ table.proposals td.proposal_link_active:active a {
 	background-color: #F3F3F3;
 }
 
-form.proposal h2 {
+form.proposal h2,
+div.proposal_info h2,
+div.proposal_content h2 {
 	font-size: 115%;
 	font-weight: normal;
 	margin-top: 5px;
@@ -609,9 +610,6 @@ div.arguments_pro {
 	float: left;
 }
 div.arguments_contra {
-	float: right;
-}
-div.arguments_side div.add {
 	float: right;
 }
 div.arguments_side ul li h3,

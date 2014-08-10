@@ -223,6 +223,40 @@ CREATE TABLE cron_lock (
 
 
 --
+-- Name: drafts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE drafts (
+    id integer NOT NULL,
+    proposal integer NOT NULL,
+    title text NOT NULL,
+    content text NOT NULL,
+    reason text NOT NULL,
+    author integer NOT NULL,
+    created timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: drafts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE drafts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: drafts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE drafts_id_seq OWNED BY drafts.id;
+
+
+--
 -- Name: issues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -362,9 +396,8 @@ CREATE TABLE proposals (
     supporters integer DEFAULT 0 NOT NULL,
     quorum_reached boolean DEFAULT false NOT NULL,
     admission_decision text,
-    state proposal_state DEFAULT 'submitted'::proposal_state NOT NULL,
-    submitted date DEFAULT now() NOT NULL,
-    proponents text NOT NULL
+    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
+    submitted date DEFAULT now() NOT NULL
 );
 
 
@@ -413,7 +446,8 @@ CREATE TABLE supporters (
     proposal integer NOT NULL,
     member integer NOT NULL,
     created date DEFAULT ('now'::text)::date NOT NULL,
-    anonymous boolean DEFAULT false NOT NULL
+    anonymous boolean DEFAULT false NOT NULL,
+    proponent boolean DEFAULT false NOT NULL
 );
 
 
@@ -495,6 +529,13 @@ ALTER TABLE ONLY ballots ALTER COLUMN id SET DEFAULT nextval('ballots_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY drafts ALTER COLUMN id SET DEFAULT nextval('drafts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY issues ALTER COLUMN id SET DEFAULT nextval('issues_id_seq'::regclass);
 
 
@@ -564,6 +605,14 @@ ALTER TABLE ONLY arguments
 
 ALTER TABLE ONLY ballots
     ADD CONSTRAINT ballots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: drafts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY drafts
+    ADD CONSTRAINT drafts_pkey PRIMARY KEY (id);
 
 
 --
@@ -692,6 +741,22 @@ ALTER TABLE ONLY arguments
 
 ALTER TABLE ONLY ballots
     ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: drafts_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY drafts
+    ADD CONSTRAINT drafts_author_fkey FOREIGN KEY (author) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: drafts_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY drafts
+    ADD CONSTRAINT drafts_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
