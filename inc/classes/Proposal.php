@@ -171,16 +171,20 @@ class Proposal extends Relation {
 
 
 	/**
+	 * admit the proposal circumventing the quorum
 	 *
-	 * @param unknown $link
+	 * @param string  $text
 	 */
-	function set_admitted_by_decision($link) {
-
-		$this->admission_decision_link = $link;
-		$this->state = "admitted";
-		$this->update(array("admission_decision_link", "state"));
-		$this->select_period();
-
+	function set_admission_decision($text) {
+		if ($this->admission_decision===null) {
+			$this->admission_decision = $text;
+			$this->state = "admitted";
+			$this->update(array("admission_decision", "state"));
+			$this->select_period();
+		} else {
+			$this->admission_decision = $text;
+			$this->update(array("admission_decision"));
+		}
 	}
 
 

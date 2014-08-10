@@ -9,7 +9,7 @@
 
 require "inc/common.php";
 
-URI::strip_one_time_params(array('argument_parent', 'argument_edit'));
+URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision'));
 
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
@@ -63,6 +63,13 @@ if ($action) {
 	case "select_period":
 		Login::access_action("admin");
 		action_proposal_select_period();
+		break;
+
+	case "admission_decision":
+		Login::access_action("admin");
+		action_required_parameters("admission_decision");
+		$proposal->set_admission_decision(trim($_POST['admission_decision']));
+		redirect();
 		break;
 
 	case "add_argument":
@@ -252,15 +259,16 @@ if (Login::$member and @$_GET['argument_parent']!="contra") {
 	<div class="clearfix"></div>
 </div>
 
-<?
-if (Login::$member or Login::$admin) {
-?>
 <div class="quorum">
 <div class="bargraph_container">
 <?
-	$proposal->bargraph_quorum();
+$proposal->bargraph_quorum();
 ?>
 </div>
+<?
+
+if (Login::$member or Login::$admin) {
+?>
 <b><?=_("Supporters")?>:</b> <?
 	$supported_by_member = $proposal->show_supporters();
 	if (Login::$member and $proposal->state=="submitted") {
@@ -291,14 +299,66 @@ if (Login::$member or Login::$admin) {
 <?
 		}
 	}
+}
+
+// admission by decision
+if (Login::$admin and !empty($_GET['edit_admission_decision'])) {
+	if ($proposal->admission_decision!==null) {
+		form(URI::same()."#admission_decision", 'class="admission_decision"');
+?>
+<a name="admission_decision" class="anchor"></a>
+<b><?=_("Admitted by decision")?>:</b><br>
+<input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>"><br>
+<input type="submit" value="<?=_("apply changes")?>">
+<input type="hidden" name="action" value="admission_decision">
+</form>
+<?
+	} elseif ($proposal->state=="submitted") {
+		form(URI::same()."#admission_decision", 'class="admission_decision"');
+?>
+<a name="admission_decision" class="anchor"></a>
+<b><?=_("Admit proposal due to a decision")?>:</b><br>
+<input type="text" name="admission_decision"><br>
+<input type="submit" value="<?=_("admit proposal")?>">
+<input type="hidden" name="action" value="admission_decision">
+</form>
+<?
+	}
+} elseif (Login::$admin and $proposal->state=="submitted" and $proposal->admission_decision===null) {
+?>
+<div class="admission_decision">
+<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
+</div>
+<?
+} elseif ($proposal->admission_decision!==null) {
+?>
+<div class="admission_decision">
+<a name="admission_decision" class="anchor"></a>
+<b><?=_("Admitted by decision")?>:</b>
+<?=content2html($proposal->admission_decision)?>
+<?
+	if (Login::$admin) {
+?>
+&nbsp;
+<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+<?
+	}
+?>
+</div>
+<?
+}
+
 ?>
 </div>
 <div class="quorum">
 <div class="bargraph_container">
 <?
-	$issue->bargraph_secret();
+$issue->bargraph_secret();
 ?>
 </div>
+<?
+if (Login::$member or Login::$admin) {
+?>
 <b><?=_("Secret voting demanders")?>:</b> <?
 	$demanded_by_member = $issue->show_offline_demanders();
 	if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
@@ -329,11 +389,9 @@ if (Login::$member or Login::$admin) {
 <?
 		}
 	}
-?>
-</div>
-<?
 }
 ?>
+</div>
 
 <div class="issue">
 <?
