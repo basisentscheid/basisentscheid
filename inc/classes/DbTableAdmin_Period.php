@@ -156,7 +156,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 			warning(_("The preparation time is not valid!"));
 			return false;
 		}
-		if (!$debate) {
+		if (!$voting) {
 			warning(_("The voting time is not valid!"));
 			return false;
 		}
