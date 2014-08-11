@@ -19,6 +19,8 @@ $d->columns = array(
 );
 $d->enable_filter = false;
 
+$d->reference_check = array("SELECT id FROM issues WHERE area=%d");
+
 $d->action($action);
 
 html_head(_("Subject areas"));
