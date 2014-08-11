@@ -106,7 +106,9 @@ function html_head($title) {
 		navlink( 'admins.php', _("Admins"));
 	} else {
 		navlink( 'areas.php', _("Areas"));
-		navlink( 'members.php', _("Members"));
+		if (Login::$member) {
+			navlink( 'members.php', _("Members"));
+		}
 	}
 ?>
 		</ul>
