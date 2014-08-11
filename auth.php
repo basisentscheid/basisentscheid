@@ -26,14 +26,66 @@ $response = $client->getAccessToken(OAUTH2_TOKEN_ENDPOINT, 'authorization_code',
 $client->setAccessToken($response['result']['access_token']);
 $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
 
-//$response = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/membership/');
-//var_dump($response);
+//$response_membership = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/membership/');
+//var_dump($response_membership);
+/*
+array(6) {
+	["nested_groups"]=>
+	array(1) {
+		[0]=>
+		int(5)
+	}
+	["all_nested_hgroups"]=>
+	array(3) {
+		[0]=>
+		int(1)
+		[1]=>
+		int(2)
+		[2]=>
+		int(5)
+	}
+	["verified"]=>
+	bool(true)
+	["hgroups"]=>
+	array(1) {
+		[0]=>
+		int(5)
+	}
+	["type"]=>
+	string(15) "entitled member"
+	["all_hgroups"]=>
+	array(3) {
+		[0]=>
+		int(1)
+		[1]=>
+		int(2)
+		[2]=>
+		int(5)
+	}
+}
+*/
 
 $response_profile = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/profile/');
 //var_dump($response_profile);
+/*
+array(3) {
+	["username"]=>
+	string(3) "foo"
+	["profile"]=>
+	string(28) "PhD in intercultural physics"
+	["public_id"]=>
+	string(14) "Dr. Mister Foo"
+}
+*/
 
 $response_auid = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/auid/');
-//var_dump($response);
+//var_dump($response_auid);
+/*
+array(1) {
+	["auid"]=>
+	string(36) "3fa248a5-d9c0-4032-8076-fba431038c8d"
+}
+*/
 
 $auid = $response_auid['result']['auid'];
 $username = $response_profile['result']['username'];
