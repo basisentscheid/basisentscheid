@@ -231,7 +231,7 @@ class Proposal extends Relation {
 		if ($issue->period) return;
 
 		// select the next period, which has not yet started
-		$sql = "SELECT id FROM periods WHERE debate > now() AND online=TRUE ORDER BY debate LIMIT 1";
+		$sql = "SELECT id FROM periods WHERE debate > now() AND online_voting=TRUE ORDER BY debate LIMIT 1";
 		$issue->period = DB::fetchfield($sql);
 		if ($issue->period) {
 			$issue->update(array("period"));

@@ -522,7 +522,7 @@ table.proposals th.state {
 table.proposals th.period {
 	width: 1%;
 }
-table.proposals th.secret {
+table.proposals th.voting_type {
 	width: 7%;
 }
 table.proposals th.result {

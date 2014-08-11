@@ -68,21 +68,21 @@ if ($action) {
 		}
 		redirect();
 		break;
-	case "demand_offline":
+	case "demand_ballot_voting":
 		Login::access_action("member");
 		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
-			$issue->demand_secret(@$_POST['anonymous']==1);
+			$issue->demand_ballot_voting(@$_POST['anonymous']==1);
 		} else {
-			warning("Support for secret voting can not be added, because the proposal is not in submitted, admitted or debate phase!");
+			warning("Demand for ballot voting can not be added, because the proposal is not in submitted, admitted or debate phase!");
 		}
 		redirect();
 		break;
-	case "revoke_demand_offline":
+	case "revoke_demand_ballot_voting":
 		Login::access_action("member");
 		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
-			$issue->revoke_secret();
+			$issue->revoke_ballot_voting();
 		} else {
-			warning("Support for secret voting can not be removed, because the proposal is not in submitted, admitted or debate phase!");
+			warning("Demand for ballot voting can not be removed, because the proposal is not in submitted, admitted or debate phase!");
 		}
 		redirect();
 		break;
@@ -403,7 +403,7 @@ if (Login::$member and $issue->allowed_add_alternative_proposal()) {
 <table class="proposals">
 <?
 $proposals = $issue->proposals_list();
-if (Login::$member) $issue->read_secret_by_member();
+if (Login::$member) $issue->read_ballot_voting_demanded_by_member();
 $show_results = in_array($issue->state, array('finished', 'cleared', 'cancelled'));
 Issue::display_proposals_th($show_results);
 $issue->display_proposals($proposals, count($proposals), $show_results, $proposal->id);
@@ -659,7 +659,7 @@ function display_arguments($side, $parent, $level) {
 
 
 /**
- * display supporters and secret voting demanders
+ * display supporters and ballot voting demanders
  *
  * @param object  $proposal
  * @param object  $issue
@@ -761,14 +761,14 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 <div class="quorum">
 <div class="bargraph_container">
 <?
-	$issue->bargraph_secret();
+	$issue->bargraph_ballot_voting();
 ?>
 </div>
 <?
 	if (Login::$member or Login::$admin) {
 ?>
-<b><?=_("Secret voting demanders")?>:</b> <?
-		$demanded_by_member = $issue->show_offline_demanders();
+<b><?=_("Ballot voting demanders")?>:</b> <?
+		$demanded_by_member = $issue->show_ballot_voting_demanders();
 		if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
 ?>
 <br clear="both">
@@ -778,21 +778,21 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 ?>
 &#10003; <?
 				if ($demanded_by_member==="anonymous") {
-					echo _("You demand secret voting for this issue anonymously.");
+					echo _("You demand ballot voting for this issue anonymously.");
 				} else {
-					echo _("You demand secret voting for this issue.");
+					echo _("You demand ballot voting for this issue.");
 				}
 ?>
-<input type="hidden" name="action" value="revoke_demand_offline">
-<input type="submit" value="<?=_("Revoke your demand for secret voting")?>">
+<input type="hidden" name="action" value="revoke_demand_for_ballot_voting">
+<input type="submit" value="<?=_("Revoke your demand for ballot voting")?>">
 </form>
 <?
 			} else {
 				form(URI::same(), 'style="display:inline-block"');
 ?>
-<input type="hidden" name="action" value="demand_offline">
+<input type="hidden" name="action" value="demand_ballot_voting">
 <input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
-<input type="submit" value="<?=_("Demand secret voting for this issue")?>">
+<input type="submit" value="<?=_("Demand ballot voting for this issue")?>">
 </form>
 <?
 			}

@@ -173,6 +173,17 @@ ALTER SEQUENCE arguments_id_seq OWNED BY arguments.id;
 
 
 --
+-- Name: ballot_voting_demanders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ballot_voting_demanders (
+    member integer NOT NULL,
+    issue integer NOT NULL,
+    anonymous boolean DEFAULT false NOT NULL
+);
+
+
+--
 -- Name: ballots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -265,8 +276,8 @@ CREATE TABLE issues (
     period integer,
     area integer NOT NULL,
     state issue_state DEFAULT 'admission'::issue_state NOT NULL,
-    secret_demanders integer DEFAULT 0 NOT NULL,
-    secret_reached boolean DEFAULT false,
+    ballot_voting_demanders integer DEFAULT 0 NOT NULL,
+    ballot_voting_reached boolean DEFAULT false,
     vote text,
     clear date
 );
@@ -325,17 +336,6 @@ ALTER SEQUENCE members_id_seq OWNED BY members.id;
 
 
 --
--- Name: offline_demanders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE offline_demanders (
-    member integer NOT NULL,
-    issue integer NOT NULL,
-    anonymous boolean DEFAULT false NOT NULL
-);
-
-
---
 -- Name: participants; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -358,8 +358,8 @@ CREATE TABLE periods (
     ballot_assignment timestamp with time zone,
     ballot_preparation timestamp with time zone,
     counting timestamp with time zone NOT NULL,
-    online boolean NOT NULL,
-    secret boolean NOT NULL,
+    online_voting boolean NOT NULL,
+    ballot_voting boolean NOT NULL,
     state period_state DEFAULT 'ballot_application'::period_state NOT NULL
 );
 
@@ -643,7 +643,7 @@ ALTER TABLE ONLY members
 -- Name: offline_demanders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY offline_demanders
+ALTER TABLE ONLY ballot_voting_demanders
     ADD CONSTRAINT offline_demanders_pkey PRIMARY KEY (member, issue);
 
 
@@ -779,7 +779,7 @@ ALTER TABLE ONLY issues
 -- Name: offlinedemanders_issue_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY offline_demanders
+ALTER TABLE ONLY ballot_voting_demanders
     ADD CONSTRAINT offlinedemanders_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
@@ -787,7 +787,7 @@ ALTER TABLE ONLY offline_demanders
 -- Name: offlinedemanders_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY offline_demanders
+ALTER TABLE ONLY ballot_voting_demanders
     ADD CONSTRAINT offlinedemanders_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 

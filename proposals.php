@@ -71,9 +71,11 @@ if ($filter) input_hidden("filter", $filter);
 $pager = new Pager;
 
 if (Login::$member) {
-	$sql = "SELECT issues.*, offline_demanders.member AS secret_by_member
+	$sql = "SELECT issues.*, ballot_voting_demanders.member AS ballot_voting_demanded_by_member
 		FROM issues
-		LEFT JOIN offline_demanders ON issues.id = offline_demanders.issue AND offline_demanders.member = ".intval(Login::$member->id);
+		LEFT JOIN ballot_voting_demanders
+			ON issues.id = ballot_voting_demanders.issue
+			AND ballot_voting_demanders.member = ".intval(Login::$member->id);
 } else {
 	$sql = "SELECT issues.*
 		FROM issues";

@@ -131,7 +131,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 * @param array   $column
 	 */
 	protected function print_ballots($content, $object, $column) {
-		if (!$object->secret) return;
+		if (!$object->ballot_voting) return;
 		?><a href="ballots.php?period=<?=$object->id?>"><?=_("Ballots")?></a><?
 	}
 
@@ -204,16 +204,16 @@ class DbTableAdmin_Period extends DbTableAdmin {
 			return false;
 		}
 
-		if ($this->object->secret and (!$ballot_assignment or !$ballot_preparation)) {
-			warning(_("If secret voting is activated, also the ballot assignment and preparation times have to be entered!"));
+		if ($this->object->ballot_voting and (!$ballot_assignment or !$ballot_preparation)) {
+			warning(_("If ballot voting is activated, also the ballot assignment and preparation times have to be entered!"));
 			return false;
 		}
 
-		if ($this->object->id and !$this->object->secret) {
+		if ($this->object->id and !$this->object->ballot_voting) {
 			$sql = "SELECT id FROM ballots WHERE period=".intval($this->object->id);
 			$result = DB::query($sql);
 			if (DB::num_rows($result)) {
-				warning(_("Since there are already ballot applications you can not deactivate secret voting!"));
+				warning(_("Since there are already ballot applications you can not deactivate ballot voting!"));
 				return false;
 			}
 		}

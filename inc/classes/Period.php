@@ -15,10 +15,10 @@ class Period extends Relation {
 	public $ballot_assignment;
 	public $ballot_preparation;
 	public $counting;
-	public $online;
-	public $secret;
+	public $online_voting;
+	public $ballot_voting;
 
-	protected $boolean_fields = array("online", "secret");
+	protected $boolean_fields = array("online_voting", "ballot_voting");
 
 
 	/**

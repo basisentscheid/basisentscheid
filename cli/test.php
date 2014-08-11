@@ -118,7 +118,7 @@ function create_case($case, $stopcase) {
 	}
 
 	// create period
-	$sql = "INSERT INTO periods (debate, preparation, voting, counting, online, secret)
+	$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting)
 		VALUES (
 			now() + '1 week'::INTERVAL,
 			now() + '2 weeks'::INTERVAL,
@@ -146,10 +146,10 @@ function create_case($case, $stopcase) {
 	cron();
 
 	${'branch'.++$branch.'_array'} = array(0, 24, 25);
-	$secret_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
+	$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
 
-	for ( $i=1; $i<=$secret_count; $i++ ) {
-		add_secretdemander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$secret_count."i".$i);
+	for ( $i=1; $i<=$ballot_voting_demanders_count; $i++ ) {
+		add_ballot_voting_demander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$ballot_voting_demanders_count."i".$i);
 	}
 
 	if ($stopcase == ++$stop) return;
@@ -214,20 +214,20 @@ function add_supporter(Proposal $proposal, $case, $i) {
 
 
 /**
- * create a new member and let it support secret voting for the supplied proposal
+ * create a new member and let it support ballot voting for the supplied proposal
  *
  * @param object  $proposal
  * @param integer $case
  * @param string  $i
  */
-function add_secretdemander(Proposal $proposal, $case, $i) {
+function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
 	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
 	Login::$member->create();
-	$proposal->issue()->demand_secret();
+	$proposal->issue()->demand_ballot_voting();
 }
 
 

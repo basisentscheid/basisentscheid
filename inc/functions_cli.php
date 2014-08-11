@@ -146,7 +146,7 @@ function cron($skip_if_locked=false) {
 				if (!$period->voting_now) break;
 
 				// check if the period provides the right voting type
-				if ( ($issue->secret_reached and $period->secret) or (!$issue->secret_reached and $period->online) ) {
+				if ( ($issue->ballot_voting_reached and $period->ballot_voting) or (!$issue->ballot_voting_reached and $period->online_voting) ) {
 
 					$issues_start_voting[] = $issue;
 
@@ -154,7 +154,7 @@ function cron($skip_if_locked=false) {
 
 					// skip to next available period
 					$sql = "SELECT id FROM periods WHERE preparation >= now() AND ";
-					if ($issue->secret_reached) $sql .= "secret"; else $sql .= "online";
+					if ($issue->ballot_voting_reached) $sql .= "ballot_voting"; else $sql .= "online_voting";
 					$sql .= "=TRUE ORDER BY preparation LIMIT 1";
 					$issue->period = DB::fetchfield($sql);
 					if ($issue->period) {

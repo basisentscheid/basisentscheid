@@ -34,9 +34,9 @@ define("QUORUM_SUPPORT_DEN", 10);
 // quorum for the alternative proposals
 define("QUORUM_SUPPORT_ALTERNATIVE_NUM", 1); // 5%
 define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 20);
-// quorum for secret voting
-define("QUORUM_SECRET_NUM", 1); // 5%
-define("QUORUM_SECRET_DEN", 20);
+// quorum for ballot voting
+define("QUORUM_BALLOT_VOTING_NUM", 1); // 5%
+define("QUORUM_BALLOT_VOTING_DEN", 20);
 
 // language, currently supported: "en" and "de"
 define("LANG", "en");

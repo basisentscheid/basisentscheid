@@ -58,7 +58,7 @@ function create_case($case, $stopcase) {
 
 	// create period
 	if ($stopcase == ++$stop) {
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online, secret)
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting)
 		VALUES (
 			now(),
 			now() + '1 week'::INTERVAL,
@@ -72,7 +72,7 @@ function create_case($case, $stopcase) {
 		DB::query($sql);
 		return;
 	} else {
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online, secret)
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting)
 		VALUES (
 			now(),
 			now() + '1 week'::INTERVAL,

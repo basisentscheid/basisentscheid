@@ -11,14 +11,14 @@ class Issue extends Relation {
 
 	public $period;
 	public $area;
-	public $secret_demanders;
-	public $secret_reached;
+	public $ballot_voting_demanders;
+	public $ballot_voting_reached;
 	public $state;
 
 	private $area_obj;
 	private $period_obj;
 
-	protected $boolean_fields = array("secret_reached", "secret_by_member");
+	protected $boolean_fields = array("ballot_voting_reached", "ballot_voting_demanded_by_member");
 	protected $create_fields = array("area");
 	protected $update_fields = array("period", "area", "state");
 
@@ -83,14 +83,12 @@ class Issue extends Relation {
 
 
 	/**
-	 * look if the logged in member demands secret voting
+	 * look if the logged in member demands ballot voting
 	 */
-	public function read_secret_by_member() {
-
-		$sql = "SELECT * FROM offline_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
+	public function read_ballot_voting_demanded_by_member() {
+		$sql = "SELECT * FROM ballot_voting_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
 		$result = DB::query($sql);
-		$this->secret_by_member = ( DB::num_rows($result) == true );
-
+		$this->ballot_voting_demanded_by_member = ( DB::num_rows($result) == true );
 	}
 
 
@@ -150,32 +148,32 @@ class Issue extends Relation {
 	 *
 	 * @param boolean $anonymous
 	 */
-	function demand_secret($anonymous=false) {
-		$sql = "INSERT INTO offline_demanders (issue, member, anonymous)
+	function demand_ballot_voting($anonymous=false) {
+		$sql = "INSERT INTO ballot_voting_demanders (issue, member, anonymous)
 			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool_to_sql($anonymous).")";
 		DB::query($sql);
-		$this->update_secret_cache();
+		$this->update_ballot_voting_cache();
 	}
 
 
 	/**
 	 *
 	 */
-	function revoke_secret() {
-		$sql = "DELETE FROM offline_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
+	function revoke_demand_for_ballot_voting() {
+		$sql = "DELETE FROM ballot_voting_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
-		$this->update_secret_cache();
+		$this->update_ballot_voting_cache();
 	}
 
 
 	/**
-	 * display a list of members demanding offline voting and find out if the logged in member demands offline voting fot the issue
+	 * display a list of members demanding ballot voting and find out if the logged in member demands ballot voting for the issue
 	 *
 	 * @return mixed
 	 */
-	public function show_offline_demanders() {
+	public function show_ballot_voting_demanders() {
 		$demanded_by_member = false;
-		$sql = "SELECT member, anonymous FROM offline_demanders WHERE issue=".intval($this->id);
+		$sql = "SELECT member, anonymous FROM ballot_voting_demanders WHERE issue=".intval($this->id);
 		$result = DB::query($sql);
 		resetfirst();
 		while ( $row = DB::fetch_assoc($result) ) {
@@ -204,17 +202,16 @@ class Issue extends Relation {
 	/**
 	 *
 	 */
-	function update_secret_cache() {
+	function update_ballot_voting_cache() {
 
-		// 12 weeks are 84 days
-		$sql = "SELECT COUNT(1) FROM offline_demanders WHERE issue=".intval($this->id);
+		$sql = "SELECT COUNT(1) FROM ballot_voting_demanders WHERE issue=".intval($this->id);
 		$count = DB::fetchfield($sql);
 
-		if ($count >= $this->secret_required()) {
-			$sql = "UPDATE issues SET secret_demanders=".intval($count).", secret_reached=TRUE WHERE id=".intval($this->id);
+		if ($count >= $this->quorum_ballot_voting_required()) {
+			$sql = "UPDATE issues SET ballot_voting_demanders=".intval($count).", ballot_voting_reached=TRUE WHERE id=".intval($this->id);
 			DB::query($sql);
 		} else {
-			$sql = "UPDATE issues SET secret_demanders=".intval($count)." WHERE id=".intval($this->id);
+			$sql = "UPDATE issues SET ballot_voting_demanders=".intval($count)." WHERE id=".intval($this->id);
 			DB::query($sql);
 		}
 
@@ -222,26 +219,23 @@ class Issue extends Relation {
 
 
 	/**
-	 * quorum for secret voting
+	 * quorum for ballot voting
 	 *
 	 * @return array
 	 */
-	function secret_level() {
-		return array(QUORUM_SECRET_NUM, QUORUM_SECRET_DEN);
+	function quorum_ballot_voting_level() {
+		return array(QUORUM_BALLOT_VOTING_NUM, QUORUM_BALLOT_VOTING_DEN);
 	}
 
 
 	/**
-	 * number of required secret voting demanders
+	 * number of required ballot voting demanders
 	 *
 	 * @return integer
 	 */
-	function secret_required() {
-
-		list($num, $den) = $this->secret_level();
-
+	function quorum_ballot_voting_required() {
+		list($num, $den) = $this->quorum_ballot_voting_level();
 		$area = new Area($this->area);
-
 		return ceil($area->population() * $num / $den);
 	}
 
@@ -268,7 +262,7 @@ class Issue extends Relation {
 		<th class="proposal"><?=_("Proposal")?></th>
 		<th class="state"><?=_("State")?></th>
 		<th class="period"><?=_("Period")?></th>
-		<th class="secret"><?=_("Voting type")?></th>
+		<th class="voting_type"><?=_("Voting type")?></th>
 <? if ($show_results) { ?>
 		<th class="result"><?=_("Result")?></th>
 <? } ?>
@@ -418,20 +412,20 @@ class Issue extends Relation {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
 
-				if ($this->secret_reached) {
-					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("Secret"))?>><?
+				if ($this->ballot_voting_reached) {
+					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?>><?
 				} elseif (
 					($this->state=="admission" and $submitted) or
 					$this->state=="debate"
 				) {
-					?><img src="img/online16.png" width="13" height="16" class="online_small" <?alt(_("Online"))?>><?
-					$this->bargraph_secret();
-					?><img src="img/ballot16.png" width="20" height="16" class="ballot_small" <?alt(_("Secret"))?>><?
-					if ($this->secret_by_member) {
+					?><img src="img/online16.png" width="13" height="16" class="online_small" <?alt(_("online voting"))?>><?
+					$this->bargraph_ballot_voting();
+					?><img src="img/ballot16.png" width="20" height="16" class="ballot_small" <?alt(_("ballot voting"))?>><?
+					if ($this->ballot_voting_demanded_by_member) {
 						?><br>&#10003;<?
 					}
 				} elseif ($this->state!="admission") {
-					?><img src="img/online30.png" width="24" height="30" <?alt(_("Online"))?>><?
+					?><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?>><?
 				}
 
 				?></td>
@@ -461,14 +455,14 @@ class Issue extends Relation {
 	/**
 	 * display bargraph
 	 */
-	public function bargraph_secret() {
-		$required = $this->secret_required();
+	public function bargraph_ballot_voting() {
+		$required = $this->quorum_ballot_voting_required();
 		bargraph(
-			$this->secret_demanders,
+			$this->ballot_voting_demanders,
 			$required,
 			sprintf(
-				_("%d of currently required %d (%s of %d) for secret voting"),
-				$this->secret_demanders, $required, numden2percent($this->secret_level()), $this->area()->population()
+				_("%d of currently required %d (%s of %d) for ballot voting"),
+				$this->ballot_voting_demanders, $required, numden2percent($this->quorum_ballot_voting_level()), $this->area()->population()
 			),
 			"#FF0000"
 		);
