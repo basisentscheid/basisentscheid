@@ -80,7 +80,7 @@ function pre_r($var, $exit=false) {
  * @return boolean
  */
 function lefteq($string, $part) {
-	return substr($string, 0, strlen($part))==$string;
+	return substr($string, 0, strlen($part))==$part;
 }
 
 
@@ -92,7 +92,7 @@ function lefteq($string, $part) {
  * @return boolean
  */
 function righteq($string, $part) {
-	return substr($string, strlen($part) * -1)==$string;
+	return substr($string, strlen($part) * -1)==$part;
 }
 
 
