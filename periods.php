@@ -25,6 +25,11 @@ $d->columns = array(
 );
 $d->enable_filter = false;
 
+$d->reference_check = array(
+	"SELECT id FROM issues  WHERE period=%d",
+	"SELECT id FROM ballots WHERE period=%d"
+);
+
 $d->msg_add_record          = _("New period");
 $d->msg_edit_record         = _("Edit period %id%");
 $d->msg_record_saved        = _("The new period %id% has been saved.");

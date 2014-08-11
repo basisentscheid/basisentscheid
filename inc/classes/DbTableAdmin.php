@@ -104,7 +104,7 @@ class DbTableAdmin {
 	/**
 	 * SQL statements to find records in other tables which reference a record in the current table
 	 *
-	 * The wildcard "<id>" will be replaced by the ID of the record of the current table.
+	 * The wildcard "%d" will be replaced by the ID of the record of the current table.
 	 *
 	 * @var array
 	 */
@@ -407,7 +407,7 @@ class DbTableAdmin {
 		// If the record does not exists, we don't have to delete it (again).
 		if (!$object->id) return;
 
-		if ($this->reference_check($object->id)) {
+		if ($this->reference_check($object)) {
 			warning(sprintf(_("The record %d can not be deleted!"), $object->id));
 			return;
 		}
@@ -1221,7 +1221,7 @@ function submit_delete_checked() {
 
 		reset($this->reference_check);
 		foreach ( $this->reference_check as $value ) {
-			$sql = str_replace("<id>", intval($object->id), $value)." LIMIT 1";
+			$sql = sprintf($value, $object->id)." LIMIT 1";
 			$result = DB::query($sql);
 			if ( DB::num_rows($result) ) return true;
 		}
