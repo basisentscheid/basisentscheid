@@ -1,8 +1,48 @@
 #!/bin/bash
-# delete all database content and recreate the schema
+# recreate the database schema
+#
+# Usage: recreate_schema.sh [<data.sql>|-]
+# - If data.sql is supplied, it will replace the existing content.
+# - If the argument is a dash, the new schema will be left empty.
+# - data.sql may also be compressed as data.sql.bz2 or data.sql.gz.
 
+# exit on error
+set -e
+
+# get configuration
 dbname=$( php -r 'define("DOCROOT", "../"); require DOCROOT."inc/config.php"; preg_match("/dbname=(\w+)/", DATABASE_CONNECT, $matches); echo $matches[1];' )
 dbuser=$( php -r 'define("DOCROOT", "../"); require DOCROOT."inc/config.php"; preg_match("/user=(\w+)/",   DATABASE_CONNECT, $matches); echo $matches[1];' )
 
-echo "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" | psql --username=$dbuser -v ON_ERROR_STOP=1 $dbname && \
+tmpsql="tmp_recreate_schema_$( date +%Y-%m-%d_%H-%I-%S ).sql"
+
+datasql=$1
+if [ -z "$datasql" ]
+then
+  datasql=$tmpsql
+elif [ "$datasql" != "-" -a ! -r "$datasql" ]
+then
+  echo "Supplied data file not found or not readable!"
+  exit 1
+fi
+
+# show commands
+set -x
+
+pg_dump --username=$dbuser --disable-triggers --data-only $dbname > $tmpsql
+
+echo "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" | psql --username=$dbuser -v ON_ERROR_STOP=1 $dbname
 psql --username=$dbuser -q -f basisentscheid.sql $dbname
+
+case "$datasql" in
+  -)
+    # leave schema empty
+    ;;
+  *.bz2)
+    bunzip2 -c $datasql | psql --username=postgres -v ON_ERROR_STOP=1 -q $dbname
+    ;;
+  *.gz)
+    gunzip  -c $datasql | psql --username=postgres -v ON_ERROR_STOP=1 -q $dbname
+    ;;
+  *)
+    psql -f $datasql           --username=postgres -v ON_ERROR_STOP=1 -q $dbname
+esac
