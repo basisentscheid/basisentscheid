@@ -141,13 +141,13 @@ CREATE TABLE arguments (
     id integer NOT NULL,
     proposal integer NOT NULL,
     parent integer,
-    created timestamp with time zone DEFAULT now() NOT NULL,
-    member integer NOT NULL,
+    side argument_side NOT NULL,
     title text NOT NULL,
     content text NOT NULL,
     plus integer DEFAULT 0 NOT NULL,
     minus integer DEFAULT 0 NOT NULL,
-    side argument_side NOT NULL,
+    member integer NOT NULL,
+    created timestamp with time zone DEFAULT now() NOT NULL,
     updated timestamp with time zone,
     removed boolean DEFAULT false NOT NULL
 );
@@ -178,12 +178,12 @@ ALTER SEQUENCE arguments_id_seq OWNED BY arguments.id;
 
 CREATE TABLE ballots (
     id integer NOT NULL,
-    name text NOT NULL,
     period integer NOT NULL,
-    approved boolean DEFAULT false NOT NULL,
+    name text NOT NULL,
+    agents text NOT NULL,
     opening time with time zone NOT NULL,
     voters integer DEFAULT 0 NOT NULL,
-    agents text NOT NULL
+    approved boolean DEFAULT false NOT NULL
 );
 
 
@@ -264,11 +264,11 @@ CREATE TABLE issues (
     id integer NOT NULL,
     period integer,
     area integer NOT NULL,
+    state issue_state DEFAULT 'admission'::issue_state NOT NULL,
     secret_demanders integer DEFAULT 0 NOT NULL,
     secret_reached boolean DEFAULT false,
-    state issue_state DEFAULT 'admission'::issue_state NOT NULL,
-    clear date,
-    vote text
+    vote text,
+    clear date
 );
 
 
@@ -355,11 +355,11 @@ CREATE TABLE periods (
     debate timestamp with time zone NOT NULL,
     preparation timestamp with time zone NOT NULL,
     voting timestamp with time zone NOT NULL,
+    ballot_assignment timestamp with time zone,
+    ballot_preparation timestamp with time zone,
     counting timestamp with time zone NOT NULL,
     online boolean NOT NULL,
     secret boolean NOT NULL,
-    ballot_assignment timestamp with time zone,
-    ballot_preparation timestamp with time zone,
     state period_state DEFAULT 'ballot_application'::period_state NOT NULL
 );
 
@@ -389,15 +389,15 @@ ALTER SEQUENCE periods_id_seq OWNED BY periods.id;
 
 CREATE TABLE proposals (
     id integer NOT NULL,
+    issue integer NOT NULL,
     title text NOT NULL,
     content text NOT NULL,
     reason text NOT NULL,
-    issue integer NOT NULL,
+    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
+    submitted date DEFAULT now() NOT NULL,
     supporters integer DEFAULT 0 NOT NULL,
     quorum_reached boolean DEFAULT false NOT NULL,
-    admission_decision text,
-    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
-    submitted date DEFAULT now() NOT NULL
+    admission_decision text
 );
 
 
@@ -445,9 +445,9 @@ CREATE TABLE ratings (
 CREATE TABLE supporters (
     proposal integer NOT NULL,
     member integer NOT NULL,
-    created date DEFAULT ('now'::text)::date NOT NULL,
     anonymous boolean DEFAULT false NOT NULL,
-    proponent boolean DEFAULT false NOT NULL
+    proponent boolean DEFAULT false NOT NULL,
+    created date DEFAULT ('now'::text)::date NOT NULL
 );
 
 
@@ -490,10 +490,10 @@ ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
 --
 
 CREATE TABLE voters (
+    period integer NOT NULL,
     member integer NOT NULL,
     ballot integer NOT NULL,
-    agent boolean DEFAULT false NOT NULL,
-    period integer NOT NULL
+    agent boolean DEFAULT false NOT NULL
 );
 
 
