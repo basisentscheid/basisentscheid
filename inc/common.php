@@ -35,6 +35,8 @@ require "inc/errors.php";
 require "inc/functions.php";
 require "inc/functions_http.php";
 
+define("VERSION", "development");
+
 define("BN", basename($_SERVER['PHP_SELF']));
 
 // buffer output until it either gets displayed on this page or gets written to the session at a redirect
