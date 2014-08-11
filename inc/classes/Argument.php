@@ -1,5 +1,6 @@
 <?
 /**
+ * Argument
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -23,7 +24,7 @@ class Argument extends Relation {
 
 	/**
 	 *
-	 * @param unknown $value
+	 * @param boolean $value
 	 */
 	function set_rating($value) {
 		$fields_values = array('argument'=>$this->id, 'member'=>Login::$member->id, 'positive'=>$value);

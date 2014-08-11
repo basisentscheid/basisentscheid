@@ -17,7 +17,7 @@ if (!$period->id) {
 if (Login::$member) {
 	$sql = "SELECT * FROM voters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
 	if ( $row_voters = DB::fetchassoc($sql) ) {
-		DB::pg2bool($row_voters['agent']);
+		DB::to_bool($row_voters['agent']);
 	}
 }
 
@@ -62,7 +62,7 @@ if ($action) {
 		redirect();
 		break;
 	default:
-		warning("Unknown action");
+		warning(_("Unknown action"));
 		redirect();
 	}
 }
@@ -106,7 +106,7 @@ $colspan = 6;
 
 $pager = new Pager;
 
-$sql = "SELECT * FROM ballots	WHERE period=".DB::m($period->id)." ORDER BY ballots.id";
+$sql = "SELECT * FROM ballots	WHERE period=".DB::esc($period->id)." ORDER BY ballots.id";
 $result = DB::query($sql);
 $pager->seek($result);
 if (!$pager->linescount) {
@@ -176,7 +176,7 @@ if (!$pager->linescount) {
 		if (Login::$admin and $period->state=="ballot_application") {
 			?><input type="checkbox" name="approved[<?=$ballot->id?>]" value="1"<? if ($ballot->approved) { ?> checked<? } ?>><input type="hidden" name="approved_id[<?=$ballot->id?>]" value="<?=$ballot->id?>"><?
 		} else {
-			echo boolean($ballot->approved);
+			display_checked($ballot->approved);
 		}
 		?></td>
 	</tr>

@@ -1,15 +1,15 @@
 <?
 /**
- * pager
+ * Pager
  *
  * example:
  *
  * $pager = new Pager;
  * $sql = "SELECT * FROM table";
- * $result = pg_query($sql);
+ * $result = DB::query($sql);
  * $pager->seek($result);
  * $line = $pager->firstline;
- * while ( $row = pg_fetch_assoc($result) and $line <= $pager->lastline ) {
+ * while ( $row = DB::fetch_assoc($result) and $line <= $pager->lastline ) {
  *   print_r($row);
  *   $line++;
  * }
@@ -111,12 +111,12 @@ class Pager {
 	 */
 	public function seek($result) {
 
-		$this->linescount = pg_num_rows($result);
+		$this->linescount = DB::num_rows($result);
 
 		$this->calculate($result);
 
 		if ($this->linescount > 0) {
-			pg_result_seek($result, $this->firstline);
+			DB::result_seek($result, $this->firstline);
 		}
 
 	}

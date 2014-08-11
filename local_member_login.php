@@ -13,9 +13,9 @@ require "inc/common.php";
 
 
 if ( !empty($_POST['username']) ) {
-	$sql = "SELECT id FROM members WHERE username=".DB::m($_POST['username']);
+	$sql = "SELECT id FROM members WHERE username=".DB::esc($_POST['username']);
 	$result = DB::query($sql);
-	if ( $row = pg_fetch_assoc($result) ) {
+	if ( $row = DB::fetch_assoc($result) ) {
 		// user already in the database
 		$_SESSION['member'] = $row['id'];
 		success("Logged in as existing member ".$_POST['username']);

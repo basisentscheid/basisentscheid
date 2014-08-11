@@ -1,6 +1,6 @@
 <?
 /**
- * inc/classes/Issue.php
+ * Issue
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -20,11 +20,13 @@ class Issue extends Relation {
 
 	protected $boolean_fields = array("secret_reached", "secret_by_member");
 	protected $create_fields = array("area");
+	protected $update_fields = array("period", "area", "state");
 
 
 	/**
+	 * get the area this issue belongs to
 	 *
-	 * @return unknown
+	 * @return object
 	 */
 	function area() {
 		if ($this->area_obj) return $this->area_obj;
@@ -34,8 +36,9 @@ class Issue extends Relation {
 
 
 	/**
+	 * get the voting period this issue is assigned to
 	 *
-	 * @return unknown
+	 * @return object
 	 */
 	function period() {
 		if ($this->period_obj) return $this->period_obj;
@@ -45,27 +48,30 @@ class Issue extends Relation {
 
 
 	/**
+	 * update with extra string for SQL expressions
 	 *
-	 * @param unknown $fields (optional)
-	 * @param unknown $extra  (optional)
+	 * @param array   $fields (optional)
+	 * @param string  $extra  (optional)
+	 * @return unknown
 	 */
-	function update( $fields = array("period", "area", "state"), $extra=false ) {
+	function update($fields=false, $extra=false ) {
+
+		if (!$fields) $fields = $this->update_fields;
 
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
 
-		DB::update("issues", "id=".intval($this->id), $fields_values, $extra);
-
+		return DB::update("issues", "id=".intval($this->id), $fields_values, $extra);
 	}
 
 
 	/**
+	 * get all proposals in this issue
 	 *
-	 * @return unknown
+	 * @return array
 	 */
 	public function proposals() {
-
 		$sql = "SELECT * FROM proposals WHERE issue=".intval($this->id);
 		$result = DB::query($sql);
 		$proposals = array();
@@ -83,7 +89,7 @@ class Issue extends Relation {
 
 		$sql = "SELECT * FROM offline_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
 		$result = DB::query($sql);
-		$this->secret_by_member = ( pg_num_rows($result) == true );
+		$this->secret_by_member = ( DB::num_rows($result) == true );
 
 	}
 
@@ -146,7 +152,7 @@ class Issue extends Relation {
 	 */
 	function demand_secret($anonymous=false) {
 		$sql = "INSERT INTO offline_demanders (issue, member, anonymous)
-			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).")";
+			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool_to_sql($anonymous).")";
 		DB::query($sql);
 		$this->update_secret_cache();
 	}
@@ -172,7 +178,7 @@ class Issue extends Relation {
 		$sql = "SELECT member, anonymous FROM offline_demanders WHERE issue=".intval($this->id);
 		$result = DB::query($sql);
 		resetfirst();
-		while ( $row = pg_fetch_assoc($result) ) {
+		while ( $row = DB::fetch_assoc($result) ) {
 			if (!first()) echo ", ";
 			$member = new Member($row['member']);
 			if (Login::$member and $member->id==Login::$member->id) {
@@ -216,8 +222,9 @@ class Issue extends Relation {
 
 
 	/**
+	 * quorum for secret voting
 	 *
-	 * @return unknown
+	 * @return array
 	 */
 	function secret_level() {
 		return array(QUORUM_SECRET_NUM, QUORUM_SECRET_DEN);
@@ -225,8 +232,9 @@ class Issue extends Relation {
 
 
 	/**
+	 * number of required secret voting demanders
 	 *
-	 * @return unknown
+	 * @return integer
 	 */
 	function secret_required() {
 
@@ -235,19 +243,18 @@ class Issue extends Relation {
 		$area = new Area($this->area);
 
 		return ceil($area->population() * $num / $den);
-
 	}
 
 
 	/**
 	 * save the downloaded voting result and set date for clearing
 	 *
-	 * @param unknown $result
+	 * @param resource $result
 	 */
 	public function save_vote($result) {
 		$this->vote = $result;
 		$this->state = "finished";
-		$this->update(array("vote", "state"), "clear = current_date + ".DB::m(CLEAR_INTERVAL)."::INTERVAL");
+		$this->update(array("vote", "state"), "clear = current_date + ".DB::esc(CLEAR_INTERVAL)."::INTERVAL");
 	}
 
 
@@ -306,7 +313,7 @@ class Issue extends Relation {
 	 * @param boolean $show_results      display the result column
 	 * @param integer $selected_proposal (optional)
 	 */
-	function display_proposals($proposals, $period_rowspan, $show_results, $selected_proposal=0) {
+	function display_proposals(array $proposals, $period_rowspan, $show_results, $selected_proposal=0) {
 
 		// look if there is at least one already submitted proposal
 		$submitted = false;
@@ -512,7 +519,7 @@ class Issue extends Relation {
 				$options_all = array();
 				$options_admission = array();
 				while ( $period = DB::fetch_object($result_period, "Period") ) {
-					DB::pg2bool($period->debate_not_started);
+					DB::to_bool($period->debate_not_started);
 					$options_all[$period->id] = $period->id.": ".$period->current_phase();
 					if ($period->debate_not_started) {
 						$options_admission[$period->id] = $options_all[$period->id];

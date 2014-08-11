@@ -17,7 +17,7 @@ if ($action) {
 		action_proposal_select_period();
 		break;
 	default:
-		warning("Unknown action");
+		warning(_("Unknown action"));
 		redirect();
 	}
 }
@@ -105,7 +105,7 @@ default: // open
 
 if ($search) {
 	$sql .= " JOIN proposals ON proposals.issue = issues.id";
-	$pattern = DB::m("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
+	$pattern = DB::esc("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
 	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
 	$sql .= DB::where_and($where);
 	$sql .= " GROUP BY issues.id";

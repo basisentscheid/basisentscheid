@@ -84,7 +84,7 @@ function create_case($case, $stopcase) {
 			true
 		) RETURNING id";
 		$result = DB::query($sql);
-		$row = pg_fetch_row($result);
+		$row = DB::fetch_row($result);
 		$period = new Period($row[0]);
 	}
 

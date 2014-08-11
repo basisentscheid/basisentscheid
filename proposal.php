@@ -236,7 +236,7 @@ if ($action) {
 		break;
 
 	default:
-		warning("Unknown action");
+		warning(_("Unknown action"));
 		redirect();
 	}
 }
@@ -437,11 +437,11 @@ function display_arguments($side, $parent, $level) {
 	}
 	// intval($parent) gives parent=0 for "pro" and "contra"
 	$sql .= "	WHERE proposal=".intval($proposal->id)."
-			AND side=".m($side)."
+			AND side=".DB::esc($side)."
 			AND parent=".intval($parent)."
 		ORDER BY removed, rating DESC, arguments.created";
 	$result = DB::query($sql);
-	$num_rows = pg_num_rows($result);
+	$num_rows = DB::num_rows($result);
 	if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
 
 ?>
@@ -477,7 +477,7 @@ function display_arguments($side, $parent, $level) {
 			break; // break while loop
 		}
 
-		if (Login::$member) DB::pg2bool($argument->positive);
+		if (Login::$member) DB::to_bool($argument->positive);
 		$member = new Member($argument->member);
 ?>
 	<li>

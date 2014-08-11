@@ -1,6 +1,6 @@
 <?
 /**
- * inc/classes/DbTableAdmin_Period.php
+ * DbTableAdmin_Period
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -52,7 +52,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 <?
 
 			// use the submitted values instead of the the record from the database
-			if ($direct_edit and isset($this->directedit_objects[$row['id']])) {
+			if ($direct_edit and isset($this->directedit_objects[$object->id])) {
 				$object = $this->directedit_objects[$object->id];
 			}
 
@@ -121,7 +121,6 @@ class DbTableAdmin_Period extends DbTableAdmin {
 </tbody>
 <?
 	}
-
 
 
 	/**
@@ -213,7 +212,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 		if ($this->object->id and !$this->object->secret) {
 			$sql = "SELECT id FROM ballots WHERE period=".intval($this->object->id);
 			$result = DB::query($sql);
-			if (pg_num_rows($result)) {
+			if (DB::num_rows($result)) {
 				warning(_("Since there are already ballot applications you can not deactivate secret voting!"));
 				return false;
 			}

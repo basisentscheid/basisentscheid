@@ -27,7 +27,7 @@ if ($action) {
 		redirect();
 		break;
 	}
-	warning("Unknown action");
+	warning(_("Unknown action"));
 	redirect();
 }
 
@@ -64,7 +64,7 @@ if (Login::$member) {
 }
 $sql .= "	ORDER BY areas.name, areas.id";
 $result = DB::query($sql);
-while ($row = pg_fetch_assoc($result)) {
+while ($row = DB::fetch_assoc($result)) {
 
 ?>
 	<tr class="<?=stripes()?>">

@@ -32,7 +32,7 @@ if (!empty($_GET['id'])) {
 if ($action) {
 
 	if ($action!="save") {
-		warning("Unknown action");
+		warning(_("Unknown action"));
 		redirect();
 	}
 
@@ -126,7 +126,7 @@ if ($issue) {
 	$sql = "SELECT id, name FROM areas ORDER BY name";
 	$result = DB::query($sql);
 	$options = array();
-	while ( $row = pg_fetch_assoc($result) ) {
+	while ( $row = DB::fetch_assoc($result) ) {
 		$options[$row['id']] = $row['name'];
 	}
 	input_select("area", $options);

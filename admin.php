@@ -16,9 +16,9 @@ require "inc/common.php";
 
 if ( isset($_POST['username']) and isset($_POST['password']) ) {
 
-	$sql = "SELECT id, password FROM admins WHERE username=".DB::m($_POST['username']);
+	$sql = "SELECT id, password FROM admins WHERE username=".DB::esc($_POST['username']);
 	$result = DB::query($sql);
-	if ( $row = pg_fetch_assoc($result) ) {
+	if ( $row = DB::fetch_assoc($result) ) {
 
 		if ( crypt($_POST['password'], $row['password']) == $row['password'] ) {
 			success(_("Login successful"));

@@ -19,18 +19,9 @@ function __autoload($class_name) {
 
 
 /**
+ * display a text independent of output interface
  *
- * @param unknown $value
- * @return unknown
- */
-function m($value) {
-	return DB::m($value);
-}
-
-
-/**
- *
- * @param unknown $text
+ * @param string  $text
  */
 function out($text) {
 	if ( php_sapi_name() != "cli" ) {
@@ -82,32 +73,31 @@ function pre_r($var, $exit=false) {
 
 
 /**
- * Prüfen, ob der Sting mit was bestimmtem beginnt
+ * test if the string begins with something
  *
- * @param mixed   $var
- * @param mixed   $content
- * @return mixed
+ * @param string  $string
+ * @param string  $part
+ * @return boolean
  */
-function lefteq($var, $content) {
-	return substr($var, 0, strlen($content))==$content;
+function lefteq($string, $part) {
+	return substr($string, 0, strlen($part))==$string;
 }
 
 
 /**
- * Prüfen, ob der String mit was bestimmtem endet
+ * test if the string end with something
  *
- * @param mixed   $var
- * @param mixed   $content
- * @return mixed
+ * @param string  $string
+ * @param string  $part
+ * @return boolean
  */
-function righteq($var, $content) {
-	return substr($var, strlen($content) * -1)==$content;
+function righteq($string, $part) {
+	return substr($string, strlen($part) * -1)==$string;
 }
 
 
-
 /**
- *
+ * reset first()
  */
 function resetfirst() {
 	global $first;
@@ -116,8 +106,9 @@ function resetfirst() {
 
 
 /**
+ * returns true on the first time called
  *
- * @return unknown
+ * @return boolean
  */
 function first() {
 	global $first;
@@ -139,7 +130,6 @@ function first() {
 function dateformat($date) {
 	if ($date===NULL) return "";
 	return date(DATE_FORMAT, strtotime($date));
-	// intval(substr($d, 8, 2)).".".intval(substr($d, 5, 2)).".".substr($d, 0, 4);
 }
 
 
@@ -168,39 +158,15 @@ function timeformat($time) {
 
 
 /**
- * Die Schlüssel eines Arrays auf die entsprechenden Werte setzen
- *
- * @param array   $in
- * @return array
- */
-function array_mirror($in) {
-	$out = array();
-	foreach ( $in as $value ) {
-		$out[$value] = $value;
-	}
-	return $out;
-}
-
-
-/**
+ * convert a fraction to a percent value
  *
  * @param array   $numden
- * @return unknown
+ * @return string
  */
 function numden2percent(array $numden) {
 	list($num, $den) = $numden;
 	if (!$den) return 0;
 	return round(100 * $num / $den)."%";
-}
-
-
-/**
- *
- * @param unknown $value
- * @return unknown
- */
-function boolean($value) {
-	if ($value) return "&#10003;";
 }
 
 

@@ -12,11 +12,11 @@ class DbTableAdmin_Test extends DbTableAdmin {
 
 	/**
 	 *
-	 * @param unknown $save_columns
-	 * @param unknown $msg_prefix
-	 * @return unknown
+	 * @param array   $save_columns
+	 * @param string  $msg_prefix
+	 * @return boolean
 	 */
-	function beforesave($save_columns, $msg_prefix) {
+	function beforesave(array $save_columns, $msg_prefix) {
 
 		if (in_array("text", $save_columns)) {
 			if (!$this->object->text) {
@@ -31,12 +31,12 @@ class DbTableAdmin_Test extends DbTableAdmin {
 
 	/**
 	 *
-	 * @param unknown $value
-	 * @param unknown $column
-	 * @param unknown $msg_prefix
-	 * @return unknown
+	 * @param mixed   $value
+	 * @param array   $column
+	 * @param string  $msg_prefix
+	 * @return boolean
 	 */
-	function beforesave_not_empty($value, $column, $msg_prefix) {
+	function beforesave_not_empty($value, array $column, $msg_prefix) {
 
 		if (!$value) {
 			warning($msg_prefix."The field ".$column[0]." must be not empty!");

@@ -1,5 +1,6 @@
 <?
 /**
+ * Member
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -20,8 +21,9 @@ class Member extends Relation {
 
 
 	/**
+	 * set the username
 	 *
-	 * @param unknown $username
+	 * @param string  $username
 	 */
 	function set_unique_username($username) {
 
@@ -29,24 +31,25 @@ class Member extends Relation {
 
 		$suffix = 0;
 		do {
-			$sql = "SELECT * FROM members WHERE username=".DB::m($this->username);
+			$sql = "SELECT * FROM members WHERE username=".DB::esc($this->username);
 			$result = DB::query($sql);
-			if ( $exists = pg_num_rows($result) ) {
+			if ( $exists = DB::num_rows($result) ) {
 				$this->username = $username . ++$suffix;
 			}
 		} while ($exists);
 
 		if ($this->username != $username) {
-			notice("The username is already used by someone else, so we added a number to it.");
+			notice(_("The username is already used by someone else, so we added a number to it."));
 		}
 
 	}
 
 
 	/**
+	 * get the username or "anonymous"
 	 *
-	 * @param unknown $username
-	 * @return unknown
+	 * @param string  $username
+	 * @return string
 	 */
 	public function username() {
 		return self::username_static($this->username);
@@ -54,9 +57,10 @@ class Member extends Relation {
 
 
 	/**
+	 * get the username or "anonymous"
 	 *
-	 * @param unknown $username
-	 * @return unknown
+	 * @param string  $username
+	 * @return string
 	 */
 	public static function username_static($username) {
 		if ($username) return $username;
@@ -85,11 +89,11 @@ class Member extends Relation {
 	/**
 	 * hide help on a page
 	 *
-	 * @param string  $bn
+	 * @param string  $basename
 	 */
-	public function hide_help($bn) {
+	public function hide_help($basename) {
 		$pages = explode_no_empty(",", $this->hide_help);
-		$pages[] = $bn;
+		$pages[] = $basename;
 		$pages = array_unique($pages);
 		$this->hide_help = join(",", $pages);
 		$this->update(array("hide_help"));
@@ -99,12 +103,12 @@ class Member extends Relation {
 	/**
 	 * hide help on a page
 	 *
-	 * @param string  $bn
+	 * @param string  $basename
 	 */
-	public function show_help($bn) {
+	public function show_help($basename) {
 		$pages = explode_no_empty(",", $this->hide_help);
 		foreach ( $pages as $key => $page ) {
-			if ($page==$bn) unset($pages[$key]);
+			if ($page==$basename) unset($pages[$key]);
 		}
 		$this->hide_help = join(",", $pages);
 		$this->update(array("hide_help"));

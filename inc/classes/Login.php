@@ -1,6 +1,6 @@
 <?
 /**
- * inc/classes/Login.php
+ * handle session and user login
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -16,7 +16,7 @@ abstract class Login {
 
 
 	/**
-	 *
+	 * to be called on every page
 	 */
 	public static function init() {
 
@@ -54,9 +54,10 @@ abstract class Login {
 
 
 	/**
+	 * make sure that only allowed users access a page
 	 *
-	 * @param unknown $allowed_users
-	 * @param unknown $redirect      (optional)
+	 * @param string  $allowed_users
+	 * @param boolean $redirect      (optional)
 	 */
 	public static function access($allowed_users, $redirect=false) {
 		switch ($allowed_users) {
@@ -73,16 +74,17 @@ abstract class Login {
 			trigger_error("Unknown allowed users keyword", E_USER_ERROR);
 		}
 		if ($redirect) {
-			warning("Access denied");
+			warning(_("Access denied"));
 			redirect();
 		}
-		error("Access denied");
+		error(_("Access denied"));
 	}
 
 
 	/**
+	 * make sure that only allowed users perform an action
 	 *
-	 * @param unknown $allowed_users
+	 * @param string  $allowed_users
 	 */
 	public static function access_action($allowed_users) {
 		self::access($allowed_users, true);

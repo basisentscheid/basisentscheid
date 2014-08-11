@@ -56,9 +56,6 @@ function redirect($target="") {
  */
 function html_head($title) {
 
-	// switch between stylesheets
-	if (isset($_GET['style'])) $_SESSION['style'] = $_GET['style'];
-
 	$output = ob_get_clean();
 
 	// we use HTML 5
@@ -67,9 +64,9 @@ function html_head($title) {
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="stylesheet" media="all" type="text/css" href="style<?=@$_SESSION['style']?>.css">
+	<link rel="stylesheet" media="all" type="text/css" href="style.css">
 <? if (Login::$admin) { ?>
-	<link rel="stylesheet" media="all" type="text/css" href="admin<?=@$_SESSION['style']?>.css">
+	<link rel="stylesheet" media="all" type="text/css" href="admin.css">
 <? } ?>
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 	<title><?=h($title)?></title>
@@ -215,7 +212,7 @@ function html_foot() {
 /**
  * message, that an action was successful
  *
- * @param unknown $text
+ * @param string  $text
  */
 function success($text) {
 ?>
@@ -227,7 +224,7 @@ function success($text) {
 /**
  * notice
  *
- * @param unknown $text
+ * @param string  $text
  */
 function notice($text) {
 ?>
@@ -239,7 +236,7 @@ function notice($text) {
 /**
  * a non fatal user error
  *
- * @param unknown $text
+ * @param string  $text
  */
 function warning($text) {
 ?>
@@ -251,7 +248,7 @@ function warning($text) {
 /**
  * a fatal user error
  *
- * @param unknown $text
+ * @param string  $text
  */
 function error($text) {
 	if (empty($GLOBALS['html_head_issued'])) {
@@ -406,7 +403,7 @@ function input_checkbox($name, $value, $checked=false, $disabled=false, $attribu
  * @param array   $options
  * @param string  $selected (optional)
  */
-function input_select($name, $options, $selected=false) {
+function input_select($name, array $options, $selected=false) {
 ?>
 <select name="<?=$name?>">
 <?
@@ -434,11 +431,12 @@ function display_checked($value) {
 
 
 /**
+ * display a bargraph
  *
- * @param unknown $value
- * @param unknown $required
- * @param unknown $title
- * @param unknown $color
+ * @param integer $value
+ * @param integer $required
+ * @param string  $title
+ * @param string  $color
  */
 function bargraph($value, $required, $title, $color) {
 

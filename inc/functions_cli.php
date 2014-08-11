@@ -33,12 +33,12 @@ function cron($skip_if_locked=false) {
 	FROM periods";
 	$result_period = DB::query($sql_period);
 	while ( $period = DB::fetch_object($result_period, "Period") ) {
-		DB::pg2bool($period->debate_now);
-		DB::pg2bool($period->preparation_now);
-		DB::pg2bool($period->voting_now);
-		DB::pg2bool($period->ballot_assignment_now);
-		DB::pg2bool($period->ballot_preparation_now);
-		DB::pg2bool($period->counting_now);
+		DB::to_bool($period->debate_now);
+		DB::to_bool($period->preparation_now);
+		DB::to_bool($period->voting_now);
+		DB::to_bool($period->ballot_assignment_now);
+		DB::to_bool($period->ballot_preparation_now);
+		DB::to_bool($period->counting_now);
 
 		// collect issues for upload to the ID server
 		$issues_start_voting = array();
@@ -75,7 +75,7 @@ function cron($skip_if_locked=false) {
 		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues WHERE period=".intval($period->id);
 		$result_issue = DB::query($sql_issue);
 		while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
-			DB::pg2bool($issue->clear_now);
+			DB::to_bool($issue->clear_now);
 
 			// admitted -> debate
 			switch ($issue->state) {
@@ -178,13 +178,13 @@ function cron($skip_if_locked=false) {
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
 				$sql = "SELECT counting FROM periods WHERE counting <= now() ORDER BY counting DESC LIMIT 2";
 				$result = DB::query($sql);
-				pg_fetch_assoc($result); // skip the current counting
-				if ( $last_counting = pg_fetch_assoc($result) ) {
+				DB::fetch_assoc($result); // skip the current counting
+				if ( $last_counting = DB::fetch_assoc($result) ) {
 					// area participation
-					$sql = "DELETE FROM participants WHERE activated < ".DB::m($last_counting['counting']);
+					$sql = "DELETE FROM participants WHERE activated < ".DB::esc($last_counting['counting']);
 					DB::query($sql);
 					// general participation
-					$sql = "UPDATE members SET participant=FALSE WHERE participant=TRUE AND activated < ".DB::m($last_counting['counting']);
+					$sql = "UPDATE members SET participant=FALSE WHERE participant=TRUE AND activated < ".DB::esc($last_counting['counting']);
 					DB::query($sql);
 				}
 
@@ -229,7 +229,7 @@ function cron($skip_if_locked=false) {
 	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
 	$sql = "SELECT * FROM proposals
 		WHERE state='submitted'
-			AND submitted < current_date - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
+			AND submitted < current_date - ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		$proposal->cancel();
@@ -428,7 +428,7 @@ function upload_voting_data($json) {
  * @param object  $issue
  * @return string
  */
-function download_vote($issue) {
+function download_vote(Issue $issue) {
 
 	// for testing
 	//return "test result";
@@ -475,7 +475,7 @@ function cron_lock() {
 	DB::transaction_start();
 
 	$result = DB::query("SELECT pid FROM cron_lock");
-	if ( $row = pg_fetch_assoc($result) ) {
+	if ( $row = DB::fetch_assoc($result) ) {
 		// check if process is still running
 		if (in_array($row['pid'], $ps)) {
 			DB::transaction_commit();

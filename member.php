@@ -12,7 +12,7 @@ Login::access("member");
 
 if ($action) {
 	if ($action!="save") {
-		warning("Unknown action");
+		warning(_("Unknown action"));
 		redirect();
 	}
 	action_required_parameters('username');
@@ -21,9 +21,9 @@ if ($action) {
 	if ($username==Login::$member->username) redirect();
 
 	if ($username) {
-		$sql = "SELECT * FROM members WHERE username=".DB::m($username);
+		$sql = "SELECT * FROM members WHERE username=".DB::esc($username);
 		$result = DB::query($sql);
-		if ( pg_num_rows($result) ) {
+		if ( DB::num_rows($result) ) {
 			warning("This username is already used by someone else. Please choose a different one!");
 			redirect();
 		}

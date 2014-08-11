@@ -26,7 +26,7 @@ class Ballot extends Relation {
 	 *
 	 * @param array   $fields (optional)
 	 */
-	public function create(array $fields = array("name", "agents", "period", "opening") ) {
+	public function create( array $fields = array("name", "agents", "period", "opening") ) {
 
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;

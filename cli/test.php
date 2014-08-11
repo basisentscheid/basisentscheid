@@ -128,7 +128,7 @@ function create_case($case, $stopcase) {
 			false
 		) RETURNING id";
 	$result = DB::query($sql);
-	$row = pg_fetch_row($result);
+	$row = DB::fetch_row($result);
 	$period = $row[0];
 
 	// assign issue to period
@@ -255,7 +255,7 @@ function time_warp($period, $interval="1 hour") {
  * @param object  $issue
  */
 function time_warp_clear(Issue $issue) {
-	$sql = "UPDATE issues SET clear = clear - ".DB::m(CLEAR_INTERVAL)."::INTERVAL
+	$sql = "UPDATE issues SET clear = clear - ".DB::esc(CLEAR_INTERVAL)."::INTERVAL
 		WHERE id=".intval($issue->id)."
 			AND clear IS NOT NULL";
 	DB::query($sql);
@@ -268,7 +268,7 @@ function time_warp_clear(Issue $issue) {
  * @param object  $proposal
  */
 function time_warp_cancel(Proposal $proposal) {
-	$sql = "UPDATE proposals SET submitted = submitted - ".DB::m(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL - '1 day'::INTERVAL
+	$sql = "UPDATE proposals SET submitted = submitted - ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL - '1 day'::INTERVAL
 		WHERE id=".intval($proposal->id);
 	DB::query($sql);
 }

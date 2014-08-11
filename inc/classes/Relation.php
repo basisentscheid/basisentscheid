@@ -13,6 +13,7 @@ abstract class Relation {
 
 	private $table;
 
+	// lists of fields to be inserted or updated by create() and update()
 	protected $create_fields;
 	protected $update_fields;
 
@@ -49,7 +50,7 @@ abstract class Relation {
 
 		}
 
-		foreach ( $this->boolean_fields as $key ) DB::pg2bool($this->$key);
+		foreach ( $this->boolean_fields as $key ) DB::to_bool($this->$key);
 
 	}
 
@@ -60,7 +61,7 @@ abstract class Relation {
 	 * @param array   $fields (optional)
 	 * @return boolean
 	 */
-	public function create( $fields=false ) {
+	public function create($fields=false) {
 
 		if (!$fields) $fields = $this->create_fields;
 
@@ -69,7 +70,6 @@ abstract class Relation {
 		}
 
 		return DB::insert($this->table, $fields_values, $this->id);
-
 	}
 
 
@@ -78,7 +78,7 @@ abstract class Relation {
 	 *
 	 * @param array   $fields (optional) save only these fields
 	 * @param string  $extra  (optional)
-	 * @return unknown
+	 * @return resource
 	 */
 	function update($fields=false, $extra=false) {
 
@@ -89,19 +89,16 @@ abstract class Relation {
 		}
 
 		return DB::update($this->table, "id=".intval($this->id), $fields_values, $extra);
-
 	}
 
 
 	/**
 	 * delete the record from the database
 	 *
-	 * @return unknown
+	 * @return resource
 	 */
 	function delete() {
-
 		return DB::delete($this->table, "id=".intval($this->id));
-
 	}
 
 

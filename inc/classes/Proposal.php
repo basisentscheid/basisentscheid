@@ -1,6 +1,6 @@
 <?
 /**
- * inc/classes/Proposal.php
+ * Proposal
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -53,10 +53,10 @@ class Proposal extends Relation {
 	 * Create a new proposal
 	 *
 	 * @return boolean
-	 * @param unknown $area
-	 * @param unknown $fields (optional)
+	 * @param integer $area   (optional) area for a new created issue
+	 * @param array   $fields (optional)
 	 */
-	public function create( $area=false, $fields = array("title", "content", "reason", "issue") ) {
+	public function create( $area=false, array $fields = array("title", "content", "reason", "issue") ) {
 
 		if (!$this->issue) {
 			$issue = new Issue;
@@ -72,6 +72,7 @@ class Proposal extends Relation {
 
 		$this->create_draft();
 
+		// become proponent
 		$this->add_support(false, true);
 
 	}
@@ -129,7 +130,7 @@ class Proposal extends Relation {
 	 */
 	function add_support($anonymous=false, $proponent=false) {
 		$sql = "INSERT INTO supporters (proposal, member, anonymous, proponent)
-			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool2pg($anonymous).", ".DB::bool2pg($proponent).")";
+			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool_to_sql($anonymous).", ".DB::bool_to_sql($proponent).")";
 		DB::query($sql);
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
@@ -153,7 +154,7 @@ class Proposal extends Relation {
 
 		$sql = "SELECT COUNT(1) FROM supporters
 			WHERE proposal=".intval($this->id)."
-			AND created > current_date - interval ".DB::m(SUPPORTERS_VALID_INTERVAL);
+			AND created > current_date - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
 		$this->supporters = DB::fetchfield($sql);
 
 		if ($this->supporters >= $this->quorum_required()) {
@@ -253,7 +254,7 @@ class Proposal extends Relation {
 		$is_proponent = false;
 		$sql = "SELECT member, anonymous, proponent FROM supporters WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
-		while ( $row = pg_fetch_assoc($result) ) {
+		while ( $row = DB::fetch_assoc($result) ) {
 			$member = new Member($row['member']);
 			if (Login::$member and $member->id==Login::$member->id) {
 				if ($row['proponent']===DB::value_true) {
@@ -317,24 +318,26 @@ class Proposal extends Relation {
 
 
 	/**
+	 * quorum this proposal has to reach to get admitted
 	 *
-	 * @return unknown
+	 * @return array
 	 */
 	function quorum_level() {
 
 		$sql = "SELECT * FROM proposals WHERE issue=".intval($this->issue)." AND quorum_reached=TRUE";
 		if ( DB::numrows($sql) ) {
-			return array(QUORUM_SUPPORT_ALTERNATIVE_NUM, QUORUM_SUPPORT_ALTERNATIVE_DEN); // 5%
+			return array(QUORUM_SUPPORT_ALTERNATIVE_NUM, QUORUM_SUPPORT_ALTERNATIVE_DEN);
 		} else {
-			return array(QUORUM_SUPPORT_NUM, QUORUM_SUPPORT_DEN); // 10%
+			return array(QUORUM_SUPPORT_NUM, QUORUM_SUPPORT_DEN);
 		}
 
 	}
 
 
 	/**
+	 * number of required supporters
 	 *
-	 * @return unknown
+	 * @return integer
 	 */
 	function quorum_required() {
 

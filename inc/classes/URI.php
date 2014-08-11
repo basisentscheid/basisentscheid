@@ -1,6 +1,6 @@
 <?
 /**
- * inc/classes/URI.php
+ * URI handling
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -46,7 +46,7 @@ abstract class URI {
 	 *
 	 * @param array   $array (reference)
 	 */
-	private static function strip_empty(&$array) {
+	private static function strip_empty(array &$array) {
 		foreach ($array as $key => $value) {
 			if ($value==="") {
 				unset($array[$key]);
@@ -162,11 +162,12 @@ abstract class URI {
 
 
 	/**
+	 * helper for self::hidden()
 	 *
-	 * @param unknown $arraykey
-	 * @param unknown $query
+	 * @param mixed   $arraykey
+	 * @param array   $query
 	 */
-	private static function hidden_recursive($arraykey, $query) {
+	private static function hidden_recursive($arraykey, array $query) {
 		foreach ( $query as $key => $value ) {
 			if ($value===null or $value==="") continue;
 			if ($arraykey) {

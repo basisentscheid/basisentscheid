@@ -39,9 +39,9 @@ $auid = $response_auid['result']['auid'];
 $username = $response_profile['result']['username'];
 
 // login
-$sql = "SELECT id FROM members WHERE auid=".DB::m($auid);
+$sql = "SELECT id FROM members WHERE auid=".DB::esc($auid);
 $result = DB::query($sql);
-if ( $row = pg_fetch_assoc($result) ) {
+if ( $row = DB::fetch_assoc($result) ) {
 	// user already in the database
 	$_SESSION['member'] = $row['id'];
 } else {

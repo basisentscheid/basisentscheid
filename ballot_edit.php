@@ -35,7 +35,7 @@ if ($action) {
 	Login::access_action("user"); // TODO: distinct cases
 
 	if ($action!="save") {
-		warning("Unknown action.");
+		warning(_("Unknown action"));
 		redirect();
 	}
 
@@ -49,7 +49,7 @@ if ($action) {
 	} else {
 		$ballot->create();
 		if (!$ballot->id) {
-			warning("The ballot could not be created!");
+			warning(_("The ballot could not be created!"));
 			redirect();
 		}
 	}

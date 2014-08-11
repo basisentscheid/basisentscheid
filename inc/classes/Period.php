@@ -1,6 +1,6 @@
 <?
 /**
- * inc/classes/Period.php
+ * Period
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -102,7 +102,7 @@ class Period extends Relation {
 
 		$sql = "SELECT id FROM ballots WHERE period=".intval($this->id);
 		$result = DB::query($sql);
-		while ( $row = pg_fetch_assoc($result) ) {
+		while ( $row = DB::fetch_assoc($result) ) {
 
 			$sql = "SELECT COUNT(1) FROM voters WHERE ballot=".intval($row['id']);
 			$count = DB::fetchfield($sql);
@@ -121,7 +121,7 @@ class Period extends Relation {
 	public function save_approved_ballots() {
 		foreach ( $_POST['approved_id'] as $key => $ballot_id ) {
 			$value = !empty($_POST['approved'][$key]);
-			$sql = "UPDATE ballots SET approved=".DB::bool2pg($value)." WHERE id=".intval($ballot_id);
+			$sql = "UPDATE ballots SET approved=".DB::bool_to_sql($value)." WHERE id=".intval($ballot_id);
 			DB::query($sql);
 		}
 	}
@@ -234,7 +234,7 @@ class Period extends Relation {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	public function dbtableadmin_edit_timestamp($colname, $default, $id, $disabled, $column) {
+	public function dbtableadmin_edit_timestamp($colname, $default, $id, $disabled, array $column) {
 		if ($default) $default = date(DATETIME_FORMAT, strtotime($default));
 		input_text($colname, $default, $disabled, 'size="30"');
 	}

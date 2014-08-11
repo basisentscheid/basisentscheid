@@ -94,7 +94,7 @@ class Filter {
 	 * @param array   $columns_integer (optional) integer database columns to search in
 	 * @return string
 	 */
-	public function where($replace=array(), $columns=array(), $columns_integer=array()) {
+	public function where(array $replace=array(), array $columns=array(), array $columns_integer=array()) {
 
 		$where = array();
 
@@ -110,7 +110,7 @@ class Filter {
 		if ( $this->search ) {
 			$where_search = array();
 			foreach ( $columns as $column ) {
-				$where_search[] = $column." ILIKE ".m("%".$this->search."%");
+				$where_search[] = $column." ILIKE ".DB::esc("%".$this->search."%");
 			}
 			// search in integer values only when searching for a non-zero integer
 			if (intval($this->search)) {

@@ -143,14 +143,14 @@ class DbTableAdmin {
 	protected $id = 0;
 
 	/**
-	 * Object of the current record when on edit page
+	 * object of the current record when on edit page
 	 *
 	 * @var object
 	 */
 	protected $object;
 
 	/**
-	 * Objects of rejected records at direct editing on the list page
+	 * objects of rejected records at direct editing on the list page
 	 *
 	 * @var object
 	 */
@@ -292,21 +292,9 @@ class DbTableAdmin {
 
 			if ( $this->object->create($columns) ) {
 				success($this->msg_strtr($this->msg_record_saved, array('id'=>$this->object->id)));
-			}
-
-			if ($this->object->id) {
-
-				// images delete
-				$this->images_delete($this->object->id);
-
-				// images hochladen
-				$this->images_hochladen($this->object->id);
-
-				// Was nachher noch zu erledigen ist
-				if ( method_exists($this, "aftersave") ) {
-					$this->aftersave($this->object->id);
+				if ($this->object->id and method_exists($this, "after_create") ) {
+					$this->after_create($this->object);
 				}
-
 			}
 
 			$this->redirect_to_list();
@@ -394,7 +382,7 @@ class DbTableAdmin {
 
 		}
 
-		warning("Unknown action");
+		warning(_("Unknown action"));
 		redirect();
 	}
 
@@ -408,22 +396,9 @@ class DbTableAdmin {
 
 
 	/**
+	 * delete one record
 	 *
-	 */
-	protected function images_delete() {}
-
-
-	/**
-	 *
-	 */
-	protected function images_hochladen() {}
-
-
-	/**
-	 * Löscht den record mit der ID $id
-	 *
-	 * @uses m()
-	 * @param int     $id
+	 * @param integer $id
 	 */
 	protected function delete($id) {
 
@@ -439,21 +414,12 @@ class DbTableAdmin {
 
 		if ($object->delete()) {
 			success($this->msg_strtr($this->msg_record_deleted, $object));
-		}
-
-		$this->delete_images($id);
-
-		if ( method_exists($this, "afterdelete")) {
-			$this->afterdelete($object);
+			if ( method_exists($this, "after_delete")) {
+				$this->after_delete($object);
+			}
 		}
 
 	}
-
-
-	/**
-	 *
-	 */
-	protected function delete_images() {}
 
 
 	/**
@@ -483,16 +449,12 @@ class DbTableAdmin {
 
 		if ($object->create($save_columns)) {
 			success(sprintf(_("The record %d has been duplicated. ID of the copy: %d"), $id, $object->id));
-			$this->duplicate_images($id, $object->id);
+			if ( method_exists($this, "after_duplicate") ) {
+				$this->after_duplicate($this->object);
+			}
 		}
 
 	}
-
-
-	/**
-	 *
-	 */
-	protected function duplicate_images() {}
 
 
 	/**
@@ -565,7 +527,7 @@ class DbTableAdmin {
 	 * @param string  $msg_prefix    (optional) record number notice
 	 * @return array                 array of columns to save or false if input is rejected by beforesave method
 	 */
-	protected function convert_input($object, $post, $input_columns=false, $msg_prefix="") {
+	protected function convert_input($object, array $post, $input_columns=false, $msg_prefix="") {
 
 		$save_columns = array();
 		$success = true;
@@ -797,7 +759,7 @@ class DbTableAdmin {
 			?></th>
 <?
 		}
-		// Spalte rechts zum Löschen, duplicate u.a.
+		// right column for edit, delete, duplicate
 		if ($show_edit_column) {
 ?>
 		<th></th>
@@ -835,7 +797,7 @@ class DbTableAdmin {
 <?
 
 			// use the submitted values instead of the the record from the database
-			if ($direct_edit and isset($this->directedit_objects[$row['id']])) {
+			if ($direct_edit and isset($this->directedit_objects[$object->id])) {
 				$object = $this->directedit_objects[$object->id];
 			}
 
@@ -992,7 +954,7 @@ class DbTableAdmin {
 	/**
 	 * javascript for the list page
 	 *
-	 * @param unknown $button_js
+	 * @param boolean $button_js
 	 */
 	protected function display_list_javascript($button_js) {
 ?>
@@ -1155,7 +1117,7 @@ function submit_delete_checked() {
 	 * replace wildcards in messages
 	 *
 	 * @param string  $text
-	 * @param array   $columns
+	 * @param mixed   $columns array or object
 	 * @return string
 	 */
 	protected function msg_strtr($text, $columns) {
@@ -1180,7 +1142,6 @@ function submit_delete_checked() {
 	/**
 	 * generate the SQL statement for the list page
 	 *
-	 * @uses m()
 	 * @return string
 	 */
 	protected function sql_list() {
@@ -1190,7 +1151,7 @@ function submit_delete_checked() {
 		$where = array();
 
 		foreach ($this->global_where as $key => $value) {
-			$where[] = $key."=".DB::m_null($value);
+			$where[] = $key."=".DB::value_to_sql($value);
 		}
 
 		// filter, search
@@ -1298,7 +1259,7 @@ function submit_delete_checked() {
 	 * @param object  $object
 	 * @param array   $column
 	 */
-	protected function print_text_directedit($content, $object, $column) {
+	protected function print_text_directedit($content, $object, array $column) {
 		if (!empty($column['print_size'])) $size = $column['size']; else $size = 10;
 		?><input type="hidden" name="directedit_key[<?=$object->id?>][<?=$column[0]?>]" value="1"><?
 		?><input type="text" name="directedit[<?=$object->id?>][<?=$column[0]?>]" size="<?=$size?>" value="<?=h($content)?>"><?
@@ -1312,7 +1273,7 @@ function submit_delete_checked() {
 	 * @param object  $object
 	 * @param array   $column
 	 */
-	protected function print_text_limit($content, $object, $column) {
+	protected function print_text_limit($content, $object, array $column) {
 		if (!empty($column['print_limit'])) $limit = $column['print_limit']; else $limit = 50;
 		$content = ltrim($content);
 		if (mb_strlen($content) > $limit) {
@@ -1340,7 +1301,7 @@ function submit_delete_checked() {
 	 * @param object  $object
 	 * @param array   $column
 	 */
-	protected function print_boolean_directedit($content, $object, $column) {
+	protected function print_boolean_directedit($content, $object, array $column) {
 		?><input type="hidden" name="directedit_key[<?=$object->id?>][<?=$column[0]?>]" value="1"><?
 		?><input type="checkbox" name="directedit[<?=$object->id?>][<?=$column[0]?>]" value="1"<?
 		if ($content) { ?> checked<? }
@@ -1355,7 +1316,7 @@ function submit_delete_checked() {
 	 * @param object  $object
 	 * @param array   $column
 	 */
-	protected function print_select($content, $object, $column) {
+	protected function print_select($content, $object, array $column) {
 		echo h(@$column['options'][$content]);
 	}
 
@@ -1367,7 +1328,7 @@ function submit_delete_checked() {
 	 * @param object  $object
 	 * @param array   $column
 	 */
-	protected function print_select_directedit($content, $object, $column) {
+	protected function print_select_directedit($content, $object, array $column) {
 		input_hidden("directedit_key[".$object->id."][".$column[0]."]", "integer");
 		input_select("directedit[".$object->id."][".$column[0]."]", $column['options'], $content);
 	}
@@ -1382,7 +1343,7 @@ function submit_delete_checked() {
 	 * @param integer $line
 	 * @param integer $linescount
 	 */
-	protected function print_manualorder($content, $object, $column, $line, $linescount) {
+	protected function print_manualorder($content, $object, array $column, $line, $linescount) {
 
 		// show arrows only if order is by manualorder ascending
 		if ( $this->order!=$column[0] or $this->orderdesc ) return;
@@ -1427,7 +1388,7 @@ function submit_delete_checked() {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	protected function edit_text($colname, $default, $id, $disabled, $column) {
+	protected function edit_text($colname, $default, $id, $disabled, array $column) {
 		$attributes = array();
 		if (isset($column['size'])) {
 			$attributes[] = 'size="'.$column['size'].'"';
@@ -1451,7 +1412,7 @@ function submit_delete_checked() {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	protected function edit_area($colname, $default, $id, $disabled, $column) {
+	protected function edit_area($colname, $default, $id, $disabled, array $column) {
 		$attributes = array();
 		if (isset($column['cols'])) {
 			$attributes[] = 'cols="'.$column['cols'].'"';
@@ -1488,7 +1449,7 @@ function submit_delete_checked() {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	protected function edit_select($colname, $default, $id, $disabled, $column) {
+	protected function edit_select($colname, $default, $id, $disabled, array $column) {
 		input_select($colname, $column['options'], $default, $disabled, @$column['attributes']);
 	}
 
