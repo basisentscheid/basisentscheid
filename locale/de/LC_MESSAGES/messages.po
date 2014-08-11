@@ -1,7 +1,7 @@
 # Commands for maintenance:
 # grep -v "^# File" locale/de/LC_MESSAGES/messages.po > locale/de/LC_MESSAGES/messages.po_ && mv locale/de/LC_MESSAGES/messages.po_ locale/de/LC_MESSAGES/messages.po && xgettext --join-existing --omit-header --strict --no-wrap --output-dir=locale/de/LC_MESSAGES/ --from-code=UTF-8 *.php inc/*.php inc/classes/*.php
 # -- translate new msgids
-# cd locale/de/LC_MESSAGES/ ; msgfmt messages.po ; cd -
+# cd locale/de/LC_MESSAGES/ ; msgfmt messages.po ; rm messages-*.mo ; ln -s messages-$(date +%s).mo messages.mo ; cd -
 #
 #, fuzzy
 msgid ""
