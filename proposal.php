@@ -556,7 +556,7 @@ function display_arguments($side, $parent, $level) {
 			$proposal->allowed_add_arguments()
 		) {
 ?>
-		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form"><?=_("Reply")?></a></div>
+		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
 <?
 		}
 

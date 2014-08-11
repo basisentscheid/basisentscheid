@@ -1,7 +1,7 @@
 # Commands for maintenance:
 # grep -v "^# File" locale/de/LC_MESSAGES/messages.po > locale/de/LC_MESSAGES/messages.po_ && mv locale/de/LC_MESSAGES/messages.po_ locale/de/LC_MESSAGES/messages.po && xgettext --join-existing --omit-header --strict --no-wrap --output-dir=locale/de/LC_MESSAGES/ --from-code=UTF-8 *.php inc/*.php inc/classes/*.php
 # -- translate new msgids
-# cd locale/de/LC_MESSAGES/ ; msgfmt messages.po ; rm messages-*.mo ; ln -s messages-$(date +%s).mo messages.mo ; cd -
+# cd locale/de/LC_MESSAGES/ ; msgfmt messages.po ; rm messages-*.mo ; ln -s messages.mo messages-$(date +%s).mo ; cd -
 #
 #, fuzzy
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-11 15:42+0200\n"
+"PO-Revision-Date: 2014-08-12 0:59+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -427,7 +427,6 @@ msgstr "neues Kontra-Argument hinzufügen"
 msgid "Contra"
 msgstr "Kontra"
 #
-# File: proposal.php, line: 559
 msgid "Reply"
 msgstr "antworten"
 #
@@ -1012,3 +1011,7 @@ msgstr "Urnenabstimmung"
 # File: inc/classes/Issue.php, line: 428
 msgid "online voting"
 msgstr "Online-Abstimmung"
+#
+# File: proposal.php, line: 559
+msgid "reply"
+msgstr "antworten"
