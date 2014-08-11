@@ -25,14 +25,14 @@ if ( setlocale(LC_MESSAGES, $locale) === false ) {
 
 if (DEBUG) {
 	// workaround for gettext caching
-	$domains = glob("locale/".LANG."/LC_MESSAGES/messages-*.mo");
+	$domains = glob(DOCROOT."locale/".LANG."/LC_MESSAGES/messages-*.mo");
 	$current = basename($domains[0], ".mo");
-	bindtextdomain($current, "./locale");
+	bindtextdomain($current, DOCROOT."locale");
 	textdomain($current);
 	bind_textdomain_codeset($current, "UTF-8");
 } else {
 	// In live environment probably the webserver has to be gracefully restarted to load a new gettext file.
-	bindtextdomain("messages", "./locale");
+	bindtextdomain("messages", DOCROOT."locale");
 	textdomain("messages");
 	bind_textdomain_codeset("messages", "UTF-8");
 }
