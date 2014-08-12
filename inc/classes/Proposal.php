@@ -22,6 +22,8 @@ class Proposal extends Relation {
 	public $admission_decision;
 	public $submitted;
 
+	const proponent_length = 100;
+
 	private $issue_obj;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member");
@@ -53,10 +55,11 @@ class Proposal extends Relation {
 	 * Create a new proposal
 	 *
 	 * @return boolean
-	 * @param integer $area   (optional) area for a new created issue
-	 * @param array   $fields (optional)
+	 * @param string  $proponent proponent name
+	 * @param integer $area      (optional) area for a new created issue
+	 * @param array   $fields    (optional)
 	 */
-	public function create( $area=false, array $fields = array("title", "content", "reason", "issue") ) {
+	public function create($proponent, $area=false, array $fields=array("title", "content", "reason", "issue")) {
 
 		if (!$this->issue) {
 			$issue = new Issue;
@@ -73,7 +76,11 @@ class Proposal extends Relation {
 		$this->create_draft();
 
 		// become proponent
-		$this->add_support(false, true);
+		$this->add_support(
+			false, // not anonymous
+			$proponent,
+			true // the first proponent starts already confirmed
+		);
 
 	}
 
@@ -123,6 +130,26 @@ class Proposal extends Relation {
 
 
 	/**
+	 * look if the proponents still are allowed to edit their names and contact info
+	 *
+	 * @return boolean
+	 */
+	public function allowed_edit_proponent() {
+		switch ($this->issue()->state) {
+		case "admission":
+		case "debate":
+			switch ($this->state) {
+			case "draft":
+			case "submitted":
+			case "admitted":
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
 	 * look if we are collecting supporters
 	 *
 	 * @return boolean
@@ -135,20 +162,27 @@ class Proposal extends Relation {
 	/**
 	 * add the logged in member as supporter or proponent
 	 *
-	 * @param boolean $anonymous (optional)
-	 * @param boolean $proponent (optional)
+	 * @param boolean $anonymous           (optional)
+	 * @param string  $proponent           (optional) display name of the proponent or null if not a proponent
+	 * @param boolean $proponent_confirmed (optional)
 	 */
-	function add_support($anonymous=false, $proponent=false) {
-		$sql = "INSERT INTO supporters (proposal, member, anonymous, proponent)
-			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool_to_sql($anonymous).", ".DB::bool_to_sql($proponent).")";
-		DB::query($sql);
+	function add_support($anonymous=false, $proponent=null, $proponent_confirmed=false) {
+		$fields_values = array(
+			'proposal' => $this->id,
+			'member' => Login::$member->id,
+			'anonymous' => $anonymous,
+			'proponent' => $proponent,
+			'proponent_confirmed' => $proponent_confirmed
+		);
+		$keys = array('proposal', 'member');
+		DB::insert_or_update("supporters", $fields_values, $keys);
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
 	}
 
 
 	/**
-	 *
+	 * remove support or proponent
 	 */
 	function revoke_support() {
 		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
@@ -176,6 +210,34 @@ class Proposal extends Relation {
 			$this->update(array("supporters"));
 		}
 
+	}
+
+
+	/**
+	 * update a proponent's name and contact info
+	 *
+	 * @param string $proponent
+	 */
+	public function update_proponent($proponent) {
+		$sql = "UPDATE supporters SET proponent=".DB::esc($proponent)."
+			WHERE proposal=".intval($this->id)."
+				AND member=".intval(Login::$member->id)."
+				AND proponent IS NOT NULL";
+		DB::query($sql);
+	}
+
+
+	/**
+	 * confirm an applying member as proponent
+	 *
+	 * @param object $member
+	 */
+	public function confirm_proponent($member) {
+		$sql = "UPDATE supporters SET proponent_confirmed=TRUE
+			WHERE proposal=".intval($this->id)."
+				AND member=".intval($member->id)."
+				AND proponent IS NOT NULL";
+		DB::query($sql);
 	}
 
 
@@ -258,19 +320,20 @@ class Proposal extends Relation {
 	 * @return array
 	 */
 	public function supporters() {
-		$supporters = array();
-		$proponents = array();
-		$is_supporter = false;
-		$is_proponent = false;
-		$sql = "SELECT member, anonymous, proponent FROM supporters WHERE proposal=".intval($this->id);
+		$supporters = array(); // list of supporters as strings
+		$proponents = array(); // list of proponents (also unconfirmed) as objects of class member
+		$is_supporter = false; // if the logged in member is supporter
+		$is_proponent = false; // if the logged in member is confirmed proponent
+		$sql = "SELECT member, anonymous, proponent, proponent_confirmed FROM supporters WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
 		while ( $row = DB::fetch_assoc($result) ) {
+			DB::to_bool($row['proponent_confirmed']);
 			$member = new Member($row['member']);
 			if (Login::$member and $member->id==Login::$member->id) {
-				if ($row['proponent']===DB::value_true) {
-					$proponents[] = $member;
+				if ($row['proponent_confirmed']) {
 					$is_proponent = true;
-					$supporters[] = '<span class="proponent">'.$member->username().'</span>';
+					$is_supporter = true;
+					$supporters[] = '<span class="proponent">'.$row['proponent'].'</span>';
 				} elseif ($row['anonymous']===DB::value_true) {
 					$is_supporter = "anonymous";
 					$supporters[] = '<span class="self">'._("anonymous").'</span>';
@@ -285,6 +348,11 @@ class Proposal extends Relation {
 					$supporters[] = $member->username();
 				}
 			}
+			if ($row['proponent']!==null) {
+				$member->proponent_name      = $row['proponent'];
+				$member->proponent_confirmed = $row['proponent_confirmed'];
+				$proponents[] = $member;
+			}
 		}
 		return array($supporters, $proponents, $is_supporter, $is_proponent);
 	}
@@ -294,10 +362,15 @@ class Proposal extends Relation {
 	 * look if the supplied member is a proponent of this proposal
 	 *
 	 * @param object  $member
+	 * @param boolean $confirmed (optional)
 	 * @return boolean
 	 */
-	public function is_proponent(Member $member) {
-		$sql = "SELECT COUNT(1) FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval($member->id)." AND proponent=TRUE";
+	public function is_proponent(Member $member, $confirmed=true) {
+		$sql = "SELECT COUNT(1) FROM supporters
+			WHERE proposal=".intval($this->id)."
+				AND member=".intval($member->id)."
+				AND proponent IS NOT NULL";
+		if ($confirmed) $sql .= " AND proponent_confirmed=TRUE";
 		if ( DB::fetchfield($sql) ) return true;
 		return false;
 	}

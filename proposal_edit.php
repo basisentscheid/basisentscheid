@@ -38,19 +38,19 @@ if ($action) {
 
 	action_required_parameters('title', 'content', 'reason');
 
-	$proposal->title      = trim($_POST['title']);
+	$proposal->title   = trim($_POST['title']);
 	if (mb_strlen($proposal->title) > Proposal::title_length) {
 		$proposal->title = limitstr($proposal->title, Proposal::title_length);
 		warning(sprintf(_("The title has been truncated to the maximum allowed length of %d characters!"), Proposal::title_length));
 	}
 
-	$proposal->content    = trim($_POST['content']);
+	$proposal->content = trim($_POST['content']);
 	if (mb_strlen($proposal->content) > Proposal::content_length) {
 		$proposal->content = limitstr($proposal->content, Proposal::content_length);
 		warning(sprintf(_("The content has been truncated to the maximum allowed length of %d characters!"), Proposal::content_length));
 	}
 
-	$proposal->reason     = trim($_POST['reason']);
+	$proposal->reason  = trim($_POST['reason']);
 	if (mb_strlen($proposal->reason) > Proposal::reason_length) {
 		$proposal->reason = limitstr($proposal->reason, Proposal::reason_length);
 		warning(sprintf(_("The reason has been truncated to the maximum allowed length of %d characters!"), Proposal::reason_length));
@@ -61,6 +61,13 @@ if ($action) {
 		$proposal->create_draft();
 		$proposal->update();
 	} else {
+		// add proposal
+		action_required_parameters('proponent');
+		$proponent = trim($_POST['proponent']);
+		if (mb_strlen($proponent) > Proposal::proponent_length) {
+			$proponent = limitstr($proponent, Proposal::proponent_length);
+			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), Proposal::proponent_length));
+		}
 		if (!empty($_POST['issue'])) {
 			// add alternative proposal
 			$issue = new Issue($_POST['issue']);
@@ -69,14 +76,14 @@ if ($action) {
 			}
 			if (!$issue->allowed_add_alternative_proposal()) {
 				warning(_("In this phase it is not allowed to create an alternative proposal. Thus a new proposal has been created instead."));
-				$proposal->create($issue->area);
+				$proposal->create($proponent, $issue->area);
 				redirect();
 			}
 			$proposal->issue = $issue->id;
-			$proposal->create();
+			$proposal->create($proponent);
 		} elseif (!empty($_POST['area'])) {
 			// add new proposal
-			$proposal->create($_POST['area']);
+			$proposal->create($proponent, $_POST['area']);
 		} else {
 			warning("Missing parameters");
 			redirect();
@@ -131,6 +138,14 @@ if ($issue) {
 	}
 	input_select("area", $options);
 }
+
+if (!$proposal->id) {
+?>
+<h2><?=_("Proponent")?> <span class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal.")?></span></h2>
+<input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>"><br>
+<?
+}
+
 ?>
 <h2><?=_("Title")?></h2>
 <input type="text" name="title" value="<?=h($proposal->title)?>" maxlength="<?=Proposal::title_length?>"><br>

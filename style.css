@@ -476,7 +476,33 @@ div.proposal_info {
 	float: right;
 	margin-left: 20px;
 	margin-bottom: 5px;
-	width: 20%;
+	width: 210px;
+	width: 21rem;
+}
+div.proposal_info ul {
+	background-color: #FFF;
+	margin: 0;
+	padding: 3px 2px 3px 5px;
+	list-style: square inside;
+}
+div.proposal_info ul li span.unconfirmed {
+	color: #AAA;
+}
+div.proposal_info ul li form {
+	display: inline-block;
+	vertical-align: top;
+	width: 194px;
+	width: 19.4rem;
+	margin-top: 2px;
+}
+div.proposal_info ul li form div.explain {
+	margin: 0 0 2px 0;
+}
+div.proposal_info ul li form input[type=text] {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 div.proposal_content {
 	overflow: hidden;
@@ -582,6 +608,10 @@ div.proposal_content h2 {
 	font-weight: normal;
 	margin-top: 5px;
 	margin-bottom: 0;
+}
+form.proposal h2 span.explain {
+	font-size: 80%;
+	margin-left: 1em;
 }
 form.proposal input[type=text],
 form.proposal textarea {

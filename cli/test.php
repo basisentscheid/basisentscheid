@@ -68,7 +68,7 @@ function create_case($case, $stopcase) {
 	$proposal->title = "Test ".$date." proposal case ".$casedesc;
 	$proposal->content = "Test content";
 	$proposal->reason = "Test reason";
-	$proposal->create($area);
+	$proposal->create("Test proponent ".$date." proposal case ".$casedesc, $area);
 
 	if ($stopcase == ++$stop) return;
 
@@ -95,7 +95,7 @@ function create_case($case, $stopcase) {
 	$proposal2->content = "Test content";
 	$proposal2->reason = "Test reason";
 	$proposal2->issue = $proposal->issue;
-	$proposal2->create($area);
+	$proposal2->create("Test proponent ".$date." alternative proposal case ".$casedesc, $area);
 
 	if ($stopcase == ++$stop) return;
 

@@ -9,7 +9,7 @@
 
 require "inc/common.php";
 
-URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision', 'show_drafts'));
+URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision', 'show_drafts', 'edit_proponent'));
 
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
@@ -47,6 +47,69 @@ if ($action) {
 			redirect();
 		}
 		$proposal->cancel("revoked");
+		redirect();
+		break;
+
+	case "apply_proponent":
+		Login::access_action("member");
+		action_required_parameters('proponent');
+		if (!$proposal->allowed_edit_proponent()) {
+			warning(_("Your proponent info can not be changed anymore once voting preparation has started or the proposal has been closed!"));
+			redirect();
+		}
+		$proponent = trim($_POST['proponent']);
+		if (!$proponent) {
+			warning(_("Your proponent info must be not empty."));
+			redirect();
+		}
+		if (mb_strlen($proponent) > Proposal::proponent_length) {
+			$proponent = limitstr($proponent, Proposal::proponent_length);
+			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), Proposal::proponent_length));
+		}
+		$proposal->update_proponent($proponent);
+		redirect();
+		break;
+	case "become_proponent":
+		Login::access_action("member");
+		action_required_parameters('proponent');
+		if (!$proposal->allowed_edit_proponent()) {
+			warning(_("You can not become proponent anymore once voting preparation has started or the proposal has been closed!"));
+			redirect();
+		}
+		$proponent = trim($_POST['proponent']);
+		if (!$proponent) {
+			warning(_("Your proponent info must be not empty."));
+			redirect();
+		}
+		if (mb_strlen($proponent) > Proposal::proponent_length) {
+			$proponent = limitstr($proponent, Proposal::proponent_length);
+			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), Proposal::proponent_length));
+		}
+		$proposal->add_support(false, $proponent);
+		notice(_("Your application to become proponent has been submitted to the current proponents to confirm your request."));
+		redirect();
+		break;
+	case "confirm_proponent":
+		Login::access_action("member");
+		action_required_parameters('member');
+		if (!$proposal->allowed_edit_proponent()) {
+			warning(_("You can not confirm proponents anymore once voting preparation has started or the proposal has been closed!"));
+			redirect();
+		}
+		if (!$proposal->is_proponent(Login::$member)) {
+			warning(_("Your are not a proponent of this proposal."));
+			redirect();
+		}
+		$member = new Member($_POST['member']);
+		if (!$member->id) {
+			warning("The member does not exist.");
+			redirect();
+		}
+		if (!$proposal->is_proponent($member, false)) {
+			warning(_("The to be confirmed member is not applying to become proponent of this proposal."));
+			redirect();
+		}
+		$proposal->confirm_proponent($member);
 		redirect();
 		break;
 
@@ -260,83 +323,7 @@ list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->suppor
 ?>
 
 <div class="proposal_info">
-<h2><?=_("Area")?></h2>
-<p class="proposal"><?=h($issue->area()->name)?></p>
-<h2><?=_("Proponents")?></h2>
-<table>
-<?
-foreach ( $proponents as $proponent ) {
-?>
-<tr class="<?=stripes()?>">
-	<td><?=$proponent->username()?></td>
-</tr>
-<?
-}
-?>
-</table>
-<?
-
-if (Login::$member or Login::$admin) {
-
-?>
-<h2><?=_("Drafts")?></h2>
-<?
-	if ($proposal->state=="draft" or !empty($_GET['show_drafts'])) {
-?>
-<table>
-<?
-		$sql = "SELECT * FROM drafts WHERE proposal=".intval($proposal->id)." ORDER BY created DESC";
-		$result = DB::query($sql);
-		$i = DB::num_rows($result);
-		while ( $draft = DB::fetch_object($result, "Draft") ) {
-			$author = new Member($draft->author);
-?>
-<tr class="<?=stripes()?>">
-	<td class="right"><?=$i?></td>
-	<td><a href="<?=URI::append(array('draft'=>$draft->id))?>"><?=datetimeformat($draft->created)?></a></td>
-	<td><?=$author->username()?></td>
-</tr>
-<?
-			$i--;
-		}
-?>
-</table>
-<?
-	} else {
-?>
-<a href="<?=URI::append(array('show_drafts'=>1))?>"><?=_("Drafts")?></a>
-<?
-	}
-
-	// actions
-	if ($is_proponent) {
-		if ($proposal->state=="draft") {
-?>
-<h2><?=_("Actions")?></h2>
-<?
-			form(URI::same());
-?>
-<input type="hidden" name="action" value="submit_proposal">
-<input type="submit" value="<?=_("submit proposal")?>">
-</form>
-<?
-		}
-		if ($issue->state=="admission" or $issue->state=="debate") {
-?>
-<h2><?=_("Actions")?></h2>
-<?
-			form(URI::same());
-?>
-<input type="hidden" name="action" value="revoke_proposal">
-<input type="submit" value="<?=_("revoke proposal")?>">
-</form>
-<?
-		}
-	}
-
-}
-
-?>
+<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
 </div>
 
 <div class="proposal_content">
@@ -418,6 +405,161 @@ $issue->display_proposals($proposals, $submitted, count($proposals), $show_resul
 <?
 
 html_foot();
+
+
+/**
+ *
+ * @param object  $proposal
+ * @param object  $issue
+ * @param array   $proponents
+ * @param boolean $is_proponent
+ */
+function display_proposal_info(Proposal $proposal, Issue $issue, array $proponents, $is_proponent) {
+?>
+<h2><?=_("Area")?></h2>
+<p class="proposal"><?=h($issue->area()->name)?></p>
+<?
+
+	$is_any_proponent = false;
+	if (Login::$member) {
+		foreach ( $proponents as $proponent ) {
+			if ($proponent->id==Login::$member->id) {
+				$is_any_proponent = true;
+				break;
+			}
+		}
+		$allowed_edit_proponent = $proposal->allowed_edit_proponent();
+		if ($allowed_edit_proponent and !$is_any_proponent) {
+?>
+<div class="add"><a href="<?=URI::append(array('become_proponent'=>1))?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
+<?
+		}
+	}
+?>
+<h2><?=_("Proponents")?></h2>
+<ul>
+<?
+	foreach ( $proponents as $proponent ) {
+		// show unconfirmed proponents only to confirmed proponents and himself
+		//if (!$is_proponent and !$proponent->proponent_confirmed and (!Login::$member or $proponent->id!=Login::$member->id)) continue;
+?>
+	<li><?
+		if (Login::$member and $proponent->id==Login::$member->id and $allowed_edit_proponent) {
+			if (isset($_GET['edit_proponent'])) {
+				form(URI::same());
+?>
+<input type="text" name="proponent" value="<?=h($proponent->proponent_name)?>" maxlength="<?=Proposal::proponent_length?>"><br>
+<input type="hidden" name="action" value="apply_proponent">
+<input type="submit" value="<?=_("apply changes")?>">
+</form>
+<?
+			} else {
+				if ($proponent->proponent_confirmed) {
+					echo content2html($proponent->proponent_name);
+				} else {
+?>
+<span class="unconfirmed"><?=content2html($proponent->proponent_name)?></span>
+(<?=$proponent->username()?>)
+<?
+				}
+?>
+<a href="<?=URI::append(array('edit_proponent'=>1))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a>
+<?
+			}
+		} elseif ($proponent->proponent_confirmed) {
+			echo content2html($proponent->proponent_name);
+		} elseif ($is_proponent and $allowed_edit_proponent) {
+			form(URI::same());
+?>
+<span class="unconfirmed"><?=content2html($proponent->proponent_name)?></span>
+(<?=$proponent->username()?>)
+<input type="hidden" name="member" value="<?=$proponent->id?>">
+<input type="hidden" name="action" value="confirm_proponent">
+<input type="submit" value="<?=_("confirm")?>">
+</form>
+<?
+		} else {
+			?><span class="unconfirmed"><?=content2html($proponent->proponent_name)?></span><?
+		}
+		?></li>
+<?
+	}
+	if (Login::$member and $allowed_edit_proponent and isset($_GET['become_proponent']) and !$is_any_proponent) {
+?>
+	<li><?
+		form(URI::same());
+?>
+<input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>"><br>
+<div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, your user name will also be shown to the other proponents:")?> <?=$proponent->username()?></div>
+<input type="hidden" name="action" value="become_proponent">
+<input type="submit" value="<?=_("apply to become proponent")?>">
+</form>
+	</li>
+<?
+	}
+?>
+</ul>
+<?
+
+	if (!Login::$member and !Login::$admin) return;
+
+?>
+<h2><?=_("Drafts")?></h2>
+<?
+	if ($proposal->state=="draft" or !empty($_GET['show_drafts'])) {
+?>
+<table>
+<?
+		$sql = "SELECT * FROM drafts WHERE proposal=".intval($proposal->id)." ORDER BY created DESC";
+		$result = DB::query($sql);
+		$i = DB::num_rows($result);
+		while ( $draft = DB::fetch_object($result, "Draft") ) {
+			$author = new Member($draft->author);
+?>
+<tr class="<?=stripes()?>">
+	<td class="right"><?=$i?></td>
+	<td><a href="<?=URI::append(array('draft'=>$draft->id))?>"><?=datetimeformat($draft->created)?></a></td>
+	<td><?=$author->username()?></td>
+</tr>
+<?
+			$i--;
+		}
+?>
+</table>
+<?
+	} else {
+?>
+<a href="<?=URI::append(array('show_drafts'=>1))?>"><?=_("Drafts")?></a>
+<?
+	}
+
+	// actions
+	if ($is_proponent) {
+		if ($proposal->state=="draft") {
+?>
+<h2><?=_("Actions")?></h2>
+<?
+			form(URI::same());
+?>
+<input type="hidden" name="action" value="submit_proposal">
+<input type="submit" value="<?=_("submit proposal")?>">
+</form>
+<?
+		}
+		if ($issue->state=="admission" or $issue->state=="debate") {
+?>
+<h2><?=_("Actions")?></h2>
+<?
+			form(URI::same());
+?>
+<input type="hidden" name="action" value="revoke_proposal">
+<input type="submit" value="<?=_("revoke proposal")?>">
+</form>
+<?
+		}
+	}
+
+}
 
 
 /**

@@ -446,8 +446,9 @@ CREATE TABLE supporters (
     proposal integer NOT NULL,
     member integer NOT NULL,
     anonymous boolean DEFAULT false NOT NULL,
-    proponent boolean DEFAULT false NOT NULL,
-    created date DEFAULT ('now'::text)::date NOT NULL
+    proponent text,
+    created date DEFAULT ('now'::text)::date NOT NULL,
+    proponent_confirmed boolean DEFAULT false NOT NULL
 );
 
 
