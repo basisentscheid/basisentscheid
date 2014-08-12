@@ -14,7 +14,6 @@ Login::access("member");
 $d = new DbTableAdmin("Member");
 $d->dbtable = "members";
 $d->columns = array(
-	array("id", _("No."), "right", "", false),
 	array("username", _("Username"))
 );
 $d->enable_filter = false;
@@ -22,6 +21,8 @@ $d->enable_filter = false;
 $d->enable_insert         = false;
 $d->enable_edit           = false;
 $d->enable_delete_single  = false;
+
+$d->order_default = "username";
 
 $d->action($action);
 
