@@ -123,6 +123,16 @@ class Proposal extends Relation {
 
 
 	/**
+	 * look if we are collecting supporters
+	 *
+	 * @return boolean
+	 */
+	function admission() {
+		return $this->state=="submitted" and $this->issue()->state=="admission";
+	}
+
+
+	/**
 	 * add the logged in member as supporter or proponent
 	 *
 	 * @param boolean $anonymous (optional)

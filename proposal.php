@@ -52,19 +52,19 @@ if ($action) {
 
 	case "add_support":
 		Login::access_action("member");
-		if ($proposal->state=="submitted") {
+		if ($proposal->admission()) {
 			$proposal->add_support(@$_POST['anonymous']==1);
 		} else {
-			warning("Support for this proposal can not be added, because it is not in the submitted phase!");
+			warning("Support for this proposal can not be added, because it is not in the admission phase!");
 		}
 		redirect();
 		break;
 	case "revoke_support":
 		Login::access_action("member");
-		if ($proposal->state=="submitted") {
+		if ($proposal->admission()) {
 			$proposal->revoke_support();
 		} else {
-			warning("Support for this proposal can not be removed, because it is not in the submitted phase!");
+			warning("Support for this proposal can not be removed, because it is not in the admission phase!");
 		}
 		redirect();
 		break;
@@ -73,7 +73,7 @@ if ($action) {
 		if ($issue->voting_type_determination()) {
 			$issue->demand_ballot_voting(@$_POST['anonymous']==1);
 		} else {
-			warning("Demand for ballot voting can not be added, because the proposal is not in submitted, admitted or debate phase!");
+			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
 		}
 		redirect();
 		break;
@@ -82,7 +82,7 @@ if ($action) {
 		if ($issue->voting_type_determination()) {
 			$issue->revoke_ballot_voting();
 		} else {
-			warning("Demand for ballot voting can not be removed, because the proposal is not in submitted, admitted or debate phase!");
+			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
 		}
 		redirect();
 		break;
@@ -683,7 +683,7 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 	if (Login::$member or Login::$admin) {
 ?>
 <b><?=_("Supporters")?>:</b> <?=join(", ", $supporters);
-		if (Login::$member and $proposal->state=="submitted") {
+		if (Login::$member and $proposal->admission()) {
 ?>
 <br clear="both">
 <?
@@ -736,7 +736,7 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 </form>
 <?
 		}
-	} elseif (Login::$admin and $proposal->state=="submitted" and $proposal->admission_decision===null) {
+	} elseif (Login::$admin and $proposal->admission()) {
 ?>
 <div class="admission_decision">
 <a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
