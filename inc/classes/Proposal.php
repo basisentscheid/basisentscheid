@@ -216,7 +216,7 @@ class Proposal extends Relation {
 	/**
 	 * update a proponent's name and contact info
 	 *
-	 * @param string $proponent
+	 * @param string  $proponent
 	 */
 	public function update_proponent($proponent) {
 		$sql = "UPDATE supporters SET proponent=".DB::esc($proponent)."
@@ -230,13 +230,26 @@ class Proposal extends Relation {
 	/**
 	 * confirm an applying member as proponent
 	 *
-	 * @param object $member
+	 * @param object  $member
 	 */
 	public function confirm_proponent($member) {
 		$sql = "UPDATE supporters SET proponent_confirmed=TRUE
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member->id)."
 				AND proponent IS NOT NULL";
+		DB::query($sql);
+	}
+
+
+	/**
+	 * convert a proponent to an ordinary supporter
+	 *
+	 * @param object  $member
+	 */
+	public function remove_proponent($member) {
+		$sql = "UPDATE supporters SET proponent=NULL, proponent_confirmed=FALSE
+			WHERE proposal=".intval($this->id)."
+				AND member=".intval($member->id);
 		DB::query($sql);
 	}
 

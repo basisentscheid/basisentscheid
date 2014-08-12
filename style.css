@@ -215,21 +215,21 @@ div.messages {
 	margin-bottom: 20px;
 	display: inline-block;
 }
-p.success, p.notice, p.warning, p.error {
+.success, .notice, .warning, .error {
 	margin: 1px;
 	padding: 2px 5px;
 }
-p.success {
+.success {
 	background-color: #6F6;
 }
-p.notice {
+.notice {
 	background-color: #FAFA33;
 }
-p.warning, p.error {
+.warning, .error {
 	background-color: #F69;
 	font-weight: bold;
 }
-p.syserror {
+.syserror {
 	color: #900;
 	font-weight: normal;
 	margin: 0.4em 0;

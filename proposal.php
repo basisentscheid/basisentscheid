@@ -9,7 +9,7 @@
 
 require "inc/common.php";
 
-URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision', 'show_drafts', 'edit_proponent'));
+URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision', 'show_drafts', 'edit_proponent', 'become_proponent', 'remove_proponent'));
 
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
@@ -112,41 +112,54 @@ if ($action) {
 		$proposal->confirm_proponent($member);
 		redirect();
 		break;
+	case "confirm_remove_proponent":
+		Login::access_action("member");
+		if (!$proposal->allowed_edit_proponent()) {
+			warning(_("You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"));
+			redirect();
+		}
+		$proposal->remove_proponent(Login::$member);
+		redirect();
+		break;
 
 	case "add_support":
 		Login::access_action("member");
-		if ($proposal->admission()) {
-			$proposal->add_support(@$_POST['anonymous']==1);
-		} else {
+		if (!$proposal->admission()) {
 			warning("Support for this proposal can not be added, because it is not in the admission phase!");
+			redirect();
 		}
+		$proposal->add_support(@$_POST['anonymous']==1);
 		redirect();
 		break;
 	case "revoke_support":
 		Login::access_action("member");
-		if ($proposal->admission()) {
-			$proposal->revoke_support();
-		} else {
+		if (!$proposal->admission()) {
 			warning("Support for this proposal can not be removed, because it is not in the admission phase!");
+			redirect();
 		}
+		if ($proposal->is_proponent(Login::$member, false)) {
+			warning("You can not remove your support while you are proponent!");
+			redirect();
+		}
+		$proposal->revoke_support();
 		redirect();
 		break;
 	case "demand_ballot_voting":
 		Login::access_action("member");
-		if ($issue->voting_type_determination()) {
-			$issue->demand_ballot_voting(@$_POST['anonymous']==1);
-		} else {
+		if (!$issue->voting_type_determination()) {
 			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
+			redirect();
 		}
+		$issue->demand_ballot_voting(@$_POST['anonymous']==1);
 		redirect();
 		break;
 	case "revoke_demand_for_ballot_voting":
 		Login::access_action("member");
-		if ($issue->voting_type_determination()) {
-			$issue->revoke_demand_for_ballot_voting();
-		} else {
+		if (!$issue->voting_type_determination()) {
 			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
+			redirect();
 		}
+		$issue->revoke_demand_for_ballot_voting();
 		redirect();
 		break;
 
@@ -318,6 +331,29 @@ if (isset($_GET['draft'])) {
 }
 
 
+if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member, false)) {
+?>
+<div class="messages">
+<?
+	if (!$proposal->allowed_edit_proponent()) {
+		warning(_("You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"));
+	} else {
+		form(URI::same(), 'class="notice"');
+?>
+&#10148; <?=_("Do you really want to remove yourself from the proponents of this proposal?")?>
+<input type="hidden" name="action" value="confirm_remove_proponent">
+<input type="submit" value="<?=_("Yes")?>">
+<a href="<?=URI::same()?>"><?=_("No")?></a>
+</form>
+<?
+	}
+?>
+</div>
+<div class="clearfix"></div>
+<?
+}
+
+
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
 ?>
@@ -464,6 +500,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 				}
 ?>
 <a href="<?=URI::append(array('edit_proponent'=>1))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a>
+<a href="<?=URI::append(array('remove_proponent'=>1))?>" class="iconlink"><img src="img/delete.png" width="21" height="16" alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a>
 <?
 			}
 		} elseif ($proponent->proponent_confirmed) {
