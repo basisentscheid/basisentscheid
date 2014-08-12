@@ -511,8 +511,8 @@ function help($text) {
  */
 function content2html($text) {
 	return preg_replace(
-		array('#https?://\S+#',      "#''[^'\n]+''#"),
-		array('<a href="$0">$0</a>', '<i>$0</i>'    ),
+		array('#https?://\S+#i',     '#\S+@\S+\.[a-z]+#i',         "#''[^'\n]+''#"),
+		array('<a href="$0">$0</a>', '<a href="mailto:$0">$0</a>', '<i>$0</i>'    ),
 		nl2br(h($text), false)
 	);
 }
