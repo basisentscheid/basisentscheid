@@ -490,7 +490,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		form(URI::same());
 ?>
 <input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>"><br>
-<div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, your user name will also be shown to the other proponents:")?> <?=$proponent->username()?></div>
+<div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, your user name will also be shown to the other proponents:")?> <?=h(Login::$member->username())?></div>
 <input type="hidden" name="action" value="become_proponent">
 <input type="submit" value="<?=_("apply to become proponent")?>">
 </form>
