@@ -145,6 +145,28 @@ class Issue extends Relation {
 
 
 	/**
+	 * look if we are in the phase of voting type determination
+	 *
+	 * @param boolean $submitted
+	 * @return boolean
+	 */
+	public function voting_type_determination($submitted=null) {
+
+		if ($this->ballot_voting_reached) return false;
+
+		if ($this->state=="debate") return true;
+
+		if ($this->state!="admission") return false;
+
+		if ($submitted!==null) return $submitted==true;
+
+		// look if there is at least one already submitted proposal
+		$sql = "SELECT COUNT(1) FROM proposals	WHERE issue=".intval($this->id)." AND state!='draft'";
+		return DB::fetchfield($sql) == true;
+	}
+
+
+	/**
 	 *
 	 * @param boolean $anonymous
 	 */
@@ -290,12 +312,15 @@ class Issue extends Relation {
 		}
 		$result = DB::query($sql);
 		$proposals = array();
+		$submitted = false;
 		while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 			$proposal->set_issue($this);
 			$proposals[] = $proposal;
+			// look if there is at least one already submitted proposal
+			if ($proposal->state!="draft") $submitted = true;
 		}
 
-		return $proposals;
+		return array($proposals, $submitted);
 	}
 
 
@@ -303,20 +328,12 @@ class Issue extends Relation {
 	 * display table part for all proposals of the issue
 	 *
 	 * @param array   $proposals         array of objects
+	 * @param boolean $submitted
 	 * @param integer $period_rowspan
 	 * @param boolean $show_results      display the result column
 	 * @param integer $selected_proposal (optional)
 	 */
-	function display_proposals(array $proposals, $period_rowspan, $show_results, $selected_proposal=0) {
-
-		// look if there is at least one already submitted proposal
-		$submitted = false;
-		foreach ( $proposals as $proposal ) {
-			if ($proposal->state!="draft") {
-				$submitted = true;
-				break;
-			}
-		}
+	function display_proposals(array $proposals, $submitted, $period_rowspan, $show_results, $selected_proposal=0) {
 
 		$first = true;
 		$first_admitted = true;
@@ -412,18 +429,15 @@ class Issue extends Relation {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
 
-				if ($this->ballot_voting_reached) {
-					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?>><?
-				} elseif (
-					($this->state=="admission" and $submitted) or
-					$this->state=="debate"
-				) {
+				if ($this->voting_type_determination($submitted)) {
 					?><img src="img/online16.png" width="13" height="16" class="online_small" <?alt(_("online voting"))?>><?
 					$this->bargraph_ballot_voting();
 					?><img src="img/ballot16.png" width="20" height="16" class="ballot_small" <?alt(_("ballot voting"))?>><?
 					if ($this->ballot_voting_demanded_by_member) {
 						?><br>&#10003;<?
 					}
+				} elseif ($this->ballot_voting_reached) {
+					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?>><?
 				} elseif ($this->state!="admission") {
 					?><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?>><?
 				}

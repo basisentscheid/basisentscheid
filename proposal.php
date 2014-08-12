@@ -70,7 +70,7 @@ if ($action) {
 		break;
 	case "demand_ballot_voting":
 		Login::access_action("member");
-		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
+		if ($issue->voting_type_determination()) {
 			$issue->demand_ballot_voting(@$_POST['anonymous']==1);
 		} else {
 			warning("Demand for ballot voting can not be added, because the proposal is not in submitted, admitted or debate phase!");
@@ -79,7 +79,7 @@ if ($action) {
 		break;
 	case "revoke_demand_ballot_voting":
 		Login::access_action("member");
-		if ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate") {
+		if ($issue->voting_type_determination()) {
 			$issue->revoke_ballot_voting();
 		} else {
 			warning("Demand for ballot voting can not be removed, because the proposal is not in submitted, admitted or debate phase!");
@@ -389,6 +389,11 @@ if ($proposal->state != "draft" and !isset($_GET['draft'])) {
 <?
 	display_quorum($proposal, $issue, $supporters, $is_supporter);
 }
+
+list($proposals, $submitted) = $issue->proposals_list();
+if ($submitted) {
+	display_ballot_voting_quorum($issue, $submitted);
+}
 ?>
 
 <div class="issue">
@@ -402,11 +407,10 @@ if (Login::$member and $issue->allowed_add_alternative_proposal()) {
 <h2><?=_("This and alternative proposals")?></h2>
 <table class="proposals">
 <?
-$proposals = $issue->proposals_list();
 if (Login::$member) $issue->read_ballot_voting_demanded_by_member();
 $show_results = in_array($issue->state, array('finished', 'cleared', 'cancelled'));
 Issue::display_proposals_th($show_results);
-$issue->display_proposals($proposals, count($proposals), $show_results, $proposal->id);
+$issue->display_proposals($proposals, $submitted, count($proposals), $show_results, $proposal->id);
 ?>
 </table>
 </div>
@@ -758,6 +762,18 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 
 ?>
 </div>
+<?
+}
+
+
+/**
+ * display ballot voting demanders
+ *
+ * @param object  $issue
+ * @param boolean $submitted if at least one proposal is submitted
+ */
+function display_ballot_voting_quorum(Issue $issue, $submitted) {
+?>
 <div class="quorum">
 <div class="bargraph_container">
 <?
@@ -769,7 +785,7 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 ?>
 <b><?=_("Ballot voting demanders")?>:</b> <?
 		$demanded_by_member = $issue->show_ballot_voting_demanders();
-		if (Login::$member and ($proposal->state=="submitted" or $proposal->state=="admitted" or $issue->state=="debate")) {
+		if (Login::$member and $issue->voting_type_determination($submitted)) {
 ?>
 <br clear="both">
 <?
