@@ -140,10 +140,10 @@ if ($action) {
 		}
 		redirect();
 		break;
-	case "revoke_demand_ballot_voting":
+	case "revoke_demand_for_ballot_voting":
 		Login::access_action("member");
 		if ($issue->voting_type_determination()) {
-			$issue->revoke_ballot_voting();
+			$issue->revoke_demand_for_ballot_voting();
 		} else {
 			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
 		}
