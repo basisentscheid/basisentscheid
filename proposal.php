@@ -931,7 +931,15 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 <?
 			}
 		}
+	} else {
+?>
+<b><?=_("Supporters")?></b>
+<?
 	}
+
+?>
+<div class="clearfix"></div>
+<?
 
 	// admission by decision
 	if (Login::$admin and !empty($_GET['edit_admission_decision'])) {
@@ -1033,8 +1041,13 @@ function display_ballot_voting_quorum(Issue $issue, $submitted) {
 <?
 			}
 		}
+	} else {
+?>
+<b><?=_("Ballot voting demanders")?></b>
+<?
 	}
 ?>
+<div class="clearfix"></div>
 </div>
 <?
 }
