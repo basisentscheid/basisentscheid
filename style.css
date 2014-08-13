@@ -287,10 +287,10 @@ div.bargraph div.clear {
 
 div.timebar {
 	clear: both;
-	white-space: nowrap;
 }
 div.timebar div.part {
 	display: inline-block;
+	white-space: nowrap;
 }
 div.timebar div.days div.bar {
 	display: inline-block;
@@ -302,7 +302,7 @@ div.timebar div.days div.bar {
 div.timebar div.days div.space {
 	display: inline-block;
 }
-div.timebar div.days div.space.weekend {
+div.timebar div.days div.space span.weekend {
 	color: #A77;
 }
 div.timebar div.beam {

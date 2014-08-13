@@ -9,7 +9,7 @@
 
 abstract class Timebar {
 
-	const day_width = 36; // 24 * 1.5
+	const day_width = 28; // 24 * 1.125
 	const one_day = 86400; // 24 * 60 * 60
 
 
@@ -98,9 +98,7 @@ abstract class Timebar {
 		for ($t=$from_time; $t<=$to_time; $t+=self::one_day) {
 			?><div class="bar">&nbsp;</div><?
 			if ($t <= $to_time - self::one_day) {
-				?><div class="space<?
-				if (date("N", $t)>=6) { ?> weekend<? }
-				?>" style="width:<?=self::day_width-1?>px"><?
+				?><div class="space" style="width:<?=self::day_width-1?>px"><?
 				if (date("n", $t)!=$month) {
 					if ($show_year) {
 						?><span class="nowrap"><?
@@ -112,7 +110,11 @@ abstract class Timebar {
 					?><br><?
 					$month = date("n", $t);
 				}
-				echo date("j.", $t);
+				if (date("N", $t)>=6) {
+					?><span class="weekend"><?=date("j.", $t)?></span><?
+				} else {
+					echo date("j.", $t);
+				}
 				?></div><?
 			}
 		}
