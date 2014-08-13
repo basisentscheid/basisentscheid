@@ -33,6 +33,10 @@ if ($action) {
 			warning(_("Your are not a proponent of this proposal."));
 			redirect();
 		}
+		if ($proposal->proponents_count() < Proposal::proponents_required_submission) {
+			warning(sprintf(_("For submission %d proponents are required."), Proposal::proponents_required_submission));
+			redirect();
+		}
 		$proposal->submit();
 		redirect();
 		break;
@@ -475,9 +479,11 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <h2><?=_("Proponents")?></h2>
 <ul>
 <?
+	$confirmed_proponents = 0;
 	foreach ( $proponents as $proponent ) {
+		if ($proponent->proponent_confirmed) $confirmed_proponents++;
 		// show unconfirmed proponents only to confirmed proponents and himself
-		//if (!$is_proponent and !$proponent->proponent_confirmed and (!Login::$member or $proponent->id!=Login::$member->id)) continue;
+		if (!$is_proponent and !$proponent->proponent_confirmed and (!Login::$member or $proponent->id!=Login::$member->id)) continue;
 ?>
 	<li><?
 		if (Login::$member and $proponent->id==Login::$member->id and $allowed_edit_proponent) {
@@ -498,10 +504,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 (<?=$proponent->username()?>)
 <?
 				}
-?>
-<a href="<?=URI::append(array('edit_proponent'=>1))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a>
-<a href="<?=URI::append(array('remove_proponent'=>1))?>" class="iconlink"><img src="img/delete.png" width="21" height="16" alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a>
-<?
+				?> <a href="<?=URI::append(array('edit_proponent'=>1))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a><a href="<?=URI::append(array('remove_proponent'=>1))?>" class="iconlink"><img src="img/delete.png" width="21" height="16" alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a><?
 			}
 		} elseif ($proponent->proponent_confirmed) {
 			echo content2html($proponent->proponent_name);
@@ -572,10 +575,10 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 
 	// actions
 	if ($is_proponent) {
-		if ($proposal->state=="draft") {
 ?>
 <h2><?=_("Actions")?></h2>
 <?
+		if ($proposal->state=="draft" and $confirmed_proponents >= Proposal::proponents_required_submission) {
 			form(URI::same());
 ?>
 <input type="hidden" name="action" value="submit_proposal">
@@ -584,9 +587,6 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <?
 		}
 		if ($issue->state=="admission" or $issue->state=="debate") {
-?>
-<h2><?=_("Actions")?></h2>
-<?
 			form(URI::same());
 ?>
 <input type="hidden" name="action" value="revoke_proposal">

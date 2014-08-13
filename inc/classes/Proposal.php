@@ -23,6 +23,7 @@ class Proposal extends Relation {
 	public $submitted;
 
 	const proponent_length = 100;
+	const proponents_required_submission = 5;
 
 	private $issue_obj;
 
@@ -386,6 +387,20 @@ class Proposal extends Relation {
 		if ($confirmed) $sql .= " AND proponent_confirmed=TRUE";
 		if ( DB::fetchfield($sql) ) return true;
 		return false;
+	}
+
+
+	/**
+	 * count confirmed proponents
+	 *
+	 * @return integer
+	 */
+	public function proponents_count() {
+		$sql = "SELECT COUNT(1) FROM supporters
+			WHERE proposal=".intval($this->id)."
+				AND proponent IS NOT NULL
+				AND proponent_confirmed=TRUE";
+		return DB::fetchfield($sql);
 	}
 
 
