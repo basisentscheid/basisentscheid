@@ -123,22 +123,22 @@ class Issue extends Relation {
 		case "debate":
 			return sprintf(
 				_("until %s"),
-				'<span class="datetime">'.datetimeformat($this->period()->preparation).'</span>'
+				'<span class="datetime">'.datetimeformat_smart($this->period()->preparation).'</span>'
 			);
 		case "preparation":
 			return sprintf(
 				_("until %s"),
-				'<span class="datetime">'.datetimeformat($this->period()->voting).'</span>'
+				'<span class="datetime">'.datetimeformat_smart($this->period()->voting).'</span>'
 			);
 		case "voting":
 			return sprintf(
 				_("until %s"),
-				'<span class="datetime">'.datetimeformat($this->period()->counting).'</span>'
+				'<span class="datetime">'.datetimeformat_smart($this->period()->counting).'</span>'
 			);
 		case "finished":
 			return sprintf(
 				_("will be cleared on %s"),
-				dateformat($this->clear)
+				dateformat_smart($this->clear)
 			);
 		}
 	}
@@ -376,7 +376,7 @@ class Issue extends Relation {
 							?><br><span class="stateinfo"><?
 							printf(
 								_("Debate starts at %s"),
-								'<span class="datetime">'.datetimeformat($this->period()->debate).'</span>'
+								'<span class="datetime">'.datetimeformat_smart($this->period()->debate).'</span>'
 							);
 							?></span><?
 						}

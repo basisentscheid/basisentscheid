@@ -42,10 +42,11 @@ define("QUORUM_BALLOT_VOTING_DEN", 20);
 define("LANG", "en");
 
 // date and time format, see http://php.net/manual/en/function.date.php
-//define("TIME_FORMAT", "j.n.Y G:i:s T"); // with timezone
-define("DATETIME_FORMAT", "j.n.Y G:i"); // without timezone
-define("DATE_FORMAT", "j.n.Y");
-define("TIME_FORMAT", "G:i");
+define("DATEYEAR_FORMAT",     "j.n.Y");
+define("DATETIMEYEAR_FORMAT", "j.n.Y G:i");
+define("DATE_FORMAT",         "j.n.");
+define("DATETIME_FORMAT",     "j.n. G:i");
+define("TIME_FORMAT",              "G:i");
 
 define("ARGUMENT_EDIT_INTERVAL", "1 hour");
 // how many arguments to show on each level

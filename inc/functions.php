@@ -129,7 +129,24 @@ function first() {
  */
 function dateformat($date) {
 	if ($date===NULL) return "";
-	return date(DATE_FORMAT, strtotime($date));
+	return date(DATEYEAR_FORMAT, strtotime($date));
+}
+
+
+/**
+ * format a date smart
+ *
+ * @param integer $time
+ * @return string
+ */
+function dateformat_smart($time) {
+	$time = strtotime($time);
+	if ($time < time() - 180 * 86400) {
+		// add year if more than half a year in the past
+		return date(DATEYEAR_FORMAT, $time);
+	} else {
+		return date(DATE_FORMAT, $time);
+	}
 }
 
 
@@ -141,7 +158,27 @@ function dateformat($date) {
  */
 function datetimeformat($time) {
 	if ($time===NULL) return "";
-	return date(DATETIME_FORMAT, strtotime($time));
+	return date(DATETIMEYEAR_FORMAT, strtotime($time));
+}
+
+
+/**
+ * format a timestamp smart
+ *
+ * @param integer $time
+ * @return string
+ */
+function datetimeformat_smart($time) {
+	$time = strtotime($time);
+	if ($time > time() + 3 * 86400) {
+		// ommit time if more than 3 days in the future
+		return date(DATE_FORMAT, $time);
+	} elseif ($time < time() - 180 * 86400) {
+		// add year if more than half a year in the past
+		return date(DATETIMEYEAR_FORMAT, $time);
+	} else {
+		return date(DATETIME_FORMAT, $time);
+	}
 }
 
 

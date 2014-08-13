@@ -30,23 +30,23 @@ class Period extends Relation {
 		$time = time();
 		if (strtotime($this->counting) <= $time) {
 			return sprintf(_("Counting started at %s."),
-				date(DATETIME_FORMAT, strtotime($this->counting))
+				datetimeformat_smart($this->counting)
 			);
 		} elseif (strtotime($this->voting) <= $time) {
 			return sprintf(_("Voting started at %s."),
-				date(DATETIME_FORMAT, strtotime($this->voting))
+				datetimeformat_smart($this->voting)
 			);
 		} elseif (strtotime($this->preparation) <= $time) {
 			return sprintf(_("Voting preparation started at %s."),
-				date(DATETIME_FORMAT, strtotime($this->preparation))
+				datetimeformat_smart($this->preparation)
 			);
 		} elseif (strtotime($this->debate) <= $time) {
 			return sprintf(_("Debate started at %s."),
-				date(DATETIME_FORMAT, strtotime($this->debate))
+				datetimeformat_smart($this->debate)
 			);
 		}
 		return sprintf(_("Debate starts at %s."),
-			date(DATETIME_FORMAT, strtotime($this->debate))
+			datetimeformat_smart($this->debate)
 		);
 	}
 
@@ -60,16 +60,16 @@ class Period extends Relation {
 		switch ($this->state) {
 		case "ballot_preparation":
 			return sprintf(_("Ballot preparation started at %s."),
-				date(DATETIME_FORMAT, strtotime($this->ballot_preparation))
+				datetimeformat_smart($this->ballot_preparation)
 			);
 		case "ballot_assignment":
 			return sprintf(_("Ballot assignment started at %s and goes until %s."),
-				date(DATETIME_FORMAT, strtotime($this->ballot_assignment)),
-				date(DATETIME_FORMAT, strtotime($this->ballot_preparation))
+				datetimeformat_smart($this->ballot_assignment),
+				datetimeformat_smart($this->ballot_preparation)
 			);
 		}
 		return sprintf(_("Ballot assignment starts at %s."),
-			date(DATETIME_FORMAT, strtotime($this->ballot_assignment))
+			datetimeformat_smart($this->ballot_assignment)
 		);
 	}
 
@@ -220,7 +220,7 @@ class Period extends Relation {
 			}
 		}
 
-		?>><?=date(DATETIME_FORMAT, $timestamp)?></span><?
+		?>><?=date(DATETIMEYEAR_FORMAT, $timestamp)?></span><?
 
 	}
 
@@ -235,7 +235,7 @@ class Period extends Relation {
 	 * @param array   $column
 	 */
 	public function dbtableadmin_edit_timestamp($colname, $default, $id, $disabled, array $column) {
-		if ($default) $default = date(DATETIME_FORMAT, strtotime($default));
+		if ($default) $default = datetimeformat($default);
 		input_text($colname, $default, $disabled, 'size="30"');
 	}
 

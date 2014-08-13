@@ -134,7 +134,7 @@ abstract class Timebar {
 			}
 			?><div class="datebar<?=$time['class']?>" style="height:<?=$line+1?>em">&nbsp;</div><div class="datespace<?=$time['class']?>" style="width:<?=$width?>px<?
 			if ($line) { ?>;padding-top:<?=$line?>em<? }
-			?>"><span title="<?=sprintf($time[2], date(DATETIME_FORMAT, $time[0]))?>"><?=$time[1]?></span></div><?
+			?>"><span title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></span></div><?
 			$line++;
 			if ($width > 100) $line = 0;
 		}
