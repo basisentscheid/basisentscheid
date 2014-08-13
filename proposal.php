@@ -322,8 +322,13 @@ if ($action) {
 }
 
 
+list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
+
 if (isset($_GET['draft'])) {
 	$draft = new Draft($_GET['draft']);
+	if (!$is_proponent) {
+		error("You are not a proponent of this proposal!");
+	}
 	if ($draft->proposal != $proposal->id) {
 		error("The requested draft does not exist!");
 	}
@@ -357,8 +362,6 @@ if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member,
 <?
 }
 
-
-list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
 ?>
 
@@ -541,7 +544,8 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 </ul>
 <?
 
-	if (!Login::$member and !Login::$admin) return;
+	// show drafts only to the proponents
+	if (!$is_proponent) return;
 
 ?>
 <h2><?=_("Drafts")?></h2>
@@ -573,27 +577,24 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <?
 	}
 
-	// actions
-	if ($is_proponent) {
 ?>
 <h2><?=_("Actions")?></h2>
 <?
-		if ($proposal->state=="draft" and $confirmed_proponents >= Proposal::proponents_required_submission) {
-			form(URI::same());
+	if ($proposal->state=="draft" and $confirmed_proponents >= Proposal::proponents_required_submission) {
+		form(URI::same());
 ?>
 <input type="hidden" name="action" value="submit_proposal">
 <input type="submit" value="<?=_("submit proposal")?>">
 </form>
 <?
-		}
-		if ($issue->state=="admission" or $issue->state=="debate") {
-			form(URI::same());
+	}
+	if ($issue->state=="admission" or $issue->state=="debate") {
+		form(URI::same());
 ?>
 <input type="hidden" name="action" value="revoke_proposal">
 <input type="submit" value="<?=_("revoke proposal")?>">
 </form>
 <?
-		}
 	}
 
 }
