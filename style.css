@@ -702,19 +702,19 @@ div.arguments_side form.argument a {
 	padding: 0;
 }
 
-div.arguments_side span.plus {
-	color: #080;
-	padding-left: 3px;
-}
-div.arguments_side span.minus {
-	color: #A00;
-	padding-left: 3px;
-}
 div.arguments_side span.rating {
-	color: #666;
-}
-div.arguments_side span.me {
+	color: #090;
 	font-weight: bold;
+}
+div.arguments_side form.rating input[type=submit] {
+	padding: 0;
+	background-color: #FFF;
+}
+div.arguments_side form.rating.selected input[type=submit] {
+	background-color: #0D6;
+}
+div.arguments_side form.rating.reset input[type=submit] {
+	background-color: #EEE;
 }
 
 

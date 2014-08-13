@@ -270,10 +270,9 @@ if ($action) {
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 
-	case "rating_plus":
-	case "rating_minus":
+	case "set_rating":
 		Login::access_action("member");
-		action_required_parameters("argument");
+		action_required_parameters("argument", "rating");
 		if (!$proposal->allowed_add_arguments()) {
 			warning(_("Adding or rating arguments is allowed in this phase."));
 			redirect();
@@ -291,11 +290,12 @@ if ($action) {
 			warning("The argument has been removed.");
 			redirect();
 		}
-		$argument->set_rating($action=="rating_plus");
+		$rating = intval($_POST['rating']);
+		$argument->set_rating($rating);
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 
-	case "rating_reset":
+	case "reset_rating":
 		Login::access_action("member");
 		action_required_parameters("argument");
 		if (!$proposal->allowed_add_arguments()) {
@@ -610,9 +610,9 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 function display_arguments($side, $parent, $level) {
 	global $proposal, $edit_limit;
 
-	$sql = "SELECT arguments.*, (arguments.plus - arguments.minus) AS rating";
+	$sql = "SELECT arguments.*";
 	if (Login::$member) {
-		$sql .= ", ratings.positive
+		$sql .= ", ratings.score
 			FROM arguments
 			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id);
 	} else {
@@ -620,10 +620,10 @@ function display_arguments($side, $parent, $level) {
 			FROM arguments";
 	}
 	// intval($parent) gives parent=0 for "pro" and "contra"
-	$sql .= "	WHERE proposal=".intval($proposal->id)."
+	$sql .= "	WHERE arguments.proposal=".intval($proposal->id)."
 			AND side=".DB::esc($side)."
 			AND parent=".intval($parent)."
-		ORDER BY removed, rating DESC, arguments.created";
+		ORDER BY removed, rating DESC, created";
 	$result = DB::query($sql);
 	$num_rows = DB::num_rows($result);
 	if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
@@ -745,14 +745,8 @@ function display_arguments($side, $parent, $level) {
 		}
 
 		// rating and remove/restore
-		if ($argument->plus) {
-			?><span class="plus<? if (Login::$member and $argument->positive===true) { ?> me<? } ?>">+<?=$argument->plus?></span> <?
-		}
-		if ($argument->minus) {
-			?><span class="minus<? if (Login::$member and $argument->positive===false) { ?> me<? } ?>">-<?=$argument->minus?></span> <?
-		}
-		if ($argument->plus and $argument->minus) {
-			?><span class="rating">=<?=$argument->rating?></span> <?
+		if ($argument->rating) {
+			?><span class="rating">+<?=$argument->rating?></span> <?
 		}
 		if (Login::$member) {
 			if (
@@ -763,30 +757,26 @@ function display_arguments($side, $parent, $level) {
 				$proposal->allowed_add_arguments()
 			) {
 				$uri = URI::same();
-				if ($argument->positive!==null) {
-					form($uri, 'class="button"');
+				if ($argument->score) {
+					form($uri, 'class="button rating reset"');
 ?>
 <input type="hidden" name="argument" value="<?=$argument->id?>">
-<input type="hidden" name="action" value="rating_reset">
-<input type="submit" value="<?=_("reset")?>">
-</form>
-<?
-				} else {
-					form($uri, 'class="button"');
-?>
-<input type="hidden" name="argument" value="<?=$argument->id?>">
-<input type="hidden" name="action" value="rating_plus">
-<input type="submit" value="+1">
-</form>
-<?
-					form($uri, 'class="button"');
-?>
-<input type="hidden" name="argument" value="<?=$argument->id?>">
-<input type="hidden" name="action" value="rating_minus">
-<input type="submit" value="-1">
+<input type="hidden" name="action" value="reset_rating">
+<input type="submit" value="0">
 </form>
 <?
 				}
+				for ($score=1; $score <= Argument::rating_score_max; $score++) {
+					form($uri, 'class="button rating'.($score <= $argument->score?' selected':'').'"');
+?>
+<input type="hidden" name="argument" value="<?=$argument->id?>">
+<input type="hidden" name="action" value="set_rating">
+<input type="hidden" name="rating" value="<?=$score?>">
+<input type="submit" value="+<?=$score?>">
+</form>
+<?
+				}
+
 			}
 		} elseif (Login::$admin) {
 			form(URI::same(), 'class="button"');

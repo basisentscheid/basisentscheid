@@ -18,16 +18,21 @@ class Argument extends Relation {
 	public $content;
 	const content_length = 2000;
 
+	const rating_score_max = 2;
+
 	protected $boolean_fields = array("removed");
 	protected $create_fields = array("title", "content", "proposal", "parent", "side", "member");
 
 
 	/**
+	 * set or update a rating score
 	 *
-	 * @param boolean $value
+	 * @param integer $score
 	 */
-	function set_rating($value) {
-		$fields_values = array('argument'=>$this->id, 'member'=>Login::$member->id, 'positive'=>$value);
+	function set_rating($score) {
+		if ($score > self::rating_score_max) $score = self::rating_score_max;
+		if ($score < 1) $score = 1;
+		$fields_values = array('argument'=>$this->id, 'member'=>Login::$member->id, 'score'=>$score);
 		$keys = array("argument", "member");
 		DB::insert_or_update("ratings", $fields_values, $keys);
 		$this->update_ratings_cache();
@@ -35,7 +40,7 @@ class Argument extends Relation {
 
 
 	/**
-	 *
+	 * reset a rating
 	 */
 	function delete_rating() {
 		DB::delete("ratings", "argument=".intval($this->id)." AND member=".intval(Login::$member->id));
@@ -44,17 +49,14 @@ class Argument extends Relation {
 
 
 	/**
-	 *
+	 * sum up all rating scores for an argument
 	 */
 	private function update_ratings_cache() {
 
-		$sql = "SELECT COUNT(1) FROM ratings WHERE argument=".intval($this->id)." AND positive=TRUE";
-		$this->plus = DB::fetchfield($sql);
+		$sql = "SELECT SUM(score) FROM ratings WHERE argument=".intval($this->id);
+		$this->rating = intval( DB::fetchfield($sql) );
 
-		$sql = "SELECT COUNT(1) FROM ratings WHERE argument=".intval($this->id)." AND positive=FALSE";
-		$this->minus = DB::fetchfield($sql);
-
-		$this->update(array("plus", "minus"));
+		$this->update(array("rating"));
 
 	}
 

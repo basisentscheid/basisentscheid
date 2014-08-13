@@ -144,8 +144,7 @@ CREATE TABLE arguments (
     side argument_side NOT NULL,
     title text NOT NULL,
     content text NOT NULL,
-    plus integer DEFAULT 0 NOT NULL,
-    minus integer DEFAULT 0 NOT NULL,
+    rating integer DEFAULT 0 NOT NULL,
     member integer NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
     updated timestamp with time zone,
@@ -434,7 +433,7 @@ ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
 CREATE TABLE ratings (
     argument integer NOT NULL,
     member integer NOT NULL,
-    positive boolean NOT NULL
+    score integer DEFAULT 0 NOT NULL
 );
 
 
