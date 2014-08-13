@@ -478,7 +478,7 @@ class Issue extends Relation {
 				_("%d of currently required %d (%s of %d) for ballot voting"),
 				$this->ballot_voting_demanders, $required, numden2percent($this->quorum_ballot_voting_level()), $this->area()->population()
 			),
-			"#FF0000"
+			"ballot_voting_demanders"
 		);
 	}
 

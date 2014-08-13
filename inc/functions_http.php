@@ -438,15 +438,20 @@ function display_checked($value) {
  * @param integer $value
  * @param integer $required
  * @param string  $title
- * @param string  $color
+ * @param string  $class
  */
-function bargraph($value, $required, $title, $color) {
+function bargraph($value, $required, $title, $class) {
 
 	$width = 100;
 	$width_filled = round( min($value, $required) / $required * $width );
 	$width_empty = $width - $width_filled;
 
-	?><div class="bargraph" title="<?=$title?>"><div class="bar" style="background-color:<?=$color?>; width:<?=$width_filled?>px">&nbsp;</div><div class="bar" style="width:<?=$width_empty?>px">&nbsp;</div><div class="legend" style="width:<?=$width-4?>px"><?=$value?>/<?=$required?></div><div class="clear"></div></div><?
+	?><div class="bargraph <?=$class?>" title="<?=$title?>"><?
+	?><div class="bar filled" style="width:<?=$width_filled?>px">&nbsp;</div><?
+	?><div class="bar" style="width:<?=$width_empty?>px">&nbsp;</div><?
+	?><div class="legend" style="width:<?=$width-4?>px"><?=$value?>/<?=$required?></div><?
+	?><div class="clear"></div><?
+	?></div><?
 
 }
 

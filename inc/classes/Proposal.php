@@ -487,7 +487,7 @@ class Proposal extends Relation {
 				_("%d of currently required %d (%s of %d) for admission"),
 				$this->supporters, $required, numden2percent($this->quorum_level()), $this->issue()->area()->population()
 			),
-			"#00AA00"
+			"supporters"
 		);
 	}
 

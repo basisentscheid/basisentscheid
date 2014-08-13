@@ -284,6 +284,12 @@ div.bargraph div.clear {
 	height: 0;
 	clear: both;
 }
+div.bargraph.supporters div.bar.filled {
+	background-color: #0A0;
+}
+div.bargraph.ballot_voting_demanders div.bar.filled {
+	background-color: #F00;
+}
 
 div.timebar {
 	clear: both;
@@ -678,10 +684,13 @@ form.proposal input[type=submit] {
 /* 5.2 arguments */
 
 div.arguments_side {
-	background-color: white;
-	width: 47%;
+	background-color: #FAFFFA;
+	width: 49%;
 	padding: 5px 10px;
-	margin: 5px 0 5px 0;
+	margin: 5px 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 div.arguments_pro {
 	float: left;
@@ -758,7 +767,9 @@ div.arguments_side form.rating input[type=submit] {
 	background-color: #FFF;
 }
 div.arguments_side form.rating.selected input[type=submit] {
-	background-color: #0D6;
+	color: #FFF;
+	background-color: #090;
+	font-weight: bold;
 }
 div.arguments_side form.rating.reset input[type=submit] {
 	background-color: #EEE;
