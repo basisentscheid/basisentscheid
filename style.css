@@ -285,6 +285,49 @@ div.bargraph div.clear {
 	clear: both;
 }
 
+div.timebar {
+	clear: both;
+	white-space: nowrap;
+}
+div.timebar div.part {
+	display: inline-block;
+}
+div.timebar div.days div.bar {
+	display: inline-block;
+	background-color: #000;
+	width: 1px;
+	height: 6px;
+	vertical-align: bottom;
+}
+div.timebar div.days div.space {
+	display: inline-block;
+}
+div.timebar div.days div.space.weekend {
+	color: #A77;
+}
+div.timebar div.beam {
+	clear: both;
+	background-color: #000;
+	height: 3px;
+}
+div.timebar div.datebar {
+	display: inline-block;
+	background-color: #000;
+	width: 1px;
+	vertical-align: top;
+}
+div.timebar div.datespace {
+	display: inline-block;
+	overflow: visible;
+	vertical-align: top;
+}
+div.timebar div.datebar.now {
+	background-color: #F00;
+}
+div.timebar div.datespace.now {
+	color: #F00;
+}
+
 span.self {
 	font-weight: bold;
 }
@@ -531,7 +574,11 @@ form.admission_decision input[type=text] {
 
 
 div.issue {
-	margin-top: 20px;
+	margin-top: 5px;
+}
+div.issue h2 {
+	margin-top: 0;
+	margin-bottom: 3px;
 }
 
 table.proposals {

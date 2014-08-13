@@ -278,7 +278,12 @@ CREATE TABLE issues (
     ballot_voting_demanders integer DEFAULT 0 NOT NULL,
     ballot_voting_reached boolean DEFAULT false,
     vote text,
-    clear date
+    clear date,
+    debate_started timestamp with time zone,
+    preparation_started timestamp with time zone,
+    voting_started timestamp with time zone,
+    counting_started timestamp with time zone,
+    cleared timestamp with time zone
 );
 
 
@@ -393,10 +398,12 @@ CREATE TABLE proposals (
     content text NOT NULL,
     reason text NOT NULL,
     state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
-    submitted date DEFAULT now() NOT NULL,
+    submitted timestamp with time zone,
     supporters integer DEFAULT 0 NOT NULL,
     quorum_reached boolean DEFAULT false NOT NULL,
-    admission_decision text
+    admission_decision text,
+    admitted timestamp with time zone,
+    cancelled timestamp with time zone
 );
 
 

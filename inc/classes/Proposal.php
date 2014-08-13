@@ -16,7 +16,7 @@ class Proposal extends Relation {
 	public $reason;
 	const reason_length = 100000;
 	public $issue;
-	public $state;
+	public $state = "draft";
 	public $supporters;
 	public $quorum_reached;
 	public $admission_decision;
@@ -126,7 +126,7 @@ class Proposal extends Relation {
 	 */
 	public function submit() {
 		$this->state = "submitted";
-		$this->update(array('state'));
+		$this->update(array('state'), "submitted=now()");
 	}
 
 
@@ -155,7 +155,7 @@ class Proposal extends Relation {
 	 *
 	 * @return boolean
 	 */
-	function admission() {
+	public function admission() {
 		return $this->state=="submitted" and $this->issue()->state=="admission";
 	}
 
@@ -167,7 +167,11 @@ class Proposal extends Relation {
 	 * @param string  $proponent           (optional) display name of the proponent or null if not a proponent
 	 * @param boolean $proponent_confirmed (optional)
 	 */
-	function add_support($anonymous=false, $proponent=null, $proponent_confirmed=false) {
+	public function add_support($anonymous=false, $proponent=null, $proponent_confirmed=false) {
+		if ($this->state!="draft" and $this->state!="submitted") {
+			trigger_error("add_support() called in unknown state", E_USER_WARNING);
+			return;
+		}
 		$fields_values = array(
 			'proposal' => $this->id,
 			'member' => Login::$member->id,
@@ -185,7 +189,11 @@ class Proposal extends Relation {
 	/**
 	 * remove support or proponent
 	 */
-	function revoke_support() {
+	public function revoke_support() {
+		if ($this->state!="draft" and $this->state!="submitted") {
+			trigger_error("revoke_support() called in unknown state", E_USER_WARNING);
+			return;
+		}
 		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
 		$this->update_supporters_cache();
@@ -193,9 +201,9 @@ class Proposal extends Relation {
 
 
 	/**
-	 *
+	 * count supporters and admit proposal if quorum is reached
 	 */
-	function update_supporters_cache() {
+	private function update_supporters_cache() {
 
 		$sql = "SELECT COUNT(1) FROM supporters
 			WHERE proposal=".intval($this->id)."
@@ -205,7 +213,7 @@ class Proposal extends Relation {
 		if ($this->supporters >= $this->quorum_required()) {
 			$this->quorum_reached = true;
 			$this->state = "admitted";
-			$this->update(array("supporters", "quorum_reached", "state"));
+			$this->update(array("supporters", "quorum_reached", "state"), "admitted=now()");
 			$this->select_period();
 		} else {
 			$this->update(array("supporters"));
@@ -264,7 +272,7 @@ class Proposal extends Relation {
 
 		// cancel proposal
 		$this->state = $state;
-		$this->update(array("state"));
+		$this->update(array("state"), "cancelled=now()");
 
 		$issue = $this->issue();
 
@@ -291,14 +299,19 @@ class Proposal extends Relation {
 	 * @param string  $text
 	 */
 	function set_admission_decision($text) {
-		if ($this->admission_decision===null) {
+		switch ($this->state) {
+		case "submitted":
 			$this->admission_decision = $text;
 			$this->state = "admitted";
-			$this->update(array("admission_decision", "state"));
+			$this->update(array("admission_decision", "state"), 'admitted=now()');
 			$this->select_period();
-		} else {
+			break;
+		case "admitted":
 			$this->admission_decision = $text;
 			$this->update(array("admission_decision"));
+			break;
+		default:
+			trigger_error("set_admission_decision() called in unknown proposal state", E_USER_WARNING);
 		}
 	}
 

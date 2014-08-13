@@ -83,8 +83,10 @@ function create_case($case, $stopcase) {
 
 	if ($stopcase == ++$stop) return;
 
+	$issue = $proposal->issue();
+
 	if ($stopcase == ++$stop) {
-		time_warp_cancel($proposal);
+		time_warp($issue, CANCEL_NOT_ADMITTED_INTERVAL);
 		cron();
 		return;
 	}
@@ -111,14 +113,15 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	if ($stopcase == ++$stop) {
-		time_warp_cancel($proposal);
-		time_warp_cancel($proposal2);
+		time_warp($issue, CANCEL_NOT_ADMITTED_INTERVAL);
 		cron();
 		return;
 	}
 
-	// create period
-	$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting)
+	if ($proposal->state=="admitted" or $proposal2->state=="admitted") {
+
+		// create period
+		$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting)
 		VALUES (
 			now() + '1 week'::INTERVAL,
 			now() + '2 weeks'::INTERVAL,
@@ -127,60 +130,61 @@ function create_case($case, $stopcase) {
 			true,
 			false
 		) RETURNING id";
-	$result = DB::query($sql);
-	$row = DB::fetch_row($result);
-	$period = $row[0];
+		$result = DB::query($sql);
+		$row = DB::fetch_row($result);
+		$period = $row[0];
 
-	// assign issue to period
-	$issue = $proposal->issue();
-	$issue->period = $period;
-	$issue->update(array("period"));
+		// assign issue to period
+		$issue->period = $period;
+		$issue->update(array("period"));
 
-	// assigned, but not yet started
-	cron();
+		// assigned, but not yet started
+		cron();
 
-	if ($stopcase == ++$stop) return;
+		if ($stopcase == ++$stop) return;
 
-	// move on to state "debate"
-	time_warp($period, "1 week");
-	cron();
+		// move on to state "debate"
+		time_warp($issue, "1 week");
+		cron();
 
-	${'branch'.++$branch.'_array'} = array(0, 24, 25);
-	$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
+		${'branch'.++$branch.'_array'} = array(0, 24, 25);
+		$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
 
-	for ( $i=1; $i<=$ballot_voting_demanders_count; $i++ ) {
-		add_ballot_voting_demander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$ballot_voting_demanders_count."i".$i);
+		for ( $i=1; $i<=$ballot_voting_demanders_count; $i++ ) {
+			add_ballot_voting_demander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$ballot_voting_demanders_count."i".$i);
+		}
+
+		if ($stopcase == ++$stop) return;
+
+		// move on to state "preparation"
+		time_warp($issue, "1 week");
+		cron();
+
+		if ($stopcase == ++$stop) return;
+
+		// move on to state "voting"
+		time_warp($issue, "1 week");
+		cron();
+
+		if ($stopcase == ++$stop) return;
+
+		// move on to state "counting"
+		time_warp($issue, "1 week");
+		cron();
+
+		if ($stopcase == ++$stop) return;
+
+		// move on to state "finished"
+		$result = download_vote($issue);
+		$issue->save_vote($result);
+
+		if ($stopcase == ++$stop) return;
+
+		// move on to state "cleared"
+		time_warp($issue, CLEAR_INTERVAL);
+		cron();
+
 	}
-
-	if ($stopcase == ++$stop) return;
-
-	// move on to state "preparation"
-	time_warp($period, "1 week");
-	cron();
-
-	if ($stopcase == ++$stop) return;
-
-	// move on to state "voting"
-	time_warp($period, "1 week");
-	cron();
-
-	if ($stopcase == ++$stop) return;
-
-	// move on to state "counting"
-	time_warp($period, "1 week");
-	cron();
-
-	if ($stopcase == ++$stop) return;
-
-	// move on to state "finished"
-	$result = download_vote($issue);
-	$issue->save_vote($result);
-
-	if ($stopcase == ++$stop) return;
-
-	// move on to state "cleared"
-	time_warp_clear($issue);
-	cron();
 
 	// continue with next case if branches are still available
 	for ($i=1; $i<=$branch; $i++) {
@@ -232,43 +236,35 @@ function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
 
 
 /**
- * move the period times in the past to pretend we moved into the future
- *
- * @param integer $period
- * @param string  $interval (optional)
- */
-function time_warp($period, $interval="1 hour") {
-	$interval = "'".$interval."'::INTERVAL";
-	$sql = "UPDATE periods SET
-			debate      = debate      - ".$interval.",
-			preparation = preparation - ".$interval.",
-			voting      = voting      - ".$interval.",
-			counting    = counting    - ".$interval."
-		WHERE id=".intval($period);
-	DB::query($sql);
-}
-
-
-/**
- * move the issue clearing time in the past to pretend we moved into the future
+ * move all times in the past to pretend we moved into the future
  *
  * @param object  $issue
+ * @param string  $interval (optional)
  */
-function time_warp_clear(Issue $issue) {
-	$sql = "UPDATE issues SET clear = clear - ".DB::esc(CLEAR_INTERVAL)."::INTERVAL
-		WHERE id=".intval($issue->id)."
-			AND clear IS NOT NULL";
-	DB::query($sql);
-}
+function time_warp(Issue $issue, $interval="1 hour") {
+	$interval = "'".$interval."'::INTERVAL";
 
+	foreach ( array('submitted', 'admitted') as $column ) {
+		$sql = "UPDATE proposals SET
+				$column = $column - $interval
+			WHERE issue=".intval($issue->id)."
+				AND $column IS NOT NULL";
+		DB::query($sql);
+	}
 
-/**
- * move the submitted time in the past to pretend we moved into the future
- *
- * @param object  $proposal
- */
-function time_warp_cancel(Proposal $proposal) {
-	$sql = "UPDATE proposals SET submitted = submitted - ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL - '1 day'::INTERVAL
-		WHERE id=".intval($proposal->id);
+	foreach ( array('debate_started', 'preparation_started', 'voting_started', 'counting_started', 'clear', 'cleared') as $column ) {
+		$sql = "UPDATE issues SET
+				$column = $column - $interval
+			WHERE id=".intval($issue->id)."
+				AND $column IS NOT NULL";
+		DB::query($sql);
+	}
+
+	$sql = "UPDATE periods SET
+			debate      = debate      - $interval,
+			preparation = preparation - $interval,
+			voting      = voting      - $interval,
+			counting    = counting    - $interval
+		WHERE id=".intval($issue->period);
 	DB::query($sql);
 }

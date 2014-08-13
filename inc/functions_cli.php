@@ -130,7 +130,7 @@ function cron($skip_if_locked=false) {
 				}
 
 				$issue->state = "debate";
-				$issue->update(array("state"));
+				$issue->update(array("state"), 'debate_started=now()');
 
 				break;
 
@@ -138,7 +138,7 @@ function cron($skip_if_locked=false) {
 				if (!$period->preparation_now) break;
 
 				$issue->state = "preparation";
-				$issue->update(array("state"));
+				$issue->update(array("state"), 'preparation_started=now()');
 
 				break;
 
@@ -172,7 +172,7 @@ function cron($skip_if_locked=false) {
 
 				// We just set the state, but don't actually do anything. The voting server has to detect hisself when the voting has to be closed and counted.
 				$issue->state = "counting";
-				$issue->update(array("state"));
+				$issue->update(array("state"), 'counting_started=now()');
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
@@ -198,7 +198,7 @@ function cron($skip_if_locked=false) {
 				// TODO Clear
 
 				$issue->state = "cleared";
-				$issue->update(array("state"), "clear = NULL");
+				$issue->update(array("state"), "clear=NULL, cleared=now()");
 
 				// "cleared" and "cancelled" are the final issue states.
 			}
@@ -214,7 +214,7 @@ function cron($skip_if_locked=false) {
 				if ( upload_voting_data($json_string) ) {
 					foreach ($issues_start_voting as $issue) {
 						$issue->state = "voting";
-						$issue->update(array("state"));
+						$issue->update(array("state"), 'voting_started=now()');
 					}
 				}
 			}
@@ -229,7 +229,7 @@ function cron($skip_if_locked=false) {
 	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
 	$sql = "SELECT * FROM proposals
 		WHERE state='submitted'
-			AND submitted < current_date - ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
+			AND submitted < now() - ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		$proposal->cancel();
@@ -390,7 +390,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 function upload_voting_data($json) {
 
 	// for testing
-	//return true;
+	if (defined("SKIP_UPDOWNLOAD")) return true;
 
 	$ch = curl_init();
 
@@ -431,7 +431,7 @@ function upload_voting_data($json) {
 function download_vote(Issue $issue) {
 
 	// for testing
-	//return "test result";
+	if (defined("SKIP_UPDOWNLOAD")) return "test result";
 
 	// TODO: The issue should probably be added to the URL.
 

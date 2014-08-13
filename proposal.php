@@ -417,6 +417,55 @@ if ($proposal->state != "draft" and !isset($_GET['draft'])) {
 </div>
 
 <?
+
+	// time bar
+	$times = array();
+	if ($proposal->submitted) {
+		$times[] = array($proposal->submitted, _("Submitted"), _("Submitted at %s."));
+		if ($proposal->admitted) {
+			$times[] = array($proposal->admitted, _("Admitted"), _("Admitted at %s."));
+		}
+		if ($issue->debate_started) {
+			$times[] = array($issue->debate_started, _("Debate"), _("Debate started at %s."));
+		} elseif ($issue->period) {
+			$times[] = array($issue->period()->debate, _("Debate"), _("Debate starts at %s."));
+		}
+		if ($issue->preparation_started) {
+			$times[] = array($issue->preparation_started, _("Voting preparation"), _("Voting preparation started at %s."));
+		} elseif ($issue->period) {
+			$times[] = array($issue->period()->preparation, _("Voting preparation"), _("Voting preparation starts at %s."));
+		}
+		if ($issue->voting_started) {
+			$times[] = array($issue->voting_started, _("Voting"), _("Voting started at %s."));
+		} elseif ($issue->period) {
+			$times[] = array($issue->period()->voting, _("Voting"), _("Voting starts at %s."));
+		}
+		if ($issue->counting_started) {
+			$times[] = array($issue->counting_started, _("Counting"), ("Counting started at %s."));
+		} elseif ($issue->period) {
+			$times[] = array($issue->period()->counting, _("Counting"), _("Counting starts at %s."));
+		}
+		if ($issue->cleared) {
+			$times[] = array($issue->cleared, _("Cleared"), _("Cleared at %s."));
+		} elseif ($issue->clear) {
+			$times[] = array($issue->clear, _("Clear"), _("Will be cleared at %s."));
+		}
+		if ($proposal->cancelled) {
+			switch ($proposal->state) {
+			case "revoked":
+				$times[] = array($proposal->cancelled, _("Revoked"), _("Revoked at %s."));
+				break;
+			case "done":
+				$times[] = array($proposal->cancelled, _("Done"), _("Marked as done otherwise at %s."));
+				break;
+			case "cancelled":
+				$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s."));
+				break;
+			}
+		}
+		Timebar::display($times);
+	}
+
 	display_quorum($proposal, $issue, $supporters, $is_supporter);
 }
 
@@ -424,6 +473,7 @@ list($proposals, $submitted) = $issue->proposals_list();
 if ($submitted) {
 	display_ballot_voting_quorum($issue, $submitted);
 }
+
 ?>
 
 <div class="issue">

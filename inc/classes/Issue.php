@@ -502,6 +502,8 @@ class Issue extends Relation {
 	 * where the debate has not yet started. Otherwise the debate time would be
 	 * shorter than for other issues.
 	 *
+	 * This function may not be used in tests with time_warp(), because it uses static variables!
+	 *
 	 * @return array list of options for drop down menu or false
 	 */
 	public function available_periods() {
