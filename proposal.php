@@ -608,12 +608,21 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		$result = DB::query($sql);
 		$i = DB::num_rows($result);
 		while ( $draft = DB::fetch_object($result, "Draft") ) {
+			// get the author's proponent name
 			$author = new Member($draft->author);
+			// For deleted proponents we use the username. (Is this ok?)
+			$proponent_name = $author->username();
+			foreach ($proponents as $proponent) {
+				if ($proponent->id == $author->id) {
+					$proponent_name = $proponent->proponent_name;
+					break;
+				}
+			}
 ?>
 <tr class="<?=stripes()?>">
 	<td class="right"><?=$i?></td>
 	<td><a href="<?=URI::append(array('draft'=>$draft->id))?>"><?=datetimeformat($draft->created)?></a></td>
-	<td><?=$author->username()?></td>
+	<td><?=$proponent_name?></td>
 </tr>
 <?
 			$i--;
