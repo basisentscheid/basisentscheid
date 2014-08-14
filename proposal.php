@@ -390,7 +390,7 @@ if ($proposal->state=="draft" and $is_proponent) {
 <?
 if ($proposal->state != "draft" and !isset($_GET['draft'])) {
 ?>
-<div>
+<div class="arguments">
 	<div class="arguments_side arguments_pro">
 <?
 	if (Login::$member and @$_GET['argument_parent']!="pro" and $proposal->allowed_add_arguments()) {

@@ -9,7 +9,7 @@
 
 abstract class Timebar {
 
-	const day_width = 28; // 24 * 1.125
+	const day_width = 24;
 	const one_day = 86400; // 24 * 60 * 60
 
 

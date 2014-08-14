@@ -89,7 +89,9 @@ footer a:visited {
 
 /* 2. common definitions without id or class */
 
-th, td {
+th,
+td,
+div.timebar {
 	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
@@ -293,6 +295,9 @@ div.bargraph.ballot_voting_demanders div.bar.filled {
 
 div.timebar {
 	clear: both;
+	background-color: #F8F8FF;
+	padding: 2px 10px;
+	margin: 10px 0;
 }
 div.timebar div.part {
 	display: inline-block;
@@ -309,7 +314,7 @@ div.timebar div.days div.space {
 	display: inline-block;
 }
 div.timebar div.days div.space span.weekend {
-	color: #A77;
+	color: #B99;
 }
 div.timebar div.beam {
 	clear: both;
@@ -514,8 +519,7 @@ div.tableblock table {
 p.proposal {
 	background-color: #FFF;
 	padding: 5px 10px;
-	margin-top: 0;
-	margin-bottom: 5px;
+	margin: 0;
 }
 p.proposal_title {
 	font-weight: bold;
@@ -578,13 +582,8 @@ form.admission_decision input[type=text] {
 	box-sizing: border-box;
 }
 
-
 div.issue {
-	margin-top: 5px;
-}
-div.issue h2 {
-	margin-top: 0;
-	margin-bottom: 3px;
+	margin-top: 6px;
 }
 
 table.proposals {
@@ -656,11 +655,11 @@ table.proposals td.proposal_link_active:active a {
 
 form.proposal h2,
 div.proposal_info h2,
-div.proposal_content h2 {
+div.proposal_content h2,
+div.issue h2 {
 	font-size: 115%;
 	font-weight: normal;
-	margin-top: 5px;
-	margin-bottom: 0;
+	margin: 5px 0 0 0;
 }
 form.proposal h2 span.explain {
 	font-size: 80%;
@@ -683,11 +682,14 @@ form.proposal input[type=submit] {
 
 /* 5.2 arguments */
 
+div.arguments {
+	margin: 10px 0;
+	padding: 0;
+}
 div.arguments_side {
 	background-color: #FAFFFA;
 	width: 49%;
 	padding: 5px 10px;
-	margin: 5px 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
