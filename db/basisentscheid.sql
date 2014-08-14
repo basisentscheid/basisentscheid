@@ -267,6 +267,36 @@ ALTER SEQUENCE drafts_id_seq OWNED BY drafts.id;
 
 
 --
+-- Name: nested_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE nested_groups (
+    id integer NOT NULL,
+    name text NOT NULL,
+    parent integer
+);
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE groups_id_seq OWNED BY nested_groups.id;
+
+
+--
 -- Name: issues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -316,7 +346,9 @@ CREATE TABLE members (
     username character varying(32),
     participant boolean DEFAULT false NOT NULL,
     activated date,
-    hide_help text DEFAULT ''::text NOT NULL
+    hide_help text DEFAULT ''::text NOT NULL,
+    profile text NOT NULL,
+    public_id text NOT NULL
 );
 
 
@@ -337,6 +369,16 @@ CREATE SEQUENCE members_id_seq
 --
 
 ALTER SEQUENCE members_id_seq OWNED BY members.id;
+
+
+--
+-- Name: members_nested_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE members_nested_groups (
+    member integer NOT NULL,
+    nested_group integer NOT NULL
+);
 
 
 --
@@ -623,6 +665,14 @@ ALTER TABLE ONLY drafts
 
 
 --
+-- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY nested_groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: issues_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -636,6 +686,14 @@ ALTER TABLE ONLY issues
 
 ALTER TABLE ONLY members
     ADD CONSTRAINT members_auid_key UNIQUE (auid);
+
+
+--
+-- Name: members_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY members_nested_groups
+    ADD CONSTRAINT members_groups_pkey PRIMARY KEY (member, nested_group);
 
 
 --
@@ -767,6 +825,14 @@ ALTER TABLE ONLY drafts
 
 
 --
+-- Name: groups_parent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY nested_groups
+    ADD CONSTRAINT groups_parent_fkey FOREIGN KEY (parent) REFERENCES nested_groups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
 -- Name: issues_area_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -780,6 +846,22 @@ ALTER TABLE ONLY issues
 
 ALTER TABLE ONLY issues
     ADD CONSTRAINT issues_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: members_nested_groups_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY members_nested_groups
+    ADD CONSTRAINT members_nested_groups_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: members_nested_groups_nested_group_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY members_nested_groups
+    ADD CONSTRAINT members_nested_groups_nested_group_fkey FOREIGN KEY (nested_group) REFERENCES nested_groups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

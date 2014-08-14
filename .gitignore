@@ -14,7 +14,6 @@
 
 /db/basisentscheid_*.sql
 /db/tmp_*.sql
-/share.php
 /ssl/
 /*.sh
 

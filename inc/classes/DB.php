@@ -55,16 +55,14 @@ abstract class DB {
 
 
 	/**
-	 * convert boolean values from Postgres
+	 * sanitize integers and handle NULL values
 	 *
-	 * @param mixed   $value (reference)
+	 * @param mixed   $value
+	 * @return string
 	 */
-	public function to_bool(&$value) {
-		if ($value===self::value_false) {
-			$value = false;
-		} elseif ($value===self::value_true) {
-			$value = true;
-		}
+	public function int_to_sql($value) {
+		if (is_null($value)) return "NULL";
+		return intval($value);
 	}
 
 
@@ -78,6 +76,20 @@ abstract class DB {
 		if ($value) return "TRUE";
 		if (is_null($value)) return "NULL";
 		return "FALSE";
+	}
+
+
+	/**
+	 * convert boolean values from Postgres
+	 *
+	 * @param mixed   $value (reference)
+	 */
+	public function to_bool(&$value) {
+		if ($value===self::value_false) {
+			$value = false;
+		} elseif ($value===self::value_true) {
+			$value = true;
+		}
 	}
 
 
@@ -273,9 +285,7 @@ abstract class DB {
 
 		//self::transaction_start();
 
-		foreach ($fields_values as &$value) {
-			$value = self::value_to_sql($value);
-		}
+		$fields_values = array_map("self::value_to_sql", $fields_values);
 
 		$sql = "INSERT INTO ".$table." (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
 

@@ -232,3 +232,41 @@ function limitstr($string, $length) {
 	if ( mb_strlen($string) > $length ) return mb_substr($string, 0, $length)."...";
 	return $string;
 }
+
+
+/**
+ * fetch something from the ID server
+ *
+ * @param string $url
+ * @return array
+ */
+function curl_fetch($url) {
+
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL, $url);
+
+	// https handling
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+	curl_setopt($ch, CURLOPT_CAINFO,  "ssl/cacerts.pem");
+	curl_setopt($ch, CURLOPT_SSLCERT, "ssl/cmr.cx.pem");
+	curl_setopt($ch, CURLOPT_SSLKEY,  "ssl/cmr.cx_priv.pem");
+
+	$result = curl_exec($ch);
+
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	if ($curl_error = curl_error($ch)) {
+		throw new Exception($curl_error, Exception::CURL_ERROR);
+	} else {
+		$json_decode = json_decode($result, true);
+	}
+	curl_close($ch);
+
+	return array(
+		'result' => (null === $json_decode) ? $result : $json_decode,
+		'code' => $http_code,
+		'content_type' => $content_type
+	);
+}

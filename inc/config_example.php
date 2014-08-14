@@ -60,7 +60,8 @@ define("OAUTH2_CLIENT_SECRET", 'example');
 define("OAUTH2_AUTHORIZATION_ENDPOINT", 'https://oauth2.example.com/authorize/');
 define("OAUTH2_TOKEN_ENDPOINT",         'https://oauth2.example.com/token/');
 
-define("SHARE_URL", "https://beoapi.example.com/shares/portal/");
+define("SHARE_URL",         "https://beoapi.example.com/shares/portal/");
+define("NESTED_GROUPS_URL", "https://beoapi.example.com/nested_groups/");
 define("CAINFO",  DOCROOT."ssl/cacerts.pem");
 define("SSLCERT", DOCROOT."ssl/example.pem");
 define("SSLKEY",  DOCROOT."ssl/example_priv.pem");

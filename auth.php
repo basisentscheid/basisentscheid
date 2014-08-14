@@ -26,7 +26,50 @@ $response = $client->getAccessToken(OAUTH2_TOKEN_ENDPOINT, 'authorization_code',
 $client->setAccessToken($response['result']['access_token']);
 $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
 
-//$response_membership = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/membership/');
+$response_auid = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/auid/');
+//var_dump($response_auid);
+/*
+array(1) {
+	["auid"]=>
+	string(36) "3fa248a5-d9c0-4032-8076-fba431038c8d"
+}
+*/
+
+$response_profile = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/profile/');
+//var_dump($response_profile);
+/*
+array(3) {
+	["username"]=>
+	string(3) "foo"
+	["profile"]=>
+	string(28) "PhD in intercultural physics"
+	["public_id"]=>
+	string(14) "Dr. Mister Foo"
+}
+*/
+
+$auid = $response_auid['result']['auid'];
+
+// login
+$sql = "SELECT * FROM members WHERE auid=".DB::esc($auid);
+$result = DB::query($sql);
+if ( $member = DB::fetch_object($result, "Member") ) {
+	// user already in the database
+	$member->public_id = (string) @$response_profile['result']['public_id'];
+	$member->profile   = (string) @$response_profile['result']['profile'];
+	$member->update(array('public_id', 'profile'));
+} else {
+	// user not yet in the database
+	$member = new Member;
+	$member->auid = $auid;
+	$member->set_unique_username($response_profile['result']['username']);
+	$member->public_id = (string) @$response_profile['result']['public_id'];
+	$member->profile   = (string) @$response_profile['result']['profile'];
+	$member->create();
+}
+$_SESSION['member'] = $member->id;
+
+$response_membership = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/membership/');
 //var_dump($response_membership);
 /*
 array(6) {
@@ -65,45 +108,7 @@ array(6) {
 }
 */
 
-$response_profile = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/profile/');
-//var_dump($response_profile);
-/*
-array(3) {
-	["username"]=>
-	string(3) "foo"
-	["profile"]=>
-	string(28) "PhD in intercultural physics"
-	["public_id"]=>
-	string(14) "Dr. Mister Foo"
-}
-*/
-
-$response_auid = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/auid/');
-//var_dump($response_auid);
-/*
-array(1) {
-	["auid"]=>
-	string(36) "3fa248a5-d9c0-4032-8076-fba431038c8d"
-}
-*/
-
-$auid = $response_auid['result']['auid'];
-$username = $response_profile['result']['username'];
-
-// login
-$sql = "SELECT id FROM members WHERE auid=".DB::esc($auid);
-$result = DB::query($sql);
-if ( $row = DB::fetch_assoc($result) ) {
-	// user already in the database
-	$_SESSION['member'] = $row['id'];
-} else {
-	// user not yet in the database
-	$member = new Member;
-	$member->auid = $auid;
-	$member->set_unique_username($username);
-	$member->create();
-	$_SESSION['member'] = $member->id;
-}
+$member->update_nested_groups($response_membership['result']['all_nested_groups']);
 
 // redirect to where the user came from
 if (!empty($_SESSION['origin'])) {
