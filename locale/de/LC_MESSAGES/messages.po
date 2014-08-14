@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-08-12 0:59+0200\n"
+"PO-Revision-Date: 2014-08-14 17:57+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "abmelden"
 msgid "subscribe"
 msgstr "anmelden"
 #
-# File: member.php, line: 43
+# File: member.php, line: 46
 msgid "Member"
 msgstr "Mitglied"
 #
@@ -37,13 +37,13 @@ msgstr "Mitglied"
 # File: admin.php, line: 42
 # File: admins.php, line: 17
 # File: local_member_login.php, line: 39
-# File: member.php, line: 47
+# File: member.php, line: 50
 # File: members.php, line: 17
 msgid "Username"
 msgstr "Benutzername"
 #
 # File: ballot_edit.php, line: 107
-# File: member.php, line: 49
+# File: member.php, line: 53
 # File: proposal_edit.php, line: 157
 msgid "Save"
 msgstr "Speichern"
@@ -114,7 +114,7 @@ msgstr "anmelden"
 # File: proposal.php, line: 1038
 # File: inc/classes/Issue.php, line: 207
 # File: inc/classes/Issue.php, line: 214
-# File: inc/classes/Member.php, line: 67
+# File: inc/classes/Member.php, line: 68
 # File: inc/classes/Proposal.php, line: 366
 # File: inc/classes/Proposal.php, line: 373
 msgid "anonymous"
@@ -1014,7 +1014,7 @@ msgstr "Die Urne konnte nicht angelegt werden!"
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 #
-# File: inc/classes/Member.php, line: 42
+# File: inc/classes/Member.php, line: 43
 msgid "The username is already used by someone else, so we added a number to it."
 msgstr "Der Benutzername wird bereits vor jemand anderem verwendet, deshalb wird eine Zahl angehängt."
 #
@@ -1176,7 +1176,6 @@ msgstr "Dich selbst aus der Antragstellerliste löschen"
 msgid "confirm"
 msgstr "bestätigen"
 #
-# File: proposal.php, line: 586
 msgid "Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, your user name will also be shown to the other proponents:"
 msgstr "Gib Deinen Namen und Kontaktdaten ein, so wie Du sie im Antrag stehen haben willst. Um die Vortäuschung falscher Identitäten zu vermeiden, wird auch Dein Benutzername den anderen Antragstellern angezeigt:"
 #
@@ -1192,3 +1191,35 @@ msgstr "jetzt"
 #, php-format
 msgid "now is %s"
 msgstr "jetzt ist %s"
+#
+# File: member.php, line: 26
+msgid "The new username has been saved."
+msgstr "Der neue Benutzername wurde gespeichert."
+#
+# File: member.php, line: 29
+msgid "You are now anonymous."
+msgstr "Du bist jetzt anonym."
+#
+# File: member.php, line: 37
+msgid "Your mail address has been saved."
+msgstr "Deine E-Mail-Adresse wurde gespeichert."
+#
+# File: member.php, line: 50
+msgid "leave empty to be displayed as \"anonymous\""
+msgstr "leer lassen um als \"anonym\" angezeigt zu werden"
+#
+# File: member.php, line: 51
+msgid "Mail address for notifications"
+msgstr "E-Mail-Adresse für Benachrichtigungen"
+#
+# File: proposal.php, line: 586
+msgid "Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also the following will be shown to the other proponents:"
+msgstr "Gib Deinen Namen und Kontaktdaten ein, so wie Du sie im Antrag stehen haben willst. Um die Vortäuschung falscher Identitäten zu vermeiden, wird auch Folgendes den anderen Antragstellern angezeigt:"
+#
+# File: inc/classes/Member.php, line: 78
+msgid "Real name"
+msgstr "Realname"
+#
+# File: inc/classes/Member.php, line: 79
+msgid "User name"
+msgstr "Benutzername"
