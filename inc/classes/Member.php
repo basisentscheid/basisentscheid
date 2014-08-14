@@ -152,7 +152,7 @@ class Member extends Relation {
 			// use ids as index
 			$groups = array();
 			foreach ( $response_nested_groups['result']['results'] as $nested_group ) {
-				$groups[$ng['id']] = $nested_group;
+				$groups[$nested_group['id']] = $nested_group;
 			}
 
 			$missing_groups = array_diff($needed_groups, array_keys($groups));
