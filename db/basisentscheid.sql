@@ -348,7 +348,9 @@ CREATE TABLE members (
     activated date,
     hide_help text DEFAULT ''::text NOT NULL,
     profile text NOT NULL,
-    public_id text NOT NULL
+    public_id text NOT NULL,
+    mail text,
+    mail_confirmed boolean DEFAULT false NOT NULL
 );
 
 
