@@ -156,7 +156,7 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function admission() {
-		return $this->state=="submitted" and $this->issue()->state=="admission";
+		return in_array($this->state, array("draft", "submitted")) and $this->issue()->state=="admission";
 	}
 
 
@@ -168,9 +168,16 @@ class Proposal extends Relation {
 	 * @param boolean $proponent_confirmed (optional)
 	 */
 	public function add_support($anonymous=false, $proponent=null, $proponent_confirmed=false) {
-		if ($this->state!="draft" and $this->state!="submitted") {
-			trigger_error("add_support() called in unknown state", E_USER_WARNING);
-			return;
+		if ($proponent) {
+			if (!$this->allowed_edit_proponent()) {
+				trigger_error("add_support() called in unknown state", E_USER_WARNING);
+				return;
+			}
+		} else {
+			if (!$this->admission()) {
+				trigger_error("add_support() called in unknown state", E_USER_WARNING);
+				return;
+			}
 		}
 		$fields_values = array(
 			'proposal' => $this->id,
