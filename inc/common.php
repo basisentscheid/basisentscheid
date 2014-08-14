@@ -22,7 +22,6 @@
  * @see proposal.php
  * @see proposal_edit.php
  * @see proposals.php
- * @see share.php
  * @see test_dbtableadmin.php
  * @see test_redirect_errors.php
  */

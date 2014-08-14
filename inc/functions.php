@@ -237,7 +237,7 @@ function limitstr($string, $length) {
 /**
  * fetch something from the ID server
  *
- * @param string $url
+ * @param string  $url
  * @return array
  */
 function curl_fetch($url) {

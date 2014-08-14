@@ -11,9 +11,10 @@ class Member extends Relation {
 
 	public $auid;
 	public $username;
-
 	public $participant;
 	public $activated;
+	public $profile   = "";
+	public $public_id = "";
 
 	protected $boolean_fields = array("participant");
 	protected $create_fields = array("auid", "username", "public_id", "profile");
@@ -65,6 +66,17 @@ class Member extends Relation {
 	public static function username_static($username) {
 		if ($username) return $username;
 		return _("anonymous");
+	}
+
+
+	/**
+	 * name to identify the member for admins and other proponents
+	 *
+	 * @return string
+	 */
+	public function identity() {
+		if ($this->public_id) return _("Real name").": ".$this->public_id;
+		return _("User name").": ".$this->username;
 	}
 
 
