@@ -511,8 +511,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		while ( $draft = DB::fetch_object($result, "Draft") ) {
 			// get the author's proponent name
 			$author = new Member($draft->author);
-			// For deleted proponents we use the username. (Is this ok?)
-			$proponent_name = $author->username();
+			$proponent_name = "("._("proponent revoked").")";
 			foreach ($proponents as $proponent) {
 				if ($proponent->id == $author->id) {
 					$proponent_name = $proponent->proponent_name;
