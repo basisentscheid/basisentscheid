@@ -169,8 +169,13 @@ class Issue extends Relation {
 	/**
 	 *
 	 * @param boolean $anonymous
+	 * @return boolean
 	 */
 	function demand_ballot_voting($anonymous=false) {
+		if (!$this->voting_type_determination()) {
+			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
+			return false;
+		}
 		$sql = "INSERT INTO ballot_voting_demanders (issue, member, anonymous)
 			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool_to_sql($anonymous).")";
 		DB::query($sql);
@@ -180,8 +185,13 @@ class Issue extends Relation {
 
 	/**
 	 *
+	 * @return boolean
 	 */
 	function revoke_demand_for_ballot_voting() {
+		if (!$this->voting_type_determination()) {
+			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
+			return false;
+		}
 		$sql = "DELETE FROM ballot_voting_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
 		$this->update_ballot_voting_cache();

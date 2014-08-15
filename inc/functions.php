@@ -35,6 +35,22 @@ function out($text) {
 
 
 /**
+ * a non fatal user error
+ *
+ * @param string  $text
+ */
+function warning($text) {
+	if (PHP_SAPI=="cli") {
+		trigger_error($text, E_USER_WARNING);
+	} else {
+?>
+<p class="warning">&#9747; <?=h($text)?></p>
+<?
+	}
+}
+
+
+/**
  * convert UTF-8 to HTML
  *
  * @param string  $string

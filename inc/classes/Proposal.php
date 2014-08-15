@@ -123,8 +123,18 @@ class Proposal extends Relation {
 
 	/**
 	 * submit the proposal
+	 *
+	 * @return boolean
 	 */
 	public function submit() {
+		if ($this->state!="draft") {
+			warning(_("The proposal has already been submitted."));
+			return false;
+		}
+		if ($this->proponents_count() < self::proponents_required_submission) {
+			warning(sprintf(_("For submission %d proponents are required."), self::proponents_required_submission));
+			return false;
+		}
 		$this->state = "submitted";
 		$this->update(array('state'), "submitted=now()");
 	}
@@ -166,17 +176,26 @@ class Proposal extends Relation {
 	 * @param boolean $anonymous           (optional)
 	 * @param string  $proponent           (optional) display name of the proponent or null if not a proponent
 	 * @param boolean $proponent_confirmed (optional)
+	 * @return boolean
 	 */
 	public function add_support($anonymous=false, $proponent=null, $proponent_confirmed=false) {
 		if ($proponent) {
 			if (!$this->allowed_edit_proponent()) {
-				trigger_error("add_support() called in unknown state", E_USER_WARNING);
-				return;
+				warning(_("You can not become proponent anymore once voting preparation has started or the proposal has been closed!"));
+				return false;
+			}
+			if (!$proponent) {
+				warning(_("Your proponent info must be not empty."));
+				return false;
+			}
+			if (mb_strlen($proponent) > Proposal::proponent_length) {
+				$proponent = limitstr($proponent, Proposal::proponent_length);
+				warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), self::proponent_length));
 			}
 		} else {
 			if (!$this->admission()) {
-				trigger_error("add_support() called in unknown state", E_USER_WARNING);
-				return;
+				warning("Support for this proposal can not be added, because it is not in the admission phase!");
+				return false;
 			}
 		}
 		$fields_values = array(
@@ -190,16 +209,23 @@ class Proposal extends Relation {
 		DB::insert_or_update("supporters", $fields_values, $keys);
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
+		return true;
 	}
 
 
 	/**
 	 * remove support or proponent
+	 *
+	 * @return boolean
 	 */
 	public function revoke_support() {
-		if ($this->state!="draft" and $this->state!="submitted") {
-			trigger_error("revoke_support() called in unknown state", E_USER_WARNING);
-			return;
+		if (!$this->admission()) {
+			warning("Support for this proposal can not be removed, because it is not in the admission phase!");
+			return false;
+		}
+		if ($this->is_proponent(Login::$member, false)) {
+			warning("You can not remove your support while you are proponent!");
+			return false;
 		}
 		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
@@ -233,8 +259,21 @@ class Proposal extends Relation {
 	 * update a proponent's name and contact info
 	 *
 	 * @param string  $proponent
+	 * @return boolean
 	 */
 	public function update_proponent($proponent) {
+		if (!$this->allowed_edit_proponent()) {
+			warning(_("Your proponent info can not be changed anymore once voting preparation has started or the proposal has been closed!"));
+			return false;
+		}
+		if (!$proponent) {
+			warning(_("Your proponent info must be not empty."));
+			return false;
+		}
+		if (mb_strlen($proponent) > self::proponent_length) {
+			$proponent = limitstr($proponent, self::proponent_length);
+			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), self::proponent_length));
+		}
 		$sql = "UPDATE supporters SET proponent=".DB::esc($proponent)."
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval(Login::$member->id)."
@@ -247,8 +286,17 @@ class Proposal extends Relation {
 	 * confirm an applying member as proponent
 	 *
 	 * @param object  $member
+	 * @return boolean
 	 */
 	public function confirm_proponent($member) {
+		if (!$this->allowed_edit_proponent()) {
+			warning(_("You can not confirm proponents anymore once voting preparation has started or the proposal has been closed!"));
+			return false;
+		}
+		if (!$this->is_proponent($member, false)) {
+			warning(_("The to be confirmed member is not applying to become proponent of this proposal."));
+			return false;
+		}
 		$sql = "UPDATE supporters SET proponent_confirmed=TRUE
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member->id)."
@@ -261,8 +309,13 @@ class Proposal extends Relation {
 	 * convert a proponent to an ordinary supporter
 	 *
 	 * @param object  $member
+	 * @return boolean
 	 */
 	public function remove_proponent($member) {
+		if (!$this->allowed_edit_proponent()) {
+			warning(_("You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"));
+			return false;
+		}
 		$sql = "UPDATE supporters SET proponent=NULL, proponent_confirmed=FALSE
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member->id);
@@ -274,8 +327,13 @@ class Proposal extends Relation {
 	 * cancel the proposal
 	 *
 	 * @param string  $state (optional) destination state: "cancelled", "revoked" or "done"
+	 * @return boolean
 	 */
 	public function cancel($state="cancelled") {
+		if (!in_array($this->issue()->state, array("admission", "debate"))) {
+			warning(_("In the current phase the proposal can not be revoked anymore."));
+			return false;
+		}
 
 		// cancel proposal
 		$this->state = $state;

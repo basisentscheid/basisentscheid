@@ -236,18 +236,6 @@ function notice($text) {
 
 
 /**
- * a non fatal user error
- *
- * @param string  $text
- */
-function warning($text) {
-?>
-<p class="warning">&#9747; <?=h($text)?></p>
-<?
-}
-
-
-/**
  * a fatal user error
  *
  * @param string  $text

@@ -72,6 +72,13 @@ function create_case($case, $stopcase) {
 
 	if ($stopcase == ++$stop) return;
 
+	// add proponents
+	for ( $i=1; $i<=4; $i++ ) {
+		add_proponent($proposal, $case, "pi".$i);
+	}
+
+	if ($stopcase == ++$stop) return;
+
 	$proposal->submit();
 
 	${'branch'.++$branch.'_array'} = array(0, 48, 49); // the first supporter is the proponent
@@ -98,6 +105,13 @@ function create_case($case, $stopcase) {
 	$proposal2->reason = "Test reason";
 	$proposal2->issue = $proposal->issue;
 	$proposal2->create("Test proponent ".$date." alternative proposal case ".$casedesc, $area);
+
+	if ($stopcase == ++$stop) return;
+
+	// add proponents
+	for ( $i=1; $i<=4; $i++ ) {
+		add_proponent($proposal2, $case, "qi".$i);
+	}
 
 	if ($stopcase == ++$stop) return;
 
@@ -214,6 +228,24 @@ function add_supporter(Proposal $proposal, $case, $i) {
 	Login::$member->auid = Login::$member->username;
 	Login::$member->create();
 	$proposal->add_support();
+}
+
+
+/**
+ * create a new member and let it support the supplied proposal
+ *
+ * @param object  $proposal
+ * @param integer $case
+ * @param string  $i
+ */
+function add_proponent(Proposal $proposal, $case, $i) {
+	global $date;
+
+	Login::$member = new Member;
+	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
+	Login::$member->auid = Login::$member->username;
+	Login::$member->create();
+	$proposal->add_support(false, Login::$member->username, true);
 }
 
 

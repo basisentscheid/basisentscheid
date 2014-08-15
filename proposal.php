@@ -18,23 +18,13 @@ if (!$proposal->id) {
 
 $issue = $proposal->issue();
 
-if (Login::$member) $edit_limit = strtotime("- ".ARGUMENT_EDIT_INTERVAL);
-
 if ($action) {
 	switch ($action) {
 
 	case "submit_proposal":
 		Login::access_action("member");
-		if ($proposal->state!="draft") {
-			warning(_("The proposal has already been submitted."));
-			redirect("proposal.php?id=".$proposal->id);
-		}
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
-			redirect();
-		}
-		if ($proposal->proponents_count() < Proposal::proponents_required_submission) {
-			warning(sprintf(_("For submission %d proponents are required."), Proposal::proponents_required_submission));
 			redirect();
 		}
 		$proposal->submit();
@@ -42,10 +32,6 @@ if ($action) {
 		break;
 	case "revoke_proposal":
 		Login::access_action("member");
-		if ($issue->state != "admission" and $issue->state != "debate") {
-			warning(_("In the current phase the proposal can not be revoked anymore."));
-			redirect();
-		}
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
 			redirect();
@@ -57,49 +43,20 @@ if ($action) {
 	case "apply_proponent":
 		Login::access_action("member");
 		action_required_parameters('proponent');
-		if (!$proposal->allowed_edit_proponent()) {
-			warning(_("Your proponent info can not be changed anymore once voting preparation has started or the proposal has been closed!"));
-			redirect();
-		}
-		$proponent = trim($_POST['proponent']);
-		if (!$proponent) {
-			warning(_("Your proponent info must be not empty."));
-			redirect();
-		}
-		if (mb_strlen($proponent) > Proposal::proponent_length) {
-			$proponent = limitstr($proponent, Proposal::proponent_length);
-			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), Proposal::proponent_length));
-		}
-		$proposal->update_proponent($proponent);
+		$proposal->update_proponent(trim($_POST['proponent']));
 		redirect();
 		break;
 	case "become_proponent":
 		Login::access_action("member");
 		action_required_parameters('proponent');
-		if (!$proposal->allowed_edit_proponent()) {
-			warning(_("You can not become proponent anymore once voting preparation has started or the proposal has been closed!"));
-			redirect();
+		if ( $proposal->add_support(false, trim($_POST['proponent'])) ) {
+			notice(_("Your application to become proponent has been submitted to the current proponents to confirm your request."));
 		}
-		$proponent = trim($_POST['proponent']);
-		if (!$proponent) {
-			warning(_("Your proponent info must be not empty."));
-			redirect();
-		}
-		if (mb_strlen($proponent) > Proposal::proponent_length) {
-			$proponent = limitstr($proponent, Proposal::proponent_length);
-			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), Proposal::proponent_length));
-		}
-		$proposal->add_support(false, $proponent);
-		notice(_("Your application to become proponent has been submitted to the current proponents to confirm your request."));
 		redirect();
 		break;
 	case "confirm_proponent":
 		Login::access_action("member");
 		action_required_parameters('member');
-		if (!$proposal->allowed_edit_proponent()) {
-			warning(_("You can not confirm proponents anymore once voting preparation has started or the proposal has been closed!"));
-			redirect();
-		}
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
 			redirect();
@@ -109,60 +66,32 @@ if ($action) {
 			warning("The member does not exist.");
 			redirect();
 		}
-		if (!$proposal->is_proponent($member, false)) {
-			warning(_("The to be confirmed member is not applying to become proponent of this proposal."));
-			redirect();
-		}
 		$proposal->confirm_proponent($member);
 		redirect();
 		break;
 	case "confirm_remove_proponent":
 		Login::access_action("member");
-		if (!$proposal->allowed_edit_proponent()) {
-			warning(_("You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"));
-			redirect();
-		}
 		$proposal->remove_proponent(Login::$member);
 		redirect();
 		break;
 
 	case "add_support":
 		Login::access_action("member");
-		if (!$proposal->admission()) {
-			warning("Support for this proposal can not be added, because it is not in the admission phase!");
-			redirect();
-		}
 		$proposal->add_support(@$_POST['anonymous']==1);
 		redirect();
 		break;
 	case "revoke_support":
 		Login::access_action("member");
-		if (!$proposal->admission()) {
-			warning("Support for this proposal can not be removed, because it is not in the admission phase!");
-			redirect();
-		}
-		if ($proposal->is_proponent(Login::$member, false)) {
-			warning("You can not remove your support while you are proponent!");
-			redirect();
-		}
 		$proposal->revoke_support();
 		redirect();
 		break;
 	case "demand_ballot_voting":
 		Login::access_action("member");
-		if (!$issue->voting_type_determination()) {
-			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
-			redirect();
-		}
 		$issue->demand_ballot_voting(@$_POST['anonymous']==1);
 		redirect();
 		break;
 	case "revoke_demand_for_ballot_voting":
 		Login::access_action("member");
-		if (!$issue->voting_type_determination()) {
-			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
-			redirect();
-		}
 		$issue->revoke_demand_for_ballot_voting();
 		redirect();
 		break;
@@ -183,7 +112,7 @@ if ($action) {
 		Login::access_action("member");
 		action_required_parameters("title", "content", "parent");
 		if (!$proposal->allowed_add_arguments()) {
-			warning(_("Adding or rating arguments is allowed in this phase."));
+			warning(_("Adding or rating arguments is not allowed in this phase."));
 			redirect();
 		}
 		$argument = new Argument;
@@ -193,7 +122,7 @@ if ($action) {
 		} else {
 			$parent = new Argument($_POST['parent']);
 			if (!$parent->id) {
-				warning("Parent argument does not exist.");
+				warning(_("Parent argument does not exist."));
 				redirect();
 			}
 			$argument->parent = $parent->id;
@@ -201,28 +130,17 @@ if ($action) {
 		}
 		$argument->proposal = $proposal->id;
 		$argument->member = Login::$member->id;
-
 		$argument->title = trim($_POST['title']);
 		if (!$argument->title) {
-			warning("The title of the argument must be not empty.");
+			warning(_("The title of the argument must be not empty."));
 			break;
 		}
-		if (mb_strlen($argument->title) > Argument::title_length) {
-			$argument->title = limitstr($argument->title, Argument::title_length);
-			warning(sprintf(_("The title has been truncated to the maximum allowed length of %d characters!"), Argument::title_length));
-		}
-
 		$argument->content = trim($_POST['content']);
 		if (!$argument->content) {
-			warning("The content of the argument must be not empty.");
+			warning(_("The content of the argument must be not empty."));
 			break;
 		}
-		if (mb_strlen($argument->content) > Argument::content_length) {
-			$argument->content = limitstr($argument->content, Argument::content_length);
-			warning(sprintf(_("The content has been truncated to the maximum allowed length of %d characters!"), Argument::content_length));
-		}
-
-		$argument->create();
+		$argument->add();
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 
@@ -238,10 +156,6 @@ if ($action) {
 			warning("You are not the author of the argument.");
 			redirect();
 		}
-		if (strtotime($argument->created) < $edit_limit) {
-			warning("This argument may not be updated any longer.");
-			redirect();
-		}
 		$argument->title = trim($_POST['title']);
 		if (!$argument->title) {
 			warning("The title of the argument must be not empty.");
@@ -252,7 +166,7 @@ if ($action) {
 			warning("The content of the argument must be not empty.");
 			break;
 		}
-		$argument->update(array("title", "content"), "updated=now()");
+		$argument->apply_changes();
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 
@@ -286,12 +200,7 @@ if ($action) {
 			warning("Rating your own arguments is not allowed.");
 			redirect();
 		}
-		if ($argument->removed) {
-			warning("The argument has been removed.");
-			redirect();
-		}
-		$rating = intval($_POST['rating']);
-		$argument->set_rating($rating);
+		if ( !$argument->set_rating(intval($_POST['rating'])) ) redirect();
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 
@@ -307,11 +216,7 @@ if ($action) {
 			warning("This argument does not exist.");
 			redirect();
 		}
-		if ($argument->removed) {
-			warning("The argument has been removed.");
-			redirect();
-		}
-		$argument->delete_rating();
+		if ( !$argument->delete_rating() ) redirect();
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 
@@ -667,7 +572,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
  * @param integer $level
  */
 function display_arguments($side, $parent, $level) {
-	global $proposal, $edit_limit;
+	global $proposal;
 
 	$sql = "SELECT arguments.*";
 	if (Login::$member) {
@@ -735,7 +640,7 @@ function display_arguments($side, $parent, $level) {
 ?>
 		<div class="author"><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
 <?
-			if (strtotime($argument->created) > $edit_limit) {
+			if (strtotime($argument->created) > Argument::edit_limit()) {
 ?>
 		<div class="time"><?printf(_("This argument can be updated until %s."), datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL))?></div>
 <?
@@ -761,7 +666,7 @@ function display_arguments($side, $parent, $level) {
 		<div class="author<?=$argument->removed?' removed':''?>"><?
 			if (
 				Login::$member and $member->id==Login::$member->id and
-				strtotime($argument->created) > $edit_limit and
+				strtotime($argument->created) > Argument::edit_limit() and
 				!$argument->removed and
 				$proposal->allowed_add_arguments()
 			) {
