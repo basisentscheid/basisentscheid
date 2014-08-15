@@ -144,6 +144,77 @@ class Member extends Relation {
 		if ($needed_groups) {
 
 			$response_nested_groups = curl_fetch(NESTED_GROUPS_URL);
+			/*
+			["results"]=>
+			array(5) {
+				[0]=>
+				object(stdClass)#2 (5) {
+					["id"]=>
+					int(1)
+					["name"]=>
+					string(4) "Bund"
+					["parent"]=>
+					NULL
+					["depth"]=>
+					int(0)
+					["description"]=>
+					string(0) ""
+				}
+				[1]=>
+				object(stdClass)#3 (5) {
+					["id"]=>
+					int(2)
+					["name"]=>
+					string(6) "Bayern"
+					["parent"]=>
+					string(59) "https://example.com/api/nested_groups/1/"
+					["depth"]=>
+					int(1)
+					["description"]=>
+					string(0) ""
+				}
+				[2]=>
+				object(stdClass)#4 (5) {
+					["id"]=>
+					int(5)
+					["name"]=>
+					string(12) "Niederbayern"
+					["parent"]=>
+					string(59) "https://example.com/api/nested_groups/2/"
+					["depth"]=>
+					int(2)
+					["description"]=>
+					string(0) ""
+				}
+				[3]=>
+				object(stdClass)#5 (5) {
+					["id"]=>
+					int(3)
+					["name"]=>
+					string(10) "Oberbayern"
+					["parent"]=>
+					string(59) "https://example.com/api/nested_groups/2/"
+					["depth"]=>
+					int(2)
+					["description"]=>
+					string(0) ""
+				}
+				[4]=>
+				object(stdClass)#6 (5) {
+					["id"]=>
+					int(4)
+					["name"]=>
+					string(6) "Hessen"
+					["parent"]=>
+					string(59) "https://example.com/api/nested_groups/1/"
+					["depth"]=>
+					int(1)
+					["description"]=>
+					string(0) ""
+				}
+			}
+			*/
+
 			if (!isset($response_nested_groups['result']['results'])) {
 				trigger_error("Fetching nested groups from ID server failed", E_USER_WARNING);
 				return;
