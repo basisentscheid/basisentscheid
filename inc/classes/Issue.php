@@ -199,39 +199,6 @@ class Issue extends Relation {
 
 
 	/**
-	 * display a list of members demanding ballot voting and find out if the logged in member demands ballot voting for the issue
-	 *
-	 * @return mixed
-	 */
-	public function show_ballot_voting_demanders() {
-		$demanded_by_member = false;
-		$sql = "SELECT member, anonymous FROM ballot_voting_demanders WHERE issue=".intval($this->id);
-		$result = DB::query($sql);
-		resetfirst();
-		while ( $row = DB::fetch_assoc($result) ) {
-			if (!first()) echo ", ";
-			$member = new Member($row['member']);
-			if (Login::$member and $member->id==Login::$member->id) {
-				if ($row['anonymous']==DB::value_true) {
-					$demanded_by_member = "anonymous";
-					?><span class="self"><?=_("anonymous")?></span><?
-				} else {
-					$demanded_by_member = true;
-					?><span class="self"><?=$member->username()?></span><?
-				}
-			} else {
-				if ($row['anonymous']==DB::value_true) {
-					echo _("anonymous");
-				} else {
-					echo $member->username();
-				}
-			}
-		}
-		return $demanded_by_member;
-	}
-
-
-	/**
 	 *
 	 */
 	function update_ballot_voting_cache() {
@@ -436,20 +403,48 @@ class Issue extends Relation {
 		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a></td>
 <?
 				}
+
 ?>
-		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
+		<td rowspan="<?=$num_rows?>" class="center"<?
 
 				if ($this->voting_type_determination($submitted)) {
-					?><img src="img/online16.png" width="13" height="16" class="online_small" <?alt(_("online voting"))?>><?
-					$this->bargraph_ballot_voting();
-					?><img src="img/ballot16.png" width="20" height="16" class="ballot_small" <?alt(_("ballot voting"))?>><?
+					?> title="<?
 					if ($this->ballot_voting_demanded_by_member) {
-						?><br>&#10003;<?
+						echo _("You demand ballot voting.");
+					} else {
+						echo _("You can demand ballot voting.");
+					}
+					?>">
+<img src="img/online16.png" width="13" height="16" class="online_small" alt="<?=_("online voting")?>">?
+<img src="img/ballot16.png" width="20" height="16" class="ballot_small" alt="<?=_("ballot voting")?>">
+<?
+					if (Login::$member) {
+						if ($this->ballot_voting_demanded_by_member) {
+							?>&#10003;<?
+						}
+						if ($selected_proposal) {
+							form(URI::same());
+							if ($this->ballot_voting_demanded_by_member) {
+								echo _("You demand ballot voting.")?>
+<input type="hidden" name="action" value="revoke_demand_for_ballot_voting">
+<input type="submit" value="<?=_("Revoke")?>">
+</form>
+<?
+							} else {
+?>
+<input type="hidden" name="action" value="demand_ballot_voting">
+<input type="submit" value="<?=_("Demand ballot voting")?>">
+</form>
+<?
+							}
+						}
 					}
 				} elseif ($this->ballot_voting_reached) {
-					?><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?>><?
+					?> title="<?=_("ballot voting")?>"><img src="img/ballot30.png" width="37" height="30" alt="<?=_("ballot voting")?>"><?
 				} elseif ($this->state!="admission") {
-					?><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?>><?
+					?> title="<?=_("online voting")?>"><img src="img/online30.png" width="24" height="30" alt="<?=_("online voting")?>"><?
+				} else {
+					?>><?
 				}
 
 				?></td>
@@ -473,23 +468,6 @@ class Issue extends Relation {
 			$first = false;
 		}
 
-	}
-
-
-	/**
-	 * display bargraph
-	 */
-	public function bargraph_ballot_voting() {
-		$required = $this->quorum_ballot_voting_required();
-		bargraph(
-			$this->ballot_voting_demanders,
-			$required,
-			sprintf(
-				_("%d of currently required %d (%s of %d) for ballot voting"),
-				$this->ballot_voting_demanders, $required, numden2percent($this->quorum_ballot_voting_level()), $this->area()->population()
-			),
-			"ballot_voting_demanders"
-		);
 	}
 
 

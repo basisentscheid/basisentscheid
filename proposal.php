@@ -374,11 +374,6 @@ if ($proposal->state != "draft" and !isset($_GET['draft'])) {
 	display_quorum($proposal, $issue, $supporters, $is_supporter);
 }
 
-list($proposals, $submitted) = $issue->proposals_list();
-if ($submitted) {
-	display_ballot_voting_quorum($issue, $submitted);
-}
-
 ?>
 
 <div class="issue">
@@ -395,6 +390,7 @@ if (Login::$member and $issue->allowed_add_alternative_proposal()) {
 if (Login::$member) $issue->read_ballot_voting_demanded_by_member();
 $show_results = in_array($issue->state, array('finished', 'cleared', 'cancelled'));
 Issue::display_proposals_th($show_results);
+list($proposals, $submitted) = $issue->proposals_list();
 $issue->display_proposals($proposals, $submitted, count($proposals), $show_results, $proposal->id);
 ?>
 </table>
@@ -903,65 +899,6 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 	}
 
 ?>
-</div>
-<?
-}
-
-
-/**
- * display ballot voting demanders
- *
- * @param object  $issue
- * @param boolean $submitted if at least one proposal is submitted
- */
-function display_ballot_voting_quorum(Issue $issue, $submitted) {
-?>
-<div class="quorum">
-<div class="bargraph_container">
-<?
-	$issue->bargraph_ballot_voting();
-?>
-</div>
-<?
-	if (Login::$member or Login::$admin) {
-?>
-<b><?=_("Ballot voting demanders")?>:</b> <?
-		$demanded_by_member = $issue->show_ballot_voting_demanders();
-		if (Login::$member and $issue->voting_type_determination($submitted)) {
-?>
-<br clear="both">
-<?
-			if ($demanded_by_member) {
-				form(URI::same(), 'style="background-color:red; display:inline-block"');
-?>
-&#10003; <?
-				if ($demanded_by_member==="anonymous") {
-					echo _("You demand ballot voting for this issue anonymously.");
-				} else {
-					echo _("You demand ballot voting for this issue.");
-				}
-?>
-<input type="hidden" name="action" value="revoke_demand_for_ballot_voting">
-<input type="submit" value="<?=_("Revoke your demand for ballot voting")?>">
-</form>
-<?
-			} else {
-				form(URI::same(), 'style="display:inline-block"');
-?>
-<input type="hidden" name="action" value="demand_ballot_voting">
-<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
-<input type="submit" value="<?=_("Demand ballot voting for this issue")?>">
-</form>
-<?
-			}
-		}
-	} else {
-?>
-<b><?=_("Ballot voting demanders")?></b>
-<?
-	}
-?>
-<div class="clearfix"></div>
 </div>
 <?
 }

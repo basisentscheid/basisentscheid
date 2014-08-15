@@ -593,10 +593,10 @@ table.proposals {
 }
 
 table.proposals th.proposal {
-	width: 67%;
+	width: 82%;
 }
 table.proposals th.state {
-	width: 7%;
+	width: 10%;
 }
 table.proposals th.period {
 	width: 1%;
@@ -605,7 +605,7 @@ table.proposals th.voting_type {
 	width: 7%;
 }
 table.proposals th.result {
-	width: 18%;
+	width: 0%;
 }
 
 table.proposals tr.proposal {
