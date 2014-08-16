@@ -258,7 +258,7 @@ if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member,
 	} else {
 		form(URI::same(), 'class="notice"');
 		?>&#10148; <?=_("Do you really want to remove yourself from the proponents of this proposal?");
-		if ($proposal->proponents_count()==1) {
+		if ($proposal->proponents_count()==1 and $proposal->is_proponent(Login::$member, true)) {
 			?> <?=_("Since you are the last proponent, the proposal will be scheduled to be revoked.");
 		}
 ?>

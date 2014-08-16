@@ -427,6 +427,7 @@ class Proposal extends Relation {
 	 */
 	public function remove_proponent(Member $member) {
 		DB::transaction_start();
+		$this->read();
 		if (!$this->allowed_change_proponents()) {
 			warning(_("You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"));
 			DB::transaction_rollback();
@@ -440,7 +441,9 @@ class Proposal extends Relation {
 
 		// set revoke date if we deleted the last proponent
 		if ($this->proponents_count()) return;
-		$this->update(array(), "revoke=now() + interval '1 week'");
+		// We don't have to check if the to be removed proponent is confirmed, because otherways revoke would be already set anyway.
+		$sql = "UPDATE proposals SET revoke = now() + interval '1 week' WHERE id=".intval($this->id)." AND revoke IS NULL";
+		DB::query($sql);
 	}
 
 
