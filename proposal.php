@@ -75,7 +75,12 @@ if ($action) {
 
 	case "add_support":
 		Login::access_action("member");
-		$proposal->add_support(@$_POST['anonymous']==1);
+		$proposal->add_support();
+		redirect();
+		break;
+	case "add_support_anonym":
+		Login::access_action("member");
+		$proposal->add_support(true);
 		redirect();
 		break;
 	case "revoke_support":
@@ -859,8 +864,13 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 				form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support">
-<input type="checkbox" name="anonymous" value="1"><?=_("anonymous")."\n"?>
 <input type="submit" value="<?=_("Support this proposal")?>">
+</form>
+<?
+				form(URI::same(), 'style="display:inline-block"');
+?>
+<input type="hidden" name="action" value="add_support_anonym">
+<input type="submit" value="<?=_("Support this proposal anonymously")?>">
 </form>
 <?
 			}
