@@ -35,12 +35,27 @@ function out($text) {
 
 
 /**
+ * a notice to the user
+ *
+ * @param string  $text
+ */
+function notice($text) {
+	// In tests or cron jobs we're not interested in this.
+	if (PHP_SAPI=="cli") return;
+?>
+<p class="notice">&#10148; <?=h($text)?></p>
+<?
+}
+
+
+/**
  * a non fatal user error
  *
  * @param string  $text
  */
 function warning($text) {
 	if (PHP_SAPI=="cli") {
+		// for tests
 		trigger_error($text, E_USER_WARNING);
 	} else {
 ?>

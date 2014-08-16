@@ -23,6 +23,7 @@ define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 
 define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 
+define("REQUIRED_PROPONENTS", 5);
 define("MINIMUM_POPULATION", 500);
 define("SUPPORTERS_VALID_INTERVAL", '84 days'); // 12 weeks are 84 days
 define("CANCEL_NOT_ADMITTED_INTERVAL", '6 months');

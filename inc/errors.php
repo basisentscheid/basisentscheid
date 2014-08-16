@@ -95,12 +95,6 @@ function user_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
 	// ignore deprecated
 	if ( $errno==E_DEPRECATED ) return;
 
-	// ignore repeated errors
-	static $previous_errors = array();
-	$this_error = array($errno, $errstr, $errfile, $errline);
-	if (in_array($this_error, $previous_errors)) return;
-	$previous_errors[] = $this_error;
-
 	// ignore warnings caused by invalid session ids from bots
 	if (
 		$errno==E_WARNING and (
@@ -109,7 +103,12 @@ function user_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
 		)
 	) return;
 
-	error_common($errno, $errstr, $errfile, $errline, $errcontext, false);
+	// repeated errors
+	static $previous_errors = array();
+	$this_error = array($errno, $errstr, $errfile, $errline);
+	if ( ! $repeated = in_array($this_error, $previous_errors) ) $previous_errors[] = $this_error;
+
+	error_common($errno, $errstr, $errfile, $errline, $errcontext, false, $repeated);
 }
 
 
@@ -142,8 +141,9 @@ function fatal_error_handler() {
  * @param integer $errline
  * @param array   $errcontext
  * @param boolean $fatal
+ * @param unknown $repeated   (optional)
  */
-function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal) {
+function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal, $repeated=false) {
 
 	// names of the errors
 	static $errortype = array (
@@ -168,7 +168,7 @@ function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal) 
 
 	// display error
 	if (PHP_SAPI!="cli") {
-		if ($show) {
+		if ($show and !$repeated) {
 ?>
 <p class="syserror">
 <b><?=$errortype[$errno]?></b>:  <?=$errstr?><br>
@@ -184,7 +184,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 	error_log($logline, 0);
 
 	// backtrace
-	if (ERROR_MAIL or ERROR_BACKTRACE_PATH or ERROR_PRINT_BACKTRACE) {
+	if ((ERROR_MAIL or ERROR_BACKTRACE_PATH or ERROR_PRINT_BACKTRACE) and !$repeated) {
 
 		$backtrace = date("r")."\n\n";
 

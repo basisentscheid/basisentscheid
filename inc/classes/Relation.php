@@ -24,6 +24,11 @@ abstract class Relation {
 	 */
 	protected $boolean_fields = array();
 
+	/**
+	 * additional attributes, which are not columns of the table, but have to be also reset on read()
+	 */
+	protected $dependent_attributes = array();
+
 
 	/**
 	 * make an instance from a database record or convert boolean values after fetch_object
@@ -39,18 +44,36 @@ abstract class Relation {
 
 		$this->table = strtolower(get_class($this))."s";
 
-		if (!$from_fetch_object) {
-
-			if (!$id) return;
-
-			$sql = "SELECT * FROM ".$this->table." WHERE id=".intval($id);
-			if ( ! $row = DB::fetchassoc($sql) ) return;
-
-			foreach ( $row as $key => $value ) $this->$key = $value;
-
+		if ($from_fetch_object) {
+			foreach ( $this->boolean_fields as $key ) DB::to_bool($this->$key);
+			return;
 		}
 
+		if (!$id) return;
+
+		$this->read($id);
+
+	}
+
+
+	/**
+	 * read record from database (again)
+	 *
+	 * @param integer $id (optional) only needed on new reads
+	 */
+	public function read($id=false) {
+
+		if (!$id) $id = $this->id;
+
+		$sql = "SELECT * FROM ".$this->table." WHERE id=".intval($id);
+		if ( ! $row = DB::fetchassoc($sql) ) return;
+
+		foreach ( $row as $key => $value ) $this->$key = $value;
+
 		foreach ( $this->boolean_fields as $key ) DB::to_bool($this->$key);
+
+		// reset dependent attributes
+		foreach ( $this->dependent_attributes as $attribute ) $this->$attribute = null;
 
 	}
 

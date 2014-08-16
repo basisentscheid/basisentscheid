@@ -137,6 +137,21 @@ function cron($skip_if_locked=false) {
 			case "debate":
 				if (!$period->preparation_now) break;
 
+				// revoke proposals, which have were scheduled for revokation (and still have less than required proponents)
+				$sql = "SELECT * FROM proposals
+					WHERE issue=".intval($issue->id)."
+						AND revoke IS NOT NULL";
+				$result = DB::query($sql);
+				while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+					// clear revoke date
+					$proposal->revoke = null;
+					$proposal->update(array('revoke'));
+					// don't revoke already cancelled/revoked/done proposals
+					if ( in_array($proposal->state, array("draft", "submitted", "admitted")) ) {
+						$proposal->cancel("revoked");
+					}
+				}
+
 				$issue->state = "preparation";
 				$issue->update(array("state"), 'preparation_started=now()');
 
@@ -221,6 +236,23 @@ function cron($skip_if_locked=false) {
 		}
 
 
+	}
+
+
+	// revoke due proposals, which have have less than required proponents
+	$sql = "SELECT * FROM proposals WHERE revoke < now()";
+	$result = DB::query($sql);
+	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		// clear revoke date
+		$proposal->revoke = null;
+		$proposal->update(array('revoke'));
+		if (
+			$proposal->proponents_count() < REQUIRED_PROPONENTS and
+			// don't revoke already cancelled/revoked/done proposals
+			in_array($proposal->state, array("draft", "submitted", "admitted"))
+		) {
+			$proposal->cancel("revoked");
+		}
 	}
 
 

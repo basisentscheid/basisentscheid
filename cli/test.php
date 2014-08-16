@@ -35,8 +35,36 @@ do {
 	do {
 		$case++;
 		$stopcase++;
-	} while ( ! $return = create_case($case, $stopcase) );
+	} while ( ! $return = create_case_wrapper($case, $stopcase) );
 } while ( $return !== "end" );
+
+
+/**
+ * handle case titles
+ *
+ * @param integer $case
+ * @param integer $stopcase
+ * @return mixed null after one stopcase, false after one branchcase, true after last case
+ */
+function create_case_wrapper($case, $stopcase) {
+	global $proposal, $proposal2, $casetitle;
+
+	$return = create_case($case, $stopcase);
+
+	if ($casetitle) {
+		echo " - ".$casetitle."\n";
+		if ($proposal) {
+			$proposal->title .= " - ".$casetitle;
+			$proposal->update(array('title'));
+		}
+		if ($proposal2) {
+			$proposal2->title .= " - ".$casetitle;
+			$proposal2->update(array('title'));
+		}
+	}
+
+	return $return;
+}
 
 
 /**
@@ -44,20 +72,23 @@ do {
  *
  * @param integer $case
  * @param integer $stopcase
- * @return boolean true after last case
+ * @return mixed null after one stopcase, false after one branchcase, true after last case
  */
 function create_case($case, $stopcase) {
-	global $date, $login;
+	global $date, $login, $proposal, $proposal2, $casetitle;
 
 	$stop = 0;
 	$branch = 0;
-	static $branch1 = 0;
-	static $branch2 = 0;
-	static $branch3 = 0;
-	$casedesc = $case." (".$stopcase."/".$branch3."/".$branch2."/".$branch1.")";
+	static $bcase = array(1=>0, 2=>0, 3=>0, 4=>0);
+	$casedesc = $case." (".$stopcase;
+	foreach ($bcase as $value) $casedesc .= "/".$value;
+	$casedesc .= ")";
 	echo "Test case ".$casedesc."\n";
 
 	Login::$member = $login;
+	$proposal = null;
+	$proposal2 = null;
+	$casetitle = "";
 
 	// create area
 	$area = 0;
@@ -65,36 +96,109 @@ function create_case($case, $stopcase) {
 
 	// create new proposal
 	$proposal = new Proposal;
-	$proposal->title = "Test ".$date." proposal case ".$casedesc;
+	$proposal->title = "Test ".$date." case ".$casedesc;
 	$proposal->content = "Test content";
 	$proposal->reason = "Test reason";
 	$proposal->create("Test proponent ".$date." proposal case ".$casedesc, $area);
+	$proponents = array(Login::$member);
 
-	if ($stopcase == ++$stop) return;
-
-	// add proponents
-	for ( $i=1; $i<=4; $i++ ) {
-		add_proponent($proposal, $case, "pi".$i);
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		$casetitle = "draft";
+		return;
 	}
-
-	if ($stopcase == ++$stop) return;
-
-	$proposal->submit();
-
-	${'branch'.++$branch.'_array'} = array(0, 48, 49); // the first supporter is the proponent
-	$supporter_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
-
-	for ( $i=1; $i<=$supporter_count; $i++ ) {
-		add_supporter($proposal, $case, "a".$supporter_count."i".$i);
-	}
-
-	if ($stopcase == ++$stop) return;
 
 	$issue = $proposal->issue();
 
-	if ($stopcase == ++$stop) {
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		$proposal->remove_proponent(Login::$member);
+		cron();
+		$casetitle = "remove proponent from draft";
+		return;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		$proposal->remove_proponent(Login::$member);
+		time_warp($issue, "1 week");
+		cron();
+		$casetitle = "remove proponent from draft and finally revoke proposal";
+		return;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		$proposal->remove_proponent(Login::$member);
+		add_proponent($proposal, $case, "px");
+		time_warp($issue, "1 week");
+		cron();
+		$casetitle = "remove proponent from draft, add new proponent";
+		return;
+	}
+
+	// add proponents
+	for ( $i=2; $i<=REQUIRED_PROPONENTS; $i++ ) {
+		add_proponent($proposal, $case, "pi".$i);
+		$proponents[] = Login::$member;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		$casetitle = "draft with proponents";
+		return;
+	}
+
+	$proposal->submit();
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		foreach ($proponents as $proponent) {
+			$proposal->remove_proponent($proponent);
+		}
+		cron();
+		$casetitle = "remove all proponents from submitted proposal";
+		return;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		foreach ($proponents as $proponent) {
+			$proposal->remove_proponent($proponent);
+		}
+		for ( $i=1; $i<=REQUIRED_PROPONENTS-1; $i++ ) {
+			add_proponent($proposal, $case, "pr".$i);
+		}
+		time_warp($issue, "1 week");
+		cron();
+		$casetitle = "remove all proponents from submitted proposal, add less than required new proponents and finally revoke proposal";
+		return;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		foreach ($proponents as $proponent) {
+			$proposal->remove_proponent($proponent);
+		}
+		for ( $i=1; $i<=REQUIRED_PROPONENTS; $i++ ) {
+			add_proponent($proposal, $case, "pr".$i);
+		}
+		time_warp($issue, "1 week");
+		cron();
+		$casetitle = "remove all proponents from submitted proposal, add sufficient new proponents";
+		return;
+	}
+
+	$required_supporters = $proposal->quorum_required();
+
+	${'branch'.++$branch.'_array'} = array(0, $required_supporters-1, $required_supporters);
+	$supporter_count = ${'branch'.$branch.'_array'}[$bcase[$branch]];
+
+	for ( $i=1; $i<=$supporter_count-REQUIRED_PROPONENTS; $i++ ) {
+		add_supporter($proposal, $case, "a".$supporter_count."i".$i);
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+		$casetitle = "alternative proposal with $supporter_count supporters";
+		return;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
 		time_warp($issue, CANCEL_NOT_ADMITTED_INTERVAL);
 		cron();
+		$casetitle = "cancel long time not admitted proposal";
 		return;
 	}
 
@@ -105,30 +209,53 @@ function create_case($case, $stopcase) {
 	$proposal2->reason = "Test reason";
 	$proposal2->issue = $proposal->issue;
 	$proposal2->create("Test proponent ".$date." alternative proposal case ".$casedesc, $area);
+	$proponents = array(Login::$member);
 
-	if ($stopcase == ++$stop) return;
+	if ($stopcase == ++$stop) {
+		$casetitle = "alternative draft";
+		return;
+	}
 
 	// add proponents
 	for ( $i=1; $i<=4; $i++ ) {
 		add_proponent($proposal2, $case, "qi".$i);
+		$proponents[] = Login::$member;
 	}
 
-	if ($stopcase == ++$stop) return;
+	if ($stopcase == ++$stop) {
+		$casetitle = "alternative draft with proponents";
+		return;
+	}
 
 	$proposal2->submit();
 
-	${'branch'.++$branch.'_array'} = array(0, 23, 24); // the first supporter is the proponent
-	$supporter_count2 = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
+	if ($stopcase == ++$stop) {
+		foreach ($proponents as $proponent) {
+			$proposal2->remove_proponent($proponent);
+		}
+		cron();
+		$casetitle = "remove all proponents from submitted alternative proposal";
+		return;
+	}
+
+	$required_supporters = $proposal2->quorum_required();
+
+	${'branch'.++$branch.'_array'} = array(0, $required_supporters-1, $required_supporters);
+	$supporter_count2 = ${'branch'.$branch.'_array'}[$bcase[$branch]];
 
 	for ( $i=1; $i<=$supporter_count2; $i++ ) {
 		add_supporter($proposal2, $case, "a".$supporter_count."b".$supporter_count2."i".$i);
 	}
 
-	if ($stopcase == ++$stop) return;
-
 	if ($stopcase == ++$stop) {
+		$casetitle = "alternative proposal with $supporter_count2 supporters";
+		return;
+	}
+
+	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
 		time_warp($issue, CANCEL_NOT_ADMITTED_INTERVAL);
 		cron();
+		$casetitle = "cancel long time not admitted alternative proposal";
 		return;
 	}
 
@@ -136,14 +263,14 @@ function create_case($case, $stopcase) {
 
 		// create period
 		$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting)
-		VALUES (
-			now() + '1 week'::INTERVAL,
-			now() + '2 weeks'::INTERVAL,
-			now() + '3 weeks'::INTERVAL,
-			now() + '4 weeks'::INTERVAL,
-			true,
-			false
-		) RETURNING id";
+			VALUES (
+				now() + '1 week'::INTERVAL,
+				now() + '2 weeks'::INTERVAL,
+				now() + '3 weeks'::INTERVAL,
+				now() + '4 weeks'::INTERVAL,
+				true,
+				false
+			) RETURNING id";
 		$result = DB::query($sql);
 		$row = DB::fetch_row($result);
 		$period = $row[0];
@@ -155,61 +282,109 @@ function create_case($case, $stopcase) {
 		// assigned, but not yet started
 		cron();
 
-		if ($stopcase == ++$stop) return;
+		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+			$casetitle = "assigned issue";
+			return;
+		}
 
 		// move on to state "debate"
 		time_warp($issue, "1 week");
 		cron();
 
-		${'branch'.++$branch.'_array'} = array(0, 24, 25);
-		$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[${'branch'.$branch}];
+		$ballot_voting_required = $issue->quorum_ballot_voting_required();
+
+		${'branch'.++$branch.'_array'} = array(0, $ballot_voting_required-1, $ballot_voting_required);
+		$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[$bcase[$branch]];
 
 		for ( $i=1; $i<=$ballot_voting_demanders_count; $i++ ) {
 			add_ballot_voting_demander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$ballot_voting_demanders_count."i".$i);
 		}
 
-		if ($stopcase == ++$stop) return;
+		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+			$casetitle = "issue with $ballot_voting_demanders_count ballot voting demanders";
+			return;
+		}
+
+		${'branch'.++$branch.'_array'} = array(false, true);
+		if ( ${'branch'.$branch.'_array'}[$bcase[$branch]] ) {
+			// remove all proponents from alternative proposal during debate
+			foreach ($proponents as $proponent) {
+				$proposal2->remove_proponent($proponent);
+			}
+		}
 
 		// move on to state "preparation"
 		time_warp($issue, "1 week");
 		cron();
 
-		if ($stopcase == ++$stop) return;
+		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+			$casetitle = "issue in voting preparation state";
+			return;
+		}
 
 		// move on to state "voting"
 		time_warp($issue, "1 week");
 		cron();
 
-		if ($stopcase == ++$stop) return;
+		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+			$casetitle = "issue in voting state";
+			return;
+		}
 
 		// move on to state "counting"
 		time_warp($issue, "1 week");
 		cron();
 
-		if ($stopcase == ++$stop) return;
+		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+			$casetitle = "issue in counting state";
+			return;
+		}
 
 		// move on to state "finished"
 		$result = download_vote($issue);
 		$issue->save_vote($result);
 
-		if ($stopcase == ++$stop) return;
+		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
+			$casetitle = "issue in finished state";
+			return;
+		}
 
 		// move on to state "cleared"
 		time_warp($issue, CLEAR_INTERVAL);
 		cron();
 
+		$casetitle = "issue in cleared state";
+
+	} else {
+		$casetitle = "no admitted proposal";
 	}
 
 	// continue with next case if branches are still available
 	for ($i=1; $i<=$branch; $i++) {
-		if (isset(${'branch'.$i.'_array'}[++${'branch'.$i}])) {
-			for ($j=1; $j<$i; $j++) ${'branch'.$j}=0;
+		if (isset(${'branch'.$i.'_array'}[++$bcase[$i]])) {
+			for ($j=1; $j<$i; $j++) $bcase[$j]=0;
 			return true;
 		}
 	}
 
 	// end of last case
 	return "end";
+}
+
+
+/**
+ * return true if the case should be provided in the current branches
+ *
+ * @param integer $branch
+ * @param array   $bcase
+ * @param array   $exclude_branches (optional)
+ * @return boolean
+ */
+function no_branch_skip($branch, array $bcase, array $exclude_branches=array()) {
+	for ($b=$branch+1; $b<=count($bcase); $b++) {
+		if (!in_array($b, $exclude_branches) and $bcase[$b]) return false;
+	}
+	return true;
 }
 
 
@@ -245,7 +420,7 @@ function add_proponent(Proposal $proposal, $case, $i) {
 	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
 	Login::$member->create();
-	$proposal->add_support(false, Login::$member->username, true);
+	$proposal->add_proponent(Login::$member->username, true);
 }
 
 
@@ -276,7 +451,7 @@ function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
 function time_warp(Issue $issue, $interval="1 hour") {
 	$interval = "'".$interval."'::INTERVAL";
 
-	foreach ( array('submitted', 'admitted') as $column ) {
+	foreach ( array('submitted', 'admitted', 'cancelled', 'revoke') as $column ) {
 		$sql = "UPDATE proposals SET
 				$column = $column - $interval
 			WHERE issue=".intval($issue->id)."

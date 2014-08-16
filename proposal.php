@@ -49,9 +49,7 @@ if ($action) {
 	case "become_proponent":
 		Login::access_action("member");
 		action_required_parameters('proponent');
-		if ( $proposal->add_support(false, trim($_POST['proponent'])) ) {
-			notice(_("Your application to become proponent has been submitted to the current proponents to confirm your request."));
-		}
+		$proposal->add_proponent(trim($_POST['proponent']));
 		redirect();
 		break;
 	case "confirm_proponent":
@@ -245,22 +243,40 @@ if (isset($_GET['draft'])) {
 }
 
 
+// messages
 if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member, false)) {
 ?>
 <div class="messages">
 <?
-	if (!$proposal->allowed_edit_proponent()) {
+	if (!$proposal->allowed_change_proponents()) {
 		warning(_("You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"));
 	} else {
 		form(URI::same(), 'class="notice"');
+		?>&#10148; <?=_("Do you really want to remove yourself from the proponents of this proposal?");
+		if ($proposal->proponents_count()==1) {
+			?> <?=_("Since you are the last proponent, the proposal will be scheduled to be revoked.");
+		}
 ?>
-&#10148; <?=_("Do you really want to remove yourself from the proponents of this proposal?")?>
 <input type="hidden" name="action" value="confirm_remove_proponent">
 <input type="submit" value="<?=_("Yes")?>">
 <a href="<?=URI::same()?>"><?=_("No")?></a>
 </form>
 <?
 	}
+?>
+</div>
+<div class="clearfix"></div>
+<?
+}
+
+if (Login::$member and $proposal->revoke) {
+?>
+<div class="messages">
+<?
+	notice(sprintf(
+			_("This proposal lost all it's proponents and will be revoked on %s or when voting preparation begins, if it then still has less than %d proponents."),
+			dateformat_smart($proposal->revoke), REQUIRED_PROPONENTS
+		));
 ?>
 </div>
 <div class="clearfix"></div>
@@ -322,55 +338,64 @@ if ($proposal->state != "draft" and !isset($_GET['draft'])) {
 </div>
 
 <?
+}
 
-	// time bar
-	$times = array();
+// time bar
+$times = array();
+if ($proposal->submitted or $proposal->revoke) {
 	if ($proposal->submitted) {
 		$times[] = array($proposal->submitted, _("Submitted"), _("Submitted at %s."));
-		if ($proposal->admitted) {
-			$times[] = array($proposal->admitted, _("Admitted"), _("Admitted at %s."));
-		}
-		if ($issue->debate_started) {
-			$times[] = array($issue->debate_started, _("Debate"), _("Debate started at %s."));
-		} elseif ($issue->period) {
-			$times[] = array($issue->period()->debate, _("Debate"), _("Debate starts at %s."));
-		}
-		if ($issue->preparation_started) {
-			$times[] = array($issue->preparation_started, _("Voting preparation"), _("Voting preparation started at %s."));
-		} elseif ($issue->period) {
-			$times[] = array($issue->period()->preparation, _("Voting preparation"), _("Voting preparation starts at %s."));
-		}
-		if ($issue->voting_started) {
-			$times[] = array($issue->voting_started, _("Voting"), _("Voting started at %s."));
-		} elseif ($issue->period) {
-			$times[] = array($issue->period()->voting, _("Voting"), _("Voting starts at %s."));
-		}
-		if ($issue->counting_started) {
-			$times[] = array($issue->counting_started, _("Counting"), ("Counting started at %s."));
-		} elseif ($issue->period) {
-			$times[] = array($issue->period()->counting, _("Counting"), _("Counting starts at %s."));
-		}
-		if ($issue->cleared) {
-			$times[] = array($issue->cleared, _("Cleared"), _("Cleared at %s."));
-		} elseif ($issue->clear) {
-			$times[] = array($issue->clear, _("Clear"), _("Will be cleared at %s."));
-		}
-		if ($proposal->cancelled) {
-			switch ($proposal->state) {
-			case "revoked":
-				$times[] = array($proposal->cancelled, _("Revoked"), _("Revoked at %s."));
-				break;
-			case "done":
-				$times[] = array($proposal->cancelled, _("Done"), _("Marked as done otherwise at %s."));
-				break;
-			case "cancelled":
-				$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s."));
-				break;
-			}
-		}
-		Timebar::display($times);
 	}
+	if ($proposal->admitted) {
+		$times[] = array($proposal->admitted, _("Admitted"), _("Admitted at %s."));
+	}
+	if ($proposal->revoke) {
+		$times[] = array($proposal->revoke, _("Revoke"),
+			strtr(_("Revoke proposal at %s if it then has less than %d proponents."), array('%d'=>REQUIRED_PROPONENTS))
+		);
+	}
+	if ($issue->debate_started) {
+		$times[] = array($issue->debate_started, _("Debate"), _("Debate started at %s."));
+	} elseif ($issue->period) {
+		$times[] = array($issue->period()->debate, _("Debate"), _("Debate starts at %s."));
+	}
+	if ($issue->preparation_started) {
+		$times[] = array($issue->preparation_started, _("Voting preparation"), _("Voting preparation started at %s."));
+	} elseif ($issue->period) {
+		$times[] = array($issue->period()->preparation, _("Voting preparation"), _("Voting preparation starts at %s."));
+	}
+	if ($issue->voting_started) {
+		$times[] = array($issue->voting_started, _("Voting"), _("Voting started at %s."));
+	} elseif ($issue->period) {
+		$times[] = array($issue->period()->voting, _("Voting"), _("Voting starts at %s."));
+	}
+	if ($issue->counting_started) {
+		$times[] = array($issue->counting_started, _("Counting"), ("Counting started at %s."));
+	} elseif ($issue->period) {
+		$times[] = array($issue->period()->counting, _("Counting"), _("Counting starts at %s."));
+	}
+	if ($issue->cleared) {
+		$times[] = array($issue->cleared, _("Cleared"), _("Cleared at %s."));
+	} elseif ($issue->clear) {
+		$times[] = array($issue->clear, _("Clear"), _("Will be cleared at %s."));
+	}
+	if ($proposal->cancelled) {
+		switch ($proposal->state) {
+		case "revoked":
+			$times[] = array($proposal->cancelled, _("Revoked"), _("Revoked at %s."));
+			break;
+		case "done":
+			$times[] = array($proposal->cancelled, _("Done"), _("Marked as done otherwise at %s."));
+			break;
+		case "cancelled":
+			$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s."));
+			break;
+		}
+	}
+	Timebar::display($times);
+}
 
+if ($proposal->state != "draft" and !isset($_GET['draft'])) {
 	display_quorum($proposal, $issue, $supporters, $is_supporter);
 }
 
@@ -422,7 +447,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 				break;
 			}
 		}
-		$allowed_edit_proponent = $proposal->allowed_edit_proponent();
+		$allowed_edit_proponent = $proposal->allowed_change_proponents();
 		if ($allowed_edit_proponent and !$is_any_proponent) {
 ?>
 <div class="add"><a href="<?=URI::append(array('become_proponent'=>1))?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
@@ -539,7 +564,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 ?>
 <h2><?=_("Actions")?></h2>
 <?
-	if ($proposal->state=="draft" and $confirmed_proponents >= Proposal::proponents_required_submission) {
+	if ($proposal->state=="draft" and $confirmed_proponents >= REQUIRED_PROPONENTS) {
 		form(URI::same());
 ?>
 <input type="hidden" name="action" value="submit_proposal">
@@ -812,7 +837,7 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 	if (Login::$member or Login::$admin) {
 ?>
 <b><?=_("Supporters")?>:</b> <?=join(", ", $supporters);
-		if (Login::$member and $proposal->admission()) {
+		if (Login::$member and $proposal->allowed_change_supporters()) {
 ?>
 <br clear="both">
 <?
@@ -851,9 +876,10 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 <?
 
 	// admission by decision
-	if (Login::$admin and !empty($_GET['edit_admission_decision'])) {
-		if ($proposal->admission_decision!==null) {
-			form(URI::same()."#admission_decision", 'class="admission_decision"');
+	if (Login::$admin) {
+		if (!empty($_GET['edit_admission_decision'])) {
+			if ($proposal->admission_decision!==null) {
+				form(URI::same()."#admission_decision", 'class="admission_decision"');
 ?>
 <a name="admission_decision" class="anchor"></a>
 <b><?=_("Admitted by decision")?>:</b><br>
@@ -862,8 +888,8 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 <input type="hidden" name="action" value="admission_decision">
 </form>
 <?
-		} elseif ($proposal->state=="submitted") {
-			form(URI::same()."#admission_decision", 'class="admission_decision"');
+			} else {
+				form(URI::same()."#admission_decision", 'class="admission_decision"');
 ?>
 <a name="admission_decision" class="anchor"></a>
 <b><?=_("Admit proposal due to a decision")?>:</b><br>
@@ -872,13 +898,14 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 <input type="hidden" name="action" value="admission_decision">
 </form>
 <?
-		}
-	} elseif (Login::$admin and $proposal->admission()) {
+			}
+		} else {
 ?>
 <div class="admission_decision">
 <a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
 </div>
 <?
+		}
 	} elseif ($proposal->admission_decision!==null) {
 ?>
 <div class="admission_decision">

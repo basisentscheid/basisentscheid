@@ -447,7 +447,8 @@ CREATE TABLE proposals (
     quorum_reached boolean DEFAULT false NOT NULL,
     admission_decision text,
     admitted timestamp with time zone,
-    cancelled timestamp with time zone
+    cancelled timestamp with time zone,
+    revoke timestamp with time zone
 );
 
 

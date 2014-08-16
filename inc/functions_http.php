@@ -224,18 +224,6 @@ function success($text) {
 
 
 /**
- * notice
- *
- * @param string  $text
- */
-function notice($text) {
-?>
-<p class="notice">&#10148; <?=h($text)?></p>
-<?
-}
-
-
-/**
  * a fatal user error
  *
  * @param string  $text
