@@ -620,18 +620,38 @@ class Proposal extends Relation {
 
 	/**
 	 * display bargraph
+	 *
+	 * @param boolean $supported_by_member (optional)
 	 */
-	public function bargraph_quorum() {
+	public function bargraph_quorum($supported_by_member=false) {
+
+		$value = $this->supporters;
+		$population = $this->issue()->area()->population();
 		$required = $this->quorum_required();
-		bargraph(
+		$title = sprintf(
+			_("%d supporters of %d participants - %d supporters (%s) currently required for admission"),
 			$this->supporters,
+			$population,
 			$required,
-			sprintf(
-				_("%d of currently required %d (%s of %d) for admission"),
-				$this->supporters, $required, numden2percent($this->quorum_level()), $this->issue()->area()->population()
-			),
-			"supporters"
+			numden2percent($this->quorum_level())
 		);
+
+		$min_width = 120;
+		$max_width = 360;
+		$bar_width     = round( min($value,    $population) / $population * $max_width );
+		$required_left = round( min($required, $population) / $population * $max_width );
+		$width = max($min_width, $bar_width);
+
+		?><div class="bargraph" style="width:<?=$width?>px" title="<?=$title?>"><?
+		?><div class="bar" style="width:<?=$bar_width?>px"></div><?
+		?><div class="required" style="margin-left:<?=$required_left?>px"></div><?
+		?><div class="value" style="width:<?=$width?>px"><?=$value?></div><?
+		if ($supported_by_member) {
+			?><div class="supported" title="<?=_("You support this proposal.")?>">&#10003;</div><?
+		}
+		?><div class="clear"></div><?
+		?></div><?
+
 	}
 
 

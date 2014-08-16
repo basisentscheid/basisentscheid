@@ -409,30 +409,6 @@ function display_checked($value) {
 
 
 /**
- * display a bargraph
- *
- * @param integer $value
- * @param integer $required
- * @param string  $title
- * @param string  $class
- */
-function bargraph($value, $required, $title, $class) {
-
-	$width = 100;
-	$width_filled = round( min($value, $required) / $required * $width );
-	$width_empty = $width - $width_filled;
-
-	?><div class="bargraph <?=$class?>" title="<?=$title?>"><?
-	?><div class="bar filled" style="width:<?=$width_filled?>px">&nbsp;</div><?
-	?><div class="bar" style="width:<?=$width_empty?>px">&nbsp;</div><?
-	?><div class="legend" style="width:<?=$width-4?>px"><?=$value?>/<?=$required?></div><?
-	?><div class="clear"></div><?
-	?></div><?
-
-}
-
-
-/**
  * return CSS classes with alternating background colors
  *
  * @param mixed   $change (optional) if this value changes, the color changes

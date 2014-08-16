@@ -260,38 +260,43 @@ form.show_help {
 }
 
 div.bargraph {
-	display: inline-block;
 	vertical-align: middle;
-	border: 2px groove black;
-	width: 100px;
-	margin-top: 0;
-	margin-bottom: 1px;
+	margin: 0;
 }
 div.bargraph div.bar {
 	float: left;
-	height: 1.8ex;
-	background-color: #EEE;
+	height: 1em;
+	background-color: #0A0;
 }
-div.bargraph div.legend {
+div.bargraph div.value {
 	position: absolute;
 	z-index: 1;
-	padding: 0 2px;
+	padding: 0;
 	margin: 0;
-	height: 1.8ex;
-	line-height: 1.2em;
-	font-size: 0.8em;
+	line-height: 1em;
+	text-align: right;
 	vertical-align: middle;
-	text-align: center;
+}
+div.bargraph div.required {
+	position: absolute;
+	z-index: 2;
+	width: 1px;
+	padding: 0;
+	margin: 0;
+	height: 1em;
+	background-color: #FA0;
+}
+div.bargraph div.supported {
+	position: absolute;
+	z-index: 3;
+	padding: 0;
+	margin: 0 0 0 80px;
+	line-height: 1em;
+	vertical-align: middle;
 }
 div.bargraph div.clear {
 	height: 0;
 	clear: both;
-}
-div.bargraph.supporters div.bar.filled {
-	background-color: #0A0;
-}
-div.bargraph.ballot_voting_demanders div.bar.filled {
-	background-color: #F00;
 }
 
 div.timebar {
@@ -561,15 +566,31 @@ div.proposal_info ul li form input[type=text] {
 div.proposal_content {
 	overflow: hidden;
 }
+
 div.quorum {
 	background-color: #E0DAF0;
 	padding: 5px 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+div.quorum h2 {
+	display: inline;
+	font-size: 100%;
+}
 div.quorum div.bargraph_container {
-	float: left;
-	margin-right: 10px;
+	display: inline-block;
+	margin: 0 5px;
+	padding: 3px 4px;
+	vertical-align: bottom;
+	background-color: #FFF;
+}
+div.quorum form {
+	display: inline-block;
+	margin-top: 2px;
+}
+div.quorum form.supported {
+	background-color: #0A0;
+	padding: 0 6px;
 }
 div.admission_decision,
 form.admission_decision {
@@ -593,7 +614,10 @@ table.proposals {
 }
 
 table.proposals th.proposal {
-	width: 82%;
+	width: 81%;
+}
+table.proposals th.support {
+	width: 1%;
 }
 table.proposals th.state {
 	width: 10%;

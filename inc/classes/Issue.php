@@ -259,6 +259,7 @@ class Issue extends Relation {
 ?>
 	<tr>
 		<th class="proposal"><?=_("Proposal")?></th>
+		<th class="support"><?=_("Support")?></th>
 		<th class="state"><?=_("State")?></th>
 		<th class="period"><?=_("Period")?></th>
 		<th class="voting_type"><?=_("Voting type")?></th>
@@ -337,6 +338,13 @@ class Issue extends Relation {
 			?>" onClick="location.href='<?=$link?>'"><?=_("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
 
+			// column "support"
+?>
+		<td><?
+			$proposal->bargraph_quorum($proposal->supported_by_member);
+			?></td>
+<?
+
 			// column "state"
 			if ($this->state=="admission" or $this->state=="cancelled") {
 				// individual proposal states
@@ -364,15 +372,7 @@ class Issue extends Relation {
 				} else {
 					// submitted, cancelled, revoked, done
 ?>
-		<td class="center"><?=$proposal->state_name();
-					if ($proposal->state=="submitted") {
-						?><br><?
-						$proposal->bargraph_quorum();
-						if ($proposal->supported_by_member) {
-							?><br>&#10003;<?
-						}
-					}
-					?></td>
+		<td class="center"><?=$proposal->state_name()?></td>
 <?
 				}
 			} else {

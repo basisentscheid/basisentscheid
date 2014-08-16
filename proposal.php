@@ -832,22 +832,23 @@ function display_arguments($side, $parent, $level) {
 function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is_supporter) {
 ?>
 <div class="quorum">
+<h2><?=_("Supporters")?>:</h2>
 <div class="bargraph_container">
 <?
-	$proposal->bargraph_quorum();
+	$proposal->bargraph_quorum($is_supporter);
 ?>
 </div>
 <?
 
 	if (Login::$member or Login::$admin) {
 ?>
-<b><?=_("Supporters")?>:</b> <?=join(", ", $supporters);
+<?=join(", ", $supporters);
 		if (Login::$member and $proposal->allowed_change_supporters()) {
 ?>
 <br clear="both">
 <?
 			if ($is_supporter) {
-				form(URI::same(), 'style="background-color:green; display:inline-block"');
+				form(URI::same(), 'class="supported"');
 ?>
 &#10003; <?
 				if ($is_supporter==="anonymous") {
@@ -875,10 +876,6 @@ function display_quorum(Proposal $proposal, Issue $issue, array $supporters, $is
 <?
 			}
 		}
-	} else {
-?>
-<b><?=_("Supporters")?></b>
-<?
 	}
 
 ?>
