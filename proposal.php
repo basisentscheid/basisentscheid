@@ -1,6 +1,6 @@
 <?
 /**
- * proposal.php
+ * proposal details
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -297,7 +297,7 @@ if (Login::$member and $proposal->revoke) {
 
 <div class="proposal_content">
 <?
-if ($proposal->state=="draft" and $is_proponent) {
+if ($is_proponent and $proposal->allowed_edit_content()) {
 ?>
 <div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>"><?=_("Edit proposal")?></a></div>
 <?
@@ -307,6 +307,13 @@ if ($proposal->state=="draft" and $is_proponent) {
 <p class="proposal proposal_title"><?=h($content_obj->title)?></p>
 <h2><?=_("Content")?></h2>
 <p class="proposal"><?=content2html($content_obj->content)?></p>
+<?
+if ($is_proponent and $proposal->allowed_edit_reason_only()) {
+?>
+<div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>"><?=_("Edit reason")?></a></div>
+<?
+}
+?>
 <h2><?=_("Reason")?></h2>
 <p class="proposal"><?=content2html($content_obj->reason)?></p>
 </div>
@@ -432,6 +439,7 @@ html_foot();
 
 
 /**
+ * display the right column with area and proponents
  *
  * @param object  $proposal
  * @param object  $issue

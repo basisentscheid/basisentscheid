@@ -551,6 +551,40 @@ class Proposal extends Relation {
 
 
 	/**
+	 *
+	 * @return boolean
+	 */
+	public function allowed_edit_content() {
+		switch ($this->issue()->state) {
+		case "admission":
+			switch ($this->state) {
+			case "draft":
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function allowed_edit_reason_only() {
+		switch ($this->issue()->state) {
+		case "admission":
+		case "debate":
+			switch ($this->state) {
+			case "submitted":
+			case "admitted":
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
 	 * if it's allowed to add or rate arguments
 	 *
 	 * @return boolean

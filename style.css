@@ -547,7 +547,8 @@ div.proposal_info ul {
 div.proposal_info ul li span.unconfirmed {
 	color: #AAA;
 }
-div.proposal_info ul li form {
+div.proposal_info ul li form,
+div.proposal_info ul li div.form {
 	display: inline-block;
 	vertical-align: top;
 	width: 194px;
@@ -565,6 +566,10 @@ div.proposal_info ul li form input[type=text] {
 }
 div.proposal_content {
 	overflow: hidden;
+}
+div.proposal_content div.add,
+div.proposal_info div.add {
+	margin-top: 0.3em;
 }
 
 div.quorum {
