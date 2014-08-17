@@ -13,6 +13,7 @@
  * @see auth.php
  * @see ballot_edit.php
  * @see ballots.php
+ * @see confirm_mail.php
  * @see diff.php
  * @see draft.php
  * @see index.php

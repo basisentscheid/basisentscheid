@@ -31,6 +31,7 @@ function cron($skip_if_locked=false) {
 		ballot_preparation <= now() AS ballot_preparation_now,
 		counting           <= now() AS counting_now
 	FROM periods";
+	// TODO: exclude closed
 	$result_period = DB::query($sql_period);
 	while ( $period = DB::fetch_object($result_period, "Period") ) {
 		DB::to_bool($period->debate_now);
@@ -40,11 +41,14 @@ function cron($skip_if_locked=false) {
 		DB::to_bool($period->ballot_preparation_now);
 		DB::to_bool($period->counting_now);
 
+		$issues_start_debate = array();
 		// collect issues for upload to the ID server
 		$issues_start_voting = array();
 
 		// ballots
 		switch ($period->state) {
+
+			// ballot assignment
 		case "ballot_application":
 			if (!$period->ballot_assignment_now) break;
 
@@ -60,6 +64,7 @@ function cron($skip_if_locked=false) {
 
 			break;
 
+			// ballot preparation
 		case "ballot_assignment":
 			if (!$period->ballot_preparation_now) break;
 
@@ -77,8 +82,9 @@ function cron($skip_if_locked=false) {
 		while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
 			DB::to_bool($issue->clear_now);
 
-			// admitted -> debate
 			switch ($issue->state) {
+
+				// debate
 			case "admission":
 				if (!$period->debate_now) break;
 
@@ -132,8 +138,11 @@ function cron($skip_if_locked=false) {
 				$issue->state = "debate";
 				$issue->update(array("state"), 'debate_started=now()');
 
+				$issues_start_debate[] = $issue;
+
 				break;
 
+				// preparation
 			case "debate":
 				if (!$period->preparation_now) break;
 
@@ -157,6 +166,7 @@ function cron($skip_if_locked=false) {
 
 				break;
 
+				// voting
 			case "preparation":
 				if (!$period->voting_now) break;
 
@@ -182,6 +192,7 @@ function cron($skip_if_locked=false) {
 
 				break;
 
+				// counting
 			case "voting":
 				if (!$period->counting_now) break;
 
@@ -207,6 +218,7 @@ function cron($skip_if_locked=false) {
 
 				// Case "counting" is handled by download_vote().
 
+				// clear
 			case "finished":
 				if (!$issue->clear_now) break;
 
@@ -217,6 +229,17 @@ function cron($skip_if_locked=false) {
 
 				// "cleared" and "cancelled" are the final issue states.
 			}
+
+		}
+
+
+		// upload votings to the ID server
+		if ($issues_start_debate) {
+
+			$notification = new Notification("debate");
+			$notification->period = $period;
+			$notification->issues = $issues_start_debate;
+			$notification->send();
 
 		}
 
@@ -233,6 +256,12 @@ function cron($skip_if_locked=false) {
 					}
 				}
 			}
+
+			$notification = new Notification("voting");
+			$notification->period = $period;
+			$notification->issues = $issues_start_voting;
+			$notification->send();
+
 		}
 
 

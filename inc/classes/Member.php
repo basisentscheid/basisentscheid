@@ -81,6 +81,29 @@ class Member extends Relation {
 
 
 	/**
+	 * get the current notification settings
+	 *
+	 * @return array
+	 */
+	public function notification_settings() {
+
+		$notify = Notification::$default_settings;
+
+		$sql = "SELECT * FROM notify WHERE member=".intval($this->id);
+		$result = DB::query($sql);
+		while ( $row = DB::fetch_assoc($result) ) {
+			foreach (Notification::$default_settings['all'] as $type => $dummy) DB::to_bool($row[$type]);
+			$notify[$row['interest']] = $row;
+		}
+
+		return $notify;
+	}
+
+
+	// actions
+
+
+	/**
 	 * activate general participation (distinct from area participation)
 	 */
 	public function activate_participation() {
@@ -95,6 +118,46 @@ class Member extends Relation {
 	public function deactivate_participation() {
 		$this->participant = false;
 		$this->update(array("participant"));
+	}
+
+
+	/**
+	 * save not yet confirmed mail address and send confirmation request
+	 *
+	 * @param string  $mail
+	 */
+	public function set_mail($mail) {
+
+		if ( strtotime($this->mail_lock_expiry) > time() ) {
+			warning(_("We have sent an email with activation link already in the last hour. Please try again later!"));
+			redirect();
+		}
+
+		$this->mail_unconfirmed = $mail;
+
+		DB::transaction_start();
+		do {
+			$this->mail_secret = Login::generate_token(16);
+			$sql = "SELECT id FROM members WHERE mail_secret=".DB::esc($this->mail_secret);
+		} while ( DB::numrows($sql) );
+		$this->update(array('mail_unconfirmed', 'mail_secret'), "mail_secret_expiry = now() + '7 days'::interval");
+		DB::transaction_commit();
+
+		$subject = _("Email confirmation request");
+		$body = _("Please confirm your email address by clicking the following link:")."\n\n"
+			.BASE_URL."confirm_mail.php?secret=".$this->mail_secret."\n\n"
+			._("If this link does not work, please open the following URL in your web browser:")."\n\n"
+			.BASE_URL."confirm_mail.php\n\n"
+			._("On that page enter the confirmation code:")."\n\n"
+			.$this->mail_secret."\n\n";
+
+		if ( send_mail($mail, $subject, $body) ) {
+			$this->update(array(), "mail_lock_expiry = now() + '1 hour'::interval");
+			success(_("Your email address has been saved. A confirmation request has been sent."));
+		} else {
+			warning(_("Your email address has been saved, but the confirmation request could not be sent. Try again later or contact the system administrator."));
+		}
+
 	}
 
 

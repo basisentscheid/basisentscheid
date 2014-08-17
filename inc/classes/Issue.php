@@ -240,6 +240,51 @@ class Issue extends Relation {
 
 
 	/**
+	 * will be called after a proposal gets admitted
+	 *
+	 * @param object  $admitted_proposal
+	 */
+	public function proposal_admitted(Proposal $admitted_proposal) {
+
+		$admitted_proposals = array($admitted_proposal);
+
+		// admit other proposals too, if they reached the quorum due to the now lower level
+		foreach ( $this->proposals() as $proposal ) {
+			if ($proposal->id==$admitted_proposal->id) continue;
+			if ($proposal->supporters >= $proposal->quorum_required()) {
+				$proposal->quorum_reached = true;
+				$proposal->state = "admitted";
+				$proposal->update(array("quorum_reached", "state"), "admitted=now()");
+				$admitted_proposals[] = $proposal;
+			}
+		}
+
+		// send notification
+		$notification = new Notification("admitted");
+		$notification->issue = $this;
+		$notification->proposals = $admitted_proposals;
+		$notification->send();
+
+
+		// for now admins do the selection of the periods manually
+		return;
+
+		// The period has already been set by another proposal in the same issue.
+		if ($this->period) return;
+
+		// select the next period, which has not yet started
+		$sql = "SELECT id FROM periods WHERE debate > now() AND online_voting=TRUE ORDER BY debate LIMIT 1";
+		$this->period = DB::fetchfield($sql);
+		if ($this->period) {
+			$this->update(array("period"));
+		} else {
+			// TODO Error
+		}
+
+	}
+
+
+	/**
 	 * save the downloaded voting result and set date for clearing
 	 *
 	 * @param resource $result

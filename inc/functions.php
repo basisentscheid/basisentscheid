@@ -301,3 +301,24 @@ function curl_fetch($url) {
 		'content_type' => $content_type
 	);
 }
+
+
+/**
+ * wrapper for mail()
+ *
+ * @param string  $to
+ * @param string  $subject
+ * @param string  $body
+ * @param array   $headers (optional)
+ * @return boolean
+ */
+function send_mail($to, $subject, $body, array $headers=array()) {
+
+	$headers[] = "Content-Type: text/plain; charset=UTF-8";
+	$headers[] = "Content-Transfer-Encoding: 8bit";
+	// TODO: From
+
+	//$to = ERROR_MAIL;
+
+	return mail($to, $subject, $body, join("\r\n", $headers));
+}

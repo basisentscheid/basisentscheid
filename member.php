@@ -17,6 +17,15 @@ if ($action) {
 	}
 	action_required_parameters('username', 'mail');
 
+	// save notification settings
+	foreach ( Notification::$default_settings as $interest => $types ) {
+		$fields_values = array('member'=>Login::$member->id, 'interest'=>$interest);
+		foreach ( $types as $type => $value ) {
+			$fields_values[$type] = !empty($_POST['notify'][$interest][$type]);
+		}
+		DB::insert_or_update("notify", $fields_values, array('member', 'interest'));
+	}
+
 	$success_msgs = array();
 
 	$username = trim($_POST['username']);
@@ -30,15 +39,19 @@ if ($action) {
 		}
 	}
 
+	Login::$member->update(array('username'));
+	foreach ($success_msgs as $msg) success($msg);
+
+	// save mail
 	$mail = trim($_POST['mail']);
 	if ($mail != Login::$member->mail) {
-		Login::$member->mail = $mail;
-		//Login::$member->send_mail_confirmation_request();
-		$success_msgs[] = _("Your mail address has been saved."); // A confirmation request has been sent.");
+		if ( ! preg_match('/^[^@%s]+@[^@%s]+\.[a-z]+$/i', $mail) ) {
+			warning(_("This email address is not valid!"));
+			break;
+		}
+		Login::$member->set_mail($mail);
 	}
 
-	Login::$member->update(array('username', 'mail'));
-	foreach ($success_msgs as $msg) success($msg);
 	redirect();
 }
 
@@ -49,10 +62,45 @@ form(BN);
 ?>
 <?=_("Username")?> (<?=_('leave empty to be displayed as "anonymous"')?>): <input type="text" name="username" value="<?=h(Login::$member->username)?>"><br>
 <?=_("Mail address for notifications")?>: <input type="text" name="mail" value="<?=h(Login::$member->mail)?>"><br>
+
+<h2><?=_("Email notification settings")?></h2>
+<table>
+	<tr>
+		<th></th>
+<?
+$types = Notification::types();
+foreach ($types as $type => $type_title) {
+?>
+		<th><?=$type_title?></th>
+<?
+}
+?>
+	</tr>
+<?
+$notify = Login::$member->notification_settings();
+foreach (Notification::interests() as $interest => $interest_title) {
+?>
+	<tr class="<?=stripes()?>">
+		<td class="right"><?=$interest_title?></td>
+<?
+	foreach ($types as $type) {
+?>
+		<td class="center"><input type="checkbox" name="notify[<?=$interest?>][<?=$type?>]" value="1"<?
+		if ($notify[$interest][$type]) { ?> checked<? }
+		?>></td>
+<?
+	}
+?>
+	</tr>
+<?
+}
+?>
+</table>
+
+<br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
 </form>
 <?
-
 
 html_foot();

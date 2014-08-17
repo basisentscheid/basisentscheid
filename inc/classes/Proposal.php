@@ -461,7 +461,7 @@ class Proposal extends Relation {
 			$this->quorum_reached = true;
 			$this->state = "admitted";
 			$this->update(array("supporters", "quorum_reached", "state"), "admitted=now()");
-			$this->select_period();
+			$this->issue()->proposal_admitted($this);
 		} else {
 			$this->update(array("supporters"));
 		}
@@ -481,7 +481,7 @@ class Proposal extends Relation {
 			$this->state = "admitted";
 			$this->update(array("admission_decision", "state"), 'admitted=now()');
 			DB::transaction_commit();
-			$this->select_period();
+			$this->issue()->proposal_admitted($this);
 		} else {
 			// Setting or updating the description is always allowed.
 			$this->update(array("admission_decision"));
@@ -521,31 +521,6 @@ class Proposal extends Relation {
 		// cancel issue
 		$issue->state = "cancelled";
 		$issue->update(array("state"));
-
-	}
-
-
-	/**
-	 *
-	 */
-	private function select_period() {
-
-		// for now admins do this manually
-		return;
-
-		$issue = new Issue($this->issue);
-
-		// The period has already been set by another proposal in the same issue.
-		if ($issue->period) return;
-
-		// select the next period, which has not yet started
-		$sql = "SELECT id FROM periods WHERE debate > now() AND online_voting=TRUE ORDER BY debate LIMIT 1";
-		$issue->period = DB::fetchfield($sql);
-		if ($issue->period) {
-			$issue->update(array("period"));
-		} else {
-			// TODO Error
-		}
 
 	}
 

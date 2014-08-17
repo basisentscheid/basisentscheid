@@ -38,6 +38,19 @@ CREATE TYPE issue_state AS ENUM (
 
 
 --
+-- Name: notify_interest; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE notify_interest AS ENUM (
+    'all',
+    'ngroups',
+    'participant',
+    'supporter',
+    'proponent'
+);
+
+
+--
 -- Name: period_state; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -350,7 +363,10 @@ CREATE TABLE members (
     profile text NOT NULL,
     public_id text NOT NULL,
     mail text,
-    mail_confirmed boolean DEFAULT false NOT NULL
+    mail_unconfirmed text,
+    mail_secret character varying(16),
+    mail_secret_expiry timestamp with time zone,
+    mail_lock_expiry timestamp with time zone
 );
 
 
@@ -380,6 +396,20 @@ ALTER SEQUENCE members_id_seq OWNED BY members.id;
 CREATE TABLE members_nested_groups (
     member integer NOT NULL,
     nested_group integer NOT NULL
+);
+
+
+--
+-- Name: notify; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE notify (
+    member integer NOT NULL,
+    interest notify_interest NOT NULL,
+    admitted boolean DEFAULT false NOT NULL,
+    debate boolean DEFAULT false NOT NULL,
+    voting boolean DEFAULT false NOT NULL,
+    finished boolean DEFAULT false NOT NULL
 );
 
 
@@ -457,6 +487,13 @@ CREATE TABLE proposals (
 --
 
 COMMENT ON COLUMN proposals.supporters IS 'cache';
+
+
+--
+-- Name: COLUMN proposals.revoke; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN proposals.revoke IS 'date to revoke proposal if it has then not the required number of proponents';
 
 
 --
@@ -708,6 +745,14 @@ ALTER TABLE ONLY members
 
 
 --
+-- Name: notify_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY notify
+    ADD CONSTRAINT notify_pkey PRIMARY KEY (member, interest);
+
+
+--
 -- Name: offline_demanders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -865,6 +910,14 @@ ALTER TABLE ONLY members_nested_groups
 
 ALTER TABLE ONLY members_nested_groups
     ADD CONSTRAINT members_nested_groups_nested_group_fkey FOREIGN KEY (nested_group) REFERENCES nested_groups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: notify_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notify
+    ADD CONSTRAINT notify_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
