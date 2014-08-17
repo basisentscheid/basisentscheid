@@ -317,7 +317,7 @@ function send_mail($to, $subject, $body, array $headers=array()) {
 
 	$headers[] = "Content-Type: text/plain; charset=UTF-8";
 	$headers[] = "Content-Transfer-Encoding: 8bit";
-	// TODO: From
+	if (MAIL_FROM) $headers[] = "From: ".MAIL_FROM;
 
 	//$to = ERROR_MAIL;
 
