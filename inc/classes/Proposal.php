@@ -737,13 +737,30 @@ class Proposal extends Relation {
 	public function display_drafts(array $proponents) {
 ?>
 <h2><?=_("Drafts")?></h2>
-<form action="diff.php" method="GET">
-<table class="drafts">
 <?
 		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
 		$result = DB::query($sql);
 		$i = DB::num_rows($result);
+?>
+<script type="text/javascript">
+<!--
+function draft_select(side, draft) {
+	for (var i = 0; i < <?=$i?>; i++) {
+		if ( ( side == 1 && i > draft ) || ( side == 2 && i < draft ) ) {
+			document.getElementById('draft'+side+'_'+i).disabled = false;
+		} else {
+			document.getElementById('draft'+side+'_'+i).disabled = true;
+		}
+	}
+}
+//-->
+</script>
+<form action="diff.php" method="GET">
+<table class="drafts">
+<?
 		$j = 0;
+		$disabled1 = true;
+		$disabled2 = false;
 		while ( $draft = DB::fetch_object($result, "Draft") ) {
 			// get the author's proponent name
 			$author = new Member($draft->author);
@@ -766,11 +783,21 @@ class Proposal extends Relation {
 				((BN=="proposal.php" or BN=="proposal_edit.php") and $j==0)
 			) { ?> class="active"<? }
 			?>>
-	<td class="diffradio nowrap"><input type="radio" name="draft1" value="<?=$draft->id?>"<?
-			if ( isset($_GET['draft1']) ? $_GET['draft1']==$draft->id : $j==1 ) { ?> checked<? }
-			?>><input type="radio" name="draft2" value="<?=$draft->id?>"<?
-			if ( isset($_GET['draft2']) ? $_GET['draft2']==$draft->id : $j==0 ) { ?> checked<? }
-			?>></td>
+	<td class="diffradio"><input type="radio" name="draft1" id="draft1_<?=$j?>" value="<?=$draft->id?>"<?
+			if ( isset($_GET['draft1']) ? $_GET['draft1']==$draft->id : $j==1 ) {
+				?> checked<?
+				$disabled1=false;
+			} elseif ($disabled1) {
+				?> disabled<?
+			}
+			?> onClick="draft_select(2, <?=$j?>)"><input type="radio" name="draft2" id="draft2_<?=$j?>" value="<?=$draft->id?>"<?
+			if ( isset($_GET['draft2']) ? $_GET['draft2']==$draft->id : $j==0 ) {
+				?> checked<?
+				$disabled2=true;
+			} elseif ($disabled2) {
+				?> disabled<?
+			}
+			?> onClick="draft_select(1, <?=$j?>)"></td>
 	<td class="content" onClick="location.href='<?=$link?>'"><?=$i?> <a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=limitstr($proponent_name, 30)?></td>
 </tr>
 <?
