@@ -290,7 +290,7 @@ function cron($skip_if_locked=false) {
 	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
 	$sql = "SELECT * FROM proposals
 		WHERE state='submitted'
-			AND submitted < now() - ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL)."::INTERVAL";
+			AND submitted < now() - interval ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL);
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		$proposal->cancel();

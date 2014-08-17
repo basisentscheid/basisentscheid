@@ -61,11 +61,11 @@ function create_case($case, $stopcase) {
 		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting)
 		VALUES (
 			now(),
-			now() + '1 week'::INTERVAL,
-			now() + '2 weeks'::INTERVAL,
+			now() + interval '1 week',
+			now() + interval '2 weeks',
 			NULL,
 			NULL,
-			now() + '4 weeks'::INTERVAL,
+			now() + interval '4 weeks',
 			true,
 			false
 		)";
@@ -75,11 +75,11 @@ function create_case($case, $stopcase) {
 		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting)
 		VALUES (
 			now(),
-			now() + '1 week'::INTERVAL,
-			now() + '2 weeks'::INTERVAL,
-			now() + '1 week'::INTERVAL,
-			now() + '3 weeks'::INTERVAL,
-			now() + '4 weeks'::INTERVAL,
+			now() + interval '1 week',
+			now() + interval '2 weeks',
+			now() + interval '1 week',
+			now() + interval '3 weeks',
+			now() + interval '4 weeks',
 			true,
 			true
 		) RETURNING id";
@@ -175,7 +175,7 @@ function add_participant(Period $period, Ballot $ballot, $case, $i) {
  * @param string  $interval (optional)
  */
 function time_warp(Period $period, $interval="1 hour") {
-	$interval = "'".$interval."'::INTERVAL";
+	$interval = "interval '".$interval."'";
 	$sql = "UPDATE periods SET
 			debate             = debate             - ".$interval.",
 			preparation        = preparation        - ".$interval.",

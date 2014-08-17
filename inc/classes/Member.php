@@ -140,7 +140,7 @@ class Member extends Relation {
 			$this->mail_secret = Login::generate_token(16);
 			$sql = "SELECT id FROM members WHERE mail_secret=".DB::esc($this->mail_secret);
 		} while ( DB::numrows($sql) );
-		$this->update(array('mail_unconfirmed', 'mail_secret'), "mail_secret_expiry = now() + '7 days'::interval");
+		$this->update(array('mail_unconfirmed', 'mail_secret'), "mail_secret_expiry = now() + interval '7 days'");
 		DB::transaction_commit();
 
 		$subject = _("Email confirmation request");
@@ -152,7 +152,7 @@ class Member extends Relation {
 			.$this->mail_secret."\n\n";
 
 		if ( send_mail($mail, $subject, $body) ) {
-			$this->update(array(), "mail_lock_expiry = now() + '1 hour'::interval");
+			$this->update(array(), "mail_lock_expiry = now() + interval '1 hour'");
 			success(_("Your email address has been saved. A confirmation request has been sent."));
 		} else {
 			warning(_("Your email address has been saved, but the confirmation request could not be sent. Try again later or contact the system administrator."));

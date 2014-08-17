@@ -292,7 +292,7 @@ class Issue extends Relation {
 	public function save_vote($result) {
 		$this->vote = $result;
 		$this->state = "finished";
-		$this->update(array("vote", "state"), "clear = current_date + ".DB::esc(CLEAR_INTERVAL)."::INTERVAL");
+		$this->update(array("vote", "state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
 	}
 
 

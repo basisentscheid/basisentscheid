@@ -264,10 +264,10 @@ function create_case($case, $stopcase) {
 		// create period
 		$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting)
 			VALUES (
-				now() + '1 week'::INTERVAL,
-				now() + '2 weeks'::INTERVAL,
-				now() + '3 weeks'::INTERVAL,
-				now() + '4 weeks'::INTERVAL,
+				now() + interval '1 week',
+				now() + interval '2 weeks',
+				now() + interval '3 weeks',
+				now() + interval '4 weeks',
 				true,
 				false
 			) RETURNING id";
@@ -449,7 +449,7 @@ function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
  * @param string  $interval (optional)
  */
 function time_warp(Issue $issue, $interval="1 hour") {
-	$interval = "'".$interval."'::INTERVAL";
+	$interval = "interval '".$interval."'";
 
 	foreach ( array('submitted', 'admitted', 'cancelled', 'revoke') as $column ) {
 		$sql = "UPDATE proposals SET
