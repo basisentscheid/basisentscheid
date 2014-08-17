@@ -738,7 +738,7 @@ class Proposal extends Relation {
 ?>
 <h2><?=_("Drafts")?></h2>
 <form action="diff.php" method="GET">
-<table>
+<table class="drafts">
 <?
 		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
 		$result = DB::query($sql);
@@ -754,27 +754,24 @@ class Proposal extends Relation {
 					break;
 				}
 			}
+			if ($j==0) {
+				$link = "proposal.php?id=".$this->id;
+			} else {
+				$link = "draft.php?id=".$draft->id;
+			}
 ?>
-<tr class="<?=stripes();
+<tr<?
 			if (
 				(BN=="draft.php" and $draft->id==@$_GET['id']) or
 				((BN=="proposal.php" or BN=="proposal_edit.php") and $j==0)
-			) { ?> active<? }
-			?>">
-	<td class="nowrap diffradio"><input type="radio" name="draft1" value="<?=$draft->id?>"<?
+			) { ?> class="active"<? }
+			?>>
+	<td class="diffradio nowrap"><input type="radio" name="draft1" value="<?=$draft->id?>"<?
 			if ( isset($_GET['draft1']) ? $_GET['draft1']==$draft->id : $j==1 ) { ?> checked<? }
 			?>><input type="radio" name="draft2" value="<?=$draft->id?>"<?
 			if ( isset($_GET['draft2']) ? $_GET['draft2']==$draft->id : $j==0 ) { ?> checked<? }
 			?>></td>
-	<td class="right"><?=$i?></td>
-	<td><a href="<?
-			if ($j==0) {
-				?>proposal.php?id=<?=$this->id;
-			} else {
-				?>draft.php?id=<?=$draft->id;
-			}
-			?>"><?=datetimeformat($draft->created)?></a></td>
-	<td><?=$proponent_name?></td>
+	<td class="content" onClick="location.href='<?=$link?>'"><?=$i?> <a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=limitstr($proponent_name, 30)?></td>
 </tr>
 <?
 			$i--;
@@ -796,7 +793,7 @@ class Proposal extends Relation {
 	public function display_drafts_without_form(array $proponents) {
 ?>
 <h2><?=_("Drafts")?></h2>
-<table>
+<table class="drafts">
 <?
 		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
 		$result = DB::query($sql);
@@ -812,17 +809,14 @@ class Proposal extends Relation {
 					break;
 				}
 			}
-?>
-<tr class="<?=stripes()?>">
-	<td class="right"><?=$i?></td>
-	<td><a href="<?
 			if ($j==0) {
-				?>proposal.php?id=<?=$this->id;
+				$link = "proposal.php?id=".$this->id;
 			} else {
-				?>draft.php?id=<?=$draft->id;
+				$link = "draft.php?id=".$draft->id;
 			}
-			?>"><?=datetimeformat($draft->created)?></a></td>
-	<td><?=$proponent_name?></td>
+?>
+<tr>
+	<td class="content" onClick="location.href='<?=$link?>'"><?=$i?> <a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=limitstr($proponent_name, 30)?></td>
 </tr>
 <?
 			$i--;

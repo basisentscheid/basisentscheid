@@ -543,6 +543,7 @@ div.proposal_info ul {
 	margin: 0;
 	padding: 3px 2px 3px 5px;
 	list-style: square inside;
+	display: table-cell;
 }
 div.proposal_info ul li span.unconfirmed {
 	color: #AAA;
@@ -572,21 +573,53 @@ div.proposal_info div.add {
 	margin-top: 0.3em;
 }
 
-div.proposal_info td.diffradio {
-	padding: 0;
+div.proposal_info table.drafts {
+	width: 100%;
 }
-div.proposal_info td.diffradio input {
+div.proposal_info table.drafts td {
+	vertical-align: top;
+	padding: 3px 2px;
+	background-color: #FFF;
+}
+div.proposal_info table.drafts td.diffradio {
+	width: 1%;
+	padding-left: 0;
+	padding-right: 0;
+}
+div.proposal_info table.drafts td.content {
+	width: 99%;
+}
+div.proposal_info table.drafts td.diffradio input {
 	margin: 1px;
 }
+div.proposal_info table.drafts td.content a {
+	padding: 0;
+}
+div.proposal_info table.drafts td.content a:hover,
+div.proposal_info table.drafts td.content a:focus {
+	outline: none;
+}
 
-
-div.proposal_info table td {
-	width: 20px;
-	width: 2rem;
-	overflow: hidden;
+div.proposal_info tr td.content {
+	cursor: pointer;
+	cursor: hand;
+}
+div.proposal_info tr td.content:hover,
+div.proposal_info tr td.content:focus,
+div.proposal_info tr td.content:hover a,
+div.proposal_info tr td.content:focus a {
+	background-color: #F8F8F8;
+	color: #000;
+}
+div.proposal_info tr td.content:active,
+div.proposal_info tr td.content:active a {
+	background-color: #F3F3F3;
 }
 div.proposal_info tr.active {
 	font-weight: bold;
+}
+div.proposal_info tr.active td.content {
+	border: 1px solid #999;
 }
 
 div.diff p ins {
