@@ -783,7 +783,7 @@ function draft_select(side, draft) {
 				((BN=="proposal.php" or BN=="proposal_edit.php") and $j==0)
 			) { ?> class="active"<? }
 			?>>
-	<td class="diffradio"><input type="radio" name="draft1" id="draft1_<?=$j?>" value="<?=$draft->id?>"<?
+	<td class="diffradio"><span><?=$i?></span><br><input type="radio" name="draft1" id="draft1_<?=$j?>" value="<?=$draft->id?>"<?
 			if ( isset($_GET['draft1']) ? $_GET['draft1']==$draft->id : $j==1 ) {
 				?> checked<?
 				$disabled1=false;
@@ -798,7 +798,7 @@ function draft_select(side, draft) {
 				?> disabled<?
 			}
 			?> onClick="draft_select(1, <?=$j?>)"></td>
-	<td class="content" onClick="location.href='<?=$link?>'"><?=$i?> <a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=limitstr($proponent_name, 30)?></td>
+	<td class="content" onClick="location.href='<?=$link?>'"><a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=limitstr($proponent_name, 30)?></td>
 </tr>
 <?
 			$i--;

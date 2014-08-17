@@ -586,6 +586,10 @@ div.proposal_info table.drafts td.diffradio {
 	padding-left: 0;
 	padding-right: 0;
 	white-space: nowrap;
+	text-align: right;
+}
+div.proposal_info table.drafts td.diffradio span {
+	padding-right: 3px;
 }
 div.proposal_info table.drafts td.content {
 	width: 99%;
@@ -621,6 +625,7 @@ div.proposal_info tr.active {
 }
 div.proposal_info tr.active td.content {
 	border: 1px solid #999;
+	padding: 2px;
 }
 
 div.diff p ins {
