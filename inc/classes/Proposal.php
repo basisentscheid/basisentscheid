@@ -788,4 +788,50 @@ class Proposal extends Relation {
 	}
 
 
+	/**
+	 * display the list of drafts for the right column
+	 *
+	 * @param array   $proponents
+	 */
+	public function display_drafts_without_form(array $proponents) {
+?>
+<h2><?=_("Drafts")?></h2>
+<table>
+<?
+		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
+		$result = DB::query($sql);
+		$i = DB::num_rows($result);
+		$j = 0;
+		while ( $draft = DB::fetch_object($result, "Draft") ) {
+			// get the author's proponent name
+			$author = new Member($draft->author);
+			$proponent_name = "("._("proponent revoked").")";
+			foreach ($proponents as $proponent) {
+				if ($proponent->id == $author->id) {
+					$proponent_name = $proponent->proponent_name;
+					break;
+				}
+			}
+?>
+<tr class="<?=stripes()?>">
+	<td class="right"><?=$i?></td>
+	<td><a href="<?
+			if ($j==0) {
+				?>proposal.php?id=<?=$this->id;
+			} else {
+				?>draft.php?id=<?=$draft->id;
+			}
+			?>"><?=datetimeformat($draft->created)?></a></td>
+	<td><?=$proponent_name?></td>
+</tr>
+<?
+			$i--;
+			$j++;
+		}
+?>
+</table>
+<?
+	}
+
+
 }

@@ -136,12 +136,6 @@ if ($proposal->id) {
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
-?>
-<div class="proposal_info">
-<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
-</div>
-<?
-
 form(BN.($proposal->id?"?id=".$proposal->id:""), 'class="proposal"');
 
 if (isset($_GET['issue'])) {
@@ -151,6 +145,9 @@ if (isset($_GET['issue'])) {
 }
 
 ?>
+<div class="proposal_info">
+<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
+</div>
 
 <div class="proposal_content">
 <?
@@ -242,9 +239,8 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents, $i
 </ul>
 <?
 
-	// show drafts only to the proponents
-	if (!$is_proponent) return;
+	if (!$proposal->id) return;
 
-	$proposal->display_drafts($proponents);
+	$proposal->display_drafts_without_form($proponents);
 
 }
