@@ -26,7 +26,7 @@ $response = $client->getAccessToken(OAUTH2_TOKEN_ENDPOINT, 'authorization_code',
 $client->setAccessToken($response['result']['access_token']);
 $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
 
-$response_auid = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/auid/');
+$response_auid = $client->fetch(OAUTH2_BASEURL."api/user/auid/");
 //var_dump($response_auid);
 /*
 array(1) {
@@ -35,7 +35,7 @@ array(1) {
 }
 */
 
-$response_profile = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/profile/');
+$response_profile = $client->fetch(OAUTH2_BASEURL."api/user/profile/");
 //var_dump($response_profile);
 /*
 array(3) {
@@ -69,7 +69,7 @@ if ( $member = DB::fetch_object($result, "Member") ) {
 }
 $_SESSION['member'] = $member->id;
 
-$response_membership = $client->fetch('https://beoauth.piratenpartei-bayern.de/api/user/membership/');
+$response_membership = $client->fetch(OAUTH2_BASEURL."api/user/membership/");
 //var_dump($response_membership);
 /*
 array(6) {

@@ -56,10 +56,11 @@ define("ARGUMENTS_LIMIT_1", 2);
 define("ARGUMENTS_LIMIT_2", 1);
 define("ARGUMENTS_LIMIT_3", 1);
 
+define("OAUTH2_BASEURL", "https://example.com/");
 define("OAUTH2_CLIENT_ID",     'example');
 define("OAUTH2_CLIENT_SECRET", 'example');
-define("OAUTH2_AUTHORIZATION_ENDPOINT", 'https://oauth2.example.com/authorize/');
-define("OAUTH2_TOKEN_ENDPOINT",         'https://oauth2.example.com/token/');
+define("OAUTH2_AUTHORIZATION_ENDPOINT", OAUTH2_BASEURL.'authorize/');
+define("OAUTH2_TOKEN_ENDPOINT",         OAUTH2_BASEURL.'token/');
 
 define("SHARE_URL",         "https://beoapi.example.com/shares/portal/");
 define("NESTED_GROUPS_URL", "https://beoapi.example.com/nested_groups/");
