@@ -23,7 +23,7 @@ if ( !empty($_POST['username']) ) {
 		// user not yet in the database
 		$member = new Member;
 		$member->set_unique_username($_POST['username']);
-		$member->auid = $member->username."_".rand();
+		$member->auid = substr($member->username."_".rand(), 0, 36);
 		$member->create();
 		$_SESSION['member'] = $member->id;
 		success("Logged in as new member ".$member->username);
