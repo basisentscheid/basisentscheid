@@ -504,7 +504,7 @@ class Proposal extends Relation {
 
 		// cancel proposal
 		$this->state = $state;
-		$this->update(array("state"), "cancelled=now()");
+		$this->update(array("state"), "cancelled=now(), revoke=NULL");
 
 		$issue = $this->issue();
 
