@@ -268,6 +268,7 @@ function limitstr($string, $length) {
 /**
  * fetch something from the ID server
  *
+ * @throws Exception
  * @param string  $url
  * @return array
  */
@@ -289,7 +290,7 @@ function curl_fetch($url) {
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 	if ($curl_error = curl_error($ch)) {
-		throw new Exception($curl_error, Exception::CURL_ERROR);
+		throw new Exception($curl_error, Exception::CURL_ERROR); // TODO
 	} else {
 		$json_decode = json_decode($result, true);
 	}

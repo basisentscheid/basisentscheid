@@ -52,12 +52,12 @@ function cron($skip_if_locked=false) {
 		case "ballot_application":
 			if (!$period->ballot_assignment_now) break;
 
-			// Zuordnung der noch nicht zugeordneten Mitglieder
+			// TODO Zuordnung der noch nicht zugeordneten Mitglieder
 			$period->assign_members_to_ballots();
 
-			// Mitteilung über genehmigte Urnen an Urnenantragsteller
+			// TODO Mitteilung über genehmigte Urnen an Urnenantragsteller
 
-			// Mitteilung an Mitglied über Zuordung zur Urne
+			// TODO Mitteilung an Mitglied über Zuordung zur Urne
 
 			$period->state = "ballot_assignment";
 			$period->update(array("state"));
@@ -68,7 +68,7 @@ function cron($skip_if_locked=false) {
 		case "ballot_assignment":
 			if (!$period->ballot_preparation_now) break;
 
-			// Mitteilung der Teilnehmerliste und Wahlunterlagen an Urnenbeauftragte (per Post oder E-Mail?)
+			// TODO Mitteilung der Teilnehmerliste und Wahlunterlagen an Urnenbeauftragte (per Post oder E-Mail?)
 
 			$period->state = "ballot_preparation";
 			$period->update(array("state"));
@@ -129,8 +129,7 @@ function cron($skip_if_locked=false) {
 					foreach ( $issue->proposals() as $proposal ) {
 						if ($proposal->state=="revoked" or $proposal->state=="cancelled" or $proposal->state=="done") continue;
 						if ($proposal->state=="admitted") continue;
-						$proposal->state=="cancelled";
-						$proposal->update(array("state"));
+						$proposal->cancel();
 					}
 
 				}
@@ -472,8 +471,8 @@ function upload_voting_data($json) {
 	$result = curl_exec($ch);
 
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-	$curl_error = curl_error($ch);
+	//$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	//$curl_error = curl_error($ch);
 	curl_close($ch);
 
 	if ($http_code==201) return true;

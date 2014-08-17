@@ -14,7 +14,7 @@ abstract class DB {
 	const value_false = "f";
 
 	/**
-	 * nummer of levels into transaction - to avoid nested transactions
+	 * number of levels into transaction - to avoid nested transactions
 	 *
 	 * @var integer
 	 */
@@ -25,7 +25,7 @@ abstract class DB {
 	 * class constructor
 	 */
 	public static function __static() {
-		$dbconn = pg_connect(DATABASE_CONNECT);
+		pg_connect(DATABASE_CONNECT);
 	}
 
 
@@ -35,7 +35,7 @@ abstract class DB {
 	 * @param string  $str
 	 * @return string
 	 */
-	public function esc($str) {
+	public static function esc($str) {
 		return "'".pg_escape_string($str)."'";
 	}
 
@@ -46,7 +46,7 @@ abstract class DB {
 	 * @param mixed   $value
 	 * @return string
 	 */
-	public function value_to_sql($value) {
+	public static function value_to_sql($value) {
 		if (is_null($value)) return "NULL";
 		if ($value===true)  return "TRUE";
 		if ($value===false) return "FALSE";
@@ -60,7 +60,7 @@ abstract class DB {
 	 * @param mixed   $value
 	 * @return string
 	 */
-	public function int_to_sql($value) {
+	public static function int_to_sql($value) {
 		if (is_null($value)) return "NULL";
 		return intval($value);
 	}
@@ -72,7 +72,7 @@ abstract class DB {
 	 * @param string  $value
 	 * @return mixed
 	 */
-	public function bool_to_sql($value) {
+	public static function bool_to_sql($value) {
 		if ($value) return "TRUE";
 		if (is_null($value)) return "NULL";
 		return "FALSE";
@@ -84,7 +84,7 @@ abstract class DB {
 	 *
 	 * @param mixed   $value (reference)
 	 */
-	public function to_bool(&$value) {
+	public static function to_bool(&$value) {
 		if ($value===self::value_false) {
 			$value = false;
 		} elseif ($value===self::value_true) {
@@ -99,7 +99,7 @@ abstract class DB {
 	 * @param string  $sql
 	 * @return resource
 	 */
-	public function query($sql) {
+	public static function query($sql) {
 
 		$result = pg_query($sql);
 
@@ -121,7 +121,7 @@ abstract class DB {
 	 * @param string  $sql
 	 * @param string  $errormsg
 	 */
-	private function sql_error($sql, $errormsg) {
+	private static function sql_error($sql, $errormsg) {
 
 		$debug_backtrace = debug_backtrace();
 		// determine source file of error
@@ -146,7 +146,7 @@ abstract class DB {
 	 * @param integer $line
 	 * @return boolean
 	 */
-	function result_seek($result, $line) {
+	static function result_seek($result, $line) {
 		return pg_result_seek($result, $line);
 	}
 
@@ -156,7 +156,7 @@ abstract class DB {
 	 * @param resource $result
 	 * @return integer
 	 */
-	function num_rows($result) {
+	static function num_rows($result) {
 		return pg_num_rows($result);
 	}
 
@@ -166,7 +166,7 @@ abstract class DB {
 	 * @param resource $result
 	 * @return integer
 	 */
-	function affected_rows($result) {
+	static function affected_rows($result) {
 		return pg_affected_rows($result);
 	}
 
@@ -176,7 +176,7 @@ abstract class DB {
 	 * @param resource $result
 	 * @return array
 	 */
-	function fetch_row($result) {
+	static function fetch_row($result) {
 		return pg_fetch_row($result);
 	}
 
@@ -186,7 +186,7 @@ abstract class DB {
 	 * @param resource $result
 	 * @return array
 	 */
-	function fetch_assoc($result) {
+	static function fetch_assoc($result) {
 		return pg_fetch_assoc($result);
 	}
 
@@ -196,7 +196,7 @@ abstract class DB {
 	 * @param resource $result
 	 * @return array
 	 */
-	function fetch_array($result) {
+	static function fetch_array($result) {
 		return pg_fetch_array($result);
 	}
 
@@ -208,7 +208,7 @@ abstract class DB {
 	 * @param string  $classname
 	 * @return object
 	 */
-	function fetch_object($result, $classname) {
+	static function fetch_object($result, $classname) {
 		return pg_fetch_object($result, null, $classname, array(0, true));
 	}
 
@@ -219,7 +219,7 @@ abstract class DB {
 	 * @param string  $sql
 	 * @return mixed
 	 */
-	public function fetchassoc($sql) {
+	public static function fetchassoc($sql) {
 		$result = self::query($sql);
 		if ( $result and $row = pg_fetch_assoc($result) ) {
 			pg_free_result($result);
@@ -236,7 +236,7 @@ abstract class DB {
 	 * @param string  $sql
 	 * @return mixed
 	 */
-	public function fetchfield($sql) {
+	public static function fetchfield($sql) {
 		$result = self::query($sql);
 		$row = pg_fetch_row($result);
 		pg_free_result($result);
@@ -250,7 +250,7 @@ abstract class DB {
 	 * @param string  $sql
 	 * @return array
 	 */
-	public function fetchfieldarray($sql) {
+	public static function fetchfieldarray($sql) {
 		$result = self::query($sql);
 		$fieldarray = array();
 		while ( $row = pg_fetch_row($result) ) $fieldarray[] = $row[0];
@@ -265,7 +265,7 @@ abstract class DB {
 	 * @param string  $sql
 	 * @return integer
 	 */
-	public function numrows($sql) {
+	public static function numrows($sql) {
 		$result = self::query($sql);
 		$rows = pg_num_rows($result);
 		pg_free_result($result);
@@ -281,7 +281,7 @@ abstract class DB {
 	 * @param mixed   $insert_id     (optional, reference)
 	 * @return resource
 	 */
-	public function insert($table, array $fields_values=array(), &$insert_id=false) {
+	public static function insert($table, array $fields_values=array(), &$insert_id=false) {
 
 		//self::transaction_start();
 
@@ -318,7 +318,7 @@ abstract class DB {
 	 * @param string  $extra         (optional)
 	 * @return resource
 	 */
-	public function update($table, $where, array $fields_values=array(), $extra=false) {
+	public static function update($table, $where, array $fields_values=array(), $extra="") {
 
 		$fields_values = self::convert_fields_values($fields_values);
 		if ($extra) $fields_values[] = $extra;
@@ -336,7 +336,7 @@ abstract class DB {
 	 * @param mixed   $where (optional) WHERE part of the SQL statement
 	 * @return resource
 	 */
-	public function delete($table, $where=false) {
+	public static function delete($table, $where=false) {
 
 		$sql = "DELETE FROM ".$table.self::where_and($where);
 
@@ -353,7 +353,7 @@ abstract class DB {
 	 * @param integer $insert_id     (optional, reference)
 	 * @return resource
 	 */
-	function insert_or_update($table, array $fields_values, array $keys, &$insert_id=false) {
+	static function insert_or_update($table, array $fields_values, array $keys, &$insert_id=0) {
 
 		$fields_values_update = array();
 		$where = array();
@@ -385,7 +385,7 @@ abstract class DB {
 	 * @param array   $fields_values array('col1'=>"value", 'col2'=>true)
 	 * @return array                 array("column1='value'", "column2=TRUE")
 	 */
-	public function convert_fields_values(array $fields_values) {
+	public static function convert_fields_values(array $fields_values) {
 		$converted = array();
 		foreach ( $fields_values as $key => $value ) {
 			$converted[] = $key."=".self::value_to_sql($value);
@@ -402,7 +402,7 @@ abstract class DB {
 	 * @param string  multiple strings or arrays of stings as arguments
 	 * @return string
 	 */
-	public function where_and() {
+	public static function where_and() {
 		$args = func_get_args();
 
 		$conditions = self::array_flat($args);
@@ -417,12 +417,12 @@ abstract class DB {
 
 
 	/**
-	 * converts a multidimensional indexed array to singledimensional array
+	 * converts a multi dimensional indexed array to single dimensional array
 	 *
 	 * @param array   $array
 	 * @return array
 	 */
-	private function array_flat(array $array) {
+	private static function array_flat(array $array) {
 		$return = array();
 		foreach ( $array as $element ) {
 			if ( is_array($element) ) {
@@ -438,7 +438,7 @@ abstract class DB {
 	/**
 	 * START TRANSACTION
 	 */
-	public function transaction_start() {
+	public static function transaction_start() {
 		if ( self::$transaction_depth++ == 0 ) self::query("START TRANSACTION");
 	}
 
@@ -446,7 +446,7 @@ abstract class DB {
 	/**
 	 * COMMIT
 	 */
-	public function transaction_commit() {
+	public static function transaction_commit() {
 		if ( --self::$transaction_depth == 0 ) self::query("COMMIT");
 	}
 
@@ -454,7 +454,7 @@ abstract class DB {
 	/**
 	 * ROLLBACK
 	 */
-	public function transaction_rollback() {
+	public static function transaction_rollback() {
 		if ( --self::$transaction_depth == 0 ) self::query("ROLLBACK");
 	}
 

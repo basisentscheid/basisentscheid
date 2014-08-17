@@ -141,7 +141,7 @@ function fatal_error_handler() {
  * @param integer $errline
  * @param array   $errcontext
  * @param boolean $fatal
- * @param unknown $repeated   (optional)
+ * @param boolean $repeated   (optional)
  */
 function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal, $repeated=false) {
 
@@ -293,9 +293,9 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 			$filename = "backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
 			file_put_contents(ERROR_BACKTRACE_PATH.$filename, $backtrace);
 			if (ERROR_MAIL and ERROR_BACKTRACE_URL) {
-				$mailbody .= "\n";
-				$mailbody .= "complete backtrace:\n";
-				$mailbody .= ERROR_BACKTRACE_URL.$filename."\n";
+				$mailbody .= "\n"
+					."complete backtrace:\n"
+					.ERROR_BACKTRACE_URL.$filename."\n";
 			}
 		}
 
@@ -401,9 +401,10 @@ function error_send_mail($subject, $mailbody) {
 	// send one last mail at the 100th error
 	if ($count == 100) {
 		$subject = "PHP error mail limit reached!";
-		$mailbody = "The error mail limit (100 mails in 12 hours) is reached!\n\n".
-			"In ".$date." no error mails will be sent anymore.\n\n".
-			"By deleting the file ".$file."\nthe counter can be reset.\n";
+		$mailbody = "The error mail limit (100 mails in 12 hours) is reached!\n\n"
+			."In ".$date." no error mails will be sent anymore.\n\n"
+			."By deleting the file ".$file."\n"
+			."the counter can be reset.\n";
 	}
 
 	mail(ERROR_MAIL, $subject, $mailbody, "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n");

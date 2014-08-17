@@ -11,48 +11,51 @@ require "inc/common.php";
 Login::access("member");
 
 if ($action) {
-	if ($action!="save") {
+	switch ($action) {
+	case "save":
+		action_required_parameters('username', 'mail');
+
+		// save notification settings
+		foreach ( Notification::$default_settings as $interest => $types ) {
+			$fields_values = array('member'=>Login::$member->id, 'interest'=>$interest);
+			foreach ( $types as $type => $value ) {
+				$fields_values[$type] = !empty($_POST['notify'][$interest][$type]);
+			}
+			DB::insert_or_update("notify", $fields_values, array('member', 'interest'));
+		}
+
+		$success_msgs = array();
+
+		$username = trim($_POST['username']);
+		if ($username != Login::$member->username) {
+			if ($username) {
+				Login::$member->username = Login::$member->set_unique_username($username);
+				$success_msgs[] = _("The new username has been saved.");
+			} else {
+				Login::$member->username = NULL;
+				$success_msgs[] = _("You are now anonymous.");
+			}
+		}
+
+		Login::$member->update(array('username'));
+		foreach ($success_msgs as $msg) success($msg);
+
+		// save mail
+		$mail = trim($_POST['mail']);
+		if ($mail != Login::$member->mail) {
+			if ( ! preg_match('/^[^@%s]+@[^@%s]+\.[a-z]+$/i', $mail) ) {
+				warning(_("This email address is not valid!"));
+				break;
+			}
+			Login::$member->set_mail($mail);
+		}
+
+		redirect();
+
+	default:
 		warning(_("Unknown action"));
 		redirect();
 	}
-	action_required_parameters('username', 'mail');
-
-	// save notification settings
-	foreach ( Notification::$default_settings as $interest => $types ) {
-		$fields_values = array('member'=>Login::$member->id, 'interest'=>$interest);
-		foreach ( $types as $type => $value ) {
-			$fields_values[$type] = !empty($_POST['notify'][$interest][$type]);
-		}
-		DB::insert_or_update("notify", $fields_values, array('member', 'interest'));
-	}
-
-	$success_msgs = array();
-
-	$username = trim($_POST['username']);
-	if ($username != Login::$member->username) {
-		if ($username) {
-			Login::$member->username = Login::$member->set_unique_username($username);
-			$success_msgs[] = _("The new username has been saved.");
-		} else {
-			Login::$member->username = NULL;
-			$success_msgs[] = _("You are now anonymous.");
-		}
-	}
-
-	Login::$member->update(array('username'));
-	foreach ($success_msgs as $msg) success($msg);
-
-	// save mail
-	$mail = trim($_POST['mail']);
-	if ($mail != Login::$member->mail) {
-		if ( ! preg_match('/^[^@%s]+@[^@%s]+\.[a-z]+$/i', $mail) ) {
-			warning(_("This email address is not valid!"));
-			break;
-		}
-		Login::$member->set_mail($mail);
-	}
-
-	redirect();
 }
 
 

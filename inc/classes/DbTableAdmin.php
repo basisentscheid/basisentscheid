@@ -523,7 +523,7 @@ class DbTableAdmin {
 	 *
 	 * @param object  $object
 	 * @param array   $post          $_POST or a subset of it
-	 * @param array   $input_columns (optional) columns to be saved, false = all columns
+	 * @param mixed   $input_columns (optional) columns to be saved, false = all columns
 	 * @param string  $msg_prefix    (optional) record number notice
 	 * @return array                 array of columns to save or false if input is rejected by beforesave method
 	 */

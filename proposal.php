@@ -9,7 +9,15 @@
 
 require "inc/common.php";
 
-URI::strip_one_time_params(array('argument_parent', 'argument_edit', 'edit_admission_decision', 'show_drafts', 'edit_proponent', 'become_proponent', 'remove_proponent'));
+URI::strip_one_time_params(array(
+		'argument_parent',
+		'argument_edit',
+		'edit_admission_decision',
+		'show_drafts',
+		'edit_proponent',
+		'become_proponent',
+		'remove_proponent'
+	));
 
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
@@ -427,8 +435,8 @@ html_foot();
 /**
  * display the right column with area and proponents
  *
- * @param object  $proposal
- * @param object  $issue
+ * @param Proposal $proposal
+ * @param Issue   $issue
  * @param array   $proponents
  * @param boolean $is_proponent
  */
@@ -788,8 +796,8 @@ function display_arguments($side, $parent, $level) {
 /**
  * display supporters and ballot voting demanders
  *
- * @param object  $proposal
- * @param object  $issue
+ * @param Proposal $proposal
+ * @param Issue   $issue
  * @param array   $supporters
  * @param mixed   $is_supporter
  */

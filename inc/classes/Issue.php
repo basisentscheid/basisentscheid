@@ -14,6 +14,10 @@ class Issue extends Relation {
 	public $ballot_voting_demanders;
 	public $ballot_voting_reached;
 	public $state;
+	public $vote;
+	public $clear;
+
+	public $ballot_voting_demanded_by_member;
 
 	private $area_obj;
 	private $period_obj;
@@ -50,14 +54,15 @@ class Issue extends Relation {
 	/**
 	 * update with extra string for SQL expressions
 	 *
-	 * @param array   $fields (optional)
+	 * @param mixed   $fields (optional) array or false
 	 * @param string  $extra  (optional)
-	 * @return unknown
+	 * @return resource
 	 */
-	function update($fields=false, $extra=false ) {
+	function update($fields=false, $extra="") {
 
 		if (!$fields) $fields = $this->update_fields;
 
+		$fields_values = array();
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}

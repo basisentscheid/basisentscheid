@@ -61,7 +61,7 @@ abstract class Relation {
 	 *
 	 * @param integer $id (optional) only needed on new reads
 	 */
-	public function read($id=false) {
+	public function read($id=0) {
 
 		if (!$id) $id = $this->id;
 
@@ -81,13 +81,14 @@ abstract class Relation {
 	/**
 	 * save the current object as a new record in the database
 	 *
-	 * @param array   $fields (optional)
+	 * @param mixed   $fields (optional) array or false
 	 * @return boolean
 	 */
 	public function create($fields=false) {
 
 		if (!$fields) $fields = $this->create_fields;
 
+		$fields_values = array();
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
@@ -99,14 +100,15 @@ abstract class Relation {
 	/**
 	 * save the changed values to the record in the database
 	 *
-	 * @param array   $fields (optional) save only these fields
+	 * @param mixed   $fields (optional) array or false - save only these fields
 	 * @param string  $extra  (optional)
 	 * @return resource
 	 */
-	function update($fields=false, $extra=false) {
+	function update($fields=false, $extra="") {
 
 		if (!$fields) $fields = $this->update_fields;
 
+		$fields_values = array();
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}

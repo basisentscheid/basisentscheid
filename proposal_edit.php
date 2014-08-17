@@ -146,7 +146,7 @@ if (isset($_GET['issue'])) {
 
 ?>
 <div class="proposal_info">
-<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
+<? display_proposal_info($proposal, $issue, $proponents); ?>
 </div>
 
 <div class="proposal_content">
@@ -187,12 +187,11 @@ html_foot();
 /**
  * display the right column with area and proponents
  *
- * @param object  $proposal
- * @param object  $issue        or empty
+ * @param Proposal $proposal
+ * @param object  $issue      Issue or empty
  * @param array   $proponents
- * @param boolean $is_proponent
  */
-function display_proposal_info(Proposal $proposal, $issue, array $proponents, $is_proponent) {
+function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 ?>
 <h2><?=_("Area")?></h2>
 <p class="proposal">

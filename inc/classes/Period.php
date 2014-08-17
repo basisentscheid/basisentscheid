@@ -17,6 +17,7 @@ class Period extends Relation {
 	public $counting;
 	public $online_voting;
 	public $ballot_voting;
+	public $state;
 
 	protected $boolean_fields = array("online_voting", "ballot_voting");
 

@@ -9,6 +9,8 @@
 
 class Proposal extends Relation {
 
+	const proponent_length = 100;
+
 	public $title;
 	const title_length = 300;
 	public $content;
@@ -21,8 +23,9 @@ class Proposal extends Relation {
 	public $quorum_reached;
 	public $admission_decision;
 	public $submitted;
-
-	const proponent_length = 100;
+	public $revoke;
+	public $admitted;
+	public $cancelled;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member");
 	protected $update_fields = array("title", "content", "reason");
@@ -45,7 +48,7 @@ class Proposal extends Relation {
 	/**
 	 * set the referenced issue (instead of reading it from the database)
 	 *
-	 * @param object  $issue
+	 * @param Issue   $issue
 	 */
 	public function set_issue(Issue $issue) {
 		$this->issue_obj = $issue;
@@ -60,7 +63,7 @@ class Proposal extends Relation {
 	 * @param integer $area      (optional) area for a new created issue
 	 * @param array   $fields    (optional)
 	 */
-	public function create($proponent, $area=false, array $fields=array("title", "content", "reason", "issue")) {
+	public function create($proponent, $area=0, array $fields=array("title", "content", "reason", "issue")) {
 
 		if (!$this->issue) {
 			$issue = new Issue;
@@ -157,7 +160,7 @@ class Proposal extends Relation {
 	/**
 	 * look if the supplied member is a proponent of this proposal
 	 *
-	 * @param object  $member
+	 * @param Member  $member
 	 * @param boolean $confirmed (optional)
 	 * @return boolean
 	 */
@@ -377,7 +380,7 @@ class Proposal extends Relation {
 	/**
 	 * confirm an applying member as proponent
 	 *
-	 * @param object  $member
+	 * @param Member  $member
 	 * @return boolean
 	 */
 	public function confirm_proponent(Member $member) {

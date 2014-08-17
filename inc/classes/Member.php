@@ -15,6 +15,10 @@ class Member extends Relation {
 	public $activated;
 	public $profile   = "";
 	public $public_id = "";
+	public $mail_lock_expiry;
+	public $mail_unconfirmed;
+	public $mail_secret;
+	public $hide_help;
 
 	protected $boolean_fields = array("participant");
 	protected $create_fields = array("auid", "username", "public_id", "profile");
@@ -49,7 +53,6 @@ class Member extends Relation {
 	/**
 	 * get the username or "anonymous"
 	 *
-	 * @param string  $username
 	 * @return string
 	 */
 	public function username() {
@@ -200,7 +203,6 @@ class Member extends Relation {
 		// get needed groups
 
 		$sql = "SELECT id FROM nested_groups";
-		$result = DB::query($sql);
 		$existing_groups = DB::fetchfieldarray($sql);
 		$needed_groups = array_diff($member_groups, $existing_groups);
 

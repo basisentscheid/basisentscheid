@@ -9,16 +9,19 @@
 
 class Argument extends Relation {
 
+	const rating_score_max = 2;
+
 	public $side;
 	public $parent;
 	public $proposal;
-
+	public $created;
+	public $removed;
+	public $rating;
 	public $title;
 	const title_length = 100;
 	public $content;
 	const content_length = 2000;
-
-	const rating_score_max = 2;
+	public $member;
 
 	protected $boolean_fields = array("removed");
 	protected $create_fields = array("title", "content", "proposal", "parent", "side", "member");
