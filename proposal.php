@@ -232,20 +232,8 @@ if ($action) {
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
-if (isset($_GET['draft'])) {
-	$draft = new Draft($_GET['draft']);
-	if (!$is_proponent) {
-		error("You are not a proponent of this proposal!");
-	}
-	if ($draft->proposal != $proposal->id) {
-		error("The requested draft does not exist!");
-	}
-	html_head(sprintf(_("Proposal %d, draft from %s"), $proposal->id, datetimeformat($draft->created)));
-	$content_obj = $draft;
-} else {
-	html_head(_("Proposal")." ".$proposal->id);
-	$content_obj = $proposal;
-}
+
+html_head(_("Proposal")." ".$proposal->id);
 
 
 // messages
@@ -304,9 +292,9 @@ if ($is_proponent and $proposal->allowed_edit_content()) {
 }
 ?>
 <h2><?=_("Title")?></h2>
-<p class="proposal proposal_title"><?=h($content_obj->title)?></p>
+<p class="proposal proposal_title"><?=h($proposal->title)?></p>
 <h2><?=_("Content")?></h2>
-<p class="proposal"><?=content2html($content_obj->content)?></p>
+<p class="proposal"><?=content2html($proposal->content)?></p>
 <?
 if ($is_proponent and $proposal->allowed_edit_reason_only()) {
 ?>
@@ -315,13 +303,13 @@ if ($is_proponent and $proposal->allowed_edit_reason_only()) {
 }
 ?>
 <h2><?=_("Reason")?></h2>
-<p class="proposal"><?=content2html($content_obj->reason)?></p>
+<p class="proposal"><?=content2html($proposal->reason)?></p>
 </div>
 
 <div class="clearfix"></div>
 
 <?
-if ($proposal->state != "draft" and !isset($_GET['draft'])) {
+if ($proposal->state != "draft") {
 ?>
 <div class="arguments">
 	<div class="arguments_side arguments_pro">
@@ -407,9 +395,7 @@ if ($proposal->submitted or $proposal->revoke) {
 	Timebar::display($times);
 }
 
-if ($proposal->state != "draft" and !isset($_GET['draft'])) {
-	display_quorum($proposal, $issue, $supporters, $is_supporter);
-}
+display_quorum($proposal, $issue, $supporters, $is_supporter);
 
 ?>
 
@@ -536,38 +522,8 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 	// show drafts only to the proponents
 	if (!$is_proponent) return;
 
-?>
-<h2><?=_("Drafts")?></h2>
-<?
 	if ($proposal->state=="draft" or !empty($_GET['show_drafts'])) {
-?>
-<table>
-<?
-		$sql = "SELECT * FROM drafts WHERE proposal=".intval($proposal->id)." ORDER BY created DESC";
-		$result = DB::query($sql);
-		$i = DB::num_rows($result);
-		while ( $draft = DB::fetch_object($result, "Draft") ) {
-			// get the author's proponent name
-			$author = new Member($draft->author);
-			$proponent_name = "("._("proponent revoked").")";
-			foreach ($proponents as $proponent) {
-				if ($proponent->id == $author->id) {
-					$proponent_name = $proponent->proponent_name;
-					break;
-				}
-			}
-?>
-<tr class="<?=stripes()?>">
-	<td class="right"><?=$i?></td>
-	<td><a href="<?=URI::append(array('draft'=>$draft->id))?>"><?=datetimeformat($draft->created)?></a></td>
-	<td><?=$proponent_name?></td>
-</tr>
-<?
-			$i--;
-		}
-?>
-</table>
-<?
+		$proposal->display_drafts($proponents);
 	} else {
 ?>
 <a href="<?=URI::append(array('show_drafts'=>1))?>"><?=_("Drafts")?></a>

@@ -572,6 +572,34 @@ div.proposal_info div.add {
 	margin-top: 0.3em;
 }
 
+div.proposal_info td.diffradio {
+	padding: 0;
+}
+div.proposal_info td.diffradio input {
+	margin: 1px;
+}
+
+
+div.proposal_info table td {
+	width: 20px;
+	width: 2rem;
+	overflow: hidden;
+}
+div.proposal_info tr.active {
+	font-weight: bold;
+}
+
+div.diff p ins {
+	color: green;
+	background: #DFD;
+	text-decoration: none;
+}
+div.diff p del {
+	color: red;
+	background: #FDD;
+	text-decoration: none;
+}
+
 div.quorum {
 	background-color: #E0DAF0;
 	padding: 5px 10px;

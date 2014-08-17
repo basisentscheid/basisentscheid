@@ -692,4 +692,100 @@ class Proposal extends Relation {
 	}
 
 
+	/**
+	 * display the right column with area and proponents
+	 *
+	 * @param object  $issue
+	 * @param array   $proponents
+	 * @param boolean $is_proponent
+	 */
+	public function display_proposal_info(Issue $issue, array $proponents, $is_proponent) {
+?>
+<h2><?=_("Area")?></h2>
+<p class="proposal"><?=h($issue->area()->name)?></p>
+<h2><?=_("Proponents")?></h2>
+<ul>
+<?
+		foreach ( $proponents as $proponent ) {
+?>
+	<li><?
+			if ($proponent->proponent_confirmed) {
+				echo content2html($proponent->proponent_name);
+			} else {
+				?><span class="unconfirmed"><?=content2html($proponent->proponent_name)?></span><?
+			}
+			?></li>
+<?
+		}
+?>
+</ul>
+<?
+
+		// show drafts only to the proponents
+		if (!$is_proponent) return;
+
+		$this->display_drafts($proponents);
+
+	}
+
+
+	/**
+	 * display the list of drafts for the right column
+	 *
+	 * @param array   $proponents
+	 */
+	public function display_drafts(array $proponents) {
+?>
+<h2><?=_("Drafts")?></h2>
+<form action="diff.php" method="GET">
+<table>
+<?
+		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
+		$result = DB::query($sql);
+		$i = DB::num_rows($result);
+		$j = 0;
+		while ( $draft = DB::fetch_object($result, "Draft") ) {
+			// get the author's proponent name
+			$author = new Member($draft->author);
+			$proponent_name = "("._("proponent revoked").")";
+			foreach ($proponents as $proponent) {
+				if ($proponent->id == $author->id) {
+					$proponent_name = $proponent->proponent_name;
+					break;
+				}
+			}
+?>
+<tr class="<?=stripes();
+			if (
+				(BN=="draft.php" and $draft->id==@$_GET['id']) or
+				((BN=="proposal.php" or BN=="proposal_edit.php") and $j==0)
+			) { ?> active<? }
+			?>">
+	<td class="nowrap diffradio"><input type="radio" name="draft1" value="<?=$draft->id?>"<?
+			if ( isset($_GET['draft1']) ? $_GET['draft1']==$draft->id : $j==1 ) { ?> checked<? }
+			?>><input type="radio" name="draft2" value="<?=$draft->id?>"<?
+			if ( isset($_GET['draft2']) ? $_GET['draft2']==$draft->id : $j==0 ) { ?> checked<? }
+			?>></td>
+	<td class="right"><?=$i?></td>
+	<td><a href="<?
+			if ($j==0) {
+				?>proposal.php?id=<?=$this->id;
+			} else {
+				?>draft.php?id=<?=$draft->id;
+			}
+			?>"><?=datetimeformat($draft->created)?></a></td>
+	<td><?=$proponent_name?></td>
+</tr>
+<?
+			$i--;
+			$j++;
+		}
+?>
+</table>
+<input type="submit" value="<?=_("compare versions")?>">
+</form>
+<?
+	}
+
+
 }

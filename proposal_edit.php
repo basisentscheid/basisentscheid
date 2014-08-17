@@ -14,7 +14,7 @@ Login::access("member");
 if (!empty($_GET['id'])) {
 	$proposal = new Proposal($_GET['id']);
 	if (!$proposal->id) {
-		error("This proposal does not exist!");
+		error(_("This proposal does not exist!"));
 	}
 	if ($proposal->allowed_edit_content()) {
 		$edit_content = true;
@@ -136,6 +136,12 @@ if ($proposal->id) {
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
+?>
+<div class="proposal_info">
+<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
+</div>
+<?
+
 form(BN.($proposal->id?"?id=".$proposal->id:""), 'class="proposal"');
 
 if (isset($_GET['issue'])) {
@@ -145,9 +151,6 @@ if (isset($_GET['issue'])) {
 }
 
 ?>
-<div class="proposal_info">
-<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
-</div>
 
 <div class="proposal_content">
 <?
@@ -177,6 +180,8 @@ if ($edit_content) {
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
 </form>
+
+<div class="clearfix"></div>
 <?
 
 html_foot();
@@ -236,4 +241,10 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents, $i
 ?>
 </ul>
 <?
+
+	// show drafts only to the proponents
+	if (!$is_proponent) return;
+
+	$proposal->display_drafts($proponents);
+
 }
