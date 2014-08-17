@@ -9,9 +9,9 @@
 
 require "inc/common.php";
 
-require "inc/PHP-OAuth2/src/OAuth2/Client.php";
-require "inc/PHP-OAuth2/src/OAuth2/GrantType/IGrantType.php";
-require "inc/PHP-OAuth2/src/OAuth2/GrantType/AuthorizationCode.php";
+require "inc/libs/PHP-OAuth2/src/OAuth2/Client.php";
+require "inc/libs/PHP-OAuth2/src/OAuth2/GrantType/IGrantType.php";
+require "inc/libs/PHP-OAuth2/src/OAuth2/GrantType/AuthorizationCode.php";
 
 $client = new OAuth2\Client(OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET);
 if (!isset($_GET['code'])) {
