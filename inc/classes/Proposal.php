@@ -494,6 +494,136 @@ class Proposal extends Relation {
 
 
 	/**
+	 * if it is allowed to move the issue to a different issue
+	 *
+	 * @return boolean
+	 */
+	public function allowed_move_to_issue() {
+		switch ($this->issue()->state) {
+		case "admission":
+		case "debate":
+			switch ($this->state) {
+			case "draft":
+			case "submitted":
+			case "admitted":
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * get all issues, where the proposal could be moved to
+	 *
+	 * @return array
+	 */
+	public function options_move_to_issue() {
+
+		$options = array();
+
+		if ( count($this->issue()->proposals()) > 1 ) {
+			$options[0] = _("create a new issue");
+		}
+
+		$sql = "SELECT * FROM issues WHERE id != ".intval($this->issue)." AND period";
+		if ($period = $this->issue()->period) $sql .= "=".intval($period); else $sql .= " IS NULL";
+		$sql .= " ORDER BY area, id DESC";
+		$result = DB::query($sql);
+		while ( $issue = DB::fetch_object($result, "Issue") ) {
+			$proposals = $issue->proposals(true);
+			if (!$proposals) continue; // ignore issues with only closed proposals
+			$title = limitstr($issue->area()->name, 20);
+			$i = 0;
+			foreach ( $proposals as $proposal ) {
+				$title .= ", ".$proposal->id;
+				if ($i < 3) $title .= ": ".limitstr($proposal->title, 20);
+				$i++;
+			}
+			$options[$issue->id] = $title;
+		}
+
+		return $options;
+	}
+
+
+	/**
+	 * move the proposal to a different issue
+	 *
+	 * @param integer $new_issue_id
+	 */
+	public function move_to_issue($new_issue_id) {
+
+		DB::transaction_start();
+		$this->read();
+
+		if ( !$this->allowed_move_to_issue() ) {
+			DB::transaction_rollback();
+			warning(_("Moving this proposal is not allowed anymore."));
+			redirect();
+		};
+
+		$options = $this->options_move_to_issue();
+		if (!isset($options[$new_issue_id])) {
+			DB::transaction_rollback();
+			warning(_("The selected option is not available."));
+			redirect();
+		}
+
+		$old_issue = $this->issue();
+
+		if ($new_issue_id) {
+			$new_issue = new Issue($new_issue_id);
+			if (!$new_issue->id) {
+				DB::transaction_rollback();
+				warning(_("The issue does not exist."));
+				redirect();
+			}
+		} else {
+			$new_issue = new Issue;
+			$new_issue->area   = $old_issue->area;
+			$new_issue->period = $old_issue->period;
+			$new_issue->state  = $old_issue->state;
+			// If the old issue reached ballot voting, the new issue gets ballot voting unseen the number of ballot voting demanders.
+			$new_issue->ballot_voting_reached = $old_issue->ballot_voting_reached;
+			$new_issue->debate_started = $old_issue->debate_started;
+			$new_issue->create();
+		}
+
+		$this->issue = $new_issue->id;
+		if ( ! $this->update(array('issue')) ) {
+			DB::transaction_rollback();
+			return;
+		}
+
+		// copy ballot voting demanders
+		$sql = "INSERT INTO ballot_voting_demanders (issue, member, anonymous)
+			SELECT ".intval($new_issue->id).", old.member, old.anonymous
+			FROM ballot_voting_demanders old
+			WHERE old.issue=".intval($old_issue->id)."
+			  AND old.member NOT IN (
+					SELECT member FROM ballot_voting_demanders
+					WHERE issue=".intval($new_issue->id)."
+						OR issue=".intval($old_issue->id)."
+				)";
+		if ( ! DB::query($sql) ) {
+			DB::transaction_rollback();
+			return;
+		}
+
+		DB::transaction_commit();
+
+		$new_issue->update_ballot_voting_cache();
+
+		// remove empty issue
+		if ( ! $old_issue->proposals() ) {
+			DB::query("DELETE FROM issues WHERE id=".intval($old_issue->id));
+		}
+
+	}
+
+
+	/**
 	 * cancel the proposal
 	 *
 	 * @param string  $state (optional) destination state: "cancelled", "revoked" or "done"

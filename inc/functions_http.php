@@ -295,7 +295,8 @@ function action_proposal_select_period() {
  * @param string  $url
  * @param string  $attributes (optional)
  */
-function form($url, $attributes="") {
+function form($url="", $attributes="") {
+	if ($url=="") $url = BN;
 ?>
 <form action="<?=$url?>" method="POST"<?
 	if ($attributes) { ?> <?=$attributes; }
@@ -379,7 +380,7 @@ function input_checkbox($name, $value, $checked=false, $disabled=false, $attribu
  *
  * @param string  $name
  * @param array   $options
- * @param string  $selected (optional)
+ * @param mixed   $selected (optional)
  */
 function input_select($name, array $options, $selected=false) {
 ?>
@@ -394,6 +395,28 @@ function input_select($name, array $options, $selected=false) {
 	}
 ?>
 </select>
+<?
+}
+
+
+/**
+ * submit button
+ *
+ * @param string  $value
+ */
+function input_submit($value) {
+?>
+	<input type="submit" value="<?=h($value)?>">
+<?
+}
+
+
+/**
+ *
+ */
+function form_end() {
+?>
+</form>
 <?
 }
 

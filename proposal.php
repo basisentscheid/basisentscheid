@@ -69,7 +69,7 @@ if ($action) {
 		}
 		$member = new Member($_POST['member']);
 		if (!$member->id) {
-			warning("The member does not exist.");
+			warning(_("The member does not exist."));
 			redirect();
 		}
 		$proposal->confirm_proponent($member);
@@ -116,6 +116,13 @@ if ($action) {
 		Login::access_action("admin");
 		action_required_parameters("admission_decision");
 		$proposal->set_admission_decision(trim($_POST['admission_decision']));
+		redirect();
+		break;
+
+	case "move_to_issue":
+		Login::access_action("admin");
+		action_required_parameters("issue");
+		$proposal->move_to_issue($_POST['issue']);
 		redirect();
 		break;
 
@@ -426,9 +433,21 @@ display_quorum($proposal, $issue, $supporters, $is_supporter);
 
 <div class="issue">
 <?
-if (Login::$member and $issue->allowed_add_alternative_proposal()) {
+if (Login::$member) {
+	if ($issue->allowed_add_alternative_proposal()) {
 ?>
 <div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
+<?
+	}
+} elseif (Login::$admin and $proposal->allowed_move_to_issue()) {
+?>
+<div class="add"><?=_("Move this proposal to a different issue")?>: <?
+	form(URI::same(), 'style="display:inline-block"');
+	input_select("issue", $proposal->options_move_to_issue());
+	input_hidden("action", "move_to_issue");
+	input_submit(_("move proposal to the selected issue"));
+	form_end();
+	?></div>
 <?
 }
 ?>

@@ -74,10 +74,12 @@ class Issue extends Relation {
 	/**
 	 * get all proposals in this issue
 	 *
+	 * @param boolean $open (optional) get only open proposals
 	 * @return array
 	 */
-	public function proposals() {
+	public function proposals($open=false) {
 		$sql = "SELECT * FROM proposals WHERE issue=".intval($this->id);
+		if ($open) $sql .= " AND state IN ('draft', 'submitted', 'admitted')";
 		$result = DB::query($sql);
 		$proposals = array();
 		while ( $proposal = DB::fetch_object($result, "Proposal") ) {
