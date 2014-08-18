@@ -9,8 +9,10 @@
 
 abstract class Timebar {
 
-	const day_width = 24;
 	const one_day = 86400; // 24 * 60 * 60
+	const round_precision = 2;
+	const day_width = 1.9; // em
+	const tick_width = 0.15; // em, must be equal to css: div.timebar div.datebar, div.timebar div.bar { width }
 
 
 	/**
@@ -91,14 +93,15 @@ abstract class Timebar {
 	private function display_part(array $times, $from_time, $to_time, $show_year) {
 		$second_width = self::day_width / self::one_day;
 		$days = ($to_time - $from_time) / self::one_day;
+		$day_width = self::day_width - self::tick_width;
 ?>
 <div class="part">
 	<div class="days"><?
 		$month = 0;
 		for ($t=$from_time; $t<=$to_time; $t+=self::one_day) {
-			?><div class="bar">&nbsp;</div><?
+			?><div class="bar"><div class="mark"></div></div><?
 			if ($t <= $to_time - self::one_day) {
-				?><div class="space" style="width:<?=self::day_width-1?>px"><?
+				?><div class="space" style="width:<?=$day_width?>em"><?
 				if (date("n", $t)!=$month) {
 					if ($show_year) {
 						?><span class="nowrap"><?
@@ -111,32 +114,29 @@ abstract class Timebar {
 					$month = date("n", $t);
 				}
 				if (date("N", $t)>=6) {
-					?><span class="weekend"><?=date("j.", $t)?></span><?
+					?><span class="weekend"><?=date("j", $t)?></span><?
 				} else {
-					echo date("j.", $t);
+					echo date("j", $t);
 				}
 				?></div><?
 			}
 		}
-		?>	</div>
-	<div class="beam" style="width:<?=self::day_width * $days +1 ?>px">&nbsp;</div>
-<?
-		$width = round(($times[0][0] - $from_time) * $second_width);
-?>
-	<div class="datespace" style="width:<?=$width?>px">&nbsp;</div><?
+		?></div>
+	<div class="beam" style="width:calc(<?=round(self::day_width * $days, self::round_precision)?>em + 1px)"></div>
+	<div class="datespace" style="width:<?=round(($times[0][0] - $from_time) * $second_width - self::tick_width, self::round_precision)?>em"></div><?
 		$line = 0;
 		foreach ( $times as $index => $time ) {
 			if (isset($times[$index+1])) {
-				$width = max(0, round(($times[$index+1][0] - $time[0]) * $second_width) - 1);
+				$width = max(0, round(($times[$index+1][0] - $time[0]) * $second_width - self::tick_width, self::round_precision));
 			} else {
 				// last one
 				$width = 0;
 			}
-			?><div class="datebar<?=$time['class']?>" style="height:<?=$line+1?>em">&nbsp;</div><div class="datespace<?=$time['class']?>" style="width:<?=$width?>px<?
+			?><div class="datebar<?=$time['class']?>" style="height:<?=$line+1?>em"><div class="mark"></div></div><div class="datespace<?=$time['class']?>" style="width:<?=$width?>em<?
 			if ($line) { ?>;padding-top:<?=$line?>em<? }
 			?>"><span title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></span></div><?
 			$line++;
-			if ($width > 100) $line = 0;
+			if ($width > 10) $line = 0;
 		}
 		?></div>
 <?
