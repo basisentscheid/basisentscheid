@@ -96,6 +96,12 @@ div.proposal_info ul {
 	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
+hr {
+	background-color: #FFF;
+	border: none;
+	height: 2px;
+}
+
 h1 {
 	font-size: 150%;
 	margin-top: 20px;
