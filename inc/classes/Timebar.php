@@ -99,7 +99,8 @@ abstract class Timebar {
 	<div class="days"><?
 		$month = 0;
 		for ($t=$from_time; $t<=$to_time; $t+=self::one_day) {
-			?><div class="bar"><div class="mark"></div></div><?
+			?><div
+		class="bar"><div class="mark"></div></div><?
 			if ($t <= $to_time - self::one_day) {
 				?><div class="space" style="width:<?=$day_width?>em"><?
 				if (date("n", $t)!=$month) {
@@ -132,9 +133,11 @@ abstract class Timebar {
 				// last one
 				$width = 0;
 			}
-			?><div class="datebar<?=$time['class']?>" style="height:<?=$line+1?>em"><div class="mark"></div></div><div class="datespace<?=$time['class']?>" style="width:<?=$width?>em<?
-			if ($line) { ?>;padding-top:<?=$line?>em<? }
-			?>"><span title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></span></div><?
+			?><div
+		class="datebar<?=$time['class']?>" style="height:<?=$line+1?>em"><div class="mark"></div></div><div class="datespace<?=$time['class']?>" style="width:<?=$width?>em<?
+			if ($line) { ?>;margin-top:<?=$line?>em<? }
+			?>"
+		title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></div><?
 			$line++;
 			if ($width > 10) $line = 0;
 		}
