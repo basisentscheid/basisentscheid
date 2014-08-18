@@ -350,10 +350,10 @@ abstract class DB {
 	 * @param string  $table
 	 * @param array   $fields_values
 	 * @param array   $keys
-	 * @param integer $insert_id     (optional, reference)
+	 * @param mixed   $insert_id     (optional, reference)
 	 * @return resource
 	 */
-	static function insert_or_update($table, array $fields_values, array $keys, &$insert_id=0) {
+	static function insert_or_update($table, array $fields_values, array $keys, &$insert_id=false) {
 
 		$fields_values_update = array();
 		$where = array();
