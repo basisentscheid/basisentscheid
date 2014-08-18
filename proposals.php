@@ -110,7 +110,7 @@ if ($search) {
 	$pattern = DB::esc("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
 	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
 	$sql .= DB::where_and($where);
-	$sql .= " GROUP BY issues.id";
+	$sql .= " GROUP BY issues.id, ballot_voting_demanders.member";
 } else {
 	$sql .= DB::where_and($where);
 }
