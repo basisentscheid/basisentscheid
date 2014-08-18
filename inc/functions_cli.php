@@ -471,13 +471,12 @@ function upload_voting_data($json) {
 	$result = curl_exec($ch);
 
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	//$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-	//$curl_error = curl_error($ch);
+	$curl_error = curl_error($ch);
 	curl_close($ch);
 
 	if ($http_code==201) return true;
 
-	trigger_error("HTTP code other than 201", E_USER_NOTICE);
+	trigger_error("HTTP code other than 201, ".$curl_error, E_USER_NOTICE);
 	return false;
 }
 
@@ -495,30 +494,7 @@ function download_vote(Issue $issue) {
 
 	// TODO: The issue should probably be added to the URL.
 
-	$ch = curl_init();
-
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL, SHARE_URL);
-
-	// https handling
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-	curl_setopt($ch, CURLOPT_CAINFO,  CAINFO);
-	curl_setopt($ch, CURLOPT_SSLCERT, SSLCERT);
-	curl_setopt($ch, CURLOPT_SSLKEY,  SSLKEY);
-
-	$result = curl_exec($ch);
-
-	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-	$curl_error = curl_error($ch);
-	curl_close($ch);
-
-	if (!$result) {
-		trigger_error($curl_error, E_USER_NOTICE);
-		return false;
-	}
-
-	return $result;
+	return curl_fetch(SHARE_URL);
 }
 
 

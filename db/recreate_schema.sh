@@ -9,11 +9,13 @@
 # exit on error
 set -e
 
-# get configuration
-dbname=$( php -r 'define("DOCROOT", "../"); require DOCROOT."inc/config.php"; preg_match("/dbname=(\w+)/", DATABASE_CONNECT, $matches); echo $matches[1];' )
-dbuser=$( php -r 'define("DOCROOT", "../"); require DOCROOT."inc/config.php"; preg_match("/user=(\w+)/",   DATABASE_CONNECT, $matches); echo $matches[1];' )
+path=$( readlink -f $( dirname $0 ) )
 
-tmpsql="tmp_recreate_schema_$( date +%Y-%m-%d_%H-%I-%S ).sql"
+# get configuration
+dbname=$( php -r 'define("DOCROOT", "'$path'/../"); require DOCROOT."inc/config.php"; preg_match("/dbname=(\w+)/", DATABASE_CONNECT, $matches); echo $matches[1];' )
+dbuser=$( php -r 'define("DOCROOT", "'$path'/../"); require DOCROOT."inc/config.php"; preg_match("/user=(\w+)/",   DATABASE_CONNECT, $matches); echo $matches[1];' )
+
+tmpsql="$path/tmp_recreate_schema_$( date +%Y-%m-%d_%H-%I-%S ).sql"
 
 datasql=$1
 if [ -z "$datasql" ]
@@ -31,7 +33,7 @@ set -x
 pg_dump --username=$dbuser --disable-triggers --data-only $dbname > $tmpsql
 
 echo "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" | psql --username=$dbuser -v ON_ERROR_STOP=1 $dbname
-psql --username=$dbuser -q -f basisentscheid.sql $dbname
+psql --username=$dbuser -q -f $path/basisentscheid.sql $dbname
 
 case "$datasql" in
   -)

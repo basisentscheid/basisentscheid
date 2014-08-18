@@ -108,7 +108,7 @@ array(6) {
 }
 */
 
-$member->update_nested_groups($response_membership['result']['all_nested_groups']);
+$member->update_ngroups($response_membership['result']['all_nested_groups']);
 
 // redirect to where the user came from
 if (!empty($_SESSION['origin'])) {
