@@ -77,7 +77,9 @@ function cron($skip_if_locked=false) {
 		}
 
 		// proposals and issues
-		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues WHERE period=".intval($period->id);
+		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues
+		  WHERE period=".intval($period->id)."
+		    AND state NOT IN ('cleared', 'cancelled')";
 		$result_issue = DB::query($sql_issue);
 		while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
 			DB::to_bool($issue->clear_now);
