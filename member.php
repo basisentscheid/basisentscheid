@@ -86,7 +86,7 @@ foreach (Notification::interests() as $interest => $interest_title) {
 	<tr class="<?=stripes()?>">
 		<td class="right"><?=$interest_title?></td>
 <?
-	foreach ($types as $type) {
+	foreach ($types as $type => $type_title) {
 ?>
 		<td class="center"><input type="checkbox" name="notify[<?=$interest?>][<?=$type?>]" value="1"<?
 		if ($notify[$interest][$type]) { ?> checked<? }
