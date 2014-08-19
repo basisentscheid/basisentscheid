@@ -23,7 +23,7 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 		if ( crypt($_POST['password'], $row['password']) == $row['password'] ) {
 			success(_("Login successful"));
 			$_SESSION['admin'] = $row['id'];
-			redirect("proposals.php");
+			redirect("index.php");
 		}
 
 	}

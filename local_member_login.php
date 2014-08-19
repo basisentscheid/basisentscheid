@@ -25,10 +25,14 @@ if ( !empty($_POST['username']) ) {
 		$member->set_unique_username($_POST['username']);
 		$member->auid = substr($member->username."_".rand(), 0, 36);
 		$member->create();
+		// become member of all ngroups
+		$sql = "INSERT INTO members_ngroups (member, ngroup)
+			SELECT ".intval($member->id).", id FROM ngroups";
+		DB::query($sql);
 		$_SESSION['member'] = $member->id;
 		success("Logged in as new member ".$member->username);
 	}
-	redirect("proposals.php");
+	redirect("index.php");
 }
 
 

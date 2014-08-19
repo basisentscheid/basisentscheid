@@ -26,6 +26,8 @@ if (!$proposal->id) {
 
 $issue = $proposal->issue();
 
+$_SESSION['ngroup'] = $issue->area()->ngroup;
+
 if ($action) {
 	switch ($action) {
 

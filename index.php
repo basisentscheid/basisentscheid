@@ -9,6 +9,30 @@
 
 require "inc/common.php";
 
+
+if ($action) {
+	Login::access_action("member");
+	action_required_parameters('ngroup');
+	$ngroup = new Ngroup($_POST['ngroup']);
+	if (!$ngroup->id) {
+		warning("The requested group does not exist!");
+		redirect();
+	}
+	switch ($action) {
+	case "subscribe":
+		$ngroup->activate_participation();
+		redirect();
+		break;
+	case "unsubscribe":
+		$ngroup->deactivate_participation();
+		redirect();
+		break;
+	}
+	warning(_("Unknown action"));
+	redirect();
+}
+
+
 html_head("Willkommen auf dem Testserver des Basisentscheid-Portals!");
 
 ?>
@@ -18,8 +42,8 @@ html_head("Willkommen auf dem Testserver des Basisentscheid-Portals!");
 Es gibt drei Möglichkeiten zur Anmeldung:
 <ul>
 	<li>als normales Mitglied mit dem Button "anmelden" rechts oben (über den ID-Server) <i>Username: test, Passwort: test</i>
-	<li>als Verantwortlicher mit dem Link <a href="admin.php">als Verantwortlicher anmelden</a> <i>Username: test, Passwort: test</i>
-	<li>mit dem Link <a href="local_member_login.php">als lokales Mitglied anmelden</a>. Damit kann man sich ohne Passwort als normales Mitglied mit	beliebigem Benutzernamen anmelden. Dieses	Mitglied wird dann automatisch angelegt. Das ist natürlich nur zum Testen gedacht und wird für ein Live-System wieder entfernt.
+	<li><a href="admin.php">als Verantwortlicher</a> <i>Username: test, Passwort: test</i>
+	<li><a href="local_member_login.php">als lokales Mitglied</a> – Damit kann man sich ohne Passwort als normales Mitglied mit	beliebigem Benutzernamen anmelden. Dieses	Mitglied wird dann automatisch angelegt. Das ist natürlich nur zum Testen gedacht und wird für ein Live-System wieder entfernt.
 </ul>
 
 <p>Wenn ihr Fehler findet, könnt ihr die in das <a href="https://github.com/basisentscheid/portal/issues">Ticketsystem</a> eintragen. Ihr müsst aber nicht unbedingt nach Fehlern suchen, es gibt sicherlich noch viele. Interessanter ist die Frage, ob alles so umgesetzt ist, wie wir es haben wollen. Welche Funktionen fehlen oder verhalten sich anders, als es vielleicht sinnvoller wäre? Wenn euch da etwas auffällt, könnt ihr das an die <a href="https://lists.piratenpartei-bayern.de/mailman/listinfo/basisentscheid">Mailingliste der Projektgruppe Basisentscheid</a> schicken, <a href="http://wiki.piratenpartei.de/Benutzer:Cmrcx">mir mailen oder mich anrufen</a>, oder – sofern es etwas konkretes ist – es auch in das <a href="https://github.com/basisentscheid/portal/issues">Ticketsystem</a> eintragen.</p>
@@ -28,7 +52,6 @@ Folgende größere Dinge fehlen jedenfalls noch:
 <ul>
 	<li>Anbindung an das noch nicht fertige Abstimmungsmodul</li>
 	<li>Urnenzuordung anhand der Gliederung</li>
-	<li>mehrere Gliederungen</li>
 </ul>
 
 <h2>Informationen zum Basisentscheid</h2>
@@ -97,6 +120,61 @@ foreach ( $dates as $index => $time ) {
 ?>
 </table>
 
+<h2><?=_("Groups")?></h2>
+<table>
 <?
+if (Login::$member) {
+	$sql = "SELECT ngroups.*, members_ngroups.member, members_ngroups.participant
+		FROM ngroups
+		LEFT JOIN members_ngroups ON ngroups.id = members_ngroups.ngroup AND members_ngroups.member=".intval(Login::$member->id);
+} else {
+	$sql = "SELECT *
+		FROM ngroups";
+}
+$sql .= " ORDER BY id";
+$result = DB::query($sql);
+while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
+?>
+	<tr class="<?=stripes()?>">
+		<td><?=$ngroup->name?></td>
+		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("proposals")?></a></td>
+		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("periods")?></a></td>
+		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("areas")?></a></td>
+<?
+	if (Login::$member and $ngroup->member) {
+?>
+		<td>
+<?
+		if ($ngroup->participant) {
+?>
+&#10003; <?=_("last time activated")?>: <?=dateformat($ngroup->participant)?>
+<?
+			form(URI::same(), 'class="button"');
+?>
+<input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
+<input type="hidden" name="action" value="unsubscribe">
+<input type="submit" value="<?=_("unsubscribe")?>">
+<?
+			form_end();
+		}
+		form(URI::same(), 'class="button"');
+?>
+<input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
+<input type="hidden" name="action" value="subscribe">
+<input type="submit" value="<?=$ngroup->participant?_("subscribe anew"):_("subscribe")?>">
+<?
+		form_end();
+?>
+		</td>
+<?
+	}
+?>
+	</tr>
+<?
+}
+?>
+</table>
+<?
+
 
 html_foot();

@@ -28,9 +28,12 @@ if (!empty($_GET['id'])) {
 		warning(_("Your are not a proponent of this proposal."));
 		redirect("proposal.php?id=".$proposal->id);
 	}
+	$ngroup_id = $proposal->issue()->area()->ngroup;
 } else {
 	$proposal = new Proposal;
 	$edit_content = true;
+	$ngroup = Ngroup::get();
+	$ngroup_id = $ngroup->id;
 }
 
 
@@ -192,6 +195,7 @@ html_foot();
  * @param array   $proponents
  */
 function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
+	global $ngroup_id;
 ?>
 <h2><?=_("Area")?></h2>
 <p class="proposal">
@@ -199,13 +203,13 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 	if ($issue) {
 		echo h($issue->area()->name);
 	} else {
-		$sql = "SELECT id, name FROM areas ORDER BY name";
+		$sql = "SELECT id, name FROM areas WHERE ngroup = ".intval($ngroup_id)." ORDER BY name";
 		$result = DB::query($sql);
 		$options = array();
 		while ( $row = DB::fetch_assoc($result) ) {
 			$options[$row['id']] = $row['name'];
 		}
-		input_select("area", $options);
+		input_select("area", $options, @$_POST['area']);
 	}
 ?>
 </p>
@@ -228,7 +232,9 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 ?>
 	<li>
 		<div class="form">
-			<input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>"><br>
+			<input type="text" name="proponent" value="<?
+		if (!empty($_POST['proponent'])) echo h($_POST['proponent']); else echo h(Login::$member->username());
+		?>" maxlength="<?=Proposal::proponent_length?>"><br>
 			<div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal.")?></div>
 		</div>
 	</li>

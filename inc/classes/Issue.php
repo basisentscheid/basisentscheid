@@ -280,7 +280,12 @@ class Issue extends Relation {
 		if ($this->period) return;
 
 		// select the next period, which has not yet started
-		$sql = "SELECT id FROM periods WHERE debate > now() AND online_voting=TRUE ORDER BY debate LIMIT 1";
+		$sql = "SELECT id FROM periods
+			WHERE ngroup=".intval($this->period()->ngroup)."
+				AND debate > now()
+				AND online_voting=TRUE
+			ORDER BY debate
+			LIMIT 1";
 		$this->period = DB::fetchfield($sql);
 		if ($this->period) {
 			$this->update(array("period"));
@@ -446,13 +451,13 @@ class Issue extends Relation {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
 					if ( !$this->display_edit_state() ) {
-						?><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a><?
+						?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 					}
 					?></td>
 <?
 				} elseif ($period_rowspan) {
 ?>
-		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a></td>
+		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a></td>
 <?
 				}
 
@@ -564,7 +569,10 @@ class Issue extends Relation {
 			static $options_all = false;
 			static $options_admission = false;
 			if ($options_all===false) {
-				$sql_period = "SELECT *, debate > now() AS debate_not_started FROM periods WHERE voting > now() ORDER BY id";
+				$sql_period = "SELECT *, debate > now() AS debate_not_started FROM periods
+					WHERE ngroup=".intval($this->period()->ngroup)."
+						AND voting > now()
+					ORDER BY id";
 				$result_period = DB::query($sql_period);
 				$options_all = array();
 				$options_admission = array();
@@ -610,7 +618,7 @@ class Issue extends Relation {
 <?
 		} else {
 			if ($this->period) {
-				?><a href="periods.php?hl=<?=$this->period?>"><?=$this->period?></a><?
+				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 			}
 			?><a href="<?=URI::append(array('edit_period'=>$this->id))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}

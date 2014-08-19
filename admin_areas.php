@@ -10,6 +10,8 @@ require "inc/common.php";
 
 Login::access("admin");
 
+$ngroup = Ngroup::get();
+
 $d = new DbTableAdmin("Area");
 $d->dbtable = "areas";
 $d->columns = array(
@@ -18,6 +20,8 @@ $d->columns = array(
 	array("participants", _("Participants"), "center", "", false)
 );
 $d->enable_filter = false;
+
+$d->global_where = array('ngroup' => $ngroup->id);
 
 $d->reference_check = array("SELECT id FROM issues WHERE area=%d");
 

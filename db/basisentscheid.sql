@@ -115,6 +115,7 @@ ALTER SEQUENCE admins_id_seq OWNED BY admins.id;
 
 CREATE TABLE areas (
     id integer NOT NULL,
+    ngroup integer NOT NULL,
     name character varying(64) NOT NULL,
     participants integer DEFAULT 0 NOT NULL
 );
@@ -285,8 +286,8 @@ ALTER SEQUENCE drafts_id_seq OWNED BY drafts.id;
 
 CREATE TABLE ngroups (
     id integer NOT NULL,
-    name text NOT NULL,
-    parent integer
+    parent integer,
+    name text NOT NULL
 );
 
 
@@ -317,16 +318,16 @@ CREATE TABLE issues (
     id integer NOT NULL,
     period integer,
     area integer NOT NULL,
-    state issue_state DEFAULT 'admission'::issue_state NOT NULL,
+    vote text,
     ballot_voting_demanders integer DEFAULT 0 NOT NULL,
     ballot_voting_reached boolean DEFAULT false,
-    vote text,
-    clear date,
     debate_started timestamp with time zone,
     preparation_started timestamp with time zone,
     voting_started timestamp with time zone,
     counting_started timestamp with time zone,
-    cleared timestamp with time zone
+    clear date,
+    cleared timestamp with time zone,
+    state issue_state DEFAULT 'admission'::issue_state NOT NULL
 );
 
 
@@ -357,16 +358,14 @@ CREATE TABLE members (
     id integer NOT NULL,
     auid character(36) NOT NULL,
     username character varying(32),
-    participant boolean DEFAULT false NOT NULL,
-    activated date,
-    hide_help text DEFAULT ''::text NOT NULL,
-    profile text NOT NULL,
     public_id text NOT NULL,
+    profile text NOT NULL,
     mail text,
     mail_unconfirmed text,
     mail_secret character varying(16),
     mail_secret_expiry timestamp with time zone,
-    mail_lock_expiry timestamp with time zone
+    mail_lock_expiry timestamp with time zone,
+    hide_help text DEFAULT ''::text NOT NULL
 );
 
 
@@ -395,8 +394,16 @@ ALTER SEQUENCE members_id_seq OWNED BY members.id;
 
 CREATE TABLE members_ngroups (
     member integer NOT NULL,
-    ngroup integer NOT NULL
+    ngroup integer NOT NULL,
+    participant date
 );
+
+
+--
+-- Name: COLUMN members_ngroups.participant; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN members_ngroups.participant IS 'date when participation activated';
 
 
 --
@@ -430,6 +437,7 @@ CREATE TABLE participants (
 
 CREATE TABLE periods (
     id integer NOT NULL,
+    ngroup integer NOT NULL,
     debate timestamp with time zone NOT NULL,
     preparation timestamp with time zone NOT NULL,
     voting timestamp with time zone NOT NULL,
@@ -471,14 +479,14 @@ CREATE TABLE proposals (
     title text NOT NULL,
     content text NOT NULL,
     reason text NOT NULL,
-    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
     submitted timestamp with time zone,
     supporters integer DEFAULT 0 NOT NULL,
     quorum_reached boolean DEFAULT false NOT NULL,
     admission_decision text,
     admitted timestamp with time zone,
     cancelled timestamp with time zone,
-    revoke timestamp with time zone
+    revoke timestamp with time zone,
+    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL
 );
 
 
@@ -833,6 +841,14 @@ ALTER TABLE ONLY voters
 
 
 --
+-- Name: areas_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY areas
+    ADD CONSTRAINT areas_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
 -- Name: arguments_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -934,6 +950,14 @@ ALTER TABLE ONLY participants
 
 ALTER TABLE ONLY participants
     ADD CONSTRAINT participants_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: periods_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY periods
+    ADD CONSTRAINT periods_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

@@ -145,9 +145,9 @@ class Period extends Relation {
 
 		// get all participants, who are in the current period not assigned to a ballot yet
 		$sql = "SELECT members.* FROM members
+			JOIN members_ngroups ON members_ngroups.member = members.id AND members_ngroups.ngroup = ".intval($this->ngroup)."
 			LEFT JOIN voters ON members.id = voters.member AND voters.period = ".intval($this->id)."
-			WHERE participant=TRUE
-				AND voters.member IS NULL";
+			WHERE voters.member IS NULL";
 		$result = DB::query($sql);
 		while ( $member = DB::fetch_object($result, "Member") ) {
 

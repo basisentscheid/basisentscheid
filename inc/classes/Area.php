@@ -12,6 +12,22 @@ class Area extends Relation {
 	public $name;
 	public $participants;
 
+	private $ngroup_obj;
+
+	protected $create_fields = array('ngroup', 'name');
+
+
+	/**
+	 * get the ngroup this area belongs to
+	 *
+	 * @return object
+	 */
+	function ngroup() {
+		if ($this->ngroup_obj) return $this->ngroup_obj;
+		$this->ngroup_obj = new Ngroup($this->ngroup);
+		return $this->ngroup_obj;
+	}
+
 
 	/**
 	 * activate area participation
@@ -24,7 +40,7 @@ class Area extends Relation {
 			DB::query($sql);
 		}
 		// also activate general participation
-		Login::$member->activate_participation();
+		$this->ngroup()->activate_participation();
 		$this->update_participants_cache();
 	}
 

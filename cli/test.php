@@ -27,6 +27,8 @@ $login->username = "t".$date."login";
 $login->auid = $login->username;
 $login->create();
 
+$ngroup = 1;
+
 $bcase = array(1=>0, 2=>0, 3=>0, 4=>0);
 // read start branches from command line
 foreach ( $_SERVER['argv'] as $key => $value ) {
@@ -81,7 +83,7 @@ function create_case_wrapper($case, $stopcase) {
  * @return mixed null after one stopcase, false after one branchcase, true after last case
  */
 function create_case($case, $stopcase) {
-	global $bcase, $date, $login, $proposal, $proposal2, $casetitle;
+	global $bcase, $date, $login, $proposal, $proposal2, $casetitle, $ngroup;
 
 	$stop = 0;
 	$branch = 0;
@@ -96,15 +98,17 @@ function create_case($case, $stopcase) {
 	$casetitle = "";
 
 	// create area
-	$area = 0;
-	DB::insert("areas", array('name'=>"Test area case ".$casedesc), $area);
+	$area = new Area;
+	$area->ngroup = $ngroup;
+	$area->name = "Test area case ".$casedesc;
+	$area->create();
 
 	// create new proposal
 	$proposal = new Proposal;
 	$proposal->title = "Test ".$date." case ".$casedesc;
 	$proposal->content = "Test content";
 	$proposal->reason = "Test reason";
-	$proposal->create("Test proponent ".$date." proposal case ".$casedesc, $area);
+	$proposal->create("Test proponent ".$date." proposal case ".$casedesc, $area->id);
 	$proponents = array(Login::$member);
 
 	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
@@ -215,7 +219,7 @@ function create_case($case, $stopcase) {
 		$proposal2->content = "Test content";
 		$proposal2->reason = "Test reason";
 		$proposal2->issue = $proposal->issue;
-		$proposal2->create("Test proponent ".$date." alternative proposal case ".$casedesc, $area);
+		$proposal2->create("Test proponent ".$date." alternative proposal case ".$casedesc, $area->id);
 		$proponents = array(Login::$member);
 
 		if ($stopcase == ++$stop) {
@@ -269,14 +273,15 @@ function create_case($case, $stopcase) {
 		if ($proposal->state=="admitted" or $proposal2->state=="admitted") {
 
 			// create period
-			$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting)
+			$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting, ngroup)
 			VALUES (
 				now() + interval '1 week',
 				now() + interval '2 weeks',
 				now() + interval '3 weeks',
 				now() + interval '4 weeks',
 				true,
-				false
+				false,
+				".$ngroup."
 			) RETURNING id";
 			$result = DB::query($sql);
 			$row = DB::fetch_row($result);

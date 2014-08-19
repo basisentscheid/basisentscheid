@@ -8,6 +8,7 @@
 
 require "inc/common.php";
 
+$ngroup = Ngroup::get();
 
 if ($action) {
 	Login::access_action("member");
@@ -52,8 +53,6 @@ help($help);
 	</tr>
 <?
 
-
-
 if (Login::$member) {
 	$sql = "SELECT areas.*, participants.activated
 		FROM areas
@@ -62,7 +61,7 @@ if (Login::$member) {
 	$sql = "SELECT areas.*
 		FROM areas";
 }
-$sql .= "	ORDER BY areas.name, areas.id";
+$sql .= "	WHERE ngroup = ".intval($ngroup->id)." ORDER BY areas.name, areas.id";
 $result = DB::query($sql);
 while ($row = DB::fetch_assoc($result)) {
 
@@ -77,20 +76,22 @@ while ($row = DB::fetch_assoc($result)) {
 ?>
 			&#10003; <?=_("last time activated")?>: <?=dateformat($row['activated'])?>
 <?
-			form(BN, 'class="button"');
+			form(URI::same(), 'class="button"');
 ?>
 <input type="hidden" name="area" value="<?=$row['id']?>">
 <input type="hidden" name="action" value="unsubscribe">
 <input type="submit" value="<?=_("unsubscribe")?>">
-</form>
 <?
+			form_end();
 		}
-		form(BN, 'class="button"');
+		form(URI::same(), 'class="button"');
 ?>
 <input type="hidden" name="area" value="<?=$row['id']?>">
 <input type="hidden" name="action" value="subscribe">
 <input type="submit" value="<?=$row['activated']?_("subscribe anew"):_("subscribe")?>">
-</form>
+<?
+		form_end();
+?>
 		</td>
 <? } ?>
 	</tr>

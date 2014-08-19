@@ -9,6 +9,7 @@
 
 require "inc/common.php";
 
+$ngroup = Ngroup::get();
 
 if ($action) {
 	switch ($action) {
@@ -27,7 +28,7 @@ html_head(_("Proposals"));
 
 if (Login::$member) {
 ?>
-<div class="add_record"><a href="proposal_edit.php" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add proposal")?></a></div>
+<div class="add_record"><a href="proposal_edit.php?ngroup=<?=$ngroup->id?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add proposal")?></a></div>
 <?
 }
 
@@ -46,7 +47,7 @@ $filters = array(
 <div class="filter">
 <?
 foreach ( $filters as $key => $name ) {
-	$params = array();
+	$params = array('ngroup'=>$ngroup->id);
 	if ($key)    $params['filter'] = $key;
 	if ($search) $params['search'] = $search;
 ?>
@@ -58,6 +59,7 @@ foreach ( $filters as $key => $name ) {
 ?>
 <form action="<?=BN?>" method="GET">
 <?
+input_hidden('ngroup', $ngroup->id);
 if ($filter) input_hidden("filter", $filter);
 ?>
 <?=_("Search")?>: <input type="text" name="search" value="<?=h($search)?>">
@@ -73,12 +75,14 @@ $pager = new Pager;
 if (Login::$member) {
 	$sql = "SELECT issues.*, ballot_voting_demanders.member AS ballot_voting_demanded_by_member
 		FROM issues
+		JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id)."
 		LEFT JOIN ballot_voting_demanders
 			ON issues.id = ballot_voting_demanders.issue
 			AND ballot_voting_demanders.member = ".intval(Login::$member->id);
 } else {
 	$sql = "SELECT issues.*
-		FROM issues";
+		FROM issues
+		JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id);
 }
 
 $where = array();
@@ -110,7 +114,8 @@ if ($search) {
 	$pattern = DB::esc("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
 	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
 	$sql .= DB::where_and($where);
-	$sql .= " GROUP BY issues.id, ballot_voting_demanders.member";
+	$sql .= " GROUP BY issues.id";
+	if (Login::$member) $sql .= ", ballot_voting_demanders.member";
 } else {
 	$sql .= DB::where_and($where);
 }

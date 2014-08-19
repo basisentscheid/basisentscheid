@@ -17,8 +17,10 @@ require DOCROOT."inc/common_cli.php";
 //DB::query("TRUNCATE periods CASCADE");
 //DB::query("TRUNCATE members CASCADE");
 
-// to aviod conflicts with existing usernames
+// to avoid conflicts with existing usernames
 $date = dechex(time());
+
+$ngroup = new Ngroup(1);
 
 // create main member
 $login = new Member;
@@ -46,7 +48,7 @@ do {
  * @return boolean true after last case
  */
 function create_case($case, $stopcase) {
-	global $date, $login;
+	global $date, $login, $ngroup;
 
 	$stop = 0;
 	$branch = 0;
@@ -58,7 +60,7 @@ function create_case($case, $stopcase) {
 
 	// create period
 	if ($stopcase == ++$stop) {
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting)
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -67,12 +69,13 @@ function create_case($case, $stopcase) {
 			NULL,
 			now() + interval '4 weeks',
 			true,
-			false
+			false,
+			".$ngroup->id."
 		)";
 		DB::query($sql);
 		return;
 	} else {
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting)
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -81,7 +84,8 @@ function create_case($case, $stopcase) {
 			now() + interval '3 weeks',
 			now() + interval '4 weeks',
 			true,
-			true
+			true,
+			".$ngroup->id."
 		) RETURNING id";
 		$result = DB::query($sql);
 		$row = DB::fetch_row($result);
@@ -117,13 +121,13 @@ function create_case($case, $stopcase) {
 
 	if ($stopcase == ++$stop) return;
 
-	// add futher participants
+	// add further participants
 	for ($i=1; $i<=1000; $i++) {
 		Login::$member = new Member;
 		Login::$member->username = "t".$date."c".$case."i".$i;
 		Login::$member->auid = Login::$member->username;
 		Login::$member->create();
-		Login::$member->activate_participation();
+		$ngroup->activate_participation();
 	}
 
 	// move to phase "ballot_assignment"

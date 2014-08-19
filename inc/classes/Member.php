@@ -107,24 +107,6 @@ class Member extends Relation {
 
 
 	/**
-	 * activate general participation (distinct from area participation)
-	 */
-	public function activate_participation() {
-		$this->participant = true;
-		$this->update(array("participant"), "activated=now()");
-	}
-
-
-	/**
-	 * deactivate general participation
-	 */
-	public function deactivate_participation() {
-		$this->participant = false;
-		$this->update(array("participant"));
-	}
-
-
-	/**
 	 * save not yet confirmed mail address and send confirmation request
 	 *
 	 * @param string  $mail

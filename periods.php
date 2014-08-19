@@ -9,6 +9,8 @@
 
 require "inc/common.php";
 
+$ngroup = Ngroup::get();
+
 $d = new DbTableAdmin_Period("Period");
 $d->dbtable = "periods";
 $d->columns = array(
@@ -24,6 +26,8 @@ $d->columns = array(
 	array(false, _("Ballots"), "center", "ballots", false)
 );
 $d->enable_filter = false;
+
+$d->global_where = array('ngroup' => $ngroup->id);
 
 $d->reference_check = array(
 	"SELECT id FROM issues  WHERE period=%d",

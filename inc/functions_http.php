@@ -95,20 +95,58 @@ function html_head($title) {
 
 <header>
 	<div id="logo"><a href="<?=DOCROOT?>index.php">Basisentscheid</a></div>
+	<nav id="ngroup">
+		<form action="<?=BN?>" method="GET">
+<?
+	URI::hidden(array('ngroup'=>null));
+?>
+			<select name="ngroup" onchange="this.form.submit()">
+<?
+	/*
+	 * The ngroup can be selected by the GET parameter or by other parameters selecting a period, area, issue or proposal
+	 * which reference a ngroup. This makes it possible to navigate in different ngroups in multiple browser windows. The
+	 * session must be used only for navigation!
+	 */
+	if (!empty($_GET['ngroup'])) {
+		$_SESSION['ngroup'] = intval($_GET['ngroup']);
+	} elseif (!isset($_SESSION['ngroup'])) {
+		$_SESSION['ngroup'] = 0;
+	}
+	$sql = "SELECT id, name FROM ngroups";
+	$result = DB::query($sql);
+	while ( $row = DB::fetch_assoc($result) ) {
+		// use the first ngroup as default
+		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $row['id'];
+?>
+			<option value="<?=$row['id']?>"<?
+		if ($row['id']==$_SESSION['ngroup']) { ?> selected class="selected"<? }
+		?>><?=$row['name']?></option>
+<?
+	}
+?>
+			</select>
+		</form>
+		<ul>
+<?
+	navlink('proposals.php', _("Proposals"), true);
+	navlink('periods.php', _("Periods"), true);
+	if (Login::$admin) {
+		navlink('admin_areas.php', _("Areas"), true);
+	} else {
+		navlink('areas.php', _("Areas"), true);
+	}
+?>
+		</ul>
+	</nav>
 	<nav>
 		<ul>
 <?
-	navlink('proposals.php', _("Proposals"));
-	navlink('periods.php', _("Periods"));
-	if (Login::$admin) {
-		navlink( 'admin_areas.php', _("Areas"));
-		navlink( 'admin_members.php', _("Members"));
-		navlink( 'admins.php', _("Admins"));
-	} else {
-		navlink( 'areas.php', _("Areas"));
-		if (Login::$member) {
-			navlink( 'members.php', _("Members"));
-		}
+	if (Login::$member) {
+		navlink( 'members.php', _("Members"));
+	} elseif (Login::$admin) {
+		navlink('admin_members.php', _("Members"));
+		navlink('admins.php', _("Admins"));
+		navlink('admin_ngroups.php', _("Groups"));
 	}
 ?>
 		</ul>
@@ -151,10 +189,13 @@ function html_head($title) {
  *
  * @param string  $file
  * @param string  $title
+ * @param boolean $add_ngroup (optional)
  */
-function navlink($file, $title) {
+function navlink($file, $title, $add_ngroup=false) {
 ?>
-			<li><a href="<?=$file?>"<? if (BN==$file) { ?> class="active"<? } ?>><?=$title?></a></li>
+			<li><a href="<?=$file;
+	if ($add_ngroup) { ?>?ngroup=<?=$_SESSION['ngroup']; }
+	?>"<? if (BN==$file) { ?> class="active"<? } ?>><?=$title?></a></li>
 <?
 }
 
@@ -182,11 +223,6 @@ function html_user() {
 </form>
 <?
 	} else {
-		// These two links are for development and demonstration purposes only and have to be removed in live environment!
-?>
-	<a href="admin.php"><?=_("Login as admin")?></a>
-	<a href="local_member_login.php"><?=_("Login as local member")?></a>
-<?
 		// login as member via ID server
 		form("login.php", 'class="button"');
 ?>

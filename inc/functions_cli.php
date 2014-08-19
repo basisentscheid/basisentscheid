@@ -179,9 +179,14 @@ function cron($skip_if_locked=false) {
 				} else {
 
 					// skip to next available period
-					$sql = "SELECT id FROM periods WHERE preparation >= now() AND ";
+					$sql = "SELECT id FROM periods
+						WHERE ngroup=".intval($period->ngroup)."
+							AND preparation >= now()
+							AND ";
 					if ($issue->ballot_voting_reached) $sql .= "ballot_voting"; else $sql .= "online_voting";
-					$sql .= "=TRUE ORDER BY preparation LIMIT 1";
+					$sql .= "=TRUE
+						ORDER BY preparation
+						LIMIT 1";
 					$issue->period = DB::fetchfield($sql);
 					if ($issue->period) {
 						$issue->update(array("period"));
@@ -203,15 +208,23 @@ function cron($skip_if_locked=false) {
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
-				$sql = "SELECT counting FROM periods WHERE counting <= now() ORDER BY counting DESC LIMIT 2";
+				$sql = "SELECT counting FROM periods
+					WHERE ngroup=".intval($period->ngroup)."
+						AND counting <= now()
+					ORDER BY counting DESC
+					LIMIT 2";
 				$result = DB::query($sql);
 				DB::fetch_assoc($result); // skip the current counting
 				if ( $last_counting = DB::fetch_assoc($result) ) {
 					// area participation
-					$sql = "DELETE FROM participants WHERE activated < ".DB::esc($last_counting['counting']);
+					$sql = "DELETE FROM participants
+						WHERE area IN (SELECT id FROM areas WHERE ngroup=".intval($period->ngroup).")
+							AND activated < ".DB::esc($last_counting['counting']);
 					DB::query($sql);
 					// general participation
-					$sql = "UPDATE members SET participant=FALSE WHERE participant=TRUE AND activated < ".DB::esc($last_counting['counting']);
+					$sql = "UPDATE members_ngroups SET participant=NULL
+						WHERE ngroup=".intval($period->ngroup)."
+							AND participant < ".DB::esc($last_counting['counting']);
 					DB::query($sql);
 				}
 
