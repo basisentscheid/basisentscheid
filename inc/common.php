@@ -49,6 +49,17 @@ Login::init();
 
 require "inc/locale.php";
 
+/*
+ * The ngroup can be selected by the GET parameter or by other parameters selecting a period, area, issue or proposal
+ * which reference a ngroup. This makes it possible to navigate in different ngroups in multiple browser windows. The
+ * session must be used only for navigation!
+ */
+if (!empty($_GET['ngroup'])) {
+	$_SESSION['ngroup'] = intval($_GET['ngroup']);
+} elseif (!isset($_SESSION['ngroup'])) {
+	$_SESSION['ngroup'] = 0;
+}
+
 // all actions use this global variable
 $action = @$_POST['action'];
 

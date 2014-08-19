@@ -21,7 +21,11 @@ class Ngroup extends Relation {
 
 		if (!empty($_GET['ngroup'])) {
 			$ngroup = new Ngroup($_GET['ngroup']);
-			if ($ngroup->id) return $ngroup;
+			if ($ngroup->id) {
+				// override differing GET parameter
+				$_SESSION['ngroup'] = $ngroup->id;
+				return $ngroup;
+			}
 		}
 
 		// redirect to ngroup from session

@@ -96,22 +96,21 @@ function html_head($title) {
 <header>
 	<div id="logo"><a href="<?=DOCROOT?>index.php">Basisentscheid</a></div>
 	<nav id="ngroup">
-		<form action="<?=BN?>" method="GET">
+		<form method="GET" action="<?
+	// jump to different page if the same page doesn't show the equivalent content in other groups
+	if (BN=="proposal.php" or BN=="proposal_edit.php" or BN=="draft.php") {
+		echo "proposals.php";
+		?>">
 <?
-	URI::hidden(array('ngroup'=>null));
+	} else {
+		echo BN;
+		?>">
+<?
+		URI::hidden(array('ngroup'=>null));
+	}
 ?>
 			<select name="ngroup" onchange="this.form.submit()">
 <?
-	/*
-	 * The ngroup can be selected by the GET parameter or by other parameters selecting a period, area, issue or proposal
-	 * which reference a ngroup. This makes it possible to navigate in different ngroups in multiple browser windows. The
-	 * session must be used only for navigation!
-	 */
-	if (!empty($_GET['ngroup'])) {
-		$_SESSION['ngroup'] = intval($_GET['ngroup']);
-	} elseif (!isset($_SESSION['ngroup'])) {
-		$_SESSION['ngroup'] = 0;
-	}
 	$sql = "SELECT id, name FROM ngroups";
 	$result = DB::query($sql);
 	while ( $row = DB::fetch_assoc($result) ) {
