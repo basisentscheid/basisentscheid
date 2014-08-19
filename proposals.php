@@ -70,7 +70,7 @@ if ($filter) input_hidden("filter", $filter);
 <table class="proposals">
 <?
 
-$pager = new Pager;
+$pager = new Pager(10);
 
 if (Login::$member) {
 	$sql = "SELECT issues.*, ballot_voting_demanders.member AS ballot_voting_demanded_by_member
