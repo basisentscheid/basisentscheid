@@ -63,8 +63,9 @@ Folgende größere Dinge fehlen jedenfalls noch:
 
 <hr>
 
-<h2><?=_("Upcoming dates")?></h2>
-<table>
+<div class="dates">
+	<h2><?=_("Upcoming dates")?></h2>
+	<table>
 <?
 
 $dates = array();
@@ -97,9 +98,10 @@ $line = 1;
 foreach ( $dates as $index => $time ) {
 	list($field, $period) = $info[$index];
 ?>
-	<tr class="<?=stripes()?>">
-		<td><?=datetimeformat($time)?></td>
-		<td><?
+			<tr class="<?=stripes()?>">
+				<td><?=datetimeformat($time)?></td>
+				<td><?=$period->ngroup()->name?></td>
+				<td><?
 	switch ($field) {
 	case "debate":
 		printf(_("debate in period %d starts"), $period->id);
@@ -112,23 +114,30 @@ foreach ( $dates as $index => $time ) {
 		break;
 	}
 	?></td>
-	</tr>
+			</tr>
 <?
 	if (++$line > 10) break;
 }
 
 ?>
-</table>
+	</table>
+</div>
 
-<h2><?=_("Groups")?></h2>
+<div class="ngroups">
+<h2><a name="ngroups" class="anchor"></a><?=_("Groups")?></h2>
 <table>
+<?
+$entitled = ( Login::$member and Login::$member->entitled );
+if ($entitled) {
+?>
 	<tr>
 		<th colspan="4"></th>
 		<th><?=_("entitled")?></th>
 		<th><?=_("Participation")?></th>
 	</tr>
 <?
-if (Login::$member) {
+}
+if ($entitled) {
 	$sql = "SELECT ngroups.*, members_ngroups.member, members_ngroups.participant
 		FROM ngroups
 		LEFT JOIN members_ngroups ON ngroups.id = members_ngroups.ngroup AND members_ngroups.member = ".intval(Login::$member->id);
@@ -151,7 +160,7 @@ foreach ($ngroups as $ngroup) {
 		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("periods")?></a></td>
 		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("areas")?></a></td>
 <?
-	if (Login::$member) {
+	if ($entitled) {
 		if ($ngroup->member) {
 ?>
 		<td class="center">&#10003;</td>
@@ -161,7 +170,7 @@ foreach ($ngroups as $ngroup) {
 ?>
 &#10003; <?=_("last time activated")?>: <?=dateformat($ngroup->participant)?>
 <?
-				form(URI::same(), 'class="button"');
+				form(URI::same()."#ngroups", 'class="button"');
 ?>
 <input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
 <input type="hidden" name="action" value="unsubscribe">
@@ -169,7 +178,7 @@ foreach ($ngroups as $ngroup) {
 <?
 				form_end();
 			}
-			form(URI::same(), 'class="button"');
+			form(URI::same()."#ngroups", 'class="button"');
 ?>
 <input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
 <input type="hidden" name="action" value="subscribe">
@@ -192,7 +201,9 @@ foreach ($ngroups as $ngroup) {
 }
 ?>
 </table>
-<?
+</div>
 
+<div class="clearfix"></div>
+<?
 
 html_foot();

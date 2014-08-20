@@ -546,6 +546,23 @@ div.tableblock table {
 
 /* 5. classes for specific pages */
 
+
+/* 5.0 index */
+
+div.dates {
+	float: left;
+	margin: 0 20px 15px 0;
+}
+div.ngroups {
+	float: left;
+	margin: 0 0 15px 0;
+}
+div.ngroups h2,
+div.dates h2 {
+	margin-top: 0;
+}
+
+
 /* 5.1 proposals */
 
 p.proposal {

@@ -19,7 +19,21 @@ class Period extends Relation {
 	public $ballot_voting;
 	public $state;
 
+	private $ngroup_obj;
+
 	protected $boolean_fields = array("online_voting", "ballot_voting");
+
+
+	/**
+	 * get the ngroup this period belongs to
+	 *
+	 * @return object
+	 */
+	function ngroup() {
+		if ($this->ngroup_obj) return $this->ngroup_obj;
+		$this->ngroup_obj = new Ngroup($this->ngroup);
+		return $this->ngroup_obj;
+	}
 
 
 	/**

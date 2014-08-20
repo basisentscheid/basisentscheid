@@ -113,12 +113,12 @@ function html_head($title) {
 <?
 	$entitled = ( Login::$member and Login::$member->entitled );
 	if ($entitled) {
-		$sql = "SELECT id, name, member FROM ngroups
+		$sql = "SELECT ngroups.*, member FROM ngroups
 			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".Login::$member->id;
 	} else {
-		$sql = "SELECT id, name FROM ngroups";
+		$sql = "SELECT * FROM ngroups";
 	}
-
+	$sql .= " ORDER BY name";
 	$result = DB::query($sql);
 	$ngroups = array();
 	while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
