@@ -569,7 +569,6 @@ div.proposal_info ul {
 	margin: 0;
 	padding: 3px 2px 3px 5px;
 	list-style: square inside;
-	display: table-cell;
 }
 div.proposal_info ul li span.unconfirmed {
 	color: #AAA;

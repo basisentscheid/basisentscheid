@@ -14,6 +14,9 @@ if (!$period->id) {
 	error("The requested period does not exist!");
 }
 
+$ngroup = $period->ngroup;
+$_SESSION['ngroup'] = $ngroup;
+
 if (Login::$member) {
 	$sql = "SELECT * FROM voters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
 	if ( $row_voters = DB::fetchassoc($sql) ) {
@@ -24,7 +27,7 @@ if (Login::$member) {
 if ($action) {
 	switch ($action) {
 	case "select":
-		Login::access_action("member");
+		Login::access_action("entitled", $ngroup);
 		action_required_parameters('ballot');
 		$ballot = new Ballot($_POST['ballot']);
 		if (!$ballot->id) {
@@ -43,7 +46,7 @@ if ($action) {
 		redirect();
 		break;
 	case "unselect":
-		Login::access_action("member");
+		Login::access_action("entitled", $ngroup);
 		if ($period->state=="ballot_preparation") {
 			warning(_("In ballot preparation phase it is not allowed anymore to change the ballot choice."));
 			redirect();
@@ -70,6 +73,8 @@ if ($action) {
 
 html_head(sprintf(_("Ballots for voting period %d"), $period->id));
 
+$entitled = ( Login::$member and Login::$member->entitled($ngroup) );
+
 ?>
 
 <p><?=$period->ballot_phase_info()?></p>
@@ -77,7 +82,7 @@ html_head(sprintf(_("Ballots for voting period %d"), $period->id));
 <div class="tableblock">
 <?
 
-if (Login::$member and $period->state=="ballot_application") {
+if ($entitled and $period->state=="ballot_application") {
 ?>
 <div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>"><?=_("Apply to operate a ballot")?></a></div>
 <?
@@ -97,7 +102,7 @@ $colspan = 6;
 		<th><?=_("Opening")?></th>
 		<th><?=_("Agents")?></th>
 		<th><?=_("Voters")?></th>
-<? if (Login::$member) { $colspan++; ?>
+<? if ($entitled) { $colspan++; ?>
 		<th><?=_("My ballot")?></th>
 <? } ?>
 		<th><?=_("Approved")?></th>
@@ -131,7 +136,7 @@ if (!$pager->linescount) {
 		<td><?=h($ballot->agents)?></td>
 		<td class="center"><?=$ballot->voters?></td>
 <?
-		if (Login::$member) {
+		if ($entitled) {
 ?>
 		<td>
 <?

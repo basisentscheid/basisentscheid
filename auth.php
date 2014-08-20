@@ -48,27 +48,6 @@ array(3) {
 }
 */
 
-$auid = $response_auid['result']['auid'];
-
-// login
-$sql = "SELECT * FROM members WHERE auid=".DB::esc($auid);
-$result = DB::query($sql);
-if ( $member = DB::fetch_object($result, "Member") ) {
-	// user already in the database
-	$member->public_id = (string) @$response_profile['result']['public_id'];
-	$member->profile   = (string) @$response_profile['result']['profile'];
-	$member->update(array('public_id', 'profile'));
-} else {
-	// user not yet in the database
-	$member = new Member;
-	$member->auid = $auid;
-	$member->set_unique_username($response_profile['result']['username']);
-	$member->public_id = (string) @$response_profile['result']['public_id'];
-	$member->profile   = (string) @$response_profile['result']['profile'];
-	$member->create();
-}
-$_SESSION['member'] = $member->id;
-
 $response_membership = $client->fetch(OAUTH2_BASEURL."api/user/membership/");
 //var_dump($response_membership);
 /*
@@ -107,6 +86,27 @@ array(6) {
 	}
 }
 */
+
+$auid = $response_auid['result']['auid'];
+
+// login
+$sql = "SELECT * FROM members WHERE auid=".DB::esc($auid);
+$result = DB::query($sql);
+if ( ! $member = DB::fetch_object($result, "Member") ) {
+	// user not yet in the database
+	$member = new Member;
+	$member->auid = $auid;
+	$member->set_unique_username($response_profile['result']['username']);
+}
+$member->public_id = (string) @$response_profile['result']['public_id'];
+$member->profile   = (string) @$response_profile['result']['profile'];
+$member->entitled  = ($response_membership['result']['type']=="entitled member");
+if ($member->id) {
+	$member->update(array('public_id', 'profile', 'entitled'));
+} else {
+	$member->create(array('auid', 'username', 'public_id', 'profile', 'entitled'));
+}
+$_SESSION['member'] = $member->id;
 
 $member->update_ngroups($response_membership['result']['all_nested_groups']);
 

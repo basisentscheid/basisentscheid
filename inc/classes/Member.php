@@ -11,18 +11,37 @@ class Member extends Relation {
 
 	public $auid;
 	public $username;
-	public $participant;
-	public $activated;
-	public $profile   = "";
 	public $public_id = "";
-	public $mail_lock_expiry;
+	public $profile   = "";
+	public $entitled;
+	public $mail;
 	public $mail_unconfirmed;
 	public $mail_secret;
+	public $mail_secret_expiry;
+	public $mail_lock_expiry;
 	public $hide_help;
 
-	protected $boolean_fields = array("participant");
+	protected $boolean_fields = array("entitled");
 	protected $create_fields = array("auid", "username", "public_id", "profile");
 	protected $update_fields = array("username");
+
+	private $ngroups;
+
+
+	/**
+	 * check, if the member may change anything
+	 *
+	 * @param integer $ngroup
+	 * @return boolean
+	 */
+	public function entitled($ngroup) {
+		if (!$this->entitled) return false;
+		if ($this->ngroups===null) {
+			$sql = "SELECT ngroup FROM members_ngroups WHERE member=".intval($this->id);
+			$this->ngroups = DB::fetchfieldarray($sql);
+		}
+		return in_array($ngroup, $this->ngroups);
+	}
 
 
 	/**

@@ -360,6 +360,7 @@ CREATE TABLE members (
     username character varying(32),
     public_id text NOT NULL,
     profile text NOT NULL,
+    entitled boolean DEFAULT false NOT NULL,
     mail text,
     mail_unconfirmed text,
     mail_secret character varying(16),

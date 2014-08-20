@@ -36,6 +36,7 @@ if (!empty($_GET['id'])) {
 	$ngroup_id = $ngroup->id;
 }
 
+Login::access("entitled", $ngroup_id);
 
 if ($action) {
 	switch ($action) {

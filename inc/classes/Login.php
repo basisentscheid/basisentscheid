@@ -57,10 +57,14 @@ abstract class Login {
 	 * make sure that only allowed users access a page
 	 *
 	 * @param string  $allowed_users
+	 * @param integer $ngroup        (optional) required if only entitled members are allowed
 	 * @param boolean $redirect      (optional)
 	 */
-	public static function access($allowed_users, $redirect=false) {
+	public static function access($allowed_users, $ngroup=0, $redirect=false) {
 		switch ($allowed_users) {
+		case "entitled":
+			if (Login::$member and Login::$member->entitled($ngroup)) return;
+			break;
 		case "member":
 			if (Login::$member) return;
 			break;
@@ -85,9 +89,10 @@ abstract class Login {
 	 * make sure that only allowed users perform an action
 	 *
 	 * @param string  $allowed_users
+	 * @param integer $ngroup        (optional)
 	 */
-	public static function access_action($allowed_users) {
-		self::access($allowed_users, true);
+	public static function access_action($allowed_users, $ngroup=0) {
+		self::access($allowed_users, $ngroup, true);
 	}
 
 

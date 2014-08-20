@@ -466,10 +466,13 @@ class Issue extends Relation {
 
 				if ($this->voting_type_determination($submitted)) {
 					?> title="<?
+					$entitled = ( Login::$member and Login::$member->entitled($this->area()->ngroup) );
 					if ($this->ballot_voting_demanded_by_member) {
 						echo _("You demand ballot voting.");
-					} else {
+					} elseif ($entitled) {
 						echo _("You can demand ballot voting.");
+					} else {
+						echo _("Members can demand ballot voting.");
 					}
 					?>">
 <img src="img/online16.png" width="13" height="16" class="online_small" alt="<?=_("online voting")?>">?
@@ -479,7 +482,7 @@ class Issue extends Relation {
 						if ($this->ballot_voting_demanded_by_member) {
 							?>&#10003;<?
 						}
-						if ($selected_proposal) {
+						if ($selected_proposal and $entitled) {
 							form(URI::same());
 							if ($this->ballot_voting_demanded_by_member) {
 								echo _("You demand ballot voting.")?>

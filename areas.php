@@ -42,18 +42,20 @@ Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für das Q
 HELP;
 help($help);
 
+$entitled = ( Login::$member and Login::$member->entitled($ngroup->id) );
+
 ?>
 <table>
 	<tr>
 		<th><?=_("Name")?></th>
 		<th><?=_("Participants")?></th>
-<? if (Login::$member) { ?>
+<? if ($entitled) { ?>
 		<th><?=_("Participation")?></th>
 <? } ?>
 	</tr>
 <?
 
-if (Login::$member) {
+if ($entitled) {
 	$sql = "SELECT areas.*, participants.activated
 		FROM areas
 		LEFT JOIN participants ON areas.id = participants.area AND participants.member=".intval(Login::$member->id);
@@ -69,7 +71,7 @@ while ($row = DB::fetch_assoc($result)) {
 	<tr class="<?=stripes()?>">
 		<td><?=$row['name']?></td>
 		<td class="center"><?=$row['participants']?></td>
-<? if (Login::$member) { ?>
+<? if ($entitled) { ?>
 		<td>
 <?
 		if ($row['activated']) {

@@ -25,10 +25,12 @@ if ( !empty($_POST['username']) ) {
 		$member->set_unique_username($_POST['username']);
 		$member->auid = substr($member->username."_".rand(), 0, 36);
 		$member->create();
-		// become member of all ngroups
-		$sql = "INSERT INTO members_ngroups (member, ngroup)
-			SELECT ".intval($member->id).", id FROM ngroups";
-		DB::query($sql);
+		// become member of ngroups
+		if (!empty($_POST['ngroups'])) {
+			foreach ( $_POST['ngroups'] as $ngroup ) {
+				DB::insert("members_ngroups", array('member'=>$member->id, 'ngroup'=>$ngroup));
+			}
+		}
 		$_SESSION['member'] = $member->id;
 		success("Logged in as new member ".$member->username);
 	}
@@ -38,12 +40,18 @@ if ( !empty($_POST['username']) ) {
 
 html_head(_("Local member login"));
 
-form(BN);
+form();
 ?>
-<?=_("Username")?>: <input type="text" name="username">
-<input type="submit">
-</form>
-
+<?=_("Username")?>: <input type="text" name="username"><br>
 <?
+$sql = "SELECT * FROM ngroups";
+$result = DB::query($sql);
+while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
+	input_checkbox("ngroups[]", $ngroup->id, true);
+	echo $ngroup->name;
+	?><br><?
+}
+input_submit(_("login"));
+form_end();
 
 html_foot();

@@ -124,6 +124,9 @@ function html_head($title) {
 	}
 ?>
 			</select>
+<?
+	if (Login::$member) display_checked(Login::$member->entitled($_SESSION['ngroup']));
+?>
 		</form>
 		<ul>
 <?
