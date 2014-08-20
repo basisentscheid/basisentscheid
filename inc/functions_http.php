@@ -111,22 +111,42 @@ function html_head($title) {
 ?>
 			<select name="ngroup" onchange="this.form.submit()">
 <?
-	$sql = "SELECT id, name FROM ngroups";
+	$entitled = ( Login::$member and Login::$member->entitled );
+	if ($entitled) {
+		$sql = "SELECT id, name, member FROM ngroups
+			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".Login::$member->id;
+	} else {
+		$sql = "SELECT id, name FROM ngroups";
+	}
+
 	$result = DB::query($sql);
-	while ( $row = DB::fetch_assoc($result) ) {
+	$ngroups = array();
+	while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
+		$ngroups[] = $ngroup;
+	}
+	$ngroups = Ngroup::parent_sort($ngroups);
+	// entitled ngroups
+	foreach ($ngroups as $ngroup) {
 		// use the first ngroup as default
-		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $row['id'];
+		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
+		if (!$entitled or !$ngroup->member) continue;
 ?>
-			<option value="<?=$row['id']?>"<?
-		if ($row['id']==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-		?>><?=$row['name']?></option>
+				<option value="<?=$ngroup->id?>"<?
+		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
+		?>><?=$ngroup->name?> (<?=_("entitled")?>)</option>
+<?
+	}
+	// not entitled ngroups
+	foreach ($ngroups as $ngroup) {
+		if ($entitled and $ngroup->member) continue;
+?>
+				<option value="<?=$ngroup->id?>"<?
+		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
+		?>><?=$ngroup->name?></option>
 <?
 	}
 ?>
 			</select>
-<?
-	if (Login::$member) display_checked(Login::$member->entitled($_SESSION['ngroup']));
-?>
 		</form>
 		<ul>
 <?

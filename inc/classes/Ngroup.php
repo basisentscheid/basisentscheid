@@ -61,4 +61,26 @@ class Ngroup extends Relation {
 	}
 
 
+	/**
+	 * sort parents before children
+	 *
+	 * @param array   $ngroups input
+	 * @param array   $result  (optional, reference) internal
+	 * @param integer $parent  (optional) internal
+	 * @param integer $depth   (optional) internal
+	 * @return array           output
+	 */
+	public static function parent_sort(array $ngroups, array &$result=array(), $parent=0, $depth=0) {
+		foreach ($ngroups as $key => $ngroup) {
+			if ($ngroup->parent == $parent) {
+				$ngroup->depth = $depth;
+				array_push($result, $ngroup);
+				unset($ngroups[$key]);
+				self::parent_sort($ngroups, $result, $ngroup->id, $depth + 1);
+			}
+		}
+		return $result;
+	}
+
+
 }

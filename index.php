@@ -122,48 +122,66 @@ foreach ( $dates as $index => $time ) {
 
 <h2><?=_("Groups")?></h2>
 <table>
+	<tr>
+		<th colspan="4"></th>
+		<th><?=_("entitled")?></th>
+		<th><?=_("Participation")?></th>
+	</tr>
 <?
 if (Login::$member) {
 	$sql = "SELECT ngroups.*, members_ngroups.member, members_ngroups.participant
 		FROM ngroups
-		LEFT JOIN members_ngroups ON ngroups.id = members_ngroups.ngroup AND members_ngroups.member=".intval(Login::$member->id);
+		LEFT JOIN members_ngroups ON ngroups.id = members_ngroups.ngroup AND members_ngroups.member = ".intval(Login::$member->id);
 } else {
 	$sql = "SELECT *
 		FROM ngroups";
 }
-$sql .= " ORDER BY id";
+$sql .= " ORDER BY name";
 $result = DB::query($sql);
+$ngroups = array();
 while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
+	$ngroups[] = $ngroup;
+}
+$ngroups = Ngroup::parent_sort($ngroups);
+foreach ($ngroups as $ngroup) {
 ?>
 	<tr class="<?=stripes()?>">
-		<td><?=$ngroup->name?></td>
+		<td><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
 		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("proposals")?></a></td>
 		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("periods")?></a></td>
 		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("areas")?></a></td>
 <?
-	if (Login::$member and $ngroup->member) {
+	if (Login::$member) {
+		if ($ngroup->member) {
 ?>
+		<td class="center">&#10003;</td>
 		<td>
 <?
-		if ($ngroup->participant) {
+			if ($ngroup->participant) {
 ?>
 &#10003; <?=_("last time activated")?>: <?=dateformat($ngroup->participant)?>
 <?
-			form(URI::same(), 'class="button"');
+				form(URI::same(), 'class="button"');
 ?>
 <input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
 <input type="hidden" name="action" value="unsubscribe">
 <input type="submit" value="<?=_("unsubscribe")?>">
 <?
-			form_end();
-		}
-		form(URI::same(), 'class="button"');
+				form_end();
+			}
+			form(URI::same(), 'class="button"');
 ?>
 <input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
 <input type="hidden" name="action" value="subscribe">
 <input type="submit" value="<?=$ngroup->participant?_("subscribe anew"):_("subscribe")?>">
 <?
-		form_end();
+			form_end();
+		} else {
+?>
+		<td></td>
+		<td>
+<?
+		}
 ?>
 		</td>
 <?
