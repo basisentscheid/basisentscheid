@@ -30,7 +30,7 @@ fi
 # show commands
 set -x
 
-pg_dump --username=$dbuser --disable-triggers --data-only $dbname > $tmpsql
+pg_dump --username=$dbuser --data-only $dbname > $tmpsql
 
 echo "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" | psql --username=$dbuser -v ON_ERROR_STOP=1 $dbname
 psql --username=$dbuser -q -f $path/basisentscheid.sql $dbname
@@ -40,11 +40,11 @@ case "$datasql" in
     # leave schema empty
     ;;
   *.bz2)
-    bunzip2 -c $datasql | psql --username=postgres -v ON_ERROR_STOP=1 -q $dbname
+    bunzip2 -c $datasql | psql --username=$dbuser -v ON_ERROR_STOP=1 -q $dbname
     ;;
   *.gz)
-    gunzip  -c $datasql | psql --username=postgres -v ON_ERROR_STOP=1 -q $dbname
+    gunzip  -c $datasql | psql --username=$dbuser -v ON_ERROR_STOP=1 -q $dbname
     ;;
   *)
-    psql -f $datasql           --username=postgres -v ON_ERROR_STOP=1 -q $dbname
+    psql -f $datasql           --username=$dbuser -v ON_ERROR_STOP=1 -q $dbname
 esac
