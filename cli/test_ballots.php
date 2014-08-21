@@ -26,6 +26,7 @@ $ngroup = new Ngroup(1);
 $login = new Member;
 $login->username = "t".$date."login";
 $login->auid = $login->username;
+$login->entitled = true;
 $login->create();
 
 
@@ -60,6 +61,7 @@ function create_case($case, $stopcase) {
 
 	// create period
 	if ($stopcase == ++$stop) {
+		// period without ballot voting
 		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup)
 		VALUES (
 			now(),
@@ -75,7 +77,8 @@ function create_case($case, $stopcase) {
 		DB::query($sql);
 		return;
 	} else {
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup)
+		// period with ballot voting
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup, postage)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -85,7 +88,8 @@ function create_case($case, $stopcase) {
 			now() + interval '4 weeks',
 			true,
 			true,
-			".$ngroup->id."
+			".$ngroup->id.",
+			true
 		) RETURNING id";
 		$result = DB::query($sql);
 		$row = DB::fetch_row($result);
@@ -110,6 +114,11 @@ function create_case($case, $stopcase) {
 		}
 	}
 
+	// add postal voters
+	for ( $j=1; $j<=10; $j++ ) {
+		add_participant($period, true, $case, "a".$ballot_count."i0j".$j);
+	}
+
 	if ($stopcase == ++$stop) return;
 
 	// approve ballots with 10 or more participants
@@ -124,7 +133,7 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	// add further participants without assigning them to ballots
-	for ($i=1; $i<=1000; $i++) {
+	for ($i=1; $i<=100; $i++) {
 		add_participant($period, null, $case, "t".$date."c".$case."i".$i);
 		$ngroup->activate_participation();
 	}
@@ -156,7 +165,7 @@ function create_case($case, $stopcase) {
  * create a new member and let it become participant of the supplied ballot
  *
  * @param Period  $period
- * @param Ballot  $ballot Ballot or null
+ * @param Ballot  $ballot Ballot, true or null
  * @param integer $case
  * @param string  $i
  */
@@ -164,11 +173,14 @@ function add_participant(Period $period, $ballot, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
-	Login::$member->username = "t".$date."c".$case."p".($ballot?$ballot->id:"").$i;
+	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
 	Login::$member->auid = Login::$member->username;
+	Login::$member->entitled = true;
 	Login::$member->create();
 	Login::$member->update_ngroups(array(1));
-	if ($ballot) $period->select_ballot($ballot);
+	if ($ballot) {
+		if (is_object($ballot)) $period->select_ballot($ballot); else $period->select_postal();
+	}
 }
 
 

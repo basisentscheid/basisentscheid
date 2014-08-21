@@ -357,7 +357,7 @@ ALTER SEQUENCE issues_id_seq OWNED BY issues.id;
 
 CREATE TABLE members (
     id integer NOT NULL,
-    auid character(36) NOT NULL,
+    auid character varying(36) NOT NULL,
     username character varying(32),
     public_id text NOT NULL,
     profile text NOT NULL,

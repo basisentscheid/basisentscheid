@@ -4,7 +4,7 @@
  * to be called by a cron job about once per day
  *
  * crontab example:
- * 0 0  * * *  <path>/cli/cron_update_ngroups.php
+ * 38 0  * * *  <path>/cli/cron_update_ngroups.php
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid

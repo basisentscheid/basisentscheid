@@ -3,6 +3,8 @@
 /**
  * to be called by a regular cron job
  *
+ * If you for example have your dates at whole hours, it would make sense to run this skript right after the whole hours.
+ *
  * crontab example:
  * 0 *  * * *  <path>/cli/cron.php
  *

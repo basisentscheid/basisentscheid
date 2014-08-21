@@ -25,6 +25,7 @@ $date = dechex(time());
 $login = new Member;
 $login->username = "t".$date."login";
 $login->auid = $login->username;
+$login->entitled = true;
 $login->create();
 
 $ngroup = 1;
@@ -419,6 +420,7 @@ function add_supporter(Proposal $proposal, $case, $i) {
 	Login::$member = new Member;
 	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
+	Login::$member->entitled = true;
 	Login::$member->create();
 	$proposal->add_support();
 }
@@ -437,6 +439,7 @@ function add_proponent(Proposal $proposal, $case, $i) {
 	Login::$member = new Member;
 	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
+	Login::$member->entitled = true;
 	Login::$member->create();
 	$proposal->add_proponent(Login::$member->username, true);
 }
@@ -455,6 +458,7 @@ function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
 	Login::$member = new Member;
 	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
 	Login::$member->auid = Login::$member->username;
+	Login::$member->entitled = true;
 	Login::$member->create();
 	$proposal->issue()->demand_ballot_voting();
 }

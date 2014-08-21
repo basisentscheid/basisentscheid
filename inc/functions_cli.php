@@ -92,13 +92,15 @@ function cron($skip_if_locked=false) {
 		case "ballot_assignment":
 			if (!$period->ballot_preparation_now) break;
 
-			// TODO Mitteilung der Teilnehmerliste und Wahlunterlagen an Urnenbeauftragte (per Post oder E-Mail?)
+			// final upload of the complete postal and ballot voters
+			upload_voters($period, true);
 
 			$period->state = "ballot_preparation";
 			$period->update(array("state"));
 
 			// ballot_preparation is the final state.
 		}
+
 
 		// proposals and issues
 		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues
@@ -271,35 +273,30 @@ function cron($skip_if_locked=false) {
 		}
 
 
-		// upload votings to the ID server
+		// debate start notifications
 		if ($issues_start_debate) {
-
 			$notification = new Notification("debate");
 			$notification->period = $period;
 			$notification->issues = $issues_start_debate;
 			$notification->send();
-
 		}
 
-
-		// upload votings to the ID server
+		// upload votings to the ID server and voting start notifications
 		if ($issues_start_voting) {
 			$json_string = build_json($issues_start_voting, $period);
 			//echo $json_string."\n";
 			if ($json_string) {
-				if ( upload_voting_data($json_string) ) {
+				if ( upload_share($json_string) ) {
 					foreach ($issues_start_voting as $issue) {
 						$issue->state = "voting";
 						$issue->update(array("state"), 'voting_started=now()');
 					}
 				}
 			}
-
 			$notification = new Notification("voting");
 			$notification->period = $period;
 			$notification->issues = $issues_start_voting;
 			$notification->send();
-
 		}
 
 
@@ -481,14 +478,56 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 
 
 /**
- * upload voting data to the ID server
+ * upload voter lists for postal voting and for each ballot
+ *
+ * @param Period  $period
+ * @param boolean $include_ballot_voters (optional)
+ */
+function upload_voters($period, $include_ballot_voters=false) {
+
+	$data = array();
+
+	// postal voters
+	$sql = "SELECT auid FROM members
+		JOIN voters ON voters.member = members.id AND voters.ballot IS NULL AND voters.period = ".intval($period->id);
+	$data[0] = array(
+		'name'   => "postal voting",
+		'voters' => DB::fetchfieldarray($sql)
+	);
+
+	// ballot voters
+	if ($include_ballot_voters) {
+		$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($period->id)." AND approved=TRUE";
+		$result_ballot = DB::query($sql_ballot);
+		while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
+			$sql = "SELECT auid FROM members
+				JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id);
+			$data[$ballot->id] = array(
+				'name'    => $ballot->name,
+				'ngroup'  => $ballot->ngroup()->name,
+				'opening' => timeformat($ballot->opening),
+				'closing' => BALLOT_CLOSE_TIME,
+				'agents'  => $ballot->agents,
+				'voters'  => DB::fetchfieldarray($sql)
+			);
+		}
+	}
+
+	upload_share(json_encode($data));
+
+}
+
+
+/**
+ * upload data to the ID server share
  *
  * @param string  $json
  * @return boolean
  */
-function upload_voting_data($json) {
+function upload_share($json) {
 
 	// for testing
+	//print_r($json);
 	if (defined("SKIP_UPDOWNLOAD")) return true;
 
 	$ch = curl_init();
@@ -521,9 +560,9 @@ function upload_voting_data($json) {
 
 
 /**
- * download voting result from the ID server
+ * download the voting result from the ID server
  *
- * @param object  $issue
+ * @param Issue   $issue
  * @return string
  */
 function download_vote(Issue $issue) {
