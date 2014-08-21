@@ -266,6 +266,44 @@ function limitstr($string, $length) {
 
 
 /**
+ * replacement for wordwrap(), which is not multi byte safe
+ *
+ * @param string  $str
+ * @param integer $width
+ * @param string  $break
+ * @param boolean $cut
+ * @return string
+ */
+function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
+	$lines = explode($break, $str);
+	foreach ($lines as &$line) {
+		$line = rtrim($line);
+		if (mb_strlen($line) <= $width) continue;
+		$words = explode(" ", $line);
+		$line = "";
+		$actual = "";
+		foreach ($words as $word) {
+			if (mb_strlen($actual.$word) <= $width) {
+				$actual .= $word." ";
+			} else {
+				if ($actual != "") $line .= rtrim($actual).$break;
+				$actual = $word;
+				if ($cut) {
+					while (mb_strlen($actual) > $width) {
+						$line .= mb_substr($actual, 0, $width).$break;
+						$actual = mb_substr($actual, $width);
+					}
+				}
+				$actual .= " ";
+			}
+		}
+		$line .= trim($actual);
+	}
+	return implode($break, $lines);
+}
+
+
+/**
  * wrapper for mail()
  *
  * @param string  $to

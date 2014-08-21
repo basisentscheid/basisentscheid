@@ -23,6 +23,7 @@ $d->columns = array(
 	array("counting",           _("Counting/End of period"), "", "timestamp", "timestamp"), // "Stichtag"
 	array("online_voting", _("Online voting"), "center", "boolean", "boolean", 'type'=>"boolean"),
 	array("ballot_voting", _("Ballot voting"), "center", "boolean", "boolean", 'type'=>"boolean"),
+	array("postage", _("Postage"), "center", "boolean", "postage", 'type'=>"boolean"),
 	array(false, _("Ballots"), "center", "ballots", false)
 );
 $d->enable_filter = false;

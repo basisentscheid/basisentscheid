@@ -9,6 +9,7 @@
 
 class Period extends Relation {
 
+	public $ngroup;
 	public $debate;
 	public $preparation;
 	public $voting;
@@ -18,10 +19,11 @@ class Period extends Relation {
 	public $online_voting;
 	public $ballot_voting;
 	public $state;
+	public $postage;
 
 	private $ngroup_obj;
 
-	protected $boolean_fields = array("online_voting", "ballot_voting");
+	protected $boolean_fields = array("online_voting", "ballot_voting", "postage");
 
 
 	/**
@@ -30,8 +32,7 @@ class Period extends Relation {
 	 * @return object
 	 */
 	function ngroup() {
-		if ($this->ngroup_obj) return $this->ngroup_obj;
-		$this->ngroup_obj = new Ngroup($this->ngroup);
+		if (!is_object($this->ngroup_obj)) $this->ngroup_obj = new Ngroup($this->ngroup);
 		return $this->ngroup_obj;
 	}
 
@@ -90,9 +91,24 @@ class Period extends Relation {
 
 
 	/**
+	 * member selects postal voting
+	 */
+	public function select_postal() {
+		$fields_values = array(
+			'member' => Login::$member->id,
+			'period' => $this->id,
+			'ballot' => null,
+			'agent'  => false
+		);
+		$keys = array("member", "period");
+		DB::insert_or_update("voters", $fields_values, $keys);
+	}
+
+
+	/**
 	 * the logged in member selects a ballot
 	 *
-	 * @param object  $ballot
+	 * @param Ballot  $ballot
 	 * @param boolean $agent  (optional)
 	 */
 	public function select_ballot(Ballot $ballot, $agent=false) {
@@ -102,9 +118,29 @@ class Period extends Relation {
 
 
 	/**
+	 * postal voting is selected and postage has already started
+	 *
+	 * @return boolean
+	 */
+	public function postage() {
+		if ($this->postage) {
+			$sql = "SELECT COUNT(1) FROM voters
+				WHERE member=".intval(Login::$member->id)."
+					AND period=".intval($this->id)."
+					AND ballot IS NULL";
+			if ( DB::fetchfield($sql) ) return true;
+		}
+	}
+
+
+	/**
 	 * the logged in member revokes his ballot choice
 	 */
 	public function unselect_ballot() {
+		if ( $this->postage() ) {
+			warning(_("You can not change your choice for postal voting any longer, because postage has already started."));
+			redirect();
+		}
 		DB::delete("voters", "member=".intval(Login::$member->id)." AND period=".intval($this->id));
 		$this->update_voters_cache();
 	}
@@ -155,7 +191,14 @@ class Period extends Relation {
 			$ballots[] = $ballot;
 		}
 
+		// If no ballots were approved at all, ballot voting just can not take place.
 		if (!$ballots) return;
+
+		// get all ngroups within the ngroup of the period
+		$result = DB::query("SELECT * FROM ngroups");
+		$ngroups = array();
+		while ( $ngroup = DB::fetch_object($result, "Ngroup") ) $ngroups[$ngroup->id] = $ngroup;
+		$period_ngroups = Ngroup::parent_sort($ngroups, $ngroups[$this->ngroup]->parent);
 
 		// get all participants, who are in the current period not assigned to a ballot yet
 		$sql = "SELECT members.* FROM members
@@ -165,13 +208,74 @@ class Period extends Relation {
 		$result = DB::query($sql);
 		while ( $member = DB::fetch_object($result, "Member") ) {
 
-			// assign members to random ballots until we get the documentation about the groups supplied by the ID server
-			$ballots[rand(0, count($ballots)-1)]->assign_member($member);
+			// get lowest member ngroup (within the ngroup of the period)
+			$lowest_member_ngroup = $member->lowest_ngroup($period_ngroups);
+			if (!$lowest_member_ngroup) {
+				trigger_error("No lowest member ngroup found", E_USER_NOTICE);
+				$best_ballots = $ballots;
+			} else {
+
+				// rate ballots by distance between member and ballot
+				foreach ( $ballots as $ballot ) {
+
+					$ballot_ngroup = $period_ngroups[$ballot->ngroup];
+					$ballot->score = 0; // if no matching is found at all
+
+					// climb up from the lowest ngroup of the member until the top
+					$reference_member_ngroup = $lowest_member_ngroup;
+					do {
+						if ( self::ngroup_is_equal_or_child($ballot_ngroup, $reference_member_ngroup, $period_ngroups) ) {
+							// Score depends on how far the member has to climb up, but not on how deep the ballot is from there.
+							$ballot->score = $reference_member_ngroup->depth;
+							break;
+						}
+					} while (
+						$reference_member_ngroup->parent and
+						$reference_member_ngroup = $period_ngroups[$reference_member_ngroup->parent] // step up to parent of member ngroup
+					);
+
+				}
+
+				// pick ballots with highest score
+				$highest_score = 0;
+				$best_ballots = array();
+				foreach ( $ballots as $ballot ) {
+					if ($ballot->score == $highest_score) {
+						$best_ballots[] = $ballot;
+					} elseif ($ballot->score > $highest_score) {
+						$best_ballots = array($ballot);
+						$highest_score = $ballot->score;
+					}
+				}
+
+			}
+
+			// assign member to random of the best ballots
+			$best_ballots[rand(0, count($best_ballots)-1)]->assign_member($member);
 
 		}
 
 		$this->update_voters_cache();
 
+	}
+
+
+	/**
+	 * check if child ngroup is equal to or child of parent ngroup
+	 *
+	 * @param Ngroup  $child
+	 * @param Ngroup  $parent
+	 * @param array   $ngroups
+	 * @return boolean
+	 */
+	private static function ngroup_is_equal_or_child(Ngroup $child, Ngroup $parent, array $ngroups) {
+		// climb up from the child ngroup until the top
+		do {
+			if ($child->id == $parent->id) return true;
+		} while (
+			$child->parent and
+			$child = $ngroups[$child->parent] // step up to parent ngroup
+		);
 	}
 
 

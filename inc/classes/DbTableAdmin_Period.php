@@ -128,11 +128,27 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 *
 	 * @param mixed   $content
 	 * @param object  $object
-	 * @param array   $column
 	 */
-	protected function print_ballots($content, $object, $column) {
+	protected function print_ballots($content, $object) {
 		if (!$object->ballot_voting) return;
 		?><a href="ballots.php?period=<?=$object->id?>"><?=_("Ballots")?></a><?
+	}
+
+
+	/**
+	 * checkbox for postage
+	 *
+	 * @param string  $colname
+	 * @param mixed   $default
+	 */
+	protected function edit_postage($colname, $default) {
+		if ($default) {
+			input_checkbox($colname, "1", true, true);
+			input_hidden($colname, 1);
+		} else {
+			input_checkbox($colname, "1", false);
+		}
+		?><div class="comment"><?=_("Postage has started, choice for postal voting can not be changed any longer. Also this option itself can not be deactivated anymore once it has been activated.")?></div><?
 	}
 
 

@@ -33,8 +33,7 @@ class Issue extends Relation {
 	 * @return object
 	 */
 	function area() {
-		if ($this->area_obj) return $this->area_obj;
-		$this->area_obj = new Area($this->area);
+		if (!is_object($this->area_obj)) $this->area_obj = new Area($this->area);
 		return $this->area_obj;
 	}
 
@@ -45,8 +44,7 @@ class Issue extends Relation {
 	 * @return object
 	 */
 	function period() {
-		if ($this->period_obj) return $this->period_obj;
-		$this->period_obj = new Period($this->period);
+		if (!is_object($this->period_obj)) $this->period_obj = new Period($this->period);
 		return $this->period_obj;
 	}
 

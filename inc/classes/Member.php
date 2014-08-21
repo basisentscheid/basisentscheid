@@ -22,7 +22,7 @@ class Member extends Relation {
 	public $hide_help;
 
 	protected $boolean_fields = array("entitled");
-	protected $create_fields = array("auid", "username", "public_id", "profile");
+	protected $create_fields = array("auid", "username", "public_id", "profile", "entitled");
 	protected $update_fields = array("username");
 
 	private $ngroups;
@@ -41,6 +41,30 @@ class Member extends Relation {
 			$this->ngroups = DB::fetchfieldarray($sql);
 		}
 		return in_array($ngroup, $this->ngroups);
+	}
+
+
+	/**
+	 * get lowest member ngroup within the given ngroups
+	 *
+	 * @param array   $ngroups
+	 * @return Ngroup
+	 */
+	public function lowest_ngroup(array $ngroups) {
+
+		// get member ngroups
+		$sql = "SELECT ngroup FROM members_ngroups WHERE member=".intval($this->id);
+		$member_ngroups = DB::fetchfieldarray($sql);
+
+		// find lowest in member ngroups
+		$lowest_member_ngroup = null;
+		foreach ( $ngroups as $ngroup ) {
+			if ( in_array($ngroup->id, $member_ngroups) and (!$lowest_member_ngroup or $ngroup->depth > $lowest_member_ngroup->depth) ) {
+				$lowest_member_ngroup = $ngroup;
+			}
+		}
+
+		return $lowest_member_ngroup;
 	}
 
 
@@ -197,7 +221,7 @@ class Member extends Relation {
 	/**
 	 * update member's ngroups
 	 *
-	 * @param array   $ngroups
+	 * @param array   $ngroups array of integers
 	 */
 	public function update_ngroups(array $ngroups) {
 

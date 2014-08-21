@@ -14,16 +14,25 @@ Login::access("user");
 if (!empty($_GET['id'])) {
 	$ballot = new Ballot($_GET['id']);
 	if (!$ballot->id) {
-		error("This ballot does not exist!");
+		error(_("This ballot does not exist!"));
+	}
+	$period = new Period($ballot->period);
+	if ($period->state=="ballot_preparation") {
+		warning(_("Ballot preparation has already begun, so ballots can not be changed anymore."));
+		redirect("ballots.php?period=".$period->id);
 	}
 } else {
 	$period = new Period(@$_GET['period']);
 	if (!$period) {
-		error("The requested period does not exist!");
+		error(_("The requested period does not exist!"));
 	}
-	if ($period->state=="ballot_assignment" or $period->state=="ballot_preparation") {
-		warning(_("In the current phase of the period ballot applications are not allowed anymore."));
-		redirect();
+	if ($period->state=="ballot_preparation") {
+		warning(_("Ballot preparation has already begun, so ballots can not be changed anymore."));
+		redirect("ballots.php?period=".$period->id);
+	}
+	if ($period->state=="ballot_assignment") {
+		warning(_("Ballot assignment has already begun, so ballot applications are not allowed anymore."));
+		redirect("ballots.php?period=".$period->id);
 	}
 	$ballot = new Ballot;
 	$ballot->period = $period->id;
@@ -31,32 +40,47 @@ if (!empty($_GET['id'])) {
 
 
 if ($action) {
+	switch ($action) {
 
-	Login::access_action("user"); // TODO: distinct cases
+	case "save":
+		Login::access_action("member");
+		action_required_parameters('name', 'agents', 'opening_hour', 'opening_minute', 'ngroup');
+		if ($period->state=="ballot_preparation") {
+			warning(_("Ballot preparation has already begun, so ballots can not be changed anymore."));
+			redirect("ballots.php?period=".$period->id);
+		}
+		$ballot->name = trim($_POST['name']);
+		$ballot->agents = trim($_POST['agents']);
+		$ballot->opening = sprintf("%02d:%02d:00", $_POST['opening_hour'], $_POST['opening_minute']);
+		$ballot->ngroup = intval($_POST['ngroup']);
+		if (!$ballot->name) {
+			warning(_("The ballot name must not be empty."));
+			break;
+		}
+		if (!$ballot->agents) {
+			warning(_("The ballot agents must not be empty."));
+			break;
+		}
+		if ($ballot->id) {
+			$ballot->update();
+		} else {
+			if ($period->state=="ballot_assignment") {
+				warning(_("Ballot assignment has already begun, so ballot applications are not allowed anymore."));
+				redirect("ballots.php?period=".$period->id);
+			}
+			$ballot->create();
+			if (!$ballot->id) {
+				warning(_("The ballot could not be created!"));
+				redirect();
+			}
+		}
+		$period->select_ballot($ballot, true);
+		redirect("ballots.php?period=".$period->id);
 
-	if ($action!="save") {
+	default:
 		warning(_("Unknown action"));
 		redirect();
 	}
-
-	action_required_parameters('name', 'opening_hour', 'opening_minute');
-
-	$ballot->name = trim($_POST['name']);
-	$ballot->agents = trim($_POST['agents']);
-	$ballot->opening = sprintf("%02d:%02d:00", $_POST['opening_hour'], $_POST['opening_minute']);
-	if ($ballot->id) {
-		$ballot->update();
-	} else {
-		$ballot->create();
-		if (!$ballot->id) {
-			warning(_("The ballot could not be created!"));
-			redirect();
-		}
-	}
-
-	$period->select_ballot($ballot, true);
-
-	redirect("ballots.php?period=".$period->id);
 }
 
 
@@ -66,13 +90,19 @@ if ($ballot->id) {
 	html_head(_("New ballot"));
 }
 
-form(URI::$uri, 'class="edit_ballot"');
 ?>
-<h2><?=_("Name or location of the ballot")?></h2>
-<input type="text" name="name" value="<?=h($ballot->name)?>"><br>
-<h2><?=_("Agents")?></h2>
-<input type="text" name="agents" value="<?=h($ballot->agents)?>"><br>
-<h2><?=_("Opening time")?></h2>
+<div id="dbtableadmin" class="edit_ballot">
+<?
+form(URI::$uri, 'id="dbtableadmin_editform"');
+?>
+<fieldset>
+<div class="input <?=stripes()?>" style="width:100%"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" value="<?=h($ballot->name)?>"></span></div>
+<div class="input <?=stripes()?>"><label for="ngroup"><?=_("Group of location")?></label><span class="input">
+<?
+input_select("ngroup", Ngroup::options($period->ngroup()->parent), $ballot->ngroup);
+?>
+</span></div>
+<div class="input <?=stripes()?>"><label for="opening_hour"><?=_("Opening hours")?></label><span class="input">
 <select name="opening_hour">
 <?
 if ($ballot->opening) {
@@ -81,7 +111,8 @@ if ($ballot->opening) {
 	$hour = 0;
 	$minute = 0;
 }
-for ( $h=0; $h<24; $h++ ) {
+list($close_hour, $close_minute) = explode(":", BALLOT_CLOSE_TIME);
+for ( $h=0; $h<$close_hour; $h++ ) {
 ?>
  <option value="<?=$h?>"<?
 	if ($h==$hour) { ?> selected<? }
@@ -102,11 +133,14 @@ for ( $m=0; $m<60; $m++ ) {
 }
 ?>
 </select>
-<br>
+&mdash; <?=BALLOT_CLOSE_TIME?>
+</span></div>
+<div class="input <?=stripes()?>"><label for="agents"><?=_("Agents")?></label><span class="input"><input type="text" name="agents" value="<?=h($ballot->agents)?>"></span></div>
+<div class="buttons th"><span class="cancel"><a href="periods.php?ngroup=1"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("Save")?>"></span></div>
+</fieldset>
 <input type="hidden" name="action" value="save">
-<input type="submit" value="<?=_("Save")?>">
 </form>
+</div>
 <?
-
 
 html_foot();

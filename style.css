@@ -543,6 +543,12 @@ div.tableblock table {
 	margin-top: 5px;
 }
 
+#dbtableadmin_editform div.comment {
+	display: inline-block;
+	white-space: normal;
+	vertical-align: middle;
+}
+
 
 /* 5. classes for specific pages */
 
@@ -919,13 +925,18 @@ div.arguments_side form.rating.reset input[type=submit] {
 
 /* 5.3 ballots */
 
-form.edit_ballot input[type=text] {
+div.edit_ballot,
+div.edit_ballot input[type=text] {
 	width: 100%;
 }
-form.edit_ballot input[type=submit] {
-	margin-top: 10px;
+div.postal {
+	background-color: #FFF;
+	padding: 3px 4px;
+	display: inline-block;
 }
-
+h2.postal {
+	margin-top: 0;
+}
 
 /* 5.4 login */
 

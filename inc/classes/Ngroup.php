@@ -64,22 +64,53 @@ class Ngroup extends Relation {
 	/**
 	 * sort parents before children
 	 *
+	 * The output array uses the Ngroup IDs as indexes, so the indexes are independent from the order.
+	 *
 	 * @param array   $ngroups input
-	 * @param array   $result  (optional, reference) internal
 	 * @param integer $parent  (optional) internal
+	 * @param array   $result  (optional, reference) internal
 	 * @param integer $depth   (optional) internal
 	 * @return array           output
 	 */
-	public static function parent_sort(array $ngroups, array &$result=array(), $parent=0, $depth=0) {
+	public static function parent_sort(array $ngroups, $parent=0, array &$result=array(), $depth=0) {
 		foreach ($ngroups as $key => $ngroup) {
 			if ($ngroup->parent == $parent) {
 				$ngroup->depth = $depth;
-				array_push($result, $ngroup);
+				$result[$ngroup->id] = $ngroup;
 				unset($ngroups[$key]);
-				self::parent_sort($ngroups, $result, $ngroup->id, $depth + 1);
+				self::parent_sort($ngroups, $ngroup->id, $result, $depth + 1);
 			}
 		}
 		return $result;
+	}
+
+
+	/**
+	 * options for drop down menu
+	 *
+	 * @param integer $parent
+	 * @return array
+	 */
+	public static function options($parent) {
+		$options = array();
+		$sql = "SELECT ngroups.*, member FROM ngroups
+			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".intval(Login::$member->id)."
+			ORDER BY name";
+		$result = DB::query($sql);
+		$ngroups = array();
+		while ( $ngroup = DB::fetch_object($result, "Ngroup") ) $ngroups[] = $ngroup;
+		$ngroups = Ngroup::parent_sort($ngroups, $parent);
+		// entitled ngroups
+		foreach ($ngroups as $ngroup) {
+			if (!$ngroup->member) continue;
+			$options[$ngroup->id] = $ngroup->name." ("._("entitled").")";
+		}
+		// not entitled ngroups
+		foreach ($ngroups as $ngroup) {
+			if ($ngroup->member) continue;
+			$options[$ngroup->id] = $ngroup->name;
+		}
+		return $options;
 	}
 
 

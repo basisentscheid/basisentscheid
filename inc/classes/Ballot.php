@@ -9,24 +9,27 @@
 
 class Ballot extends Relation {
 
-	public $name;
-	public $agents;
 	public $period;
-	public $approved;
+	public $name;
+	public $ngroup;
 	public $opening;
+	public $agents;
+	public $approved;
 
 	protected $boolean_fields = array("approved");
-	protected $update_fields = array("name", "agents", "opening");
+	protected $update_fields = array("name", "agents", "opening", "ngroup");
 
 	private $period_obj;
+	private $ngroup_obj;
 
 
 	/**
 	 * create a new ballot
 	 *
+	 * @return void
 	 * @param array   $fields (optional)
 	 */
-	public function create( array $fields = array("name", "agents", "period", "opening") ) {
+	public function create( array $fields = array("name", "agents", "period", "opening", "ngroup") ) {
 
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
@@ -50,9 +53,20 @@ class Ballot extends Relation {
 
 
 	/**
+	 * get the referenced ngroup
+	 *
+	 * @return object
+	 */
+	function ngroup() {
+		if (!is_object($this->ngroup_obj)) $this->ngroup_obj = new Ngroup($this->ngroup);
+		return $this->ngroup_obj;
+	}
+
+
+	/**
 	 * assign a member to this ballot
 	 *
-	 * @param object  $member
+	 * @param Member  $member
 	 * @param boolean $agent
 	 */
 	public function assign_member(Member $member, $agent=false) {
@@ -64,6 +78,20 @@ class Ballot extends Relation {
 		);
 		$keys = array("member", "period");
 		DB::insert_or_update("voters", $fields_values, $keys);
+	}
+
+
+	/**
+	 * description of a ballot for use notification mails
+	 *
+	 * @return string
+	 */
+	public function description_for_mail() {
+		return
+		_("Name or location:  ").$this->name."\n".
+			_("Group at location: ").$this->ngroup()->name."\n".
+			sprintf(_("Opening hours:     %s to %s"), timeformat($this->opening), BALLOT_CLOSE_TIME)."\n".
+			_("Agents:            ").$this->agents."\n";
 	}
 
 

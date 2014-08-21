@@ -114,7 +114,7 @@ function html_head($title) {
 	$entitled = ( Login::$member and Login::$member->entitled );
 	if ($entitled) {
 		$sql = "SELECT ngroups.*, member FROM ngroups
-			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".Login::$member->id;
+			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".intval(Login::$member->id);
 	} else {
 		$sql = "SELECT * FROM ngroups";
 	}

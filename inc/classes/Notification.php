@@ -9,7 +9,6 @@
 
 class Notification {
 
-
 	private $type;
 
 	public $period;
@@ -17,6 +16,7 @@ class Notification {
 	public $issue;
 	public $proposals;
 	//public $proposal;
+	public $ballot;
 
 	public static $default_settings = array(
 		'all'         => array('admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
@@ -67,10 +67,12 @@ class Notification {
 
 	/**
 	 * finally send the notifications
+	 *
+	 * @param unknown $recipients (optional)
 	 */
-	public function send() {
+	public function send($recipients=null) {
 
-		$recipients = $this->recipients();
+		if ($recipients===null) $recipients = $this->recipients();
 
 		// nobody to notify
 		if (!$recipients) return;
@@ -93,7 +95,7 @@ class Notification {
 
 
 	/**
-	 * get mail adresses of the recipients
+	 * get mail addresses of the recipients
 	 *
 	 * @return array
 	 */
@@ -178,6 +180,38 @@ class Notification {
 
 			// TODO, voting result download interface needed
 
+
+
+			break;
+		case "ballot_approved":
+
+			$subject = sprintf(_("Ballot approved in period %d"), $this->period->id);
+
+			$body .= _("Your ballot application has been approved:")."\n\n"
+				.$this->ballot->description_for_mail();
+
+			break;
+		case "ballot_not_approved":
+
+			$subject = sprintf(_("Ballot not approved in period %d"), $this->period->id);
+
+			$body .= _("Your ballot application has NOT been approved:")."\n\n"
+				.$this->ballot->description_for_mail();
+
+			break;
+		case "ballot_assigned":
+
+			$subject = sprintf(_("Ballot assigned in period %d"), $this->period->id);
+
+			$body .= mb_wordwrap(_("Ballot assignment has been started. You have been assigned to the following ballot:"))."\n\n"
+				.$this->ballot->description_for_mail()."\n"
+				.mb_wordwrap(sprintf(
+					_("This ballot has been selected, either because you selected it yourself and it was approved or because it looks like it's the nearest one to where you live. You can change the selected ballot here until ballot preparation starts at %s:"),
+					datetimeformat($this->period->ballot_preparation)
+				))."\n"
+				.BASE_URL."ballots.php?period=".$this->period->id;
+
+			break;
 		}
 
 		return array($subject, $body);

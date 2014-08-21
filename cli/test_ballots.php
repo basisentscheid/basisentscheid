@@ -98,11 +98,13 @@ function create_case($case, $stopcase) {
 	for ( $i=1; $i<=$ballot_count; $i++ ) {
 		// create a ballot
 		$ballot = new Ballot;
+		$ballot->ngroup = $ngroup->id;
 		$ballot->name = "Test ballot ".$casedesc;
 		$ballot->agents = "Test agents";
 		$ballot->period = $period->id;
 		$ballot->opening = "8:00";
 		$ballot->create();
+		// add participants
 		for ( $j=1; $j<=$i-1; $j++ ) {
 			add_participant($period, $ballot, $case, "a".$ballot_count."i".$i."j".$j);
 		}
@@ -121,12 +123,9 @@ function create_case($case, $stopcase) {
 
 	if ($stopcase == ++$stop) return;
 
-	// add further participants
+	// add further participants without assigning them to ballots
 	for ($i=1; $i<=1000; $i++) {
-		Login::$member = new Member;
-		Login::$member->username = "t".$date."c".$case."i".$i;
-		Login::$member->auid = Login::$member->username;
-		Login::$member->create();
+		add_participant($period, null, $case, "t".$date."c".$case."i".$i);
 		$ngroup->activate_participation();
 	}
 
@@ -156,26 +155,27 @@ function create_case($case, $stopcase) {
 /**
  * create a new member and let it become participant of the supplied ballot
  *
- * @param object  $period
- * @param object  $ballot
+ * @param Period  $period
+ * @param Ballot  $ballot Ballot or null
  * @param integer $case
  * @param string  $i
  */
-function add_participant(Period $period, Ballot $ballot, $case, $i) {
+function add_participant(Period $period, $ballot, $case, $i) {
 	global $date;
 
 	Login::$member = new Member;
-	Login::$member->username = "t".$date."c".$case."p".$ballot->id.$i;
+	Login::$member->username = "t".$date."c".$case."p".($ballot?$ballot->id:"").$i;
 	Login::$member->auid = Login::$member->username;
 	Login::$member->create();
-	$period->select_ballot($ballot);
+	Login::$member->update_ngroups(array(1));
+	if ($ballot) $period->select_ballot($ballot);
 }
 
 
 /**
  * move the period times in the past to pretend we moved into the future
  *
- * @param object  $period
+ * @param Period  $period
  * @param string  $interval (optional)
  */
 function time_warp(Period $period, $interval="1 hour") {

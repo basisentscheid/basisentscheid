@@ -30,6 +30,7 @@ define("MINIMUM_POPULATION", 500);
 define("SUPPORTERS_VALID_INTERVAL", '84 days'); // 12 weeks are 84 days
 define("CANCEL_NOT_ADMITTED_INTERVAL", '6 months');
 define("CLEAR_INTERVAL", '1 week');
+define("BALLOT_CLOSE_TIME", "18:00");
 
 // quorum for the first proposal
 define("QUORUM_SUPPORT_NUM", 1); // 10%

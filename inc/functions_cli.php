@@ -52,12 +52,36 @@ function cron($skip_if_locked=false) {
 		case "ballot_application":
 			if (!$period->ballot_assignment_now) break;
 
-			// TODO Zuordnung der noch nicht zugeordneten Mitglieder
 			$period->assign_members_to_ballots();
 
-			// TODO Mitteilung über genehmigte Urnen an Urnenantragsteller
+			$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($period->id);
+			$result_ballot = DB::query($sql_ballot);
+			while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
 
-			// TODO Mitteilung an Mitglied über Zuordung zur Urne
+				// notification to the ballot agents whether the ballot was approved
+				// TODO: more than one ballot agent
+				$notification = new Notification("ballot_approved");
+				$notification->period = $period;
+				$notification->ballot = $ballot;
+				$sql = "SELECT mail FROM members
+					JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id)." AND voters.agent = TRUE
+					WHERE members.mail IS NOT NULL";
+				$recipients = DB::fetchfieldarray($sql);
+				$notification->send($recipients);
+
+				if (!$ballot->approved) continue;
+
+				// notification to the members to which ballots they were assigned
+				$notification = new Notification("ballot_assigned");
+				$notification->period = $period;
+				$notification->ballot = $ballot;
+				$sql = "SELECT mail FROM members
+					JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id)."
+					WHERE members.mail IS NOT NULL";
+				$recipients = DB::fetchfieldarray($sql);
+				$notification->send($recipients);
+
+			}
 
 			$period->state = "ballot_assignment";
 			$period->update(array("state"));

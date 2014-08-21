@@ -207,7 +207,8 @@ CREATE TABLE ballots (
     agents text NOT NULL,
     opening time with time zone NOT NULL,
     voters integer DEFAULT 0 NOT NULL,
-    approved boolean DEFAULT false NOT NULL
+    approved boolean DEFAULT false NOT NULL,
+    ngroup integer NOT NULL
 );
 
 
@@ -447,8 +448,16 @@ CREATE TABLE periods (
     counting timestamp with time zone NOT NULL,
     online_voting boolean NOT NULL,
     ballot_voting boolean NOT NULL,
-    state period_state DEFAULT 'ballot_application'::period_state NOT NULL
+    state period_state DEFAULT 'ballot_application'::period_state NOT NULL,
+    postage boolean DEFAULT false NOT NULL
 );
+
+
+--
+-- Name: COLUMN periods.postage; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN periods.postage IS 'postage for postal voting has started';
 
 
 --
@@ -590,9 +599,16 @@ ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
 CREATE TABLE voters (
     period integer NOT NULL,
     member integer NOT NULL,
-    ballot integer NOT NULL,
+    ballot integer,
     agent boolean DEFAULT false NOT NULL
 );
+
+
+--
+-- Name: COLUMN voters.ballot; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN voters.ballot IS 'NULL = postal voting';
 
 
 --
@@ -863,6 +879,14 @@ ALTER TABLE ONLY arguments
 
 ALTER TABLE ONLY arguments
     ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: ballots_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ballots
+    ADD CONSTRAINT ballots_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

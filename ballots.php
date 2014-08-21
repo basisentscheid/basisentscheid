@@ -45,6 +45,15 @@ if ($action) {
 		$period->select_ballot($ballot);
 		redirect();
 		break;
+	case "select_postal":
+		Login::access_action("entitled", $ngroup);
+		if ($period->state=="ballot_preparation") {
+			warning(_("In ballot preparation phase it is not allowed anymore to select postal voting."));
+			redirect();
+		}
+		$period->select_postal();
+		redirect();
+		break;
 	case "unselect":
 		Login::access_action("entitled", $ngroup);
 		if ($period->state=="ballot_preparation") {
@@ -74,7 +83,6 @@ if ($action) {
 html_head(sprintf(_("Ballots for voting period %d"), $period->id));
 
 $entitled = ( Login::$member and Login::$member->entitled($ngroup) );
-
 ?>
 
 <p><?=$period->ballot_phase_info()?></p>
@@ -82,9 +90,12 @@ $entitled = ( Login::$member and Login::$member->entitled($ngroup) );
 <div class="tableblock">
 <?
 
-if ($entitled and $period->state=="ballot_application") {
+// don't show select buttons if the member is agent for some ballot
+$show_select = ( $entitled and (!$row_voters or !$row_voters['agent']) and !$period->postage() );
+
+if ($show_select and $entitled and $period->state=="ballot_application") {
 ?>
-<div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>"><?=_("Apply to operate a ballot")?></a></div>
+<div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Apply to operate a ballot")?></a></div>
 <?
 }
 
@@ -92,14 +103,15 @@ if (Login::$admin) {
 	form(URI::$uri);
 }
 
-$colspan = 6;
+$colspan = 7;
 ?>
 
 <table>
 	<tr>
 		<th><?=_("No.")?></th>
 		<th><?=_("Name")?></th>
-		<th><?=_("Opening")?></th>
+		<th><?=_("Group")?></th>
+		<th><?=_("Opening hours")?></th>
 		<th><?=_("Agents")?></th>
 		<th><?=_("Voters")?></th>
 <? if ($entitled) { $colspan++; ?>
@@ -132,7 +144,8 @@ if (!$pager->linescount) {
 	<tr class="<?=stripes()?>">
 		<td class="right"><?=$ballot->id?></td>
 		<td><?=h($ballot->name)?></td>
-		<td class="center"><?=timeformat($ballot->opening)?></td>
+		<td><?=$ballot->ngroup()->name?></td>
+		<td class="center"><?=timeformat($ballot->opening)?> &ndash; <?=BALLOT_CLOSE_TIME?></td>
 		<td><?=h($ballot->agents)?></td>
 		<td class="center"><?=$ballot->voters?></td>
 <?
@@ -141,25 +154,21 @@ if (!$pager->linescount) {
 		<td>
 <?
 			if ($row_voters and $row_voters['ballot']==$ballot->id) {
-?>
-				&#10003;
-<?
 				if ($row_voters['agent']) {
-					?><?=_("You are agent for this ballot.")?><?
+					?><a href="ballot_edit.php?id=<?=$ballot->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>><?=_("You are agent for this ballot.")?></a><?
 				} else {
-					?><?=_("You selected this ballot for voting.")?><?
+					?>&#10003; <?=_("You selected this ballot for voting.");
 				}
 				if ($period->state!="ballot_preparation") {
 					form(URI::$uri, 'class="button"');
 ?>
 <input type="hidden" name="action" value="unselect">
 <input type="submit" value="<?=_("remove selection")?>">
-</form>
 <?
+					form_end();
 				}
 			} elseif (
-				// don't show select buttons if the member is agent for some ballot
-				(!$row_voters or !$row_voters['agent']) and (
+				$show_select and (
 					$period->state=="ballot_application" or
 					($period->state=="ballot_assignment" and $ballot->approved)
 				)
@@ -169,8 +178,8 @@ if (!$pager->linescount) {
 <input type="hidden" name="ballot" value="<?=$ballot->id?>">
 <input type="hidden" name="action" value="select">
 <input type="submit" value="<?=_("select this ballot for voting")?>">
-</form>
 <?
+				form_end();
 			}
 ?>
 		</td>
@@ -209,6 +218,55 @@ $pager->display();
 
 ?>
 </div>
+<div class="clearfix"></div>
 <?
+
+
+// postal voting
+if ($entitled) {
+	if ($row_voters and $row_voters['ballot']===null) {
+?>
+<h2 class="postal"><?=_("Postal voting")?></h2>
+<div class="postal">
+&#10003; <?=_("You selected postal voting.");
+		if ($period->state!="ballot_preparation") {
+			if ($period->postage()) {
+				?> <?=_("The sending of the letters has already started, so you can not change your choice any longer.");
+			} else {
+				form(URI::$uri, 'class="button"');
+?>
+<input type="hidden" name="action" value="unselect">
+<input type="submit" value="<?=_("remove selection")?>">
+<?
+				form_end();
+			}
+		}
+?>
+</div>
+<?
+	} elseif ($period->state=="ballot_application" or $period->state=="ballot_assignment") {
+?>
+<h2 class="postal"><?=_("Postal voting")?></h2>
+<div class="postal">
+<?
+		if ($show_select) {
+			form(URI::$uri, 'class="button"');
+?>
+<input type="hidden" name="action" value="select_postal">
+<input type="submit" value="<?=_("select postal voting")?>">
+<?
+			if ($period->postage()) {
+				?> <?=_("The postage has already started, so if you choose postal voting once, you can not change this choice any longer.");
+			}
+			form_end();
+		} else {
+			echo _("As an agent for a ballot you have to vote at that ballot and can not select postal voting at the same time.");
+		}
+?>
+</div>
+<?
+	}
+}
+
 
 html_foot();

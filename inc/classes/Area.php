@@ -23,8 +23,7 @@ class Area extends Relation {
 	 * @return object
 	 */
 	function ngroup() {
-		if ($this->ngroup_obj) return $this->ngroup_obj;
-		$this->ngroup_obj = new Ngroup($this->ngroup);
+		if (!is_object($this->ngroup_obj)) $this->ngroup_obj = new Ngroup($this->ngroup);
 		return $this->ngroup_obj;
 	}
 

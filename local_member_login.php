@@ -24,6 +24,7 @@ if ( !empty($_POST['username']) ) {
 		$member = new Member;
 		$member->set_unique_username($_POST['username']);
 		$member->auid = substr($member->username."_".rand(), 0, 36);
+		$member->entitled = true;
 		$member->create();
 		// become member of ngroups
 		if (!empty($_POST['ngroups'])) {
