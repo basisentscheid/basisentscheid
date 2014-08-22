@@ -41,15 +41,6 @@ if ($action) {
 		$proposal->submit();
 		redirect();
 		break;
-	case "revoke_proposal":
-		Login::access_action("entitled", $ngroup);
-		if (!$proposal->is_proponent(Login::$member)) {
-			warning(_("Your are not a proponent of this proposal."));
-			redirect();
-		}
-		$proposal->cancel("revoked");
-		redirect();
-		break;
 
 	case "apply_proponent":
 		Login::access_action("entitled", $ngroup);
@@ -586,14 +577,6 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 ?>
 <input type="hidden" name="action" value="submit_proposal">
 <input type="submit" value="<?=_("submit proposal")?>">
-</form>
-<?
-	}
-	if ($issue->state=="admission" or $issue->state=="debate") {
-		form(URI::same());
-?>
-<input type="hidden" name="action" value="revoke_proposal">
-<input type="submit" value="<?=_("revoke proposal")?>">
 </form>
 <?
 	}
