@@ -15,7 +15,6 @@ class Notification {
 	public $issues;
 	public $issue;
 	public $proposals;
-	//public $proposal;
 	public $ballot;
 
 	public static $default_settings = array(
@@ -68,7 +67,7 @@ class Notification {
 	/**
 	 * finally send the notifications
 	 *
-	 * @param unknown $recipients (optional)
+	 * @param array|null $recipients (optional)
 	 */
 	public function send($recipients=null) {
 
@@ -101,13 +100,42 @@ class Notification {
 	 */
 	private function recipients() {
 
-		$interest = "all";
-		// TODO: other interests
-
-		$sql = "SELECT mail FROM members
-			JOIN notify ON notify.member = members.id AND notify.interest=".DB::esc($interest)."
+		$sql = "SELECT DISTINCT mail FROM members
+			JOIN notify               ON          notify.member = members.id
+			LEFT JOIN members_ngroups ON members_ngroups.member = members.id
+			LEFT JOIN supporters      ON      supporters.member = members.id
 			WHERE members.mail IS NOT NULL
-				AND notify.".$this->type."=TRUE";
+				AND notify.".$this->type."=TRUE
+				AND ( notify.interest='all'";
+
+		if ($this->period) {
+			$sql .= "
+				OR (notify.interest='ngroups'     AND members_ngroups.ngroup=".intval($this->period->id).")
+				OR (notify.interest='participant' AND members_ngroups.ngroup=".intval($this->period->id)." AND members_ngroups.participant IS NOT NULL)";
+		}
+
+		$proposals = array();
+		if ($this->issues) {
+			foreach ($this->issues as $issue) {
+				foreach ($issue->proposals() as $proposal) {
+					$proposals[] = $proposal->id;
+				}
+			}
+		} elseif ($this->issue) {
+			foreach ($this->issue->proposals() as $proposal) {
+				$proposals[] = $proposal->id;
+			}
+		} elseif ($this->proposal) {
+			$proposals[] = $this->proposal->id;
+		}
+		if ($proposals) {
+			$proposals = join(",", $proposals);
+			$sql .= "
+				OR (notify.interest='supporter' AND supporters.proposal IN (".$proposals."))
+				OR (notify.interest='proponent' AND supporters.proposal IN (".$proposals.") AND supporters.proponent_confirmed=TRUE)";
+		}
+
+		$sql .= ")";
 		return DB::fetchfieldarray($sql);
 
 	}
