@@ -1354,7 +1354,7 @@ msgstr "Abstimmung in Periode %d startet"
 # File: index.php, line: 113
 #, php-format
 msgid "voting in period %d closes"
-msgstr "Abstimmung im Periode %d endet"
+msgstr "Abstimmung in Periode %d endet"
 #
 # File: member.php, line: 47
 msgid "This email address is not valid!"
