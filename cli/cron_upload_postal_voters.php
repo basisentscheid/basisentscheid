@@ -8,7 +8,7 @@
  * to be called by a cron job about once per day
  *
  * crontab example:
- * 48 0  * * *  <path>/cli/cron_update_ngroups.php
+ * 48 0  * * *  <path>/cli/cron_update_postal_voters.php
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
