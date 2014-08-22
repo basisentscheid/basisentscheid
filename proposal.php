@@ -569,16 +569,16 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <?
 	}
 
+	if ($proposal->state=="draft" and $confirmed_proponents >= REQUIRED_PROPONENTS) {
 ?>
 <h2><?=_("Actions")?></h2>
 <?
-	if ($proposal->state=="draft" and $confirmed_proponents >= REQUIRED_PROPONENTS) {
 		form(URI::same());
 ?>
 <input type="hidden" name="action" value="submit_proposal">
 <input type="submit" value="<?=_("submit proposal")?>">
-</form>
 <?
+		form_end();
 	}
 
 }
