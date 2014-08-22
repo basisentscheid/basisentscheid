@@ -571,7 +571,8 @@ div.dates h2 {
 
 /* 5.1 proposals */
 
-p.proposal {
+p.proposal,
+div.proposal {
 	background-color: #FFF;
 	padding: 5px 10px;
 	margin: 0;

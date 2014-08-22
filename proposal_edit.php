@@ -199,7 +199,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 	global $ngroup_id;
 ?>
 <h2><?=_("Area")?></h2>
-<p class="proposal">
+<div class="proposal">
 <?
 	if ($issue) {
 		echo h($issue->area()->name);
@@ -210,10 +210,11 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 		while ( $row = DB::fetch_assoc($result) ) {
 			$options[$row['id']] = $row['name'];
 		}
+		if (!$options) warning(_("There are no areas in this group. You can not add a proposal without an area."));
 		input_select("area", $options, @$_POST['area']);
 	}
 ?>
-</p>
+</div>
 <h2><?=_("Proponents")?></h2>
 <ul>
 <?

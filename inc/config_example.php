@@ -25,13 +25,20 @@ define("MAIL_FROM", "example@example.com");
 
 define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 
+// names of areas to create for new ngroups
+define("DEFAULT_AREAS", "Politics, Organisation");
+// number of proponents required for submission of a proposal
 define("REQUIRED_PROPONENTS", 5);
-define("MINIMUM_POPULATION", 500);
+// after this time supporters will not be counted for quorum anymore
 define("SUPPORTERS_VALID_INTERVAL", '84 days'); // 12 weeks are 84 days
+// proposals will be cancelled after this time after submission if they are still not admitted
 define("CANCEL_NOT_ADMITTED_INTERVAL", '6 months');
+// time between publishing the voting results and clearing raw data
 define("CLEAR_INTERVAL", '1 week');
+// time of day when ballots close (Opening time is individual for each ballot.)
 define("BALLOT_CLOSE_TIME", "18:00");
-
+// number used for quorum calculation if there are less than this area participants
+define("MINIMUM_POPULATION", 500);
 // quorum for the first proposal
 define("QUORUM_SUPPORT_NUM", 1); // 10%
 define("QUORUM_SUPPORT_DEN", 10);

@@ -15,4 +15,4 @@ if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 define('DOCROOT', "../");
 require DOCROOT."inc/common_cli.php";
 
-update_ngroups();
+Ngroup::update_ngroups();

@@ -328,7 +328,7 @@ function send_mail($to, $subject, $body, array $headers=array()) {
  * fetch something from the ID server
  *
  * @param string  $url
- * @return array
+ * @return string
  */
 function curl_fetch($url) {
 
@@ -343,118 +343,9 @@ function curl_fetch($url) {
 	curl_setopt($ch, CURLOPT_SSLCERT, DOCROOT."ssl/cmr.cx.pem");
 	curl_setopt($ch, CURLOPT_SSLKEY,  DOCROOT."ssl/cmr.cx_priv.pem");
 
-	if ( $result = curl_exec($ch) ) {
-		$result = json_decode($result, true);
-	} else {
-		trigger_error(curl_error($ch), E_USER_NOTICE);
-	}
+	$result = curl_exec($ch);
+	if (!$result) trigger_error(curl_error($ch), E_USER_NOTICE);
 	curl_close($ch);
 
 	return $result;
-}
-
-
-/**
- * get new ngroups and update existing ngroups
- *
- * We never delete any ngroups.
- */
-function update_ngroups() {
-
-	$result_ngroups = curl_fetch(NGROUPS_URL);
-	/*
-	["results"]=>
-	array(5) {
-		[0]=>
-		object(stdClass)#2 (5) {
-			["id"]=>
-			int(1)
-			["name"]=>
-			string(4) "Bund"
-			["parent"]=>
-			NULL
-			["depth"]=>
-			int(0)
-			["description"]=>
-			string(0) ""
-		}
-		[1]=>
-		object(stdClass)#3 (5) {
-			["id"]=>
-			int(2)
-			["name"]=>
-			string(6) "Bayern"
-			["parent"]=>
-			string(59) "https://example.com/api/nested_groups/1/"
-			["depth"]=>
-			int(1)
-			["description"]=>
-			string(0) ""
-		}
-		[2]=>
-		object(stdClass)#4 (5) {
-			["id"]=>
-			int(5)
-			["name"]=>
-			string(12) "Niederbayern"
-			["parent"]=>
-			string(59) "https://example.com/api/nested_groups/2/"
-			["depth"]=>
-			int(2)
-			["description"]=>
-			string(0) ""
-		}
-		[3]=>
-		object(stdClass)#5 (5) {
-			["id"]=>
-			int(3)
-			["name"]=>
-			string(10) "Oberbayern"
-			["parent"]=>
-			string(59) "https://example.com/api/nested_groups/2/"
-			["depth"]=>
-			int(2)
-			["description"]=>
-			string(0) ""
-		}
-		[4]=>
-		object(stdClass)#6 (5) {
-			["id"]=>
-			int(4)
-			["name"]=>
-			string(6) "Hessen"
-			["parent"]=>
-			string(59) "https://example.com/api/nested_groups/1/"
-			["depth"]=>
-			int(1)
-			["description"]=>
-			string(0) ""
-		}
-	}
-	*/
-
-	if (!isset($result_ngroups['results'])) {
-		trigger_error("Fetching ngroups from ID server failed", E_USER_WARNING);
-		return;
-	}
-
-	// use ids as index
-	foreach ( $result_ngroups['results'] as $ng ) {
-		// convert parents from urls to ids
-		if ($ng['parent']!==null) {
-			if ( preg_match("#/nested_groups/(\d+)/$#", $ng['parent'], $matches) ) {
-				$ng['parent'] = $matches[1];
-			} else {
-				trigger_error("Ngroup parent ".$ng['parent']." does not match expression", E_USER_WARNING);
-				return;
-			}
-		}
-		$fields_values = array(
-			'id'     => $ng['id'],
-			'name'   => $ng['name'],
-			'parent' => $ng['parent']
-		);
-		DB::insert_or_update("ngroups", $fields_values, array('id'));
-	}
-
 }

@@ -572,7 +572,7 @@ function download_vote(Issue $issue) {
 
 	// TODO: The issue should probably be added to the URL.
 
-	return serialize(curl_fetch(SHARE_URL));
+	return curl_fetch(SHARE_URL);
 }
 
 
