@@ -473,8 +473,7 @@ class Issue extends Relation {
 						echo _("Members can demand ballot voting.");
 					}
 					?>">
-<img src="img/online16.png" width="13" height="16" class="online_small" alt="<?=_("online voting")?>">?
-<img src="img/ballot16.png" width="20" height="16" class="ballot_small" alt="<?=_("ballot voting")?>">
+<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
 <?
 					if (Login::$member) {
 						if ($this->ballot_voting_demanded_by_member) {
@@ -486,21 +485,20 @@ class Issue extends Relation {
 								echo _("You demand ballot voting.")?>
 <input type="hidden" name="action" value="revoke_demand_for_ballot_voting">
 <input type="submit" value="<?=_("Revoke")?>">
-</form>
 <?
 							} else {
 ?>
 <input type="hidden" name="action" value="demand_ballot_voting">
 <input type="submit" value="<?=_("Demand ballot voting")?>">
-</form>
 <?
 							}
+							form_end();
 						}
 					}
 				} elseif ($this->ballot_voting_reached) {
-					?> title="<?=_("ballot voting")?>"><img src="img/ballot30.png" width="37" height="30" alt="<?=_("ballot voting")?>"><?
+					?> title="<?=_("ballot voting")?>"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"><?
 				} elseif ($this->state!="admission") {
-					?> title="<?=_("online voting")?>"><img src="img/online30.png" width="24" height="30" alt="<?=_("online voting")?>"><?
+					?> title="<?=_("online voting")?>"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"><?
 				} else {
 					?>><?
 				}

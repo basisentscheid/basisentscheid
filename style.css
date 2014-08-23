@@ -230,6 +230,9 @@ a.anchor {
 .right {
 	text-align: right;
 }
+.vmiddle {
+	vertical-align: middle;
+}
 
 div.messages {
 	/*border: 1px solid #CCC;*/
