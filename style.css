@@ -345,8 +345,8 @@ div.timebar div.days div.space span.weekend {
 }
 div.timebar div.beam {
 	clear: both;
-	background-color: #000;
-	height: 0.3em;
+	background-color: #448;
+	height: 0.25em;
 }
 div.timebar div.datebar {
 	vertical-align: top;
@@ -361,17 +361,17 @@ div.timebar div.mark {
 	width: 1px;
 	height: 0.6em;
 	vertical-align: bottom;
-	background-color: #000;
+	background-color: #448;
 }
 div.timebar div.datebar div.mark {
 	vertical-align: top;
 	height: 100%;
 }
 div.timebar div.datebar.now div.mark {
-	background-color: #F00;
+	background-color: #C00;
 }
 div.timebar div.datespace.now {
-	color: #F00;
+	color: #C00;
 }
 
 span.self {
