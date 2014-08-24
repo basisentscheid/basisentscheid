@@ -121,7 +121,7 @@ class Ngroup extends Relation {
 	 */
 	public static function update_ngroups() {
 
-		if (SKIP_UPDOWNLOAD) {
+		if (defined("SKIP_UPDOWNLOAD")) {
 			$result = file_get_contents(DOCROOT."var/ngroups.json");
 		} else {
 			$result = curl_fetch(NGROUPS_URL);
