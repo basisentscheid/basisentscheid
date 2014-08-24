@@ -93,10 +93,10 @@ function cron($skip_if_locked=false) {
 			if (!$period->ballot_preparation_now) break;
 
 			// final upload of the complete postal and ballot voters
-			upload_voters($period, true);
-
-			$period->state = "ballot_preparation";
-			$period->update(array("state"));
+			if ( upload_voters($period, true) ) {
+				$period->state = "ballot_preparation";
+				$period->update(array("state"));
+			}
 
 			// ballot_preparation is the final state.
 		}
@@ -217,7 +217,7 @@ function cron($skip_if_locked=false) {
 					if ($issue->period) {
 						$issue->update(array("period"));
 					} else {
-						// TODO Error
+						trigger_error(sprintf(_("Voting for issue %d could not be started, because the determined voting type is not available in the current and all further voting periods!"), $issue->id), E_USER_WARNING);
 					}
 
 				}
@@ -283,14 +283,10 @@ function cron($skip_if_locked=false) {
 
 		// upload votings to the ID server and voting start notifications
 		if ($issues_start_voting) {
-			$json_string = build_json($issues_start_voting, $period);
-			//echo $json_string."\n";
-			if ($json_string) {
-				if ( upload_share($json_string) ) {
-					foreach ($issues_start_voting as $issue) {
-						$issue->state = "voting";
-						$issue->update(array("state"), 'voting_started=now()');
-					}
+			if ( upload_voting_data($issues_start_voting, $period) ) {
+				foreach ($issues_start_voting as $issue) {
+					$issue->state = "voting";
+					$issue->update(array("state"), 'voting_started=now()');
 				}
 			}
 			$notification = new Notification("voting");
@@ -338,13 +334,13 @@ function cron($skip_if_locked=false) {
 
 
 /**
- * build json string for the upload of voting data
+ * upload voting data
  *
  * @param array   $issues array of objects
- * @param object  $period
- * @return string
+ * @param Period  $period
+ * @return boolean
  */
-function build_json($issues, $period) {
+function upload_voting_data(array $issues, Period $period) {
 
 	/* from https://basisentscheid.piratenpad.de/testabstimmungsdaten
 
@@ -417,21 +413,18 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 
 	*/
 
-	// enable gettext translation
-	include_once DOCROOT."inc/locale.php";
-
-	$json_questions = array();
+	$questions = array();
 	foreach ($issues as $issue) {
 
-		$json_options = array();
+		$options = array();
 		foreach ($issue->proposals() as $proposal) {
-			$json_options[] = array(
+			$options[] = array(
 				"optionID"   => $proposal->id,
 				"optionText" => $proposal->title
 			);
 		}
 
-		$json_questions[] = array(
+		$questions[] = array(
 			"questionID" => $issue->id,
 			"questionWording" => sprintf(_("Basisentscheid %d of voting period %d"), $issue->id, $period->id),
 			"voteSystem" => array(
@@ -440,7 +433,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 				"abstention" => true,
 				"single-step" => true
 			),
-			"options" => $json_options,
+			"options" => $options,
 			"references" => array(
 				array(
 					"referenceName" => "Abschlussparty und Auflösung",
@@ -455,7 +448,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 
 	}
 
-	$json_array = array(
+	$data = array(
 		"ballotID" => $period->id,
 		"votingStart" => $period->voting,
 		"votingEnd"   => $period->counting,
@@ -464,7 +457,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 			"groups" => array(1, 2, 3)
 		),
 		"ballotName" => sprintf(_("voting period %d"), $period->id),
-		"questions" => $json_questions,
+		"questions" => $questions,
 		"references" => array(
 			array(
 				"referenceName" => "Piratenpartei",
@@ -473,7 +466,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 		)
 	);
 
-	return json_encode($json_array);
+	return upload_share( json_encode($data) );
 }
 
 
@@ -482,6 +475,7 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
  *
  * @param Period  $period
  * @param boolean $include_ballot_voters (optional)
+ * @return boolean
  */
 function upload_voters($period, $include_ballot_voters=false) {
 
@@ -513,8 +507,7 @@ function upload_voters($period, $include_ballot_voters=false) {
 		}
 	}
 
-	upload_share(json_encode($data));
-
+	return upload_share( json_encode($data) );
 }
 
 
