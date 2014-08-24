@@ -63,7 +63,7 @@ abstract class URI {
 	 *
 	 * @param array   $keys one time parameters
 	 */
-	public static function strip_one_time_params($keys) {
+	public static function strip_one_time_params(array $keys) {
 		foreach ( $keys as $key ) {
 			if (isset(self::$query[$key])) unset(self::$query[$key]);
 		}

@@ -97,18 +97,23 @@ function html_head($title) {
 	<div id="logo"><a href="<?=DOCROOT?>index.php">Basisentscheid</a></div>
 	<nav id="ngroup">
 		<form method="GET" action="<?
-	// jump to different page if the same page doesn't show the equivalent content in other groups
-	if (BN=="proposal.php" or BN=="proposal_edit.php" or BN=="draft.php") {
+	switch (BN) {
+		// jump to different page if the same page doesn't show the equivalent content in other groups
+	case "proposal.php":
+	case "proposal_edit.php":
+	case "draft.php":
 		echo "proposals.php";
-		?>">
-<?
-	} else {
+		$hidden = false;
+		break;
+	default:
 		echo BN;
-		?>">
-<?
-		URI::hidden(array('ngroup'=>null));
+		$hidden = array('ngroup'=>null);
+		// remove id to go back from edit to list mode
+	case "periods.php":
+	case "admin_areas.php":
+		$hidden['id'] = null;
 	}
-?>
+	?>">
 			<select name="ngroup" onchange="this.form.submit()">
 <?
 	$entitled = ( Login::$member and Login::$member->entitled );
@@ -124,12 +129,12 @@ function html_head($title) {
 	while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
 		$ngroups[] = $ngroup;
 	}
-	$ngroups = Ngroup::parent_sort($ngroups);
+	$ngroups = Ngroup::parent_sort_active($ngroups);
 	// entitled ngroups
 	foreach ($ngroups as $ngroup) {
+		if (!$entitled or !$ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
-		if (!$entitled or !$ngroup->member) continue;
 ?>
 				<option value="<?=$ngroup->id?>"<?
 		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
@@ -139,6 +144,8 @@ function html_head($title) {
 	// not entitled ngroups
 	foreach ($ngroups as $ngroup) {
 		if ($entitled and $ngroup->member) continue;
+		// use the first ngroup as default
+		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
 				<option value="<?=$ngroup->id?>"<?
 		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
@@ -147,6 +154,10 @@ function html_head($title) {
 	}
 ?>
 			</select>
+<?
+	// add the hidden fields after the drop down menu to have ngroup always in the first place of the GET parameters
+	if ($hidden) URI::hidden($hidden);
+?>
 		</form>
 		<ul>
 <?

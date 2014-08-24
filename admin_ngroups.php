@@ -16,12 +16,12 @@ $d->dbtable = "ngroups";
 $d->columns = array(
 	array("id", _("ID"), "right", "", false, 'type'=>"integer"),
 	array("parent", "parent", "right", "", false, 'type'=>"integer"),
-	array("name", _("Name"))
+	array("name", _("Name"), 'disabled'=>true),
+	array("active", _("active"), "center", "boolean", "boolean", 'type'=>"boolean")
 );
 $d->enable_filter = false;
 
 $d->enable_insert         = false;
-$d->enable_edit           = false;
 $d->enable_delete_single  = false;
 
 $d->action($action);

@@ -151,17 +151,28 @@ $ngroups = array();
 while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
 	$ngroups[] = $ngroup;
 }
-$ngroups = Ngroup::parent_sort($ngroups);
+list($ngroups) = Ngroup::parent_sort_active_tree($ngroups);
 foreach ($ngroups as $ngroup) {
 ?>
 	<tr class="<?=stripes()?>">
+<?
+	if ($ngroup->active) {
+?>
 		<td><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
 		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("proposals")?></a></td>
 		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("periods")?></a></td>
 		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("areas")?></a></td>
 <?
+	} else {
+?>
+		<td class="inactive"><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
+		<td></td>
+		<td></td>
+		<td></td>
+<?
+	}
 	if ($entitled) {
-		if ($ngroup->member) {
+		if ($ngroup->member and $ngroup->active) {
 ?>
 		<td class="center">&#10003;</td>
 		<td>

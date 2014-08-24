@@ -570,6 +570,9 @@ div.ngroups h2,
 div.dates h2 {
 	margin-top: 0;
 }
+div.ngroups td.inactive {
+	color: #999;
+}
 
 
 /* 5.1 proposals */

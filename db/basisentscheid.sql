@@ -288,7 +288,8 @@ ALTER SEQUENCE drafts_id_seq OWNED BY drafts.id;
 CREATE TABLE ngroups (
     id integer NOT NULL,
     parent integer,
-    name text NOT NULL
+    name text NOT NULL,
+    active boolean DEFAULT false NOT NULL
 );
 
 

@@ -56,6 +56,22 @@ require "inc/locale.php";
  */
 if (!empty($_GET['ngroup'])) {
 	$_SESSION['ngroup'] = intval($_GET['ngroup']);
+	switch (BN) {
+		// pages which use the ngroup parameter
+	case "proposals.php":
+	case "periods.php":
+	case "areas.php":
+	case "admin_areas.php":
+		break;
+		// jump to different page if the same page doesn't show the equivalent content in other groups
+	case "proposal.php":
+	case "proposal_edit.php":
+	case "draft.php":
+		redirect("proposals.php?ngroup=".$_SESSION['ngroup']);
+	default:
+		// remove ngroup parameter from URLs of ngroup-independent pages
+		redirect(URI::strip(array('ngroup')));
+	}
 } elseif (!isset($_SESSION['ngroup'])) {
 	$_SESSION['ngroup'] = 0;
 }
