@@ -392,10 +392,10 @@ if ($proposal->submitted or $proposal->revoke) {
 	}
 	if ($issue->preparation_started) {
 		if (!$proposal->cancelled or $proposal->cancelled > $issue->preparation_started) {
-			$times[] = array($issue->preparation_started, _("Voting preparation"), _("Voting preparation started at %s."));
+			$times[] = array($issue->preparation_started, _("Preparation"), _("Voting preparation started at %s."));
 		}
 	} elseif ($issue->period and !$proposal->cancelled) {
-		$times[] = array($issue->period()->preparation, _("Voting preparation"), _("Voting preparation starts at %s."));
+		$times[] = array($issue->period()->preparation, _("Preparation"), _("Voting preparation starts at %s."));
 	}
 	if ($issue->voting_started) {
 		if (!$proposal->cancelled or $proposal->cancelled > $issue->voting_started) {

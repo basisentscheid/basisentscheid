@@ -45,23 +45,23 @@ class Period extends Relation {
 	public function current_phase() {
 		$time = time();
 		if (strtotime($this->counting) <= $time) {
-			return sprintf(_("Counting started at %s."),
+			return sprintf(_("Counting started at %s"),
 				datetimeformat_smart($this->counting)
 			);
 		} elseif (strtotime($this->voting) <= $time) {
-			return sprintf(_("Voting started at %s."),
+			return sprintf(_("Voting started at %s"),
 				datetimeformat_smart($this->voting)
 			);
 		} elseif (strtotime($this->preparation) <= $time) {
-			return sprintf(_("Voting preparation started at %s."),
+			return sprintf(_("Voting preparation started at %s"),
 				datetimeformat_smart($this->preparation)
 			);
 		} elseif (strtotime($this->debate) <= $time) {
-			return sprintf(_("Debate started at %s."),
+			return sprintf(_("Debate started at %s"),
 				datetimeformat_smart($this->debate)
 			);
 		}
-		return sprintf(_("Debate starts at %s."),
+		return sprintf(_("Debate starts at %s"),
 			datetimeformat_smart($this->debate)
 		);
 	}
@@ -75,16 +75,16 @@ class Period extends Relation {
 	public function ballot_phase_info() {
 		switch ($this->state) {
 		case "ballot_preparation":
-			return sprintf(_("Ballot preparation started at %s."),
+			return sprintf(_("Ballot preparation started at %s"),
 				datetimeformat_smart($this->ballot_preparation)
 			);
 		case "ballot_assignment":
-			return sprintf(_("Ballot assignment started at %s and goes until %s."),
+			return sprintf(_("Ballot assignment started at %s and goes until %s"),
 				datetimeformat_smart($this->ballot_assignment),
 				datetimeformat_smart($this->ballot_preparation)
 			);
 		}
-		return sprintf(_("Ballot assignment starts at %s."),
+		return sprintf(_("Ballot assignment starts at %s"),
 			datetimeformat_smart($this->ballot_assignment)
 		);
 	}

@@ -139,7 +139,7 @@ abstract class Timebar {
 			?>"
 		title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></div><?
 			$line++;
-			if ($width > 10) $line = 0;
+			if ($width > 7) $line = 0;
 		}
 		?></div>
 <?

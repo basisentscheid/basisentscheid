@@ -48,19 +48,6 @@ Es gibt drei Möglichkeiten zur Anmeldung:
 
 <p>Wenn ihr Fehler findet, könnt ihr die in das <a href="https://github.com/basisentscheid/portal/issues">Ticketsystem</a> eintragen. Ihr müsst aber nicht unbedingt nach Fehlern suchen, es gibt sicherlich noch viele. Interessanter ist die Frage, ob alles so umgesetzt ist, wie wir es haben wollen. Welche Funktionen fehlen oder verhalten sich anders, als es vielleicht sinnvoller wäre? Wenn euch da etwas auffällt, könnt ihr das an die <a href="https://lists.piratenpartei-bayern.de/mailman/listinfo/basisentscheid">Mailingliste der Projektgruppe Basisentscheid</a> schicken, <a href="http://wiki.piratenpartei.de/Benutzer:Cmrcx">mir mailen oder mich anrufen</a>, oder – sofern es etwas konkretes ist – es auch in das <a href="https://github.com/basisentscheid/portal/issues">Ticketsystem</a> eintragen.</p>
 
-Folgende größere Dinge fehlen jedenfalls noch:
-<ul>
-	<li>Anbindung an das noch nicht fertige Abstimmungsmodul</li>
-	<li>Urnenzuordung anhand der Gliederung</li>
-</ul>
-
-<h2>Informationen zum Basisentscheid</h2>
-
-<p><a href="http://wiki.piratenpartei.de/Basisentscheid">http://wiki.piratenpartei.de/Basisentscheid</a><br>
-<a href="http://basisentscheid.piratenpartei.de/">http://basisentscheid.piratenpartei.de/</a><br>
-<a href="http://wiki.piratenpartei.de/Satzung#.C2.A7_16_-_Basisentscheid_und_Basisbefragung">http://wiki.piratenpartei.de/Satzung#.C2.A7_16_-_Basisentscheid_und_Basisbefragung</a><br>
-<a href="http://wiki.piratenpartei.de/Entscheidsordnung">http://wiki.piratenpartei.de/Entscheidsordnung</a></p>
-
 <hr>
 
 <div class="dates">

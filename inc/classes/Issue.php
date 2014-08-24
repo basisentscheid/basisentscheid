@@ -107,7 +107,7 @@ class Issue extends Relation {
 		if (!$states) $states = array(
 				'admission'   => _("Admission"), // Usually proposal states are shown instead.
 				'debate'      => _("Debate"),
-				'preparation' => _("Voting preparation"),
+				'preparation' => _("Preparation"),
 				'voting'      => _("Voting"),
 				'counting'    => _("Counting"),
 				'finished'    => _("Finished"),
