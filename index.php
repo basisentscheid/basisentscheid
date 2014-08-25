@@ -146,9 +146,9 @@ foreach ($ngroups as $ngroup) {
 	if ($ngroup->active) {
 ?>
 		<td><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
-		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("proposals")?></a></td>
-		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("periods")?></a></td>
-		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("areas")?></a></td>
+		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("Proposals")?></a></td>
+		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("Periods")?></a></td>
+		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("Areas")?></a></td>
 <?
 	} else {
 ?>
