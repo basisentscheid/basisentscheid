@@ -11,7 +11,7 @@ abstract class Timebar {
 
 	const one_day = 86400; // 24 * 60 * 60
 	const round_precision = 2;
-	const day_width = 1.9; // em
+	const day_width  = 1.9;  // em, must be equal to css: div.timebar div.day { width }
 	const tick_width = 0.15; // em, must be equal to css: div.timebar div.datebar, div.timebar div.bar { width }
 
 
@@ -93,33 +93,38 @@ abstract class Timebar {
 	private function display_part(array $times, $from_time, $to_time, $show_year) {
 		$second_width = self::day_width / self::one_day;
 		$days = ($to_time - $from_time) / self::one_day;
-		$day_width = self::day_width - self::tick_width;
 ?>
 <div class="part">
-	<div class="days"><?
+	<div class="months"><?
 		$month = 0;
 		for ($t=$from_time; $t<=$to_time; $t+=self::one_day) {
-			?><div
-		class="bar"><div class="mark"></div></div><?
 			if ($t <= $to_time - self::one_day) {
-				?><div class="space" style="width:<?=$day_width?>em"><?
+				?><div class="day nowrap"><?
 				if (date("n", $t)!=$month) {
 					if ($show_year) {
-						?><span class="nowrap"><?
 						echo date("F Y", $t);
-						?></span><?
+						$show_year = false; // show year only at the first month
 					} else {
 						echo date("F", $t);
 					}
-					?><br><?
 					$month = date("n", $t);
 				}
+				?></div><?
+			}
+		}
+		?></div>
+	<div class="days"><?
+		for ($t=$from_time; $t<=$to_time; $t+=self::one_day) {
+			if ($t <= $to_time - self::one_day) {
+				?><div class="day month<?= date("m", $t) % 2 ?>"><?
 				if (date("N", $t)>=6) {
 					?><span class="weekend"><?=date("j", $t)?></span><?
 				} else {
 					echo date("j", $t);
 				}
 				?></div><?
+			} else {
+				?><div class="day">&nbsp;</div><?
 			}
 		}
 		?></div>
