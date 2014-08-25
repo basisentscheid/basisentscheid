@@ -60,8 +60,7 @@ class Argument extends Relation {
 		$parent = $this->parent;
 		while ( $parent > 0 ) { // "pro" and "contra" will be converted to 0
 			$argument = new Argument($parent);
-			// don't notify the author about his own new argument
-			if ($argument->member != Login::$member->id) $recipients[] = $argument->member;
+			$recipients[] = $argument->member;
 			$parent = $argument->parent;
 		}
 		$notification = new Notification("argument");

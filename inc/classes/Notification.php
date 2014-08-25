@@ -15,14 +15,16 @@ class Notification {
 	public $issues;
 	public $issue;
 	public $proposals;
+	public $proposal;
+	public $argument;
 	public $ballot;
 
 	public static $default_settings = array(
-		'all'         => array('admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'ngroups'     => array('admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'participant' => array('admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'supporter'   => array('admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'proponent'   => array('admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true)
+		'all'         => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'ngroups'     => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'participant' => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'supporter'   => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'proponent'   => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true)
 	);
 
 
@@ -56,10 +58,11 @@ class Notification {
 	 */
 	public static function types() {
 		return array(
-			'admitted' => _("admitted"),
-			'debate'   => _("debate"),
-			'voting'   => _("voting"),
-			'finished' => _("finished")
+			'new_proposal' => _("new proposal"),
+			'admitted'     => _("admitted"),
+			'debate'       => _("debate"),
+			'voting'       => _("voting"),
+			'finished'     => _("finished")
 		);
 	}
 
@@ -147,6 +150,11 @@ class Notification {
 
 		}
 
+		// don't notify a member about his own actions
+		if (Login::$member) {
+			$sql .= " AND members.id != ".intval(Login::$member->id);
+		}
+
 		return DB::fetchfieldarray($sql);
 	}
 
@@ -171,6 +179,34 @@ class Notification {
 		$separator = "-----8<--------------------------------------------------------------------\n"; // 75 characters
 
 		switch ($this->type) {
+		case "new_proposal":
+
+			$subject = sprintf(_("New proposal %d in area %s"), $this->proposal->id, $this->proposal->issue()->area()->name);
+
+			$body .= sprintf(_("Member '%s' added a new proposal:"), Login::$member->username())."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				."===== "._("Title")." =====\n"
+				.mb_wordwrap($this->proposal->title)."\n\n"
+				."===== "._("Content")." =====\n"
+				.mb_wordwrap($this->proposal->content)."\n\n"
+				."===== "._("Reason")." =====\n"
+				.mb_wordwrap($this->proposal->reason)."\n";
+
+			break;
+		case "argument":
+
+			$subject = sprintf(_("New reply to your argument in proposal %d"), $this->proposal->id);
+
+			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				.sprintf(_("Member '%s' replied to your argument:"), Login::$member->username())."\n"
+				.$separator
+				.mb_wordwrap($this->argument->title)."\n\n"
+				.mb_wordwrap($this->argument->content)."\n"
+				.$separator
+				._("Reply:")." ".BASE_URL."proposal.php?id=".$this->proposal->id."&argument_parent=".$this->argument->id."#form";
+
+			break;
 		case "admitted":
 
 			$ids = array();
@@ -258,20 +294,6 @@ class Notification {
 					datetimeformat($this->period->ballot_preparation)
 				))."\n"
 				.BASE_URL."ballots.php?period=".$this->period->id;
-
-			break;
-		case "argument":
-
-			$subject = sprintf(_("New reply to your argument in proposal %d"), $this->proposal->id);
-
-			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
-				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
-				.sprintf(_("Member '%s' replied to your argument:"), Login::$member->username())."\n"
-				.$separator
-				.mb_wordwrap($this->argument->title)."\n\n"
-				.mb_wordwrap($this->argument->content)."\n"
-				.$separator
-				._("Reply:")." ".BASE_URL."proposal.php?id=".$this->proposal->id."&argument_parent=".$this->argument->id."#form";
 
 			break;
 		}

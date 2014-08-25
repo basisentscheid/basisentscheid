@@ -85,6 +85,10 @@ class Proposal extends Relation {
 			true // the first proponent starts already confirmed
 		);
 
+		$notification = new Notification("new_proposal");
+		$notification->proposal = $this;
+		$notification->send();
+
 	}
 
 

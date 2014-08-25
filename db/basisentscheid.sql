@@ -419,7 +419,8 @@ CREATE TABLE notify (
     admitted boolean DEFAULT false NOT NULL,
     debate boolean DEFAULT false NOT NULL,
     voting boolean DEFAULT false NOT NULL,
-    finished boolean DEFAULT false NOT NULL
+    finished boolean DEFAULT false NOT NULL,
+    new_proposal boolean DEFAULT false NOT NULL
 );
 
 
