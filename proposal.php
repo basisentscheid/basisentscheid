@@ -152,7 +152,7 @@ if ($action) {
 			warning(_("The content of the argument must be not empty."));
 			break;
 		}
-		$argument->add();
+		$argument->add($proposal);
 		redirect(URI::same()."#argument".$argument->id);
 		break;
 

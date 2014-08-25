@@ -67,11 +67,11 @@ class Notification {
 	/**
 	 * finally send the notifications
 	 *
-	 * @param array|null $recipients (optional)
+	 * @param array|null $recipients (optional) array of member IDs
 	 */
 	public function send($recipients=null) {
 
-		if ($recipients===null) $recipients = $this->recipients();
+		$recipients = $this->recipients($recipients);
 
 		// nobody to notify
 		if (!$recipients) return;
@@ -96,48 +96,58 @@ class Notification {
 	/**
 	 * get mail addresses of the recipients
 	 *
+	 * @param array|null $recipients
 	 * @return array
 	 */
-	private function recipients() {
+	private function recipients($recipients) {
 
-		$sql = "SELECT DISTINCT mail FROM members
-			JOIN notify               ON          notify.member = members.id
-			LEFT JOIN members_ngroups ON members_ngroups.member = members.id
-			LEFT JOIN supporters      ON      supporters.member = members.id
-			WHERE members.mail IS NOT NULL
-				AND notify.".$this->type."=TRUE
-				AND ( notify.interest='all'";
+		$sql = "SELECT DISTINCT mail FROM members ";
 
-		if ($this->period) {
+		if (is_array($recipients)) {
+			if (!$recipients) return array();
+			$sql .= "WHERE mail IS NOT NULL AND id IN (".join(",", $recipients).")";
+		} else {
+
 			$sql .= "
-				OR (notify.interest='ngroups'     AND members_ngroups.ngroup=".intval($this->period->id).")
-				OR (notify.interest='participant' AND members_ngroups.ngroup=".intval($this->period->id)." AND members_ngroups.participant IS NOT NULL)";
-		}
+				JOIN notify               ON          notify.member = members.id
+				LEFT JOIN members_ngroups ON members_ngroups.member = members.id
+				LEFT JOIN supporters      ON      supporters.member = members.id
+				WHERE members.mail IS NOT NULL
+					AND notify.".$this->type."=TRUE
+					AND ( notify.interest='all'";
 
-		$proposals = array();
-		if ($this->issues) {
-			foreach ($this->issues as $issue) {
-				foreach ($issue->proposals() as $proposal) {
+			if ($this->period) {
+				$sql .= "
+						OR (notify.interest='ngroups'     AND members_ngroups.ngroup=".intval($this->period->id).")
+						OR (notify.interest='participant' AND members_ngroups.ngroup=".intval($this->period->id)." AND members_ngroups.participant IS NOT NULL)";
+			}
+
+			$proposals = array();
+			if ($this->issues) {
+				foreach ($this->issues as $issue) {
+					foreach ($issue->proposals() as $proposal) {
+						$proposals[] = $proposal->id;
+					}
+				}
+			} elseif ($this->issue) {
+				foreach ($this->issue->proposals() as $proposal) {
 					$proposals[] = $proposal->id;
 				}
+			} elseif ($this->proposal) {
+				$proposals[] = $this->proposal->id;
 			}
-		} elseif ($this->issue) {
-			foreach ($this->issue->proposals() as $proposal) {
-				$proposals[] = $proposal->id;
+			if ($proposals) {
+				$proposals = join(",", $proposals);
+				$sql .= "
+						OR (notify.interest='supporter' AND supporters.proposal IN (".$proposals."))
+						OR (notify.interest='proponent' AND supporters.proposal IN (".$proposals.") AND supporters.proponent_confirmed=TRUE)";
 			}
-		} elseif ($this->proposal) {
-			$proposals[] = $this->proposal->id;
-		}
-		if ($proposals) {
-			$proposals = join(",", $proposals);
-			$sql .= "
-				OR (notify.interest='supporter' AND supporters.proposal IN (".$proposals."))
-				OR (notify.interest='proponent' AND supporters.proposal IN (".$proposals.") AND supporters.proponent_confirmed=TRUE)";
+
+			$sql .= ")";
+
 		}
 
-		$sql .= ")";
 		return DB::fetchfieldarray($sql);
-
 	}
 
 
@@ -148,7 +158,17 @@ class Notification {
 	 */
 	private function content() {
 
-		$body = "";
+		// ngroup
+		if ($this->period) {
+			$ngroup = $this->period->ngroup();
+		} elseif ($this->issue) {
+			$ngroup = $this->issue->area()->ngroup();
+		} elseif ($this->proposal) {
+			$ngroup = $this->proposal->issue()->area()->ngroup();
+		}
+		$body = _("Group").": ".$ngroup->name."\n\n";
+
+		$separator = "-----8<--------------------------------------------------------------------\n"; // 75 characters
 
 		switch ($this->type) {
 		case "admitted":
@@ -156,8 +176,8 @@ class Notification {
 			$ids = array();
 			foreach ( $this->proposals as $proposal ) {
 				$ids[] = $proposal->id;
-				$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n";
-				$body .= BASE_URL."proposal.php?id=".$proposal->id."\n";
+				$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+					.BASE_URL."proposal.php?id=".$proposal->id."\n";
 			}
 
 			if (count($ids) > 1) {
@@ -178,8 +198,8 @@ class Notification {
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n";
 				foreach ( $issue->proposals() as $proposal ) {
-					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n";
-					$body .= BASE_URL."proposal.php?id=".$proposal->id."\n";
+					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
 			}
 
@@ -196,8 +216,8 @@ class Notification {
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n";
 				foreach ( $issue->proposals() as $proposal ) {
-					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n";
-					$body .= BASE_URL."proposal.php?id=".$proposal->id."\n";
+					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
 			}
 
@@ -238,6 +258,20 @@ class Notification {
 					datetimeformat($this->period->ballot_preparation)
 				))."\n"
 				.BASE_URL."ballots.php?period=".$this->period->id;
+
+			break;
+		case "argument":
+
+			$subject = sprintf(_("New reply to your argument in proposal %d"), $this->proposal->id);
+
+			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				.sprintf(_("Member '%s' replied to your argument:"), Login::$member->username())."\n"
+				.$separator
+				.mb_wordwrap($this->argument->title)."\n\n"
+				.mb_wordwrap($this->argument->content)."\n"
+				.$separator
+				._("Reply:")." ".BASE_URL."proposal.php?id=".$this->proposal->id."&argument_parent=".$this->argument->id."#form";
 
 			break;
 		}

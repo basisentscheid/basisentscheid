@@ -41,8 +41,10 @@ class Argument extends Relation {
 
 	/**
 	 * wrapper for create()
+	 *
+	 * @param object  $proposal
 	 */
-	function add() {
+	function add(Proposal $proposal) {
 		if (mb_strlen($this->title) > self::title_length) {
 			$this->title = limitstr($this->title, self::title_length);
 			warning(sprintf(_("The title has been truncated to the maximum allowed length of %d characters!"), self::title_length));
@@ -52,6 +54,21 @@ class Argument extends Relation {
 			warning(sprintf(_("The content has been truncated to the maximum allowed length of %d characters!"), self::content_length));
 		}
 		$this->create();
+
+		// notification to authors of all parent arguments
+		$recipients = array();
+		$parent = $this->parent;
+		while ( $parent > 0 ) { // "pro" and "contra" will be converted to 0
+			$argument = new Argument($parent);
+			// don't notify the author about his own new argument
+			if ($argument->member != Login::$member->id) $recipients[] = $argument->member;
+			$parent = $argument->parent;
+		}
+		$notification = new Notification("argument");
+		$notification->proposal = $proposal;
+		$notification->argument = $this;
+		$notification->send($recipients);
+
 	}
 
 

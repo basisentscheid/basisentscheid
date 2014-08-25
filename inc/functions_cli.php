@@ -63,9 +63,7 @@ function cron($skip_if_locked=false) {
 				$notification = new Notification("ballot_approved");
 				$notification->period = $period;
 				$notification->ballot = $ballot;
-				$sql = "SELECT mail FROM members
-					JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id)." AND voters.agent = TRUE
-					WHERE members.mail IS NOT NULL";
+				$sql = "SELECT member FROM voters WHERE ballot = ".intval($ballot->id)." AND agent = TRUE";
 				$recipients = DB::fetchfieldarray($sql);
 				$notification->send($recipients);
 
@@ -75,9 +73,7 @@ function cron($skip_if_locked=false) {
 				$notification = new Notification("ballot_assigned");
 				$notification->period = $period;
 				$notification->ballot = $ballot;
-				$sql = "SELECT mail FROM members
-					JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id)."
-					WHERE members.mail IS NOT NULL";
+				$sql = "SELECT member FROM voters WHERE ballot = ".intval($ballot->id);
 				$recipients = DB::fetchfieldarray($sql);
 				$notification->send($recipients);
 
