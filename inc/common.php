@@ -21,7 +21,6 @@
  * @see local_member_login.php
  * @see login.php
  * @see member.php
- * @see members.php
  * @see periods.php
  * @see proposal.php
  * @see proposal_edit.php

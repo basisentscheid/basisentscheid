@@ -1,4 +1,10 @@
 
-body {
-	background-color: #FDD;
+body,
+nav ul.admin li a {
+	background-color: #FEE;
 }
+
+#user span.admin {
+	font-weight: bold;
+}
+

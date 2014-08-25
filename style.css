@@ -6,106 +6,26 @@ style guide:
 - colors upper case #07F or #0A7CF3
 */
 
-/* 1. common page layout */
+/* 1. common definitions without id or class */
 
 body {
 	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 	color: #000;
 	background-color: #F4EEF7;
-	margin: 7px 20px;
+	margin: 3px 20px 7px;
 	padding: 0;
+}
+
+td, th,
+div.timebar,
+div.proposal_info ul {
+	/* narrow font */
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
 /* for compatibility with older browsers */
 header, footer, nav {
 	display: block;
-}
-
-header {
-	background-color: #FAF9FB;
-	margin: 0;
-}
-
-#logo {
-	padding: 9px 15px;
-	margin: 0;
-	float: left;
-	font-weight: bold;
-	font-size: 120%;
-}
-#logo,
-#logo a:link,
-#logo a:visited {
-	color: #FFF;
-	background-color: #AAA;
-	text-decoration: none;
-}
-
-nav {
-	margin-top: 5px;
-	padding: 2px 5px 5px 5px;
-	float: left;
-}
-nav ul,
-nav li {
-	display: inline;
-	margin: 0;
-	padding: 0;
-	vertical-align: middle;
-}
-nav a {
-	font-size: 110%;
-	padding: 1px 4px;
-	text-decoration: none;
-}
-nav a:hover,
-nav a:focus {
-	outline: 1px solid #EEE;
-}
-nav a.active,
-nav a.active:hover,
-nav a.active:focus {
-	outline: 1px solid #999;
-}
-
-nav#ngroup {
-	background-color: #FFF;
-}
-nav#ngroup form {
-	display: inline;
-	padding: 0 5px;
-	vertical-align: middle;
-}
-
-#user {
-	padding: 10px 10px 5px 10px;
-	float: right;
-}
-#user a.user,
-#user span.admin {
-	font-weight: bold;
-}
-
-footer {
-	margin: 1.5em 0 0 0;
-	padding: 0;
-	border-top: 2px #FFF solid;
-	text-align: right;
-}
-footer a:link,
-footer a:visited {
-	color: #888;
-}
-
-
-/* 2. common definitions without id or class */
-
-th,
-td,
-div.timebar,
-div.proposal_info ul {
-	/* narrow font */
-	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
 hr {
@@ -176,7 +96,7 @@ a:active {
 }
 
 
-/* 3. common class definitions */
+/* 2. common class definitions */
 
 a.icontextlink {
 	padding-left: 0;
@@ -482,6 +402,98 @@ img.online_small {
 img.ballot_small {
 	margin: 0 0 0 2px;
 	vertical-align: middle;
+}
+
+
+/* 3. common page layout  */
+
+header {
+	margin: 0;
+	vertical-align: middle;
+	line-height: 46px;
+}
+header div#header {
+	background-color: #AAA;
+	background: linear-gradient(to right, #AAA 15em, #FFF 22em);
+	display: inline-block;
+	width: 100%;
+	line-height: 1.6em;
+}
+
+nav {
+	margin-top: 5px;
+	margin-left: 65px;
+	padding: 2px 5px 5px 5px;
+}
+nav ul,
+nav li {
+	display: inline;
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+}
+nav ul li {
+	padding: 3px 0;
+}
+nav a {
+	font-size: 110%;
+	padding: 1px 4px;
+	text-decoration: none;
+	background-color: #FFF;
+}
+nav a:hover,
+nav a:focus {
+	outline: 1px solid #EEE;
+}
+nav a.active,
+nav a.active:hover,
+nav a.active:focus {
+	outline: 1px solid #999;
+}
+nav form {
+	display: inline-block;
+	padding: 0.1em 0.5em 0 0;
+	vertical-align: top;
+}
+
+a#logo {
+	position: absolute;
+	left: 30px;
+}
+a#logo img {
+	display: block;
+}
+a#home {
+	font-size: 130%;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	margin-right: 0.7em;
+}
+a#logo,
+a#home {
+	background-color: transparent;
+	outline: none;
+	padding: 0;
+}
+
+#user {
+	padding: 8px 10px 7px 10px;
+	float: right;
+}
+#user a.user {
+	font-weight: bold;
+}
+
+footer {
+	margin: 1.5em 0 0 0;
+	padding: 0;
+	border-top: 2px #FFF solid;
+	text-align: right;
+}
+footer a:link,
+footer a:visited {
+	color: #888;
 }
 
 

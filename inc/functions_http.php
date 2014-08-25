@@ -94,9 +94,16 @@ function html_head($title) {
 ?>
 
 <header>
-	<div id="logo"><a href="<?=DOCROOT?>index.php">Basisentscheid</a></div>
-	<nav id="ngroup">
-		<form method="GET" action="<?
+	<a href="<?=DOCROOT?>index.php" id="logo"><img src="img/logo.png" width="58" height="50" alt="<?=_("Logo")?>"></a>
+	<div id="header">
+		<div id="user">
+			<? html_user(); ?>
+		</div>
+		<nav>
+			<ul>
+				<li><a href="<?=DOCROOT?>index.php" id="home">Basisentscheid</a></li>
+				<li>
+					<form method="GET" action="<?
 	switch (BN) {
 		// jump to different page if the same page doesn't show the equivalent content in other groups
 	case "proposal.php":
@@ -114,7 +121,7 @@ function html_head($title) {
 		$hidden['id'] = null;
 	}
 	?>">
-			<select name="ngroup" onchange="this.form.submit()">
+						<select name="ngroup" onchange="this.form.submit()">
 <?
 	$entitled = ( Login::$member and Login::$member->entitled );
 	if ($entitled) {
@@ -136,9 +143,9 @@ function html_head($title) {
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
-				<option value="<?=$ngroup->id?>"<?
+							<option value="<?=$ngroup->id?>"<?
 		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-		?>><?=$ngroup->name?> (<?=_("entitled")?>)</option>
+		?>><?=$ngroup->name?> &#10003;</option>
 <?
 	}
 	// not entitled ngroups
@@ -147,19 +154,19 @@ function html_head($title) {
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
-				<option value="<?=$ngroup->id?>"<?
+							<option value="<?=$ngroup->id?>"<?
 		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
 		?>><?=$ngroup->name?></option>
 <?
 	}
 ?>
-			</select>
+						</select>
 <?
 	// add the hidden fields after the drop down menu to have ngroup always in the first place of the GET parameters
 	if ($hidden) URI::hidden($hidden);
 ?>
-		</form>
-		<ul>
+					</form>
+				</li>
 <?
 	navlink('proposals.php', _("Proposals"), true);
 	navlink('periods.php', _("Periods"), true);
@@ -169,25 +176,23 @@ function html_head($title) {
 		navlink('areas.php', _("Areas"), true);
 	}
 ?>
-		</ul>
-	</nav>
-	<nav>
-		<ul>
+			</ul>
 <?
-	if (Login::$member) {
-		navlink( 'members.php', _("Members"));
-	} elseif (Login::$admin) {
+	if (Login::$admin) {
+?>
+			<ul class="admin">
+<?
 		navlink('admin_members.php', _("Members"));
 		navlink('admins.php', _("Admins"));
 		navlink('admin_ngroups.php', _("Groups"));
+?>
+			</ul>
+<?
 	}
 ?>
-		</ul>
-	</nav>
-	<div id="user">
-<? html_user(); ?>
+		</nav>
+		<div style="clear:right"></div>
 	</div>
-	<div class="clearfix"></div>
 </header>
 
 <h1><?=h($title)?></h1>
@@ -226,7 +231,7 @@ function html_head($title) {
  */
 function navlink($file, $title, $add_ngroup=false) {
 ?>
-			<li><a href="<?=$file;
+				<li><a href="<?=$file;
 	if ($add_ngroup) { ?>?ngroup=<?=$_SESSION['ngroup']; }
 	?>"<? if (BN==$file) { ?> class="active"<? } ?>><?=$title?></a></li>
 <?
