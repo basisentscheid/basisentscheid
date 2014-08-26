@@ -19,6 +19,14 @@ $d->columns = array(
 );
 $d->enable_filter = false;
 
+$d->msg_add_record              = _("New admin");
+$d->msg_edit_record             = _("Edit admin %id%");
+$d->msg_record_saved            = _("The new admin %id% has been saved.");
+$d->msg_really_delete           = _("Do you really want to delete the admin %id%?");
+$d->msg_record_deleted          = _("The admin %id% has been deleted.");
+$d->msg_record                  = _("Admin");
+$d->msg_no_record_available     = _("no admin available for this view");
+
 $d->action($action);
 
 html_head(_("Admins"));

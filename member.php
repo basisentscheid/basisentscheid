@@ -63,8 +63,40 @@ html_head(_("Member"));
 
 form(BN);
 ?>
-<?=_("Username")?> (<?=_('leave empty to be displayed as "anonymous"')?>): <input type="text" name="username" value="<?=h(Login::$member->username)?>"><br>
-<?=_("Mail address for notifications")?>: <input type="text" name="mail" value="<?=h(Login::$member->mail)?>"><br>
+<fieldset class="member">
+	<div class="input td0">
+		<label for="username"><?=_("Username")?></label>
+		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="25">
+			(<?=_('leave empty to be displayed as "anonymous"')?>)</span>
+	</div>
+	<div class="input td1">
+		<label for="username"><?=_("Real name (optional)")?></label>
+		<span class="input"><?=h(Login::$member->public_id)?></span>
+	</div>
+	<div class="input td0">
+		<label for="username"><?=_("Profile")?></label>
+		<span class="input"><?=h(Login::$member->profile)?></span>
+	</div>
+	<div class="input td1">
+		<label for="username"><?=_("Entitled and verified")?></label>
+		<span class="input"><? display_checked(Login::$member->entitled) ?></span>
+	</div>
+	<div class="input td0">
+		<label for="username"><?=_("Groups")?></label>
+		<span class="input"><?
+
+$sql = "SELECT name FROM members_ngroups
+	JOIN ngroups ON ngroups.id = members_ngroups.ngroup
+	WHERE member=".intval(Login::$member->id);
+echo join(", ", DB::fetchfieldarray($sql));
+
+?></span>
+	</div>
+	<div class="input td1">
+		<label for="username"><?=_("Mail address for notifications")?></label>
+		<span class="input"><input type="text" name="mail" value="<?=h(Login::$member->mail)?>" size="40"></span>
+	</div>
+</fieldset>
 
 <h2><?=_("Email notification settings")?></h2>
 <table class="notify">

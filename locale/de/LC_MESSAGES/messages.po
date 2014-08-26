@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 #
-# File: admin_areas.php, line: 30
+# File: admin_areas.php, line: 38
 # File: areas.php, line: 36
 msgid "Subject areas"
 msgstr "Themenbereiche"
@@ -31,6 +31,7 @@ msgstr "abmelden"
 msgid "subscribe"
 msgstr "anmelden"
 #
+# File: admin_members.php, line: 28
 # File: member.php, line: 62
 msgid "Member"
 msgstr "Mitglied"
@@ -39,12 +40,12 @@ msgstr "Mitglied"
 # File: admin.php, line: 42
 # File: admins.php, line: 17
 # File: local_member_login.php, line: 46
-# File: member.php, line: 66
+# File: member.php, line: 68
 msgid "Username"
 msgstr "Benutzername"
 #
-# File: ballot_edit.php, line: 141
-# File: member.php, line: 105
+# File: ballot_edit.php, line: 138
+# File: member.php, line: 137
 # File: proposal_edit.php, line: 187
 msgid "Save"
 msgstr "Speichern"
@@ -171,6 +172,7 @@ msgstr "Abstimmung"
 msgid "Counting"
 msgstr "Auszählung"
 #
+# File: admin_areas.php, line: 33
 # File: proposal_edit.php, line: 206
 # File: proposal.php, line: 476
 # File: inc/classes/Proposal.php, line: 887
@@ -372,11 +374,11 @@ msgstr "Urne %d bearbeiten"
 msgid "New ballot"
 msgstr "Neue Urne (Urnenantrag)"
 #
-# File: ballot_edit.php, line: 101
+# File: ballot_edit.php, line: 98
 msgid "Name or location of the ballot"
 msgstr "Name oder Ort der Urne"
 #
-# File: ballot_edit.php, line: 140
+# File: ballot_edit.php, line: 137
 # File: ballots.php, line: 117
 msgid "Agents"
 msgstr "Beauftragte"
@@ -560,7 +562,7 @@ msgstr "löschen"
 msgid "The record you want to edit does not exist."
 msgstr "Der zu löschende Datensatz existiert nicht."
 #
-# File: ballot_edit.php, line: 141
+# File: ballot_edit.php, line: 138
 # File: inc/classes/DbTableAdmin.php, line: 1056
 msgid "cancel"
 msgstr "abbrechen"
@@ -781,7 +783,7 @@ msgstr "Die Urnenzuordnung startet am %s."
 msgid "Password (2x)"
 msgstr "Passwort (2x)"
 #
-# File: admins.php, line: 24
+# File: admins.php, line: 32
 # File: inc/functions_http.php, line: 186
 msgid "Admins"
 msgstr "Verantwortliche"
@@ -878,7 +880,7 @@ msgstr "Du forderst anonym eine Urnenabstimmung bei diesem Antragsblock."
 msgid "Participant"
 msgstr "Teilnehmer"
 #
-# File: admin_members.php, line: 27
+# File: admin_members.php, line: 33
 # File: inc/functions_http.php, line: 185
 msgid "Members"
 msgstr "Mitglieder"
@@ -1207,11 +1209,11 @@ msgstr "Du bist jetzt anonym."
 msgid "Your mail address has been saved."
 msgstr "Deine E-Mail-Adresse wurde gespeichert."
 #
-# File: member.php, line: 66
+# File: member.php, line: 70
 msgid "leave empty to be displayed as \"anonymous\""
 msgstr "leer lassen um als \"anonym\" angezeigt zu werden"
 #
-# File: member.php, line: 67
+# File: member.php, line: 96
 msgid "Mail address for notifications"
 msgstr "E-Mail-Adresse für Benachrichtigungen"
 #
@@ -1354,7 +1356,7 @@ msgstr "Abstimmung in Periode %d endet"
 msgid "This email address is not valid!"
 msgstr "Diese E-Mail-Adresse ist ungültig!"
 #
-# File: member.php, line: 69
+# File: member.php, line: 101
 msgid "Email notification settings"
 msgstr "Einstellungen E-Mail-Benachrichtigungen"
 #
@@ -1520,6 +1522,7 @@ msgstr "Nr."
 #
 # File: admin_ngroups.php, line: 29
 # File: index.php, line: 114
+# File: member.php, line: 85
 # File: inc/functions_http.php, line: 187
 msgid "Groups"
 msgstr "Gliederungen"
@@ -1576,11 +1579,11 @@ msgstr "Der Name der Urne darf nicht leer sein."
 msgid "The ballot agents must not be empty."
 msgstr "Die Urnenbeauftragen dürfen nicht leer sein."
 #
-# File: ballot_edit.php, line: 102
+# File: ballot_edit.php, line: 99
 msgid "Group of location"
 msgstr "Gliederung des Ortes"
 #
-# File: ballot_edit.php, line: 107
+# File: ballot_edit.php, line: 104
 # File: ballots.php, line: 116
 msgid "Opening hours"
 msgstr "Öffnungszeiten"
@@ -1837,6 +1840,83 @@ msgstr "Diesen Antrag verschieben in Antragsblock"
 msgid "move"
 msgstr "verschieben"
 #
+# File: admins.php, line: 27
 # File: inc/classes/Proposal.php, line: 949
 msgid "Admin"
 msgstr "Verantwortlicher"
+#
+# File: admin_areas.php, line: 28
+msgid "New area"
+msgstr "Neuer Themenbereich"
+#
+# File: admin_areas.php, line: 29
+msgid "Edit area %id%"
+msgstr "Themenbereich %id% bearbeiten"
+#
+# File: admin_areas.php, line: 30
+msgid "The new area %id% has been saved."
+msgstr "Der neue Themenbereich %id% wurde angelegt."
+#
+# File: admin_areas.php, line: 31
+msgid "Do you really want to delete the area %id%?"
+msgstr "Willst Du den Themenbereich %id% wirklich löschen?"
+#
+# File: admin_areas.php, line: 32
+msgid "The area %id% has been deleted."
+msgstr "Der Themenbereich %id% wurde gelöscht."
+#
+# File: admin_areas.php, line: 34
+msgid "no area available for this view"
+msgstr "kein Themenbereich verfügbar in dieser Ansicht"
+#
+# File: admin_members.php, line: 25
+msgid "Edit member %id%"
+msgstr "Mitglied %id% bearbeiten"
+#
+# File: admin_members.php, line: 26
+msgid "Do you really want to delete the member %id%?"
+msgstr "Willst Du das Mitglied %id% wirklich löschen?"
+#
+# File: admin_members.php, line: 27
+msgid "The member %id% has been deleted."
+msgstr "Das Mitglied %id% wurde gelöscht."
+#
+# File: admin_members.php, line: 29
+msgid "no member available for this view"
+msgstr "kein Mitglied verfügbar in dieser Ansicht"
+#
+# File: admins.php, line: 22
+msgid "New admin"
+msgstr "Neuer Verantwortlicher"
+#
+# File: admins.php, line: 23
+msgid "Edit admin %id%"
+msgstr "Verantwortlichen %id% bearbeiten"
+#
+# File: admins.php, line: 24
+msgid "The new admin %id% has been saved."
+msgstr "Der neue Verantwortliche %id% wurde gespeichert."
+#
+# File: admins.php, line: 25
+msgid "Do you really want to delete the admin %id%?"
+msgstr "Willst Du den Verantwortlichen %id% wirklich löschen?"
+#
+# File: admins.php, line: 26
+msgid "The admin %id% has been deleted."
+msgstr "Der Verantwortliche %id% wurde gelöscht."
+#
+# File: admins.php, line: 28
+msgid "no admin available for this view"
+msgstr "kein Verantwortlicher in dieser Ansicht"
+#
+# File: member.php, line: 73
+msgid "Real name (optional)"
+msgstr "Realname (optional)"
+#
+# File: member.php, line: 77
+msgid "Profile"
+msgstr "Profil"
+#
+# File: member.php, line: 81
+msgid "Entitled and verified"
+msgstr "stimmberechtigt und verifiziert"

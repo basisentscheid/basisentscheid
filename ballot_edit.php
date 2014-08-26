@@ -8,7 +8,7 @@
 
 require "inc/common.php";
 
-Login::access("user");
+Login::access("member");
 
 
 if (!empty($_GET['id'])) {
@@ -92,10 +92,7 @@ if ($ballot->id) {
 
 help();
 
-?>
-<div id="dbtableadmin" class="edit_ballot">
-<?
-form(URI::$uri, 'id="dbtableadmin_editform"');
+form(URI::$uri, 'class="editform edit_ballot"');
 ?>
 <fieldset>
 <div class="input <?=stripes()?>" style="width:100%"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" value="<?=h($ballot->name)?>"></span></div>
@@ -142,7 +139,6 @@ for ( $m=0; $m<60; $m++ ) {
 </fieldset>
 <input type="hidden" name="action" value="save">
 </form>
-</div>
 <?
 
 html_foot();

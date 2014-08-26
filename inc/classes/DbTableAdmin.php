@@ -1068,7 +1068,7 @@ function submit_delete_checked() {
 	 * @param string  $form_action
 	 */
 	protected function display_edit_form_top($form_action) {
-		form($form_action, 'name="dbtableadmin_editform" id="dbtableadmin_editform" onsubmit="return '.$this->js_submit_edit.';"');
+		form($form_action, 'name="dbtableadmin_editform" class="editform" onsubmit="return '.$this->js_submit_edit.';"');
 	}
 
 

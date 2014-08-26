@@ -545,23 +545,24 @@ div.tableblock table {
 	margin-left: 150px;
 	margin-left: 15rem;
 }
-#dbtableadmin_editform {
+
+form.editform {
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
-#dbtableadmin_editform fieldset {
+form.editform fieldset {
 	margin: 0;
 	padding: 0;
 	border: none;
 }
-#dbtableadmin_editform div.input,
-#dbtableadmin_editform div.buttons {
+form.editform div.input,
+form.editform div.buttons {
 	margin: 1px 0;
 	padding: 0;
 	white-space: nowrap;
 }
-#dbtableadmin_editform div.input label,
-#dbtableadmin_editform div.buttons span.cancel {
+form.editform div.input label,
+form.editform div.buttons span.cancel {
 	display: inline-block;
 	vertical-align: middle;
 	width: 140px;
@@ -569,11 +570,12 @@ div.tableblock table {
 	margin: 2px    0 2px    5px;
 	margin: 0.2rem 0 0.2rem 0.5rem;
 }
-#dbtableadmin_editform div.input label {
+form.editform div.input label {
 	text-align: right;
+	white-space: normal;
 }
-#dbtableadmin_editform div.input span.input,
-#dbtableadmin_editform div.buttons span.input {
+form.editform div.input span.input,
+form.editform div.buttons span.input {
 	display: inline-block;
 	vertical-align: middle;
 	width: calc(100% - 153px);
@@ -581,22 +583,52 @@ div.tableblock table {
 	margin: 2px    3px    2px    5px;
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
-#dbtableadmin_editform div.input input[type=text],
-#dbtableadmin_editform div.input input[type=password],
-#dbtableadmin_editform div.input textarea {
+/*form.editform div.input input[type=text],
+form.editform div.input input[type=password],
+form.editform div.input textarea {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
-#dbtableadmin_editform div.buttons {
+}*/
+form.editform div.buttons {
 	margin-top: 5px;
 }
-
-#dbtableadmin_editform div.comment {
+form.editform div.comment {
 	display: inline-block;
+	width: 95%;
 	white-space: normal;
 	vertical-align: middle;
+}
+
+fieldset.member {
+	margin: 0;
+	padding: 0;
+	border: none;
+	display: inline-block;
+}
+fieldset.member div.input {
+	margin: 1px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+fieldset.member div.input label {
+	display: inline-block;
+	vertical-align: middle;
+	width: 200px;
+	width: 20rem;
+	margin: 2px    0 2px    5px;
+	margin: 0.2rem 0 0.2rem 0.5rem;
+}
+fieldset.member div.input label {
+	text-align: right;
+	white-space: normal;
+}
+fieldset.member div.input span.input {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 2px    3px    2px    5px;
+	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
 
 
@@ -979,9 +1011,12 @@ div.arguments_side form.rating.reset input[type=submit] {
 
 /* 5.3 ballots */
 
-div.edit_ballot,
-div.edit_ballot input[type=text] {
+form.edit_ballot,
+form.edit_ballot input[type=text] {
 	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 div.postal {
 	background-color: #FFF;
