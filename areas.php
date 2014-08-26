@@ -35,12 +35,7 @@ if ($action) {
 
 html_head(_("Subject areas"));
 
-$help = <<<HELP
-Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. Durch Einreichung, Unterstützung oder Abstimmung eines Antrags meldest du dich automatisch beim entsprechenden Themenbereich an. Die Anmeldung verfällt nach dem zweiten Stichtag nach der letzten Anmeldung.
-
-Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für das Quorum zur Zulassung eines Antrags und für das Quorum zur Urnenabstimmung.
-HELP;
-help($help);
+help();
 
 $entitled = ( Login::$member and Login::$member->entitled($ngroup->id) );
 

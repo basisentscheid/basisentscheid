@@ -527,32 +527,42 @@ function stripes($change=false, $suffix="") {
  * display help text
  *
  * This function should not be used on pages with forms, because users will lose their already filled in data if they click on the help buttons.
- *
- * @param string  $text
  */
-function help($text) {
-	if (Login::$member) {
-		$pages = explode_no_empty(",", Login::$member->hide_help);
-		if (in_array(BN, $pages)) {
-			form(URI::same(), 'class="show_help"');
+function help() {
+	if (!Login::$member) return;
+	$pages = explode_no_empty(",", Login::$member->hide_help);
+	if (in_array(BN, $pages)) {
+		form(URI::same(), 'class="show_help"');
 ?>
 <input type="hidden" name="action" value="show_help">
 <input type="submit" value="<?=_("show help")?>">
-</form>
 <?
-		} else {
+		form_end();
+	} else {
 ?>
 <div class="help">
 <?
-			form(URI::same(), 'class="hide_help"');
+		form(URI::same(), 'class="hide_help"');
 ?>
 <input type="hidden" name="action" value="hide_help">
 <input type="submit" value="<?=_("hide help")?>">
-</form>
-<?=strtr($text, array("\n\n"=>"<p>"))?>
+<?
+		form_end();
+		// read help content
+		$display = false;
+		foreach ( file(DOCROOT."locale/help_".LANG.".txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
+			if ($display) {
+				if (substr($line, 0, 3) == "===") break;
+?>
+<p><?=$line?></p>
+<?
+			} elseif ($line == "===".BN) {
+				$display = true;
+			}
+		}
+?>
 </div>
 <?
-		}
 	}
 }
 
