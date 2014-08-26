@@ -187,7 +187,7 @@ class Notification {
 
 			$subject = sprintf(_("New proposal %d in area %s"), $this->proposal->id, $this->proposal->issue()->area()->name);
 
-			$body .= sprintf(_("Member '%s' added a new proposal:"), $this->proponent)."\n"
+			$body .= sprintf(_("Proponent '%s' added a new proposal:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				."===== "._("Title")." =====\n"
 				.mb_wordwrap($this->proposal->title)."\n\n"

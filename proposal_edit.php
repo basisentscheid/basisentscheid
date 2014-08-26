@@ -139,6 +139,7 @@ if ($proposal->id) {
 	html_head(_("New proposal"));
 }
 
+help();
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
