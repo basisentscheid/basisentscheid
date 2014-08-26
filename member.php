@@ -67,14 +67,14 @@ form(BN);
 <?=_("Mail address for notifications")?>: <input type="text" name="mail" value="<?=h(Login::$member->mail)?>"><br>
 
 <h2><?=_("Email notification settings")?></h2>
-<table>
+<table class="notify">
 	<tr>
 		<th></th>
 <?
 $types = Notification::types();
 foreach ($types as $type => $type_title) {
 ?>
-		<th><?=$type_title?></th>
+		<th class="type"><?=$type_title?></th>
 <?
 }
 ?>

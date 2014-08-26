@@ -16,15 +16,18 @@ class Notification {
 	public $issue;
 	public $proposals;
 	public $proposal;
+	public $proponent;
+	public $proponent_confirmed;
+	public $proponent_confirming;
 	public $argument;
 	public $ballot;
 
 	public static $default_settings = array(
-		'all'         => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'ngroups'     => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'participant' => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'supporter'   => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'proponent'   => array('new_proposal'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true)
+		'all'         => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'ngroups'     => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'participant' => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'supporter'   => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
+		'proponent'   => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true)
 	);
 
 
@@ -59,6 +62,7 @@ class Notification {
 	public static function types() {
 		return array(
 			'new_proposal' => _("new proposal"),
+			'submitted'    => _("submitted"),
 			'admitted'     => _("admitted"),
 			'debate'       => _("debate"),
 			'voting'       => _("voting"),
@@ -183,7 +187,7 @@ class Notification {
 
 			$subject = sprintf(_("New proposal %d in area %s"), $this->proposal->id, $this->proposal->issue()->area()->name);
 
-			$body .= sprintf(_("Member '%s' added a new proposal:"), Login::$member->username())."\n"
+			$body .= sprintf(_("Member '%s' added a new proposal:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				."===== "._("Title")." =====\n"
 				.mb_wordwrap($this->proposal->title)."\n\n"
@@ -191,6 +195,53 @@ class Notification {
 				.mb_wordwrap($this->proposal->content)."\n\n"
 				."===== "._("Reason")." =====\n"
 				.mb_wordwrap($this->proposal->reason)."\n";
+
+			break;
+		case "submitted":
+
+			$subject = sprintf(_("Proposal %d submitted"), $this->proposal->id);
+
+			$body .= sprintf(_("Proponent '%s' submitted this proposal:"), $this->proponent)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				."===== "._("Title")." =====\n"
+				.mb_wordwrap($this->proposal->title)."\n\n"
+				."===== "._("Content")." =====\n"
+				.mb_wordwrap($this->proposal->content)."\n\n"
+				."===== "._("Reason")." =====\n"
+				.mb_wordwrap($this->proposal->reason)."\n";
+
+			break;
+		case "apply_proponent":
+
+			$subject = sprintf(_("New proponent for proposal %d"), $this->proposal->id);
+
+			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				._("The following member asks to become proponent:")."\n\n"
+				.$this->proponent."\n"
+				.Login::$member->identity()."\n";
+
+			break;
+		case "confirmed_proponent":
+
+			$subject = sprintf(_("Proponent confirmed for proposal %d"), $this->proposal->id);
+
+			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				._("The proponent ...")."\n\n"
+				.$this->proponent_confirmed."\n\n"
+				._("... has been confirmed by:")."\n\n"
+				.$this->proponent_confirming;
+
+			break;
+		case "removed_proponent":
+
+			$subject = sprintf(_("Proponent removed himself from proposal %d"), $this->proposal->id);
+
+			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				._("The following proponent removed himself:")."\n\n"
+				.$this->proponent."\n";
 
 			break;
 		case "argument":

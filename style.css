@@ -1030,3 +1030,10 @@ form.login div {
 form.login input[type=submit] {
 	margin-left: 10.9rem;
 }
+
+
+/* 5.5 member */
+
+table.notify th.type {
+	width: 13%;
+}

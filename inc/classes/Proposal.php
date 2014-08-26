@@ -87,6 +87,7 @@ class Proposal extends Relation {
 
 		$notification = new Notification("new_proposal");
 		$notification->proposal = $this;
+		$notification->proponent = $this->proponent_name(Login::$member->id);
 		$notification->send();
 
 	}
@@ -212,6 +213,12 @@ class Proposal extends Relation {
 		}
 		$this->state = "submitted";
 		$this->update(array('state'), "submitted=now()");
+
+		$notification = new Notification("submitted");
+		$notification->proposal = $this;
+		$notification->proponent = $this->proponent_name(Login::$member->id);
+		$notification->send();
+
 	}
 
 
@@ -341,6 +348,13 @@ class Proposal extends Relation {
 		if ($proponent_confirmed) {
 			$this->check_required_proponents();
 		} else {
+
+			// notification to the other proponents
+			$notification = new Notification("apply_proponent");
+			$notification->proposal = $this;
+			$notification->proponent = $proponent;
+			$notification->send($this->proponents());
+
 			notice(_("Your application to become proponent has been submitted to the current proponents to confirm your request."));
 		}
 
@@ -406,6 +420,13 @@ class Proposal extends Relation {
 		DB::query($sql);
 		DB::transaction_commit();
 
+		// notification to the other proponents
+		$notification = new Notification("confirmed_proponent");
+		$notification->proposal = $this;
+		$notification->proponent_confirmed  = $this->proponent_name($member->id);
+		$notification->proponent_confirming = $this->proponent_name(Login::$member->id);
+		$notification->send($this->proponents());
+
 		$this->check_required_proponents();
 	}
 
@@ -429,10 +450,13 @@ class Proposal extends Relation {
 	/**
 	 * convert a proponent to an ordinary supporter
 	 *
-	 * @param object  $member
+	 * @param Member  $member
 	 * @return boolean
 	 */
 	public function remove_proponent(Member $member) {
+
+		$proponent = $this->proponent_name($member->id);
+
 		DB::transaction_start();
 		$this->read();
 		if (!$this->allowed_change_proponents()) {
@@ -446,11 +470,44 @@ class Proposal extends Relation {
 		DB::query($sql);
 		DB::transaction_commit();
 
+		// notification to the other proponents
+		$notification = new Notification("confirm_proponent");
+		$notification->proposal = $this;
+		$notification->proponent = $proponent;
+		$notification->send($this->proponents());
+
 		// set revoke date if we deleted the last proponent
 		if ($this->proponents_count()) return;
 		// We don't have to check if the to be removed proponent is confirmed, because otherways revoke would be already set anyway.
 		$sql = "UPDATE proposals SET revoke = now() + interval '1 week' WHERE id=".intval($this->id)." AND revoke IS NULL";
 		DB::query($sql);
+	}
+
+
+	/**
+	 * get proponent name
+	 *
+	 * @param integer $member_id
+	 * @return string
+	 */
+	private function proponent_name($member_id) {
+		$sql = "SELECT proponent FROM supporters
+			WHERE proposal=".intval($this->id)."
+				AND member=".intval($member_id);
+		return DB::fetchfield($sql);
+	}
+
+
+	/**
+	 * member IDs of all (confirmed) proponents
+	 *
+	 * @return array
+	 */
+	private function proponents() {
+		$sql = "SELECT member FROM supporters
+		  WHERE proposal=".intval($this->id)."
+		    AND proponent_confirmed=TRUE";
+		return DB::fetchfieldarray($sql);
 	}
 
 
