@@ -31,7 +31,7 @@ if (!$is_proponent) {
 }
 
 
-html_head(sprintf(_("Proposal %d, version differences"), $proposal->id));
+html_head( sprintf(_("<a%s>Proposal %d</a>, version differences"), ' href="proposal.php?id='.$proposal->id.'"', $proposal->id) );
 
 ?>
 
