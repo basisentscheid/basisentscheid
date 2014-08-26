@@ -17,6 +17,11 @@ if (!$period->id) {
 $ngroup = $period->ngroup;
 $_SESSION['ngroup'] = $ngroup;
 
+if (!$period->ballot_voting) {
+	warning("There is no ballot voting available in this period!");
+	redirect("periods.php?ngroup=".$ngroup."&hl=".$period->id);
+}
+
 if (Login::$member) {
 	$sql = "SELECT * FROM voters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
 	if ( $row_voters = DB::fetchassoc($sql) ) {
