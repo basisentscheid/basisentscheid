@@ -28,10 +28,20 @@ if (!empty($_GET['id'])) {
 		warning(_("Your are not a proponent of this proposal."));
 		redirect("proposal.php?id=".$proposal->id);
 	}
-	$ngroup_id = $proposal->issue()->area()->ngroup;
+	$issue = $proposal->issue();
+	$ngroup_id = $issue->area()->ngroup;
+} elseif (!empty($_GET['issue'])) {
+	$issue = new Issue($_GET['issue']);
+	if (!$issue) {
+		error("The selected issue does not exist!");
+	}
+	$proposal = new Proposal;
+	$edit_content = true;
+	$ngroup_id = $issue->area()->ngroup;
 } else {
 	$proposal = new Proposal;
 	$edit_content = true;
+	$issue = false;
 	$ngroup = Ngroup::get();
 	$ngroup_id = $ngroup->id;
 }
@@ -89,16 +99,16 @@ if ($action) {
 			}
 			if (!empty($_POST['issue'])) {
 				// add alternative proposal
-				$issue = new Issue($_POST['issue']);
-				if (!$issue->id) {
+				$issue_post = new Issue($_POST['issue']);
+				if (!$issue_post->id) {
 					error(_("The supplied issue does not exist."));
 				}
-				if (!$issue->allowed_add_alternative_proposal()) {
+				if (!$issue_post->allowed_add_alternative_proposal()) {
 					warning(_("In this phase it is not allowed to create an alternative proposal. Thus a new proposal has been created instead."));
-					$proposal->create($proponent, $issue->area);
+					$proposal->create($proponent, $issue_post->area);
 					redirect();
 				}
-				$proposal->issue = $issue->id;
+				$proposal->issue = $issue_post->id;
 				$proposal->create($proponent);
 			} elseif (!empty($_POST['area'])) {
 				// add new proposal
@@ -123,18 +133,10 @@ if ($action) {
 
 if ($proposal->id) {
 	html_head(sprintf(_("Edit Proposal %d"), $proposal->id));
-	$issue = $proposal->issue();
+} elseif ($issue) {
+	html_head(_("New alternative proposal"));
 } else {
-	if (isset($_GET['issue'])) {
-		html_head(_("New alternative proposal"));
-		$issue = new Issue($_GET['issue']);
-		if (!$issue) {
-			error("The selected issue does not exist!");
-		}
-	} else {
-		html_head(_("New proposal"));
-		$issue = false;
-	}
+	html_head(_("New proposal"));
 }
 
 

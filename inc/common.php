@@ -64,7 +64,7 @@ if (!empty($_GET['ngroup'])) {
 		break;
 		// jump to different page if the same page doesn't show the equivalent content in other groups
 	case "proposal_edit.php":
-		if (!isset($_GET['id'])) break; // new proposal needs ngroup
+		if (!isset($_GET['id']) and !isset($_GET['issue'])) break; // new (not alternative) proposal needs ngroup
 	case "proposal.php":
 	case "draft.php":
 		redirect("proposals.php?ngroup=".$_SESSION['ngroup']);
