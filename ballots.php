@@ -70,7 +70,7 @@ if ($action) {
 			warning(_("In the current phase of the period it is not allowed anymore to approve ballots."));
 			redirect();
 		}
-		$period->deactivate_participation();
+		$period->save_approved_ballots();
 		redirect();
 		break;
 	default:
