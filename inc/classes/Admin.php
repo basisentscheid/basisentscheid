@@ -33,9 +33,15 @@ class Admin extends Relation {
 	 */
 	function dbtableadmin_beforesave_password() {
 
-		if (empty($_POST['password']) or empty($_POST['password2'])) {
-			warning("The password fields must not be empty!");
-			return false;
+		if ($this->id) {
+			// existing admin
+			if (empty($_POST['password']) and empty($_POST['password2'])) return null;
+		} else {
+			// new admin
+			if (empty($_POST['password']) or empty($_POST['password2'])) {
+				warning("The password fields must not be empty!");
+				return false;
+			}
 		}
 
 		if ($_POST['password'] != $_POST['password2']) {

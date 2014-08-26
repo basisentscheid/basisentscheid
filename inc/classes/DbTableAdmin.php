@@ -575,6 +575,7 @@ class DbTableAdmin {
 			$object->$column[0] = $content;
 
 			// per column beforesave method
+			$save_column = true;
 			if ( !empty($column['beforesave']) ) {
 				$method = "beforesave_".$column['beforesave'];
 				if (method_exists($this, $method)) {
@@ -583,15 +584,20 @@ class DbTableAdmin {
 					$callee = $object;
 					$method = "dbtableadmin_".$method;
 				}
-				if ( !$callee->$method(
-						// parameters for column beforesave methods:
-						$object->$column[0], // column name
-						$column,             // column description (array)
-						$msg_prefix          // prefix to show at direct edit
-					) ) $success=false;
+				$return = $callee->$method(
+					// parameters for column beforesave methods:
+					$object->$column[0], // column name
+					$column,             // column description (array)
+					$msg_prefix          // prefix to show at direct edit
+				);
+				if ($return===null) { // skip the column on return null
+					$save_column = false;
+				} elseif (!$return) {
+					$success=false;
+				}
 			}
 
-			$save_columns[] = $column[0];
+			if ($save_column) $save_columns[] = $column[0];
 
 		}
 
