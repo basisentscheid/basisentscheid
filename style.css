@@ -324,6 +324,11 @@ div.timebar div.datespace.now {
 	color: #C00;
 }
 
+span.admin {
+	background-color: #FEE;
+	padding: 0 3px;
+}
+
 span.self {
 	font-weight: bold;
 }

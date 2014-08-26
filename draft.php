@@ -20,7 +20,7 @@ $issue = $proposal->issue();
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
-if (!$is_proponent) {
+if (!$is_proponent and !Login::$admin) {
 	error("You are not a proponent of this proposal!");
 }
 

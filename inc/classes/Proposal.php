@@ -103,7 +103,12 @@ class Proposal extends Relation {
 		$draft->title   = $this->title;
 		$draft->content = $this->content;
 		$draft->reason  = $this->reason;
-		$draft->author = Login::$member->id;
+		if (Login::$member) {
+			$draft->author = Login::$member->id;
+		} else {
+			// admin
+			$draft->author = null;
+		}
 		$draft->create();
 
 	}
@@ -724,11 +729,20 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function allowed_edit_content() {
-		switch ($this->issue()->state) {
-		case "admission":
-			switch ($this->state) {
-			case "draft":
+		if (Login::$admin) {
+			switch ($this->issue()->state) {
+			case "admission":
+			case "debate":
+			case "preparation":
 				return true;
+			}
+		} else {
+			switch ($this->issue()->state) {
+			case "admission":
+				switch ($this->state) {
+				case "draft":
+					return true;
+				}
 			}
 		}
 		return false;
@@ -931,13 +945,17 @@ function draft_select(side, draft) {
 		$disabled1 = true;
 		$disabled2 = false;
 		while ( $draft = DB::fetch_object($result, "Draft") ) {
-			// get the author's proponent name
-			$author = new Member($draft->author);
-			$proponent_name = "("._("proponent revoked").")";
-			foreach ($proponents as $proponent) {
-				if ($proponent->id == $author->id) {
-					$proponent_name = $proponent->proponent_name;
-					break;
+			if ($draft->author===null) {
+				$proponent_name = '<span class="admin">'._("Admin").'</span>';
+			} else {
+				// get the author's proponent name
+				$author = new Member($draft->author);
+				$proponent_name = "("._("proponent revoked").")";
+				foreach ($proponents as $proponent) {
+					if ($proponent->id == $author->id) {
+						$proponent_name = $proponent->proponent_name;
+						break;
+					}
 				}
 			}
 			if ($j==0) {

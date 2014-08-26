@@ -257,9 +257,16 @@ CREATE TABLE drafts (
     title text NOT NULL,
     content text NOT NULL,
     reason text NOT NULL,
-    author integer NOT NULL,
+    author integer,
     created timestamp with time zone DEFAULT now() NOT NULL
 );
+
+
+--
+-- Name: COLUMN drafts.author; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN drafts.author IS 'NULL = admin';
 
 
 --

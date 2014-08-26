@@ -56,26 +56,29 @@ abstract class Login {
 	/**
 	 * make sure that only allowed users access a page
 	 *
-	 * @param string  $allowed_users
+	 * @param string|array $allowed_users
 	 * @param integer $ngroup        (optional) required if only entitled members are allowed
 	 * @param boolean $redirect      (optional)
 	 */
 	public static function access($allowed_users, $ngroup=0, $redirect=false) {
-		switch ($allowed_users) {
-		case "entitled":
-			if (Login::$member and Login::$member->entitled($ngroup)) return;
-			break;
-		case "member":
-			if (Login::$member) return;
-			break;
-		case "admin":
-			if (Login::$admin) return;
-			break;
-		case "user":
-			if (Login::$member or Login::$admin) return;
-			break;
-		default:
-			trigger_error("Unknown allowed users keyword", E_USER_ERROR);
+		if (!is_array($allowed_users)) $allowed_users = array($allowed_users);
+		foreach ( $allowed_users as $keyword) {
+			switch ($keyword) {
+			case "entitled":
+				if (Login::$member and Login::$member->entitled($ngroup)) return;
+				break;
+			case "member":
+				if (Login::$member) return;
+				break;
+			case "admin":
+				if (Login::$admin) return;
+				break;
+			case "user":
+				if (Login::$member or Login::$admin) return;
+				break;
+			default:
+				trigger_error("Unknown allowed users keyword", E_USER_ERROR);
+			}
 		}
 		if ($redirect) {
 			warning(_("Access denied"));

@@ -294,7 +294,7 @@ if (Login::$member and $proposal->revoke) {
 
 <div class="proposal_content">
 <?
-if ($is_proponent and $proposal->allowed_edit_content()) {
+if (($is_proponent or Login::$admin) and $proposal->allowed_edit_content()) {
 ?>
 <div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>"><?=_("Edit proposal")?></a></div>
 <?
@@ -435,11 +435,11 @@ if (Login::$member) {
 	}
 } elseif (Login::$admin and $proposal->allowed_move_to_issue()) {
 ?>
-<div class="add"><?=_("Move this proposal to a different issue")?>: <?
+<div class="add"><?=_("Move this proposal to issue")?>: <?
 	form(URI::same(), 'style="display:inline-block"');
 	input_select("issue", $proposal->options_move_to_issue());
 	input_hidden("action", "move_to_issue");
-	input_submit(_("move proposal to the selected issue"));
+	input_submit(_("move"));
 	form_end();
 	?></div>
 <?
@@ -559,7 +559,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <?
 
 	// show drafts only to the proponents
-	if (!$is_proponent) return;
+	if (!$is_proponent and !Login::$admin) return;
 
 	if ($proposal->state=="draft" or !empty($_GET['show_drafts'])) {
 		$proposal->display_drafts($proponents);

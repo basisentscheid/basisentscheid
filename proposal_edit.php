@@ -9,9 +9,8 @@
 
 require "inc/common.php";
 
-Login::access("member");
-
 if (!empty($_GET['id'])) {
+	Login::access("user");
 	$proposal = new Proposal($_GET['id']);
 	if (!$proposal->id) {
 		error(_("This proposal does not exist!"));
@@ -24,13 +23,14 @@ if (!empty($_GET['id'])) {
 		warning(_("This proposal may not be changed anymore."));
 		redirect("proposal.php?id=".$proposal->id);
 	}
-	if (!$proposal->is_proponent(Login::$member)) {
+	if (!Login::$admin and !$proposal->is_proponent(Login::$member)) {
 		warning(_("Your are not a proponent of this proposal."));
 		redirect("proposal.php?id=".$proposal->id);
 	}
 	$issue = $proposal->issue();
 	$ngroup_id = $issue->area()->ngroup;
 } elseif (!empty($_GET['issue'])) {
+	Login::access("member");
 	$issue = new Issue($_GET['issue']);
 	if (!$issue) {
 		error("The selected issue does not exist!");
@@ -39,6 +39,7 @@ if (!empty($_GET['id'])) {
 	$edit_content = true;
 	$ngroup_id = $issue->area()->ngroup;
 } else {
+	Login::access("member");
 	$proposal = new Proposal;
 	$edit_content = true;
 	$issue = false;
@@ -46,7 +47,7 @@ if (!empty($_GET['id'])) {
 	$ngroup_id = $ngroup->id;
 }
 
-Login::access("entitled", $ngroup_id);
+Login::access(array("entitled", "admin"), $ngroup_id);
 
 if ($action) {
 	switch ($action) {
@@ -119,7 +120,8 @@ if ($action) {
 			if (!$proposal->id) trigger_error("The proposal could not be created!", E_USER_WARNING);
 		}
 
-		$proposal->issue()->area()->activate_participation();
+		// don't activate participation for admins
+		if (Login::$member) $proposal->issue()->area()->activate_participation();
 
 		redirect("proposal.php?id=".$proposal->id);
 		break;
