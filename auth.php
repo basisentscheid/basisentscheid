@@ -100,7 +100,8 @@ if ( ! $member = DB::fetch_object($result, "Member") ) {
 }
 $member->public_id = (string) @$response_profile['result']['public_id'];
 $member->profile   = (string) @$response_profile['result']['profile'];
-$member->entitled  = ($response_membership['result']['type']=="entitled member");
+// handle only verified members as entitled
+$member->entitled  = ($response_membership['result']['type']=="entitled member" and $response_membership['result']['verified']);
 if ($member->id) {
 	$member->update(array('public_id', 'profile', 'entitled'));
 } else {
