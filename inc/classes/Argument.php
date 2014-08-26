@@ -55,8 +55,8 @@ class Argument extends Relation {
 		}
 		$this->create();
 
-		// notification to authors of all parent arguments
-		$recipients = array();
+		// notification to proponents and to authors of all parent arguments
+		$recipients = $proposal->proponents();
 		$parent = $this->parent;
 		while ( $parent > 0 ) { // "pro" and "contra" will be converted to 0
 			$argument = new Argument($parent);

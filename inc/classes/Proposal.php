@@ -503,7 +503,7 @@ class Proposal extends Relation {
 	 *
 	 * @return array
 	 */
-	private function proponents() {
+	public function proponents() {
 		$sql = "SELECT member FROM supporters
 		  WHERE proposal=".intval($this->id)."
 		    AND proponent_confirmed=TRUE";
