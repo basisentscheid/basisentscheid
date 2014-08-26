@@ -195,7 +195,7 @@ function html_head($title) {
 	</div>
 </header>
 
-<h1><?=h($title)?></h1>
+<h1><?=$title?></h1>
 
 <?
 

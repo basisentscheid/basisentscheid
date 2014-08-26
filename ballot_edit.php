@@ -90,6 +90,8 @@ if ($ballot->id) {
 	html_head(_("New ballot"));
 }
 
+help();
+
 ?>
 <div id="dbtableadmin" class="edit_ballot">
 <?
@@ -136,7 +138,7 @@ for ( $m=0; $m<60; $m++ ) {
 &mdash; <?=BALLOT_CLOSE_TIME?>
 </span></div>
 <div class="input <?=stripes()?>"><label for="agents"><?=_("Agents")?></label><span class="input"><input type="text" name="agents" value="<?=h($ballot->agents)?>"></span></div>
-<div class="buttons th"><span class="cancel"><a href="periods.php?ngroup=1"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("Save")?>"></span></div>
+<div class="buttons th"><span class="cancel"><a href="ballots.php?period=<?=$period->id?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("Save")?>"></span></div>
 </fieldset>
 <input type="hidden" name="action" value="save">
 </form>

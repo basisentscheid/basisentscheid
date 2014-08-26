@@ -2,17 +2,36 @@
 
 Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
 
-Bevor eine Abstimmungsperiode beginnt, ordnen die Verantwortlichen die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die Debatte. Bis zur Abstimmungsvorbereitung kann bei jedem Antrag eine Urnenabstimmung gefordert werden. Wenn bis dahin das Quorum zur Urnenabstimmung erreicht ist, findet zu diesem Antrag eine Urnenabstimmung statt.
+Bevor eine Abstimmungsperiode beginnt, ordnen die Verantwortlichen die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b>Debatte</b>. Bis zur <b>Abstimmungsvorbereitung</b> kann bei jedem Antrag eine Urnenabstimmung gefordert werden. Wenn bis dahin das Quorum zur Urnenabstimmung erreicht ist, findet zu diesem Antrag eine Urnenabstimmung statt.
 
-Parallel zur Debatte, Abstimmungsvorbereitung und Online-Abstimmung findet die Vorbereitung der Urnenabstimmung statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Bei ausreichender Teilnehmerzahl genehmigen die Verantwortlichen die Urnen bis spätestens zum Zeitpunkt "Urnenzuordnung", an dem alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet werden. Bis zum Zeitpunkt der "Urnenvorbereitung" können die Teilnehmer noch eine andere Urne auswählen.
+Parallel zur Debatte, Abstimmungsvorbereitung und Online-Abstimmung findet die Vorbereitung der <b>Urnenabstimmung</b> statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Zum Zeitpunkt der <b>Urnenzuordnung</b> werden alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet. Bis zum Zeitpunkt der <b>Urnenvorbereitung</b> können die Teilnehmer noch eine andere Urne auswählen.
 
-Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der Auszählung am Stichtag. Die Urnenabstimmung findet nur am Stichtag zu den bei der Urne angegebenen Öffnungszeiten statt.
+Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag. Die Urnenabstimmung findet nur am Stichtag zu den bei der Urne angegebenen Öffnungszeiten statt.
 
 Nicht bei jeder Abstimmungsperiode werden sowohl Online- als auch Urnenabstimmung durchgeführt. Falls erforderlich werden dann alle Anträge per Urne abgestimmt oder die für Urnenabstimmung vorgesehenen Anträge auf eine spätere Abstimmungsperiode verschoben.
+
+Aktuelle Phasen sind hier fett dargestellt, vergangene Zeitpunkte kursiv, zukünftige normal.
+
+===ballots.php
+
+Bei einer <b>Urnenabstimmung</b> wird die Abstimmung an mehreren über das Gebiet der Gliederung verteilten Urnen durchgeführt.
+
+Zunächst werden dazu hier Urnen (Urnenanträge) gesammelt. Mitglieder können sich bereits unverbindlich als (Abstimmungs-)Teilnehmer einer Urne zuordnen. Die Verantwortlichen genehmigen Urnen, die u.a. eine ausreichende Teilnahme erwarten lassen.
+
+Zum Zeitpunkt <i>Urnenzuordnung</i> werden die noch nicht einer genehmigten Urne zugeordneten Mitglieder automatisch der räumlich nächsten Urne zugeordnet. Diese Zuordnung ist freilich nicht perfekt und die Mitglieder können bis zum Zeitpunkt der <i>Urnenvorbereitung</i> noch eine andere Urne auswählen.
+
+Anstatt einer Urne kann auch <b>Briefabstimmung</b> ausgewählt werden. Dies ist zwar bis zum Zeitpunkt der Urnenvorbereitung möglich, sollte um den rechtzeitigen Erhalt und Rückerhalt der Briefwahlunterlagen sicherzustellen, aber nach Möglichkeit schon früher gemacht werden. Wenn der Versand der Briefwahlunterlagen begonnen hat, ist eine Entscheidung zur Teilnahme per Briefabstimmung ab dann nicht mehr rücknehmbar.
+
+===ballot_edit.php
+
+Wenn Du am Stichtag als Urnenbeauftragter eine Urne betreiben möchtest, kannst Du die Urne hier anmelden. Trage dazu bitte Dich und die weiteren vorgesehenen Urnenbeauftragten und die Kontaktdaten in das Feld <b>Beauftragte</b> ein.
+
+Wähle als <b>Gliederung des Ortes</b> bitte die niedrigste Gliederung aus, in deren Gebiet der vorgesehene Ort der Urne liegt. Diese kann von Deiner Gliederungszugehörigkeit abweichen.
 
 ===areas.php
 
 Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. Durch Einreichung, Unterstützung oder Abstimmung eines Antrags meldest du dich automatisch beim entsprechenden Themenbereich an. Die Anmeldung verfällt nach dem zweiten Stichtag nach der letzten Anmeldung.
 
-Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für das Quorum zur Zulassung eines Antrags und für das Quorum zur Urnenabstimmung.
+Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für das <b>Quorum</b> zur Zulassung eines Antrags und für das Quorum zur Urnenabstimmung.
+
 
