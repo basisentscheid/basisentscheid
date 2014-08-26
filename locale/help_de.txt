@@ -1,3 +1,7 @@
+===proposal_edit.php
+
+Der Titel und der Antragstext können bis zur Einreichung bearbeitet werden, die Begründung sogar bis zur Abstimmungsvorbereitung.
+
 ===periods.php
 
 Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
