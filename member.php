@@ -70,19 +70,19 @@ form(BN);
 			(<?=_('leave empty to be displayed as "anonymous"')?>)</span>
 	</div>
 	<div class="input td1">
-		<label for="username"><?=_("Real name (optional)")?></label>
+		<label><?=_("Real name (optional)")?></label>
 		<span class="input"><?=h(Login::$member->public_id)?></span>
 	</div>
 	<div class="input td0">
-		<label for="username"><?=_("Profile")?></label>
+		<label><?=_("Profile")?></label>
 		<span class="input"><?=h(Login::$member->profile)?></span>
 	</div>
 	<div class="input td1">
-		<label for="username"><?=_("Entitled and verified")?></label>
+		<label><?=_("Entitled and verified")?></label>
 		<span class="input"><? display_checked(Login::$member->entitled) ?></span>
 	</div>
 	<div class="input td0">
-		<label for="username"><?=_("Groups")?></label>
+		<label><?=_("Groups")?></label>
 		<span class="input"><?
 
 $sql = "SELECT name FROM members_ngroups
@@ -93,7 +93,7 @@ echo join(", ", DB::fetchfieldarray($sql));
 ?></span>
 	</div>
 	<div class="input td1">
-		<label for="username"><?=_("Mail address for notifications")?></label>
+		<label for="mail"><?=_("Mail address for notifications")?></label>
 		<span class="input"><input type="text" name="mail" value="<?=h(Login::$member->mail)?>" size="40"></span>
 	</div>
 </fieldset>
