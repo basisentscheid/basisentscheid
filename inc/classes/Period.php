@@ -280,6 +280,176 @@ class Period extends Relation {
 
 
 	/**
+	 * download the voting result from the ID server
+	 *
+	 * @return boolean
+	 */
+	public function download_vote() {
+
+		// for testing
+		if (defined("SKIP_UPDOWNLOAD")) {
+			$result = $this->test_vote_result();
+		} else {
+			$result = curl_fetch(SHARE_URL);
+		}
+
+		$result = json_decode($result);
+
+		// save result per issue
+		foreach ( $result->questions as $question ) {
+
+			$issue = new Issue($question->questionID);
+			if (!$issue) {
+				trigger_error("Issue not found", E_USER_WARNING);
+				continue;
+			}
+
+			// save result for each proposal
+			foreach ( $question->results as $result ) {
+				$proposal = new Proposal($result->option);
+				if ($proposal->issue != $issue->id) {
+					trigger_error("Proposal in result is not part of issue", E_USER_WARNING);
+					continue;
+				}
+				$proposal->rank       = $result->rank;
+				$proposal->yes        = $result->yes;
+				$proposal->no         = $result->no;
+				$proposal->abstention = $result->abstention;
+				$proposal->points     = $result->points;
+				$proposal->accepted   = $result->accepted;
+				$proposal->update(array('rank', 'yes', 'no', 'abstention', 'points', 'accepted'));
+			}
+
+			// save the downloaded voting result and set date for clearing
+			$issue->vote = json_encode($question);
+			$issue->state = "finished";
+			$issue->update(array("vote", "state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
+
+		}
+
+	}
+
+
+	/**
+	 * generate a random voting result for testing
+	 *
+	 * @return string
+	 */
+	private function test_vote_result() {
+
+		/* form https://basisentscheid.piratenpad.de/testabstimmungsdaten
+
+		OUTPUT: Abstimmung -> Portal
+
+		{
+		 "ballotID":"GTVsdffgsdwt40QXffsd452re", <- Abstimmungsperiode
+		 "questions": # schleife Abstimmungen
+				[
+						{
+						 "questionID":"token",  <- Themen-ID, nicht nummerisch, in Input ebenso
+						 "optionOrder":["$id1","$id2","$id3"], <- Reihenfolge der konkurrierenden Optionen/Anträge in den Daten,
+						 "statusQuoOption": "$id2", #falls Wahlverfahren es erfordert
+						 "votes": [ # Schleife voters
+								 {
+										 "token":"$vote_token", "time":"$vote_time",
+										 "options":[[1, 2], [0, 0], [-1, 0]]
+										 #           1A,1P   2A,2P   3A,3P
+										 #1A=J,1P=2Punkte
+										 #2A=N,2P=0Punkte
+										 #3A=E,3P=0Punkte
+								 }
+								 ["$vote_token", "$vote_time", [[0, 0], [1, 3], [1, 1]],
+							] <- im Array für jede Option nach Reihenfolge "options" [Akzeptanz(-1,0,1),Präferenz(-1,0..9)], siehe input
+							"results": [ #zufällige reihenfolge
+									{"rank":1, "option":1, "yes":15, "no":10, "abstention":2, "points":213, "accepted": true },
+									{"rank":2, "option":2, "yes":10, "no":15, "abstention":0, "points":100, "accepted": false },
+									{"rank":2, "option":3, "yes":10, "no":15, "abstention":0, "points":100, "accepted": false }, <- gleichplatziert
+							]
+						},
+				]
+		}
+
+		*/
+
+		$data = array(
+			"ballotID"  => $this->id,
+			"questions" => array()
+		);
+
+		$sql = "SELECT * FROM issues WHERE period=".intval($this->id);
+		$result = DB::query($sql);
+		while ( $issue = DB::fetch_object($result, "Issue") ) {
+
+			$question = array(
+				'questionID'  => $issue->id,
+				'optionOrder' => array(),
+				'votes'       => array(),
+				'results'     => array()
+			);
+
+			$proposals = $issue->proposals(true);
+
+			$points     = array();
+			$yes        = array();
+			$no         = array();
+			$abstention = array();
+			foreach ( $proposals as $proposal ) {
+				$question['optionOrder'][] = $proposal->id;
+				$points[$proposal->id]     = 0;
+				$yes[$proposal->id]        = 0;
+				$no[$proposal->id]         = 0;
+				$abstention[$proposal->id] = 0;
+			}
+
+			for ($i = 1; $i <= 1000; $i++) {
+				$options = array();
+				foreach ( $proposals as $proposal ) {
+					$acceptance = rand(-1, 1);
+					if ($acceptance == 1) $yes[$proposal->id]++; elseif ($acceptance == 0) $no[$proposal->id]++; else $abstention[$proposal->id]++;
+					if (count($proposals) == 1) {
+						$score = -2;
+					} elseif ($acceptance == -1) {
+						$score = -1;
+					} else {
+						$score = rand(0, 9);
+						$points[$proposal->id] += $score;
+					}
+					$options[] = array($acceptance, $score);
+				}
+				$question['votes'][] = array("token"=>"vote_token_".$i, "time"=>time(), "options"=>$options);
+			}
+
+			// determine ranks
+			asort($points);
+			$current_points = 0;
+			$current_rank = 0;
+			$rank = array();
+			foreach ( $points as $key => $value ) {
+				if ($value != $current_points) $current_rank++;
+				$rank[$key] = $current_rank;
+			}
+
+			foreach ( $proposals as $proposal ) {
+				$question['results'][] = array(
+					'rank'       => $rank[$proposal->id],
+					'option'     => $proposal->id,
+					'yes'        => $yes[$proposal->id],
+					'no'         => $no[$proposal->id],
+					'abstention' => $abstention[$proposal->id],
+					'points'     => $points[$proposal->id],
+					'accepted'   => ($yes[$proposal->id] > $no[$proposal->id])
+				);
+			}
+
+			$data['questions'][] = $question;
+
+		}
+
+		return json_encode($data);
+	}
+
+
+	/**
 	 * display a timestamp
 	 *
 	 * @param string  $content

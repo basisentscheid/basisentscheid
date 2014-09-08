@@ -258,10 +258,10 @@ function cron($skip_if_locked=false) {
 			case "finished":
 				if (!$issue->clear_now) break;
 
-				// TODO Clear
-
+				$issue->vote  = null; // delete raw voting data
+				$issue->clear = null;
 				$issue->state = "cleared";
-				$issue->update(array("state"), "clear=NULL, cleared=now()");
+				$issue->update(array("state"), "cleared=now()");
 
 				// "cleared" and "cancelled" are the final issue states.
 			}
@@ -420,15 +420,17 @@ Beschreibungen (je Gliederung und Termin): wer ist berechtigt
 			);
 		}
 
+		if ( count($options) > 1 ) {
+			$vote_system = array('type' => "score", 'max-score' => 3, 'abstention' => true, 'single-step' => true);
+			if ( count($options) >= 5 ) $vote_system['max-score'] = 9;
+		} else {
+			$vote_system = array('type' => "acceptance", 'abstention' => true, 'single-step' => true);
+		}
+
 		$questions[] = array(
 			"questionID" => $issue->id,
 			"questionWording" => sprintf(_("Basisentscheid %d of voting period %d"), $issue->id, $period->id),
-			"voteSystem" => array(
-				"type" => "score",
-				"max-score" => 1,
-				"abstention" => true,
-				"single-step" => true
-			),
+			"voteSystem" => $vote_system,
 			"options" => $options,
 			"references" => array(
 				array(
@@ -545,23 +547,6 @@ function upload_share($json) {
 
 	trigger_error("HTTP code other than 201, ".$curl_error, E_USER_NOTICE);
 	return false;
-}
-
-
-/**
- * download the voting result from the ID server
- *
- * @param Issue   $issue
- * @return string
- */
-function download_vote(Issue $issue) {
-
-	// for testing
-	if (defined("SKIP_UPDOWNLOAD")) return "test result";
-
-	// TODO: The issue should probably be added to the URL.
-
-	return curl_fetch(SHARE_URL);
 }
 
 

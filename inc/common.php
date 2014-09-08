@@ -27,6 +27,7 @@
  * @see proposals.php
  * @see test_dbtableadmin.php
  * @see test_redirect_errors.php
+ * @see vote_result.php
  */
 
 

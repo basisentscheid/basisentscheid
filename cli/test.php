@@ -281,7 +281,7 @@ function create_case($case, $stopcase) {
 				now() + interval '3 weeks',
 				now() + interval '4 weeks',
 				true,
-				false,
+				true,
 				".$ngroup."
 			) RETURNING id";
 			$result = DB::query($sql);
@@ -356,8 +356,7 @@ function create_case($case, $stopcase) {
 			}
 
 			// move on to state "finished"
-			$result = download_vote($issue);
-			$issue->save_vote($result);
+			$issue->period()->download_vote();
 
 			if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
 				$casetitle = "issue in finished state";

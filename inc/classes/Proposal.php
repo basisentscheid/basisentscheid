@@ -27,7 +27,7 @@ class Proposal extends Relation {
 	public $admitted;
 	public $cancelled;
 
-	protected $boolean_fields = array("quorum_reached", "supported_by_member");
+	protected $boolean_fields = array("quorum_reached", "supported_by_member", "accepted");
 	protected $update_fields = array("title", "content", "reason");
 
 	protected $issue_obj;
@@ -703,7 +703,8 @@ class Proposal extends Relation {
 
 		// cancel proposal
 		$this->state = $state;
-		$this->update(array("state"), "cancelled=now(), revoke=NULL");
+		$this->revoke = null;
+		$this->update(array("state"), "cancelled=now()");
 
 		$issue = $this->issue();
 
@@ -839,7 +840,7 @@ class Proposal extends Relation {
 
 
 	/**
-	 * display bargraph
+	 * display quorum bargraph
 	 *
 	 * @param boolean $supported_by_member (optional)
 	 */
@@ -862,10 +863,10 @@ class Proposal extends Relation {
 		$required_left = round( min($required, $population) / $population * $max_width );
 		$width = max($min_width, $bar_width);
 
-		?><div class="bargraph" style="width:<?=$width?>px" title="<?=$title?>"><?
+		?><div class="bargraph bargraph_quorum" style="width:<?=$width?>px" title="<?=$title?>"><?
 		?><div class="bar" style="width:<?=$bar_width?>px"></div><?
 		?><div class="required" style="margin-left:<?=$required_left?>px"></div><?
-		?><div class="value" style="width:<?=$width?>px"><?=$value?></div><?
+		?><div class="legend" style="width:<?=$width?>px"><?=$value?></div><?
 		if ($supported_by_member) {
 			?><div class="supported" title="<?=_("You support this proposal.")?>">&#10003;</div><?
 		}
@@ -876,9 +877,73 @@ class Proposal extends Relation {
 
 
 	/**
+	 * display score bargraph
+	 *
+	 * @param integer $rank
+	 * @param integer $points
+	 * @param integer $points_max
+	 */
+	public function bargraph_score($rank, $points, $points_max) {
+
+		$title = sprintf(
+			_("%d points, rank %d"),
+			$points,
+			$rank
+		);
+
+		$width = 100;
+		$bar_width = round( $points / $points_max * $width );
+
+		?><div class="bargraph score" title="<?=$title?>"><?
+		?><div class="bar" style="width:<?=$bar_width?>px"></div><?
+		?><div class="legend"><?=$points?> (<?=$rank?>)</div><?
+		?><div class="clear"></div><?
+		?></div><?
+
+	}
+
+
+	/**
+	 * display acceptance bargraph
+	 *
+	 * @param integer $yes
+	 * @param integer $no
+	 * @param integer $abstention
+	 * @param boolean $accepted
+	 */
+	public function bargraph_acceptance($yes, $no, $abstention, $accepted) {
+
+		$all = $yes + $no;
+
+		$title = sprintf(
+			_("Yes: %d (%s), No: %d (%s), Abstention: %d"),
+			$yes,
+			$legend = round($yes / $all * 100)."%",
+			$no,
+			round($no / $all * 100)."%",
+			$abstention
+		);
+
+		if ($accepted) $legend .= " *";
+
+		$width = 100;
+		$width_yes = round( $yes / $all * $width );
+		$width_no = $width - $width_yes;
+
+		?><div class="bargraph acceptance" title="<?=$title?>"><?
+		?><div class="bar yes" style="width:<?=$width_yes?>px">&nbsp;</div><?
+		?><div class="bar no" style="width:<?=$width_no?>px">&nbsp;</div><?
+		?><div class="legend"><?=$legend?></div><?
+		?><div class="clear"></div><?
+		?></div><?
+
+	}
+
+
+	/**
 	 * display the right column with area and proponents
 	 *
-	 * @param object  $issue
+	 * @param Issue   $issue
 	 * @param array   $proponents
 	 * @param boolean $is_proponent
 	 */

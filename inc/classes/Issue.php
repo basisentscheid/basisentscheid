@@ -295,18 +295,6 @@ class Issue extends Relation {
 
 
 	/**
-	 * save the downloaded voting result and set date for clearing
-	 *
-	 * @param resource $result
-	 */
-	public function save_vote($result) {
-		$this->vote = $result;
-		$this->state = "finished";
-		$this->update(array("vote", "state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
-	}
-
-
-	/**
 	 *
 	 * @param boolean $show_results display the result column
 	 */
@@ -315,12 +303,12 @@ class Issue extends Relation {
 	<tr>
 		<th class="proposal"><?=_("Proposal")?></th>
 		<th class="support"><?=_("Support")?></th>
-		<th class="state"><?=_("State")?></th>
-		<th class="period"><?=_("Period")?></th>
-		<th class="voting_type"><?=_("Voting type")?></th>
 <? if ($show_results) { ?>
 		<th class="result"><?=_("Result")?></th>
 <? } ?>
+		<th class="state"><?=_("State")?></th>
+		<th class="period"><?=_("Period")?></th>
+		<th class="voting_type"><?=_("Voting type")?></th>
 	</tr>
 <?
 	}
@@ -335,14 +323,11 @@ class Issue extends Relation {
 
 		if (Login::$member) {
 			$sql = "SELECT proposals.*, supporters.member AS supported_by_member FROM proposals
-					LEFT JOIN supporters ON proposals.id = supporters.proposal AND supporters.member = ".intval(Login::$member->id)."
-				WHERE issue=".intval($this->id)."
-				ORDER BY state DESC, id";
+					LEFT JOIN supporters ON proposals.id = supporters.proposal AND supporters.member = ".intval(Login::$member->id);
 		} else {
-			$sql = "SELECT * FROM proposals
-				WHERE issue=".intval($this->id)."
-				ORDER BY state DESC, id";
+			$sql = "SELECT * FROM proposals";
 		}
+		$sql .= " WHERE issue=".intval($this->id)." ORDER BY state DESC, rank, id";
 		$result = DB::query($sql);
 		$proposals = array();
 		$submitted = false;
@@ -399,6 +384,36 @@ class Issue extends Relation {
 			$proposal->bargraph_quorum($proposal->supported_by_member);
 			?></td>
 <?
+
+			// column "voting results"
+			if ($show_results) {
+				if ($this->state != 'finished' and $this->state != 'cleared') {
+?>
+		<td></td>
+<?
+				} else {
+?>
+		<td class="result" onClick="location.href='vote_result.php?issue=<?=$this->id?>'"><?
+					if ($first) {
+						// get number of options and highest number of points
+						$options_count = 0;
+						$points_max = 0;
+						foreach ( $proposals as $proposal_vote ) {
+							if ($proposal_vote->rank === null) continue; // skip cancelled proposals
+							$points_max = max($points_max, $proposal_vote->points);
+							$options_count++;
+						}
+					}
+					if ( $proposal->rank !== null ) { // skip cancelled proposals
+						$proposal->bargraph_acceptance($proposal->yes, $proposal->no, $proposal->abstention, $proposal->accepted);
+						if ( $options_count > 1 ) {
+							$proposal->bargraph_score($proposal->rank, $proposal->points, $points_max);
+						}
+					}
+					?></td>
+<?
+				}
+			}
 
 			// column "state"
 			if ($this->state=="admission" or $this->state=="cancelled") {
@@ -458,7 +473,6 @@ class Issue extends Relation {
 		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a></td>
 <?
 				}
-
 ?>
 		<td rowspan="<?=$num_rows?>" class="center"<?
 
@@ -505,16 +519,6 @@ class Issue extends Relation {
 
 				?></td>
 <?
-				if ($show_results) {
-?>
-		<td rowspan="<?=$num_rows?>"><?
-					if ($this->vote!==null) {
-						// voting results
-						echo $this->vote;
-					}
-					?></td>
-<?
-				}
 			}
 
 ?>

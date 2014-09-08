@@ -67,6 +67,12 @@ td, th {
 .td1 {
 	background-color: #EEE;
 }
+.td0 .tdc {
+	background-color: #F8F8F8;
+}
+.td1 .tdc {
+	background-color: #E8E8E8;
+}
 tr.highlight {
 	background-color: #F8B;
 }
@@ -207,22 +213,44 @@ form.show_help {
 }
 
 div.bargraph {
+	display: inline-block;
 	vertical-align: middle;
-	margin: 0;
+	margin: 0 0 2px 0;
+}
+div.bargraph.acceptance {
+	width: 100px;
+}
+div.bargraph.score {
+	width: 100px;
+	margin-left: 3px;
 }
 div.bargraph div.bar {
 	float: left;
 	height: 1em;
 	background-color: #0A0;
 }
-div.bargraph div.value {
+div.bargraph div.bar.no {
+	background-color: #B00;
+}
+div.bargraph.score div.bar {
+	background-color: #FA0;
+}
+div.bargraph div.legend {
 	position: absolute;
 	z-index: 1;
 	padding: 0;
 	margin: 0;
-	line-height: 1em;
-	text-align: right;
+	height: 1em;
+	line-height: 1.2em;
+	font-size: 0.8em;
 	vertical-align: middle;
+	padding-left: 2px;
+}
+div.bargraph.bargraph_quorum div.legend {
+	text-align: right;
+}
+div.bargraph.acceptance div.legend {
+	color: #FFF;
 }
 div.bargraph div.required {
 	position: absolute;
@@ -786,7 +814,7 @@ div.quorum h2 {
 div.quorum div.bargraph_container {
 	display: inline-block;
 	margin: 0 5px;
-	padding: 3px 4px;
+	padding: 1px 4px;
 	vertical-align: bottom;
 	background-color: #FFF;
 }
@@ -882,6 +910,15 @@ table.proposals td.proposal_link_active:active,
 table.proposals td.proposal_link:active a,
 table.proposals td.proposal_link_active:active a {
 	background-color: #F3F3F3;
+}
+
+table.proposals td.support {
+	white-space: nowrap;
+}
+table.proposals td.result {
+	cursor: pointer;
+	cursor: hand;
+	white-space: nowrap;
 }
 
 form.proposal h2,

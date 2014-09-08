@@ -66,13 +66,20 @@ CREATE TYPE period_state AS ENUM (
 --
 
 CREATE TYPE proposal_state AS ENUM (
+    'cancelled',
+    'revoked',
+    'done',
     'draft',
     'submitted',
-    'admitted',
-    'revoked',
-    'cancelled',
-    'done'
+    'admitted'
 );
+
+
+--
+-- Name: TYPE proposal_state; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TYPE proposal_state IS 'order is used for display';
 
 
 SET default_tablespace = '';
@@ -506,7 +513,13 @@ CREATE TABLE proposals (
     admitted timestamp with time zone,
     cancelled timestamp with time zone,
     revoke timestamp with time zone,
-    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL
+    state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
+    rank integer,
+    yes integer,
+    no integer,
+    abstention integer,
+    points integer,
+    accepted boolean
 );
 
 

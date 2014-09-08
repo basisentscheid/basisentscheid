@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?
 /**
- * download the voting result for one issue
+ * download the voting result for one voting period
  *
  * to be called by some daemon, triggered by the ID server
  *
@@ -19,15 +19,10 @@ if (empty($_SERVER['argv'][1])) {
 	trigger_error("Missing parameter", E_USER_ERROR);
 }
 
-$issue = new Issue($_SERVER['argv'][1]);
+$period = new Period($_SERVER['argv'][1]);
 
-if (!$issue->id) {
-	trigger_error("The requested issue does not exist!", E_USER_ERROR);
+if (!$period->id) {
+	trigger_error("The requested voting period does not exist!", E_USER_ERROR);
 }
 
-$result = download_vote($issue);
-if ($result) {
-	$issue->save_result($result);
-} else {
-	exit(1);
-}
+if ( !$period->download_vote() ) exit(1);
