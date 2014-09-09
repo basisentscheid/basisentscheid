@@ -41,51 +41,32 @@ if ($issue->state == 'cleared') {
 	$vote_result = json_decode($issue->vote);
 
 ?>
-<table>
+<table class="votes">
 <?
 	if (count($vote_result->optionOrder) == 1) {
 ?>
-	<tr>
-		<th><?=_("Token")?></th>
-		<th><?=_("Time")?></th>
-		<th><?=_("Acceptance")?></th>
-	</tr>
+<tr><th><?=_("Token")?></th><th><?=_("Time")?></th><th><?=_("Acceptance")?></th></tr>
 <?
 	} else {
 ?>
-	<tr>
-		<th rowspan="2"><?=_("Token")?></th>
-		<th rowspan="2"><?=_("Time")?></th>
-<?
+<tr><th rowspan="2"><?=_("Token")?></th><th rowspan="2"><?=_("Time")?></th><?
 		foreach ($vote_result->optionOrder as $proposal_id) {
-?>
-		<th colspan="2"><?=_("Proposal")?> <?=$proposal_id?></th>
-<?
+			?><th colspan="2"><?=_("Proposal")?> <?=$proposal_id?></th><?
 		}
-?>
-	</tr>
-	<tr>
-<?
+		?></tr>
+<tr><?
 		foreach ($vote_result->optionOrder as $proposal_id) {
-?>
-		<th><?=_("Acceptance")?></th>
-		<th><?=_("Score")?></th>
-<?
+			?><th><?=_("Acceptance")?></th><th><?=_("Score")?></th><?
 		}
-?>
-	</tr>
+		?></tr>
 <?
 	}
 	foreach ( $vote_result->votes as $vote ) {
 ?>
-	<tr class="<?=stripes()?>">
-		<td><?=$vote->token?></td>
-		<td><?=$vote->time?></td>
-<?
+<tr class="<?=stripes()?>"><td><?=$vote->token?></td><td><?=$vote->time?></td><?
 		foreach ($vote_result->optionOrder as $key => $proposal_id) {
 			// acceptance
-?>
-		<td class="tdc center"><?
+			?><td class="tdc"><?
 			switch ($vote->options[$key][0]) {
 			case -1:
 				echo _("Abstention");
@@ -99,12 +80,10 @@ if ($issue->state == 'cleared') {
 			default:
 				echo "illegal value: ".h($vote->options[$key][0]);
 			}
-			?></td>
-<?
+			?></td><?
 			// score
 			if ($vote->options[$key][1] != -2) {
-?>
-		<td class="center"><?
+				?><td><?
 				switch ($vote->options[$key][1]) {
 				case -1:
 					echo _("Abstention");
@@ -112,12 +91,10 @@ if ($issue->state == 'cleared') {
 				default:
 					echo h($vote->options[$key][1]);
 				}
-				?></td>
-<?
+				?></td><?
 			}
 		}
-?>
-	</tr>
+		?></tr>
 <?
 	}
 ?>
