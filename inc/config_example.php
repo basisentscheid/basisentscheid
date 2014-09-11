@@ -69,9 +69,9 @@ define("ARGUMENTS_LIMIT_3", 1);
 define("OAUTH2_BASEURL", "https://example.com/");
 define("OAUTH2_CLIENT_ID",     'example');
 define("OAUTH2_CLIENT_SECRET", 'example');
-define("OAUTH2_AUTHORIZATION_ENDPOINT", OAUTH2_BASEURL.'authorize/');
-define("OAUTH2_TOKEN_ENDPOINT",         OAUTH2_BASEURL.'token/');
-
+define("OAUTH2_AUTHORIZATION_ENDPOINT", OAUTH2_BASEURL."authorize/");
+define("OAUTH2_TOKEN_ENDPOINT",         OAUTH2_BASEURL."token/");
+define("API_BASEURL",                   OAUTH2_BASEURL."api/");
 define("SHARE_URL",   "https://beoapi.example.com/shares/portal/");
 define("NGROUPS_URL", "https://beoapi.example.com/nested_groups/");
 define("CAINFO",  DOCROOT."ssl/cacerts.pem");

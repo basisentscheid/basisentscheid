@@ -22,11 +22,12 @@ $params = array('code' => $_GET['code'], 'redirect_uri' => BASE_URL.'auth.php');
 $response = $client->getAccessToken(OAUTH2_TOKEN_ENDPOINT, 'authorization_code', $params);
 //var_dump($response);
 
-//parse_str($response['result'], $info);
+if ( !isset($response['result']['access_token']) ) error("Unexpected reply from ID server");
+
 $client->setAccessToken($response['result']['access_token']);
 $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
 
-$response_auid = $client->fetch(OAUTH2_BASEURL."api/user/auid/");
+$response_auid = $client->fetch(API_BASEURL."user/auid/");
 //var_dump($response_auid);
 /*
 array(1) {
@@ -35,7 +36,7 @@ array(1) {
 }
 */
 
-$response_profile = $client->fetch(OAUTH2_BASEURL."api/user/profile/");
+$response_profile = $client->fetch(API_BASEURL."user/profile/");
 //var_dump($response_profile);
 /*
 array(3) {
@@ -48,42 +49,30 @@ array(3) {
 }
 */
 
-$response_membership = $client->fetch(OAUTH2_BASEURL."api/user/membership/");
+$response_membership = $client->fetch(API_BASEURL."user/membership/");
 //var_dump($response_membership);
 /*
-array(6) {
-	["nested_groups"]=>
-	array(1) {
-		[0]=>
-		int(5)
-	}
-	["all_nested_hgroups"]=>
-	array(3) {
-		[0]=>
-		int(1)
-		[1]=>
-		int(2)
-		[2]=>
-		int(5)
-	}
-	["verified"]=>
-	bool(true)
-	["hgroups"]=>
-	array(1) {
-		[0]=>
-		int(5)
-	}
-	["type"]=>
-	string(15) "entitled member"
-	["all_hgroups"]=>
-	array(3) {
-		[0]=>
-		int(1)
-		[1]=>
-		int(2)
-		[2]=>
-		int(5)
-	}
+array(4) {
+  ["verified"]=>
+  bool(false)
+  ["type"]=>
+  string(15) "eligible member"
+  ["all_nested_groups"]=>
+  array(3) {
+    [0]=>
+    int(1)
+    [1]=>
+    int(2)
+    [2]=>
+    int(3)
+  }
+  ["nested_groups"]=>
+  array(2) {
+    [0]=>
+    int(2)
+    [1]=>
+    int(3)
+  }
 }
 */
 
@@ -101,7 +90,7 @@ if ( ! $member = DB::fetch_object($result, "Member") ) {
 $member->public_id = (string) @$response_profile['result']['public_id'];
 $member->profile   = (string) @$response_profile['result']['profile'];
 // handle only verified members as entitled
-$member->entitled  = ($response_membership['result']['type']=="entitled member" and $response_membership['result']['verified']);
+$member->entitled  = ($response_membership['result']['type']=="eligible member" and $response_membership['result']['verified']);
 if ($member->id) {
 	$member->update(array('public_id', 'profile', 'entitled'));
 } else {
