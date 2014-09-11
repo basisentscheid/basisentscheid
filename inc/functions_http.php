@@ -114,11 +114,12 @@ function html_head($title) {
 		break;
 	default:
 		echo BN;
-		$hidden = array('ngroup'=>null);
-		// remove id to go back from edit to list mode
 	case "periods.php":
 	case "admin_areas.php":
-		$hidden['id'] = null;
+		$hidden = array(
+			'ngroup' => null, // remove ngroup, because the new ngroup comes from the drop down menu
+			'id'     => null  // remove id to go back from edit to list mode
+		);
 	}
 	?>">
 						<select name="ngroup" onchange="this.form.submit()">
