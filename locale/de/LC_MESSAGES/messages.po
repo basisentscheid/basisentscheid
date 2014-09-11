@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-09-08 17:01+0200\n"
+"PO-Revision-Date: 2014-09-11 21:21+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -217,7 +217,7 @@ msgstr "anderweitig erledigt"
 # File: periods.php, line: 19
 # File: inc/classes/Notification.php, line: 293
 msgid "Voting preparation"
-msgstr "Abstimmungsvorbereitung"
+msgstr "Abstimmungs&shy;vorbereitung"
 #
 # File: inc/classes/Issue.php, line: 113
 msgid "Finished"
@@ -679,15 +679,15 @@ msgstr "Meine Urne"
 # File: periods.php, line: 20
 # File: periods.php, line: 24
 msgid "Online voting"
-msgstr "Online-Abstimmung"
+msgstr "Online-&shy;Abstimmung"
 #
 # File: periods.php, line: 21
 msgid "Ballot assignment"
-msgstr "Urnenzuordnung"
+msgstr "Urnen&shy;zuordnung"
 #
 # File: periods.php, line: 22
 msgid "Ballot preparation"
-msgstr "Urnenvorbereitung"
+msgstr "Urnen&shy;vorbereitung"
 #
 msgid "In the current phase of the period ballot applications are not allowed anymore."
 msgstr "In der aktuellen Phase der Abstimmungsperiode können keine Urnenanträge mehr angenommen werden."
@@ -718,7 +718,7 @@ msgstr "Es gab keine Urnenanträge."
 #
 # File: periods.php, line: 23
 msgid "Counting/End of period"
-msgstr "Auszählung/Stichtag"
+msgstr "Auszählung/ Stichtag"
 #
 # File: inc/classes/DbTableAdmin_Period.php, line: 202
 msgid "The ballot assignment time is not valid!"
@@ -1030,11 +1030,11 @@ msgstr "Der Benutzername wird bereits vor jemand anderem verwendet, deshalb wird
 #
 # File: periods.php, line: 25
 msgid "Ballot voting"
-msgstr "Urnenabstimmung"
+msgstr "Urnen&shy;abstimmung"
 #
 # File: inc/classes/Issue.php, line: 513
 msgid "ballot voting"
-msgstr "Urnenabstimmung"
+msgstr "Urnen&shy;abstimmung"
 #
 # File: inc/classes/Issue.php, line: 515
 msgid "online voting"

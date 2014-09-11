@@ -1125,3 +1125,14 @@ table.notify th.type {
 table.votes td {
 	text-align: center;
 }
+
+
+/* 5.7 periods */
+
+th.period,
+td.period {
+	width: 15%;
+}
+td.period {
+	white-space: nowrap;
+}
