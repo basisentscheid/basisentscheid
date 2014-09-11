@@ -63,7 +63,7 @@ if ($issue->state == 'cleared') {
 	}
 	foreach ( $vote_result->votes as $vote ) {
 ?>
-<tr class="<?=stripes()?>"><td><?=$vote->token?></td><td><?=$vote->time?></td><?
+<tr class="<?=stripes()?>"><td><?=$vote->token?></td><td><?=date(DATETIMEYEAR_FORMAT, $vote->time)?></td><?
 		foreach ($vote_result->optionOrder as $key => $proposal_id) {
 			// acceptance
 			?><td class="tdc"><?
