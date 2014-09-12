@@ -2,6 +2,7 @@
 /**
  * Ngroup (nested group)
  *
+ * @property $depth
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

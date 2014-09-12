@@ -8,6 +8,9 @@
 *.mo
 *.chproj
 .idea/
+.buildpath
+.project
+.settings/
 .phptidy-cache
 
 /inc/config.php

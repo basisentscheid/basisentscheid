@@ -4,9 +4,9 @@
  *
  * Gettext contents are written in UTF-8 and should not contain HTML.
  *
+ * @see inc/common.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
- * @see inc/common.php
  */
 
 

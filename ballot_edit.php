@@ -138,7 +138,7 @@ for ( $m=0; $m<60; $m++ ) {
 <div class="buttons th"><span class="cancel"><a href="ballots.php?period=<?=$period->id?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("Save")?>"></span></div>
 </fieldset>
 <input type="hidden" name="action" value="save">
-</form>
 <?
+form_end();
 
 html_foot();

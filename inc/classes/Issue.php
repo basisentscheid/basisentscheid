@@ -11,11 +11,16 @@ class Issue extends Relation {
 
 	public $period;
 	public $area;
+	public $vote;
 	public $ballot_voting_demanders;
 	public $ballot_voting_reached;
-	public $state;
-	public $vote;
+	public $debate_started;
+	public $preparation_started;
+	public $voting_started;
+	public $counting_started;
 	public $clear;
+	public $cleared;
+	public $state;
 
 	public $ballot_voting_demanded_by_member;
 
@@ -247,7 +252,7 @@ class Issue extends Relation {
 	/**
 	 * will be called after a proposal gets admitted
 	 *
-	 * @param object  $admitted_proposal
+	 * @param Proposal $admitted_proposal
 	 */
 	public function proposal_admitted(Proposal $admitted_proposal) {
 
@@ -271,8 +276,7 @@ class Issue extends Relation {
 		$notification->send();
 
 
-		// for now admins do the selection of the periods manually
-		return;
+		/* for now admins do the selection of the periods manually
 
 		// The period has already been set by another proposal in the same issue.
 		if ($this->period) return;
@@ -290,6 +294,8 @@ class Issue extends Relation {
 		} else {
 			// TODO Error
 		}
+
+		*/
 
 	}
 
@@ -618,8 +624,8 @@ class Issue extends Relation {
 			input_hidden("action", "select_period");
 ?>
 <input type="submit" value="<?=_("apply")?>">
-</form>
 <?
+			form_end();
 		} else {
 			if ($this->period) {
 				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?

@@ -2,9 +2,9 @@
 /**
  * functions used on every page, which is called by http
  *
+ * @see inc/common.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
- * @see inc/common.php
  */
 
 
@@ -259,16 +259,16 @@ function html_user() {
 ?>
 <input type="hidden" name="action" value="logout">
 <input type="submit" value="<?=_("Logout")?>">
-</form>
 <?
+		form_end();
 	} else {
 		// login as member via ID server
 		form("login.php", 'class="button"');
 ?>
 <input type="hidden" name="origin" value="<?=h($_SERVER['REQUEST_URI'])?>">
 <input type="submit" value="<?=_("Login")?>">
-</form>
 <?
+		form_end();
 	}
 }
 

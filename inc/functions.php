@@ -2,9 +2,9 @@
 /**
  * common functions required by every script
  *
+ * @see inc/common.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
- * @see inc/common.php
  */
 
 

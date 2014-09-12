@@ -1,4 +1,5 @@
 <?
+
 /**
  * Area
  *
@@ -11,6 +12,7 @@ class Area extends Relation {
 
 	public $name;
 	public $participants;
+	public $ngroup;
 
 	private $ngroup_obj;
 

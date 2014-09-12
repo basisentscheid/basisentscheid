@@ -165,7 +165,7 @@ function create_case($case, $stopcase) {
  * create a new member and let it become participant of the supplied ballot
  *
  * @param Period  $period
- * @param Ballot  $ballot Ballot, true or null
+ * @param mixed   $ballot Ballot, true or null
  * @param integer $case
  * @param string  $i
  */

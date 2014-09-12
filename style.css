@@ -150,6 +150,9 @@ a.anchor {
 	clear: both;
 	visibility: hidden;
 }
+br.clear {
+	clear: both;
+}
 
 .nowrap {
 	white-space: nowrap;
@@ -238,7 +241,6 @@ div.bargraph.score div.bar {
 div.bargraph div.legend {
 	position: absolute;
 	z-index: 1;
-	padding: 0;
 	margin: 0;
 	height: 1em;
 	line-height: 1.2em;
@@ -863,7 +865,7 @@ table.proposals th.voting_type {
 	width: 7%;
 }
 table.proposals th.result {
-	width: 0%;
+	width: 0;
 }
 
 table.proposals tr.proposal {
@@ -1010,7 +1012,7 @@ div.arguments_side h2 {
 
 div.arguments_side ul {
 	list-style-type: none;
-	margin-left: 0px;
+	margin-left: 0;
 	padding-left: 20px;
 }
 div.arguments_side > ul {

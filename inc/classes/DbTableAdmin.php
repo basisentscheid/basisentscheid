@@ -697,8 +697,8 @@ class DbTableAdmin {
 ?>
 	<input type="hidden" name="action" value="">
 	<input type="hidden" name="id" value="">
-</form>
 <?
+			form_end();
 		}
 		if ($button_js or $this->enable_delete_checked) {
 			$this->display_list_javascript($button_js);
@@ -721,11 +721,7 @@ class DbTableAdmin {
 </table>
 <?
 
-		if ($show_form) {
-?>
-</form>
-<?
-		}
+		if ($show_form) form_end();
 
 		if ($this->enable_pager) {
 			$this->pager->display();
@@ -1062,8 +1058,8 @@ function submit_delete_checked() {
 <div class="buttons th"><span class="cancel"><a href="<?=URI::strip(array('id'))?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("save")?>"></span></div>
 </fieldset>
 <input type="hidden" name="action" value="editsubmit">
-</form>
 <?
+		form_end();
 
 	}
 

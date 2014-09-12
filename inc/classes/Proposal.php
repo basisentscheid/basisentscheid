@@ -26,6 +26,11 @@ class Proposal extends Relation {
 	public $revoke;
 	public $admitted;
 	public $cancelled;
+	public $rank;
+	public $yes;
+	public $no;
+	public $abstention;
+	public $accepted;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member", "accepted");
 	protected $update_fields = array("title", "content", "reason");
@@ -37,7 +42,7 @@ class Proposal extends Relation {
 	/**
 	 * get the referenced issue (read it only once from the database)
 	 *
-	 * @return object
+	 * @return Issue
 	 */
 	public function issue() {
 		if (!is_object($this->issue_obj)) $this->issue_obj = new Issue($this->issue);

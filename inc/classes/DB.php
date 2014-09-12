@@ -399,7 +399,8 @@ abstract class DB {
 	 *
 	 * Conditions have to be strings "uid=1", not assoc arrays ("uid"=>1)!
 	 *
-	 * @param string  multiple strings or arrays of stings as arguments
+	 * multiple strings or arrays of stings as arguments
+	 *
 	 * @return string
 	 */
 	public static function where_and() {

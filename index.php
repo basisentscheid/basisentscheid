@@ -111,7 +111,7 @@ foreach ( $dates as $index => $time ) {
 </div>
 
 <div class="ngroups">
-<h2><a name="ngroups" class="anchor"></a><?=_("Groups")?></h2>
+<h2 id="ngroups"><?=_("Groups")?></h2>
 <table>
 <?
 $entitled = ( Login::$member and Login::$member->entitled );

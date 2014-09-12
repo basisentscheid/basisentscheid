@@ -33,10 +33,10 @@
 
 define('DOCROOT', "");
 
-require "inc/config.php";
-require "inc/errors.php";
-require "inc/functions.php";
-require "inc/functions_http.php";
+require DOCROOT."inc/config.php";
+require DOCROOT."inc/errors.php";
+require DOCROOT."inc/functions.php";
+require DOCROOT."inc/functions_http.php";
 
 define("VERSION", "development");
 
@@ -47,7 +47,7 @@ ob_start();
 
 Login::init();
 
-require "inc/locale.php";
+require DOCROOT."inc/locale.php";
 
 /*
  * The ngroup can be selected by the GET parameter or by other parameters selecting a period, area, issue or proposal
@@ -78,7 +78,7 @@ if (!empty($_GET['ngroup'])) {
 }
 
 // all actions use this global variable
-$action = @$_POST['action'];
+if (isset($_POST['action'])) $action = $_POST['action']; else $action = null;
 
 // detect CSRF attacks
 if ($action) {

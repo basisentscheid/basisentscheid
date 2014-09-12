@@ -135,7 +135,7 @@ foreach (Notification::interests() as $interest => $interest_title) {
 <br>
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
-</form>
 <?
+form_end();
 
 html_foot();

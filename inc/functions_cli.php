@@ -537,7 +537,7 @@ function upload_share($json) {
 	curl_setopt($ch, CURLOPT_SSLCERT, SSLCERT);
 	curl_setopt($ch, CURLOPT_SSLKEY,  SSLKEY);
 
-	$result = curl_exec($ch);
+	curl_exec($ch);
 
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	$curl_error = curl_error($ch);

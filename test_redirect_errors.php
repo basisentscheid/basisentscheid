@@ -41,7 +41,7 @@ form(BN);
 <input type="checkbox" name="fatal_php_error_after_msg" value="1"> Fatal PHP error after message<br>
 <input type="hidden" name="action" value="test">
 <input type="submit">
-</form>
 <?
+form_end();
 
 html_foot();

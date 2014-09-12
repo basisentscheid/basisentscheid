@@ -216,8 +216,8 @@ if (Login::$admin and $period->state=="ballot_application" and $pager->linescoun
 ?>
 <input type="hidden" name="action" value="save_approved">
 <input type="submit" value="<?=_("apply approved")?>">
-</form>
 <?
+	form_end();
 }
 
 $pager->msg_itemsperpage = _("Ballots per page");

@@ -9,9 +9,18 @@
 
 abstract class Login {
 
-	// false or object of logged in member
+	/**
+	 * false or object of logged in member
+	 *
+	 * @var Member $member
+	 */
 	public static $member = false;
-	// false or object of logged in admin
+
+	/**
+	 * false or object of logged in admin
+	 *
+	 * @var Admin $admin
+	 */
 	public static $admin  = false;
 
 

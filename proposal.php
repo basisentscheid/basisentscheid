@@ -262,8 +262,8 @@ if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member,
 <input type="hidden" name="action" value="confirm_remove_proponent">
 <input type="submit" value="<?=_("Yes")?>">
 <a href="<?=URI::same()?>"><?=_("No")?></a>
-</form>
 <?
+		form_end();
 	}
 ?>
 </div>
@@ -510,8 +510,8 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <input type="text" name="proponent" value="<?=h($proponent->proponent_name)?>" maxlength="<?=Proposal::proponent_length?>"><br>
 <input type="hidden" name="action" value="apply_proponent">
 <input type="submit" value="<?=_("apply changes")?>">
-</form>
 <?
+				form_end();
 			} else {
 				if ($proponent->proponent_confirmed) {
 					echo content2html($proponent->proponent_name);
@@ -533,8 +533,8 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <input type="hidden" name="member" value="<?=$proponent->id?>">
 <input type="hidden" name="action" value="confirm_proponent">
 <input type="submit" value="<?=_("confirm")?>">
-</form>
 <?
+			form_end();
 		} else {
 			?><span class="unconfirmed"><?=content2html($proponent->proponent_name)?></span><?
 		}
@@ -550,7 +550,9 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also the following will be shown to the other proponents:")?> (<?=h(Login::$member->identity())?>)</div>
 <input type="hidden" name="action" value="become_proponent">
 <input type="submit" value="<?=_("apply to become proponent")?>">
-</form>
+<?
+		form_end();
+?>
 	</li>
 <?
 	}
@@ -666,14 +668,13 @@ function display_arguments($side, $parent, $level) {
 <?
 				form(URI::append(array('argument_edit'=>$argument->id)), 'class="argument"');
 ?>
-<a name="argument<?=$argument->id?>"></a>
-<input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
+<input id="argument<?=$argument->id?>" name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
 <textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(!empty($_POST['content'])?$_POST['content']:$argument->content)?></textarea><br>
 <input type="hidden" name="action" value="update_argument">
 <input type="hidden" name="id" value="<?=$argument->id?>">
 <input type="submit" value="<?=_("apply changes")?>">
-</form>
 <?
+				form_end();
 				$display_content = false;
 			} else {
 ?>
@@ -706,11 +707,11 @@ function display_arguments($side, $parent, $level) {
 			}
 			if ($argument->removed) {
 ?>
-		<h3 class="removed"><a class="anchor" name="argument<?=$argument->id?>"></a>&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
+		<h3 id="argument<?=$argument->id?>" class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
 <?
 			} else {
 ?>
-		<h3><a class="anchor" name="argument<?=$argument->id?>"></a><?=h($argument->title)?></h3>
+		<h3 id="argument<?=$argument->id?>"><?=h($argument->title)?></h3>
 		<p><?=content2html($argument->content)?></p>
 <?
 			}
@@ -747,8 +748,8 @@ function display_arguments($side, $parent, $level) {
 <input type="hidden" name="argument" value="<?=$argument->id?>">
 <input type="hidden" name="action" value="reset_rating">
 <input type="submit" value="0">
-</form>
 <?
+					form_end();
 				}
 				for ($score=1; $score <= Argument::rating_score_max; $score++) {
 					form($uri, 'class="button rating'.($score <= $argument->score?' selected':'').'"');
@@ -757,8 +758,8 @@ function display_arguments($side, $parent, $level) {
 <input type="hidden" name="action" value="set_rating">
 <input type="hidden" name="rating" value="<?=$score?>">
 <input type="submit" value="+<?=$score?>">
-</form>
 <?
+					form_end();
 				}
 
 			}
@@ -778,9 +779,7 @@ function display_arguments($side, $parent, $level) {
 <input type="submit" value="<?=_("remove")?>">
 <?
 			}
-?>
-</form>
-<?
+			form_end();
 		}
 
 ?>
@@ -798,14 +797,15 @@ function display_arguments($side, $parent, $level) {
 <?
 		form(URI::append(array('argument_parent'=>$parent)), 'class="argument"');
 ?>
-<a name="form"></a>
-<div class="time"><?=_("New argument")?></div>
+<div id="form" class="time"><?=_("New argument")?></div>
 <input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(@$_POST['title'])?>"><br>
 <textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(@$_POST['content'])?></textarea><br>
 <input type="hidden" name="action" value="add_argument">
 <input type="hidden" name="parent" value="<?=$parent?>">
 <input type="submit" value="<?=_("save")?>">
-</form>
+<?
+		form_end();
+?>
 	</li>
 <?
 	}
@@ -840,7 +840,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 <?=join(", ", $supporters);
 		if (Login::$member and Login::$member->entitled($ngroup) and $proposal->allowed_change_supporters()) {
 ?>
-<br clear="both">
+<br class="clear">
 <?
 			if ($is_supporter) {
 				form(URI::same(), 'class="supported"');
@@ -854,21 +854,21 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 ?>
 <input type="hidden" name="action" value="revoke_support">
 <input type="submit" value="<?=_("Revoke your support for this proposal")?>">
-</form>
 <?
+				form_end();
 			} else {
 				form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
-</form>
 <?
+				form_end();
 				form(URI::same(), 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support_anonym">
 <input type="submit" value="<?=_("Support this proposal anonymously")?>">
-</form>
 <?
+				form_end();
 			}
 		}
 	}
@@ -880,27 +880,25 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 	// admission by decision
 	if (Login::$admin) {
 		if (!empty($_GET['edit_admission_decision'])) {
+			form(URI::same()."#admission_decision", 'class="admission_decision"');
 			if ($proposal->admission_decision!==null) {
-				form(URI::same()."#admission_decision", 'class="admission_decision"');
 ?>
-<a name="admission_decision" class="anchor"></a>
+
 <b><?=_("Admitted by decision")?>:</b><br>
 <input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>"><br>
 <input type="submit" value="<?=_("apply changes")?>">
-<input type="hidden" name="action" value="admission_decision">
-</form>
 <?
 			} else {
-				form(URI::same()."#admission_decision", 'class="admission_decision"');
 ?>
-<a name="admission_decision" class="anchor"></a>
-<b><?=_("Admit proposal due to a decision")?>:</b><br>
+<b id="admission_decision"><?=_("Admit proposal due to a decision")?>:</b><br>
 <input type="text" name="admission_decision"><br>
 <input type="submit" value="<?=_("admit proposal")?>">
-<input type="hidden" name="action" value="admission_decision">
-</form>
 <?
 			}
+?>
+<input type="hidden" name="action" value="admission_decision">
+<?
+			form_end();
 		} else {
 ?>
 <div class="admission_decision">
@@ -910,8 +908,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 		}
 	} elseif ($proposal->admission_decision!==null) {
 ?>
-<div class="admission_decision">
-<a name="admission_decision" class="anchor"></a>
+<div id="admission_decision" class="admission_decision">
 <b><?=_("Admitted by decision")?>:</b>
 <?=content2html($proposal->admission_decision)?>
 <?

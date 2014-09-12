@@ -185,7 +185,9 @@ if ($edit_content) {
 
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">
-</form>
+<?
+form_end();
+?>
 
 <div class="clearfix"></div>
 <?

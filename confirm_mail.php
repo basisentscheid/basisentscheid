@@ -28,8 +28,8 @@ form(BN);
 <label><?=_("Confirmation code")?>: <input type="text" name="secret" size="20" value="<?=trim(@$_REQUEST['secret'])?>"></label>
 <input type="hidden" name="action" value="confirm">
 <input type="submit" value="<?=_("confirm")?>">
-</form>
 <?
+form_end();
 
 html_foot();
 

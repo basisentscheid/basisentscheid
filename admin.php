@@ -43,8 +43,7 @@ form(BN, 'class="login"');
 <label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span></label>
 <div class="th"><input type="submit" value="<?=_("submit")?>"></div>
 </fieldset>
-</form>
-
 <?
+form_end();
 
 html_foot();
