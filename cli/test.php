@@ -346,6 +346,9 @@ function create_case($case, $stopcase) {
 				return;
 			}
 
+
+
+
 			// move on to state "counting"
 			time_warp($issue, "1 week");
 			cron();

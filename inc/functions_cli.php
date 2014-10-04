@@ -224,9 +224,9 @@ function cron($skip_if_locked=false) {
 			case "voting":
 				if (!$period->counting_now) break;
 
-				// We just set the state, but don't actually do anything. The voting server has to detect hisself when the voting has to be closed and counted.
 				$issue->state = "counting";
 				$issue->update(array("state"), 'counting_started=now()');
+				$issue->counting();
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."

@@ -153,6 +153,24 @@ function first() {
 
 
 /**
+ *
+ * @param unknown $value
+ * @return unknown
+ */
+function acceptance($value) {
+	switch ($value) {
+	case -1:
+		return _("Abstention");
+	case 0:
+		return _("No");
+	case 1:
+		return _("Yes");
+	}
+	return "illegal value: ".h($value);
+}
+
+
+/**
  * format a date human friendly from Postgres (YYYY-dd-mm)
  *
  * @param string  $date

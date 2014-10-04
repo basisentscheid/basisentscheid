@@ -306,6 +306,7 @@ class Notification {
 					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
+				$body .= "Vote: ".BASE_URL."vote.php?issue=".$issue->id."\n";
 			}
 
 			$body .= "\n"._("Voting end").": ".datetimeformat($this->period->counting)."\n";

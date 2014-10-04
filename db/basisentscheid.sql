@@ -616,6 +616,18 @@ ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
 
 
 --
+-- Name: vote; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vote (
+    member integer NOT NULL,
+    issue integer NOT NULL,
+    vote text,
+    votetime timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: voters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -865,6 +877,14 @@ ALTER TABLE ONLY members
 
 
 --
+-- Name: vote_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vote
+    ADD CONSTRAINT vote_pkey PRIMARY KEY (member, issue, votetime);
+
+
+--
 -- Name: voters_ballot_member_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1046,6 +1066,22 @@ ALTER TABLE ONLY supporters
 
 ALTER TABLE ONLY supporters
     ADD CONSTRAINT supporters_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: vote_issue_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vote
+    ADD CONSTRAINT vote_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON DELETE CASCADE;
+
+
+--
+-- Name: vote_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vote
+    ADD CONSTRAINT vote_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
 
 
 --
