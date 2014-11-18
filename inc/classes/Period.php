@@ -200,7 +200,7 @@ class Period extends Relation {
 		while ( $ngroup = DB::fetch_object($result, "Ngroup") ) $ngroups[$ngroup->id] = $ngroup;
 		$period_ngroups = Ngroup::parent_sort($ngroups, $ngroups[$this->ngroup]->parent);
 
-		// get all participants, who are in the current period not assigned to a ballot yet
+		// get all members, who are in the current period not assigned to a ballot yet
 		$sql = "SELECT members.* FROM members
 			JOIN members_ngroups ON members_ngroups.member = members.id AND members_ngroups.ngroup = ".intval($this->ngroup)."
 			LEFT JOIN voters ON members.id = voters.member AND voters.period = ".intval($this->id)."

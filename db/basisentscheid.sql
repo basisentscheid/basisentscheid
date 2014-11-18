@@ -410,16 +410,8 @@ ALTER SEQUENCE members_id_seq OWNED BY members.id;
 
 CREATE TABLE members_ngroups (
     member integer NOT NULL,
-    ngroup integer NOT NULL,
-    participant date
+    ngroup integer NOT NULL
 );
-
-
---
--- Name: COLUMN members_ngroups.participant; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN members_ngroups.participant IS 'date when participation activated';
 
 
 --

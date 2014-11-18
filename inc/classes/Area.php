@@ -40,8 +40,6 @@ class Area extends Relation {
 			$sql = "INSERT INTO participants (member, area) VALUES (".intval(Login::$member->id).", ".intval($this->id).")";
 			DB::query($sql);
 		}
-		// also activate general participation
-		$this->ngroup()->activate_participation();
 		$this->update_participants_cache();
 	}
 

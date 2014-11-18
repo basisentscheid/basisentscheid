@@ -9,30 +9,6 @@
 
 require "inc/common.php";
 
-
-if ($action) {
-	Login::access_action("member");
-	action_required_parameters('ngroup');
-	$ngroup = new Ngroup($_POST['ngroup']);
-	if (!$ngroup->id) {
-		warning("The requested group does not exist!");
-		redirect();
-	}
-	switch ($action) {
-	case "subscribe":
-		$ngroup->activate_participation();
-		redirect();
-		break;
-	case "unsubscribe":
-		$ngroup->deactivate_participation();
-		redirect();
-		break;
-	}
-	warning(_("Unknown action"));
-	redirect();
-}
-
-
 html_head("Willkommen auf dem Testserver des Basisentscheid-Portals!");
 
 ?>
@@ -120,12 +96,11 @@ if ($entitled) {
 	<tr>
 		<th colspan="4"></th>
 		<th><?=_("entitled")?></th>
-		<th><?=_("Participation")?></th>
 	</tr>
 <?
 }
 if ($entitled) {
-	$sql = "SELECT ngroups.*, members_ngroups.member, members_ngroups.participant
+	$sql = "SELECT ngroups.*, members_ngroups.member
 		FROM ngroups
 		LEFT JOIN members_ngroups ON ngroups.id = members_ngroups.ngroup AND members_ngroups.member = ".intval(Login::$member->id);
 } else {
@@ -159,38 +134,10 @@ foreach ($ngroups as $ngroup) {
 <?
 	}
 	if ($entitled) {
-		if ($ngroup->member and $ngroup->active) {
 ?>
-		<td class="center">&#10003;</td>
-		<td>
-<?
-			if ($ngroup->participant) {
-?>
-&#10003; <?=_("last time activated")?>: <?=dateformat($ngroup->participant)?>
-<?
-				form(URI::same()."#ngroups", 'class="button"');
-?>
-<input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
-<input type="hidden" name="action" value="unsubscribe">
-<input type="submit" value="<?=_("unsubscribe")?>">
-<?
-				form_end();
-			}
-			form(URI::same()."#ngroups", 'class="button"');
-?>
-<input type="hidden" name="ngroup" value="<?=$ngroup->id?>">
-<input type="hidden" name="action" value="subscribe">
-<input type="submit" value="<?=$ngroup->participant?_("subscribe anew"):_("subscribe")?>">
-<?
-			form_end();
-		} else {
-?>
-		<td></td>
-		<td>
-<?
-		}
-?>
-		</td>
+		<td class="center"><?
+		if ($ngroup->member and $ngroup->active) { ?>&#10003;<? }
+		?></td>
 <?
 	}
 ?>

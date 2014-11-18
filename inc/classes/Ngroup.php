@@ -51,24 +51,6 @@ class Ngroup extends Relation {
 
 
 	/**
-	 * activate general participation (distinct from area participation)
-	 */
-	public function activate_participation() {
-		$where = "member=".intval(Login::$member->id)." AND ngroup=".intval($this->id);
-		DB::update("members_ngroups", $where, array(), 'participant=current_date');
-	}
-
-
-	/**
-	 * deactivate general participation
-	 */
-	public function deactivate_participation() {
-		$where = "member=".intval(Login::$member->id)." AND ngroup=".intval($this->id);
-		DB::update("members_ngroups", $where, array(), 'participant=NULL');
-	}
-
-
-	/**
 	 * sort parents before children
 	 *
 	 * The output array uses the Ngroup IDs as indexes, so the indexes are independent from the order.

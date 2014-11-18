@@ -135,7 +135,6 @@ function create_case($case, $stopcase) {
 	// add further participants without assigning them to ballots
 	for ($i=1; $i<=100; $i++) {
 		add_participant($period, null, $case, "t".$date."c".$case."i".$i);
-		$ngroup->activate_participation();
 	}
 
 	// move to phase "ballot_assignment"

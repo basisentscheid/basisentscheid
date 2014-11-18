@@ -235,7 +235,6 @@ function cron($skip_if_locked=false) {
 				$issues_finished_voting[] = $issue;
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
-				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
 				$sql = "SELECT counting FROM periods
 					WHERE ngroup=".intval($period->ngroup)."
 						AND counting <= now()
@@ -248,11 +247,6 @@ function cron($skip_if_locked=false) {
 					$sql = "DELETE FROM participants
 						WHERE area IN (SELECT id FROM areas WHERE ngroup=".intval($period->ngroup).")
 							AND activated < ".DB::esc($last_counting['counting']);
-					DB::query($sql);
-					// general participation
-					$sql = "UPDATE members_ngroups SET participant=NULL
-						WHERE ngroup=".intval($period->ngroup)."
-							AND participant < ".DB::esc($last_counting['counting']);
 					DB::query($sql);
 				}
 
