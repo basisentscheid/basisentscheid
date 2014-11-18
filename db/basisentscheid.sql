@@ -334,7 +334,6 @@ CREATE TABLE issues (
     id integer NOT NULL,
     period integer,
     area integer NOT NULL,
-    vote text,
     ballot_voting_demanders integer DEFAULT 0 NOT NULL,
     ballot_voting_reached boolean DEFAULT false,
     debate_started timestamp with time zone,
@@ -514,11 +513,10 @@ CREATE TABLE proposals (
     cancelled timestamp with time zone,
     revoke timestamp with time zone,
     state proposal_state DEFAULT 'draft'::proposal_state NOT NULL,
-    rank integer,
     yes integer,
     no integer,
     abstention integer,
-    points integer,
+    score integer,
     accepted boolean
 );
 
@@ -620,10 +618,20 @@ ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
 --
 
 CREATE TABLE vote (
+    vote text,
+    votetime timestamp with time zone DEFAULT now() NOT NULL,
+    token character(16) NOT NULL
+);
+
+
+--
+-- Name: vote_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vote_tokens (
     member integer NOT NULL,
     issue integer NOT NULL,
-    vote text,
-    votetime timestamp with time zone DEFAULT now() NOT NULL
+    token character(16) NOT NULL
 );
 
 
@@ -877,11 +885,19 @@ ALTER TABLE ONLY members
 
 
 --
--- Name: vote_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: vote_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY vote
-    ADD CONSTRAINT vote_pkey PRIMARY KEY (member, issue, votetime);
+ALTER TABLE ONLY vote_tokens
+    ADD CONSTRAINT vote_tokens_pkey PRIMARY KEY (member, issue);
+
+
+--
+-- Name: vote_tokens_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vote_tokens
+    ADD CONSTRAINT vote_tokens_token_key UNIQUE (token);
 
 
 --
@@ -1069,19 +1085,11 @@ ALTER TABLE ONLY supporters
 
 
 --
--- Name: vote_issue_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vote_token_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vote
-    ADD CONSTRAINT vote_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON DELETE CASCADE;
-
-
---
--- Name: vote_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY vote
-    ADD CONSTRAINT vote_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON DELETE CASCADE;
+    ADD CONSTRAINT vote_token_fkey FOREIGN KEY (token) REFERENCES vote_tokens(token) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --

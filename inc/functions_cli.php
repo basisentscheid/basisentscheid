@@ -44,6 +44,7 @@ function cron($skip_if_locked=false) {
 		$issues_start_debate = array();
 		// collect issues for upload to the ID server
 		$issues_start_voting = array();
+		$issues_finished_voting = array();
 
 		// ballots
 		switch ($period->state) {
@@ -204,9 +205,7 @@ function cron($skip_if_locked=false) {
 					$sql = "SELECT id FROM periods
 						WHERE ngroup=".intval($period->ngroup)."
 							AND preparation >= now()
-							AND ";
-					if ($issue->ballot_voting_reached) $sql .= "ballot_voting"; else $sql .= "online_voting";
-					$sql .= "=TRUE
+							AND ". $issue->ballot_voting_reached?"ballot_voting":"online_voting" ."=TRUE
 						ORDER BY preparation
 						LIMIT 1";
 					$issue->period = DB::fetchfield($sql);
@@ -226,7 +225,14 @@ function cron($skip_if_locked=false) {
 
 				$issue->state = "counting";
 				$issue->update(array("state"), 'counting_started=now()');
+
 				$issue->counting();
+
+				// set date for clearing
+				$issue->state = "finished";
+				$issue->update(array("state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
+
+				$issues_finished_voting[] = $issue;
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
 				// EO: "Eine Anmeldung verfällt automatisch nach dem zweiten Stichtag nach der letzten Anmeldung des Teilnehmers."
@@ -252,13 +258,14 @@ function cron($skip_if_locked=false) {
 
 				break;
 
-				// Case "counting" is handled by download_vote().
-
 				// clear
 			case "finished":
 				if (!$issue->clear_now) break;
 
-				$issue->vote  = null; // delete raw voting data
+				// delete raw voting data
+				$sql = "DELETE FROM vote_tokens WHERE issue=".intval($issue->id);
+				DB::query($sql);
+
 				$issue->clear = null;
 				$issue->state = "cleared";
 				$issue->update(array("state"), "cleared=now()");
@@ -277,19 +284,58 @@ function cron($skip_if_locked=false) {
 			$notification->send();
 		}
 
-		// upload votings to the ID server and voting start notifications
-		if ($issues_start_voting) {
-			if ( upload_voting_data($issues_start_voting, $period) ) {
-				foreach ($issues_start_voting as $issue) {
-					$issue->state = "voting";
-					$issue->update(array("state"), 'voting_started=now()');
-				}
-			}
-			$notification = new Notification("voting");
+		// voting finished notifications
+		if ($issues_finished_voting) {
+			$notification = new Notification("finished");
 			$notification->period = $period;
-			$notification->issues = $issues_start_voting;
+			$notification->issues = $issues_finished_voting;
 			$notification->send();
 		}
+
+		// start voting and send individual notifications with tokens
+		if ($issues_start_voting) {
+
+			// entitled members of the ngroup
+			$sql = "SELECT id FROM members
+				JOIN members_ngroups ON members.id = members_ngroups.member AND members_ngroups.ngroup=".intval($period->ngroup)."
+				WHERE entitled=TRUE";
+			$members = DB::fetchfieldarray($sql);
+
+			$personal_tokens = array();
+			$all_tokens      = array();
+			foreach ($issues_start_voting as $issue) {
+
+				// generate vote tokens
+				foreach ( $members as $member_id ) {
+					DB::transaction_start();
+					do {
+						$token = Login::generate_token(16);
+						$sql = "SELECT token FROM vote_tokens WHERE token=".DB::esc($token);
+					} while ( DB::numrows($sql) );
+					$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member_id).", ".intval($issue->id).", ".DB::esc($token).")";
+					DB::query($sql);
+					DB::transaction_commit();
+					$personal_tokens[$member_id][$issue->id] = $token;
+					$all_tokens[$issue->id][]                = $token;
+				}
+
+				$issue->state = "voting";
+				$issue->update(array("state"), 'voting_started=now()');
+
+			}
+
+			foreach ( $members as $member_id ) {
+				$notification = new Notification("voting");
+				$notification->period = $period;
+				$notification->issues = $issues_start_voting;
+				$notification->personal_tokens = $personal_tokens[$member_id];
+				$notification->all_tokens      = $all_tokens;
+				$notification->send($member_id);
+			}
+
+		}
+
+
 
 
 	}
@@ -326,145 +372,6 @@ function cron($skip_if_locked=false) {
 
 	cron_unlock();
 
-}
-
-
-/**
- * upload voting data
- *
- * @param array   $issues array of objects
- * @param Period  $period
- * @return boolean
- */
-function upload_voting_data(array $issues, Period $period) {
-
-	/* from https://basisentscheid.piratenpad.de/testabstimmungsdaten
-
-Beschreibungen (je Gliederung und Termin): wer ist berechtigt
- Basisentscheide
-   Optionen
-{
- "ballotID":"GTVsdffgsdwt40QXffsd452re",
- "votingStart": "2014-02-10T21:20:00Z",
- "votingEnd": "2014-03-04T00:00:00Z",
- "access":
-     {
-     "listID": "DEADBEEF",
-     "groups": [ 1,2,3]
-     },
- "ballotName": "Abstimmungszeitraum A-B von Gliederung X",
- "questions":
-    [
-        {
-         "questionID":1,
-         "questionWording":"Basisentscheid nummer 1 von Abstimmungszeitraum/Gliederung",
-         "voteSystem":
-             {
-             "type": "score",
-             "max-score": 1,
-             "abstention": true,
-             "single-step": true
-             },
-         "options":
-                 [
-                    { "optionID": "eughu5RBGG","optionText": "Ja, linksherum" },
-                    { "optionID": 2, "optionText": "Ja, rechtsherum" },
-                    { "optionID": 3, "optionText": "Nein. Ab durch die Mitte!" },
-                    { "optionID": 4, "optionText": "Jein. Wir drehen durch." }
-                 ],
-         "references":
-           [
-               { "referenceName":"Abschlussparty und Auflösung", "referenceAddress":"https://lqfb.piratenpartei.de/lf/initiative/show/5789.html" },
-               { "referenceName":"Bilder zur Motivation","referenceAddress":"https://startpage.com/do/search?cat=pics&cmd=process_search&language=deutsch&query=cat+content" }
-           ]
-        },
-        {
-        "questionID":2,
-        "questionWording":"Basisentscheid zum Thema Bringen uns Schuldzuweisungen irgendwas? in Basisentscheid-Sammlung drölf",
-         "voteSystem":
-             {
-             "type": "score",
-             "max-score": 1,
-             "abstention": false,
-             "single-step": true
-             },
-        "options":
-                [
-                    { "optionID":1, "optionText": "Ja. Befriedigung! Ha!"},
-                    { "optionID":2, "optionText": "Ja. Streit und Ärger."},
-                    { "optionID":3, "optionText": "nö, aber wir machen's dennoch" },
-                    { "optionID":4, "optionText": "Huch? Das macht noch jemand?" }
-                ],
-        "references":
-                [
-               { "referenceName":"piff paff puff kappotschießen", "referenceAddress":"https://twitter.com/czossi/status/436217916803911680/photo/1" },
-                ]
-        }
-    ],
- "references":
-    [
-        {"referenceName":"Piratenpartei","referenceAddress":"https://piratenpartei.de/"}
-    ]
-}
-
-	*/
-
-	$questions = array();
-	foreach ($issues as $issue) {
-
-		$options = array();
-		foreach ($issue->proposals() as $proposal) {
-			$options[] = array(
-				"optionID"   => $proposal->id,
-				"optionText" => $proposal->title
-			);
-		}
-
-		if ( count($options) > 1 ) {
-			$vote_system = array('type' => "score", 'max-score' => 3, 'abstention' => true, 'single-step' => true);
-			if ( count($options) >= 5 ) $vote_system['max-score'] = 9;
-		} else {
-			$vote_system = array('type' => "acceptance", 'abstention' => true, 'single-step' => true);
-		}
-
-		$questions[] = array(
-			"questionID" => $issue->id,
-			"questionWording" => sprintf(_("Basisentscheid %d of voting period %d"), $issue->id, $period->id),
-			"voteSystem" => $vote_system,
-			"options" => $options,
-			"references" => array(
-				array(
-					"referenceName" => "Abschlussparty und Auflösung",
-					"referenceAddress" => "https://lqfb.piratenpartei.de/lf/initiative/show/5789.html"
-				),
-				array(
-					"referenceName" => "Bilder zur Motivation",
-					"referenceAddress" => "https://startpage.com/do/search?cat=pics&cmd=process_search&language=deutsch&query=cat+content"
-				)
-			)
-		);
-
-	}
-
-	$data = array(
-		"ballotID" => $period->id,
-		"votingStart" => $period->voting,
-		"votingEnd"   => $period->counting,
-		"access" => array(
-			"listID" => "DEADBEEF",
-			"groups" => array(1, 2, 3)
-		),
-		"ballotName" => sprintf(_("voting period %d"), $period->id),
-		"questions" => $questions,
-		"references" => array(
-			array(
-				"referenceName" => "Piratenpartei",
-				"referenceAddress" => "https://piratenpartei.de/"
-			)
-		)
-	);
-
-	return upload_share( json_encode($data) );
 }
 
 

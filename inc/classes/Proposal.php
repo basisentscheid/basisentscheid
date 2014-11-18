@@ -26,10 +26,12 @@ class Proposal extends Relation {
 	public $revoke;
 	public $admitted;
 	public $cancelled;
-	public $rank;
+
+	// voting result
 	public $yes;
 	public $no;
 	public $abstention;
+	public $score;
 	public $accepted;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member", "accepted");
@@ -869,7 +871,7 @@ class Proposal extends Relation {
 		$width = max($min_width, $bar_width);
 
 		?><div class="bargraph bargraph_quorum" style="width:<?=$width?>px" title="<?=$title?>"><?
-		?><div class="bar" style="width:<?=$bar_width?>px"></div><?
+		?><div class="bar yes" style="width:<?=$bar_width?>px"></div><?
 		?><div class="required" style="margin-left:<?=$required_left?>px"></div><?
 		?><div class="legend" style="width:<?=$width?>px"><?=$value?></div><?
 		if ($supported_by_member) {
@@ -884,24 +886,23 @@ class Proposal extends Relation {
 	/**
 	 * display score bargraph
 	 *
-	 * @param integer $rank
-	 * @param integer $points
-	 * @param integer $points_max
+	 * @param integer $score
+	 * @param integer $score_max
 	 */
-	public function bargraph_score($rank, $points, $points_max) {
+	public function bargraph_score($score, $score_max) {
 
-		$title = sprintf(
-			_("%d points, rank %d"),
-			$points,
-			$rank
-		);
+		$title = sprintf(_("%d points"), $score);
 
 		$width = 100;
-		$bar_width = round( $points / $points_max * $width );
+		if ($score_max) {
+			$bar_width = round( $score / $score_max * $width );
+		} else {
+			$bar_width = 0;
+		}
 
 		?><div class="bargraph score" title="<?=$title?>"><?
 		?><div class="bar" style="width:<?=$bar_width?>px"></div><?
-		?><div class="legend"><?=$points?> (<?=$rank?>)</div><?
+		?><div class="legend"><?=$score?></div><?
 		?><div class="clear"></div><?
 		?></div><?
 
@@ -920,25 +921,35 @@ class Proposal extends Relation {
 
 		$all = $yes + $no;
 
-		$title = sprintf(
-			_("Yes: %d (%s), No: %d (%s), Abstention: %d"),
-			$yes,
-			$legend = round($yes / $all * 100)."%",
-			$no,
-			round($no / $all * 100)."%",
-			$abstention
-		);
-
-		if ($accepted) $legend .= " *";
-
 		$width = 100;
-		$width_yes = round( $yes / $all * $width );
-		$width_no = $width - $width_yes;
+
+		if ($all) {
+			$title = sprintf(
+				_("Yes: %d (%s), No: %d (%s), Abstention: %d"),
+				$yes,
+				$legend = round($yes / $all * 100)."%",
+				$no,
+				round($no / $all * 100)."%",
+				$abstention
+			);
+			$width_yes = round( $yes / $all * $width );
+		} else {
+			$title = sprintf(
+				_("Yes: 0, No: 0, Abstention: %d"),
+				$abstention
+			);
+		}
 
 		?><div class="bargraph acceptance" title="<?=$title?>"><?
-		?><div class="bar yes" style="width:<?=$width_yes?>px">&nbsp;</div><?
-		?><div class="bar no" style="width:<?=$width_no?>px">&nbsp;</div><?
-		?><div class="legend"><?=$legend?></div><?
+		if ($all) {
+			$width_no = $width - $width_yes;
+			?><div class="bar yes" style="width:<?=$width_yes?>px">&nbsp;</div><?
+			?><div class="bar no" style="width:<?=$width_no?>px">&nbsp;</div><?
+			if ($accepted) $legend .= " *";
+			?><div class="legend"><?=$legend?></div><?
+		} else {
+			?><div class="bar" style="width:<?=$width?>px">&nbsp;</div><?
+		}
 		?><div class="clear"></div><?
 		?></div><?
 

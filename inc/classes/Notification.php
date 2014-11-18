@@ -11,6 +11,7 @@ class Notification {
 
 	private $type;
 
+	// content for the notifications
 	public $period;
 	public $issues;
 	public $issue;
@@ -21,6 +22,10 @@ class Notification {
 	public $proponent_confirming;
 	public $argument;
 	public $ballot;
+
+	// vote tokens
+	public $personal_tokens;
+	public $all_tokens;
 
 	public static $default_settings = array(
 		'all'         => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
@@ -75,6 +80,7 @@ class Notification {
 	 * finally send the notifications
 	 *
 	 * @param array|null $recipients (optional) array of member IDs
+	 * @return boolean
 	 */
 	public function send($recipients=null) {
 
@@ -84,19 +90,15 @@ class Notification {
 		if (!$recipients) return;
 
 		$headers = array();
-		/*
 		if (count($recipients) > 1) {
 			$headers[] = "Bcc: ".join(", ", $recipients);
 		} else {
 			$to = $recipients[0];
 		}
-		*/
-		$to = ERROR_MAIL; // for development
 
 		list($subject, $body) = $this->content();
 
-		send_mail($to, $subject, $body, $headers);
-
+		return send_mail($to, $subject, $body, $headers);
 	}
 
 
@@ -280,7 +282,7 @@ class Notification {
 
 			$subject = sprintf(_("Debate started in period %d"), $this->period->id);
 
-			$body .= "Debate has started on the following proposals:\n";
+			$body .= _("Debate has started on the following proposals").":\n";
 
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n";
@@ -298,7 +300,7 @@ class Notification {
 
 			$subject = sprintf(_("Voting started in period %d"), $this->period->id);
 
-			$body .= "Voting has started on the following proposals:\n";
+			$body .= _("Voting has started on the following proposals").":\n";
 
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n";
@@ -306,7 +308,9 @@ class Notification {
 					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
-				$body .= "Vote: ".BASE_URL."vote.php?issue=".$issue->id."\n";
+				$body .= _("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
+					._("Your vote token").": ".$this->personal_tokens[$issue->id]."\n"
+					._("All vote tokens").": ".join(", ", $this->all_tokens[$issue->id])."\n"; // TODO: formatting
 			}
 
 			$body .= "\n"._("Voting end").": ".datetimeformat($this->period->counting)."\n";
@@ -314,9 +318,24 @@ class Notification {
 			break;
 		case "finished":
 
-			// TODO, voting result download interface needed
+			$subject = sprintf(_("Voting finished in period %d"), $this->period->id);
 
+			$body .= _("Voting has finished on the following proposals").":\n";
 
+			foreach ( $this->issues as $issue ) {
+				$body .= "\n";
+				$proposals = $issue->proposals();
+				foreach ( $proposals as $proposal ) {
+					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n".
+						_("Yes").": ".$proposal->yes.", "._("No").": ".$proposal->no.", "._("Abstention").": ".$proposal->abstention;
+					if (count($proposals) > 1) {
+						$body .= ", "._("Score").": ".$proposal->score;
+					}
+					$body .= "\n";
+				}
+				$body .= _("Vote result").": ".BASE_URL."vote_result.php?issue=".$issue->id."\n";
+			}
 
 			break;
 		case "ballot_approved":

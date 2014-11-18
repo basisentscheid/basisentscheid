@@ -22,6 +22,7 @@ define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 //define("ERROR_BACKTRACE_URL", BASE_URL."var/errors/");
 
 define("MAIL_FROM", "example@example.com");
+define("MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 
 define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 

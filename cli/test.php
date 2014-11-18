@@ -346,20 +346,9 @@ function create_case($case, $stopcase) {
 				return;
 			}
 
-
-
-
-			// move on to state "counting"
+			// move on to state "counting" and then "finished"
 			time_warp($issue, "1 week");
 			cron();
-
-			if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
-				$casetitle = "issue in counting state";
-				return;
-			}
-
-			// move on to state "finished"
-			$issue->period()->download_vote();
 
 			if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
 				$casetitle = "issue in finished state";
@@ -424,6 +413,7 @@ function add_supporter(Proposal $proposal, $case, $i) {
 	Login::$member->auid = Login::$member->username;
 	Login::$member->entitled = true;
 	Login::$member->create();
+	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
 	$proposal->add_support();
 }
 
@@ -443,6 +433,7 @@ function add_proponent(Proposal $proposal, $case, $i) {
 	Login::$member->auid = Login::$member->username;
 	Login::$member->entitled = true;
 	Login::$member->create();
+	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
 	$proposal->add_proponent(Login::$member->username, true);
 }
 
@@ -462,6 +453,7 @@ function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
 	Login::$member->auid = Login::$member->username;
 	Login::$member->entitled = true;
 	Login::$member->create();
+	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
 	$proposal->issue()->demand_ballot_voting();
 }
 

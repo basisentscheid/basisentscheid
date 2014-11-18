@@ -37,59 +37,55 @@ if ($issue->state == 'cleared') {
 <p><? printf(_("Raw data has been cleared at %s."), datetimeformat($issue->cleared)); ?></p>
 <?
 } else {
-
-	$vote_result = json_decode($issue->vote);
-
 ?>
 <table class="votes">
 <?
-	if (count($vote_result->optionOrder) == 1) {
+	if (count($proposals) == 1) {
 ?>
 <tr><th><?=_("Token")?></th><th><?=_("Time")?></th><th><?=_("Acceptance")?></th></tr>
 <?
 	} else {
 ?>
 <tr><th rowspan="2"><?=_("Token")?></th><th rowspan="2"><?=_("Time")?></th><?
-		foreach ($vote_result->optionOrder as $proposal_id) {
-			?><th colspan="2"><?=_("Proposal")?> <?=$proposal_id?></th><?
+		foreach ($proposals as $proposal) {
+			?><th colspan="2"><?=_("Proposal")?> <?=$proposal->id?></th><?
 		}
 		?></tr>
 <tr><?
-		foreach ($vote_result->optionOrder as $proposal_id) {
+		foreach ($proposals as $proposal) {
 			?><th><?=_("Acceptance")?></th><th><?=_("Score")?></th><?
 		}
 		?></tr>
 <?
 	}
-	foreach ( $vote_result->votes as $vote ) {
+	$sql = "SELECT token, vote, votetime FROM vote
+ 		JOIN vote_tokens ON vote.token = vote_tokens.token
+ 		WHERE vote_tokens.issue=".intval($issue->id)."
+ 		ORDER BY token, votetime";
+	$result = DB::query($sql);
+	$last_votetime = null;
+	while ( $row = DB::fetch_assoc($result) ) {
+		if ($row['votetime']==$last_votetime) {
+			$class_overridden = " overridden";
+		} else {
+			$class_overridden = "";
+		}
+		$last_votetime = $row['votetime'];
 ?>
-<tr class="<?=stripes()?>"><td><?=$vote->token?></td><td><?=date(DATETIMEYEAR_FORMAT, $vote->time)?></td><?
-		foreach ($vote_result->optionOrder as $key => $proposal_id) {
+<tr class="<?=stripes()?>"><td><?=$row['token']?></td><td><?=date(DATETIMEYEAR_FORMAT, $row['votetime'])?></td><?
+		$vote = unserialize($row['vote']);
+		foreach ($proposals as $proposal) {
 			// acceptance
-			?><td class="tdc"><?
-			switch ($vote->options[$key][0]) {
-			case -1:
-				echo _("Abstention");
-				break;
-			case 0:
-				echo _("No");
-				break;
-			case 1:
-				echo _("Yes");
-				break;
-			default:
-				echo "illegal value: ".h($vote->options[$key][0]);
-			}
-			?></td><?
+			?><td class="tdc<?=$class_overridden?>"><?=acceptance($vote[$proposal->id]['acceptance'])?></td><?
 			// score
-			if ($vote->options[$key][1] != -2) {
-				?><td><?
-				switch ($vote->options[$key][1]) {
+			if (isset($vote[$proposal->id]['score'])) {
+				?><td class="tdc<?=$class_overridden?>"><?
+				switch ($vote[$proposal->id]['score']) {
 				case -1:
 					echo _("Abstention");
 					break;
 				default:
-					echo h($vote->options[$key][1]);
+					echo h($vote[$proposal->id]['score']);
 				}
 				?></td><?
 			}

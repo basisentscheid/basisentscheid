@@ -9,32 +9,38 @@
 
 require "inc/common.php";
 
-Login::access("member");
-
 $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
-	error("The requested issue does not exist.");
+	error(_("The requested issue does not exist."));
 }
 if ($issue->state == 'finished' or $issue->state == 'cleared') {
-	error("The voting on this issue is already closed.");
+	error(_("The voting on this issue is already closed."));
 } elseif ($issue->state != 'voting') {
-	error("The issue is not in voting state.");
+	error(_("The issue is not in voting state."));
 }
 
 $ngroup = $issue->area()->ngroup();
+Login::access("entitled", $ngroup->id);
 
+$sql = "SELECT token FROM vote_tokens WHERE member=".intval(Login::$member->id)." AND issue=".intval($issue->id);
+if ( ! $token = DB::fetchfield($sql) ) {
+	error(_("You can not vote in this voting period, because you were not yet entitled when the voting started."));
+}
 
 if ($action) {
 	switch ($action) {
 
 	case "submit":
-		Login::access_action("entitled", $ngroup->id);
 
 		$vote = serialize($_POST['vote']);
+		// example for one single proposal:
+		// array( 123 => array('acceptance' => 0) )
+		// example for two proposals:
+		// array( 123 => array('acceptance' => 1, 'score' => 2), 456 => array('acceptance' => -1, 'score' => 0) )
 
 		DB::transaction_start();
-		DB::delete("vote", "member=".intval(Login::$member->id)." AND issue=".intval($issue->id));
-		$sql = "INSERT INTO vote (member, issue, vote) VALUES (".intval(Login::$member->id).", ".intval($issue->id).", ".DB::esc($vote).") RETURNING votetime";
+
+		$sql = "INSERT INTO vote (token, vote) VALUES (".DB::esc($token).", ".DB::esc($vote).") RETURNING votetime";
 		if ( $result = DB::query($sql) ) {
 			list($votetime) = pg_fetch_row($result);
 
@@ -42,7 +48,7 @@ if ($action) {
 
 			$body = _("Group").": ".$ngroup->name."\n\n";
 
-			$body = sprintf(_("Vote receipt for your vote on issue %d:"), $issue->id)."\n\n";
+			$body .= sprintf(_("Vote receipt for your vote on issue %d:"), $issue->id)."\n\n";
 			foreach ( $_POST['vote'] as $proposal_id => $vote_proposal ) {
 				$proposal = new Proposal($proposal_id);
 				$body .= mb_wordwrap(_("Proposal")." ".$proposal_id.": ".$proposal->title)."\n"
@@ -51,7 +57,8 @@ if ($action) {
 				if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".$vote_proposal['score'];
 				$body .= "\n\n";
 			}
-			$body .= _("Voting time").": ".datetimeformat($votetime)."\n\n"
+			$body .= _("Your vote token").": ".$token."\n"
+				._("Voting time").": ".datetimeformat($votetime)."\n\n"
 				._("You can change your vote by voting again on:")."\n"
 				.BASE_URL."vote.php?issue=".$issue->id."\n";
 
@@ -68,7 +75,8 @@ if ($action) {
 			DB::transaction_rollback();
 		}
 
-		redirect("proposals.php?ngroup=".$ngroup->id."&filter=voting");
+		//redirect("proposals.php?ngroup=".$ngroup->id."&filter=voting");
+		redirect();
 		break;
 
 	default:
@@ -87,13 +95,26 @@ form("vote.php?issue=".$issue->id);
 <?
 Issue::display_proposals_th();
 list($proposals, $submitted) = $issue->proposals_list(true);
-$issue->display_proposals($proposals, $submitted, count($proposals));
+
+$sql = "SELECT vote FROM vote WHERE token=".DB::esc($token)." ORDER BY votetime DESC";
+$result = DB::query($sql);
+// fetch only the first record, which is the latest vote
+if ( $row = DB::fetch_assoc($result) ) {
+	$vote = unserialize($row['vote']);
+} else {
+	$vote = array();
+	foreach ( $proposals as $proposal ) {
+		$vote[$proposal->id]['acceptance'] = -1; // default is abstention
+		if (count($proposals) > 1) $vote[$proposal->id]['score'] = 0; // default is 0
+	}
+}
+
+$issue->display_proposals($proposals, $submitted, count($proposals), false, 0, $vote);
 ?>
-	<tfoot>
-		<tr>
-			<td colspan="2" class="right"><input type="submit"></td>
-		</tr>
-	</tfoot>
+	<tr>
+		<td></td>
+		<td><input type="submit" value="<?=_("Submit vote")?>"></td>
+	</tr>
 </table>
 <?
 form_end();

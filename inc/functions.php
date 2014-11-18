@@ -154,8 +154,8 @@ function first() {
 
 /**
  *
- * @param unknown $value
- * @return unknown
+ * @param integer $value
+ * @return string
  */
 function acceptance($value) {
 	switch ($value) {
@@ -332,11 +332,13 @@ function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
  */
 function send_mail($to, $subject, $body, array $headers=array()) {
 
+	$subject = MAIL_SUBJECT_PREFIX.$subject;
+
 	$headers[] = "Content-Type: text/plain; charset=UTF-8";
 	$headers[] = "Content-Transfer-Encoding: 8bit";
 	if (MAIL_FROM) $headers[] = "From: ".MAIL_FROM;
 
-	//$to = ERROR_MAIL;
+	$to = ERROR_MAIL;
 
 	return mail($to, $subject, $body, join("\r\n", $headers));
 }

@@ -230,6 +230,9 @@ div.bargraph.score {
 div.bargraph div.bar {
 	float: left;
 	height: 1em;
+	background-color: #777;
+}
+div.bargraph div.bar.yes {
 	background-color: #0A0;
 }
 div.bargraph div.bar.no {

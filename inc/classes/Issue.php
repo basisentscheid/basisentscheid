@@ -11,7 +11,6 @@ class Issue extends Relation {
 
 	public $period;
 	public $area;
-	public $vote;
 	public $ballot_voting_demanders;
 	public $ballot_voting_reached;
 	public $debate_started;
@@ -79,43 +78,51 @@ class Issue extends Relation {
 	 */
 	public function counting() {
 
-		$sql = "SELECT vote FROM vote WHERE issue=".intval($this->id);
+		$proposals = $this->proposals();
 
+		foreach ( $proposals as $proposal ) {
+			$proposal->yes        = 0;
+			$proposal->no         = 0;
+			$proposal->abstention = 0;
+			$proposal->score      = 0;
+		}
 
+		$sql = "SELECT vote FROM vote
+ 			JOIN vote_tokens ON vote.token = vote_tokens.token
+			WHERE vote_tokens.issue=".intval($this->id)."
+			ORDER BY vote.token, vote.votetime";
+		$result = DB::query($sql);
+		$last_votetime = null;
+		while ( $row = DB::fetch_assoc($result) ) {
 
-		// save result per issue
-		foreach ( $result->questions as $question ) {
+			if ($row['votetime']==$last_votetime) continue;
+			$last_votetime = $row['votetime'];
 
-			$issue = new Issue($question->questionID);
-			if (!$issue) {
-				trigger_error("Issue not found", E_USER_WARNING);
-				continue;
-			}
+			$vote = unserialize($row['vote']);
 
-			// save result for each proposal
-			foreach ( $question->results as $result ) {
-				$proposal = new Proposal($result->option);
-				if ($proposal->issue != $issue->id) {
-					trigger_error("Proposal in result is not part of issue", E_USER_WARNING);
-					continue;
+			foreach ( $proposals as $proposal ) {
+				switch ($vote[$proposal->id]['acceptance']) {
+				case -1:
+					$proposal->abstention++;
+					break;
+				case 0:
+					$proposal->no++;
+					break;
+				case 1:
+					$proposal->yes++;
+					break;
 				}
-				$proposal->rank       = $result->rank;
-				$proposal->yes        = $result->yes;
-				$proposal->no         = $result->no;
-				$proposal->abstention = $result->abstention;
-				$proposal->points     = $result->points;
-				$proposal->accepted   = $result->accepted;
-				$proposal->update(array('rank', 'yes', 'no', 'abstention', 'points', 'accepted'));
+				if ( count($proposals) > 1 ) {
+					$proposal->score += $vote[$proposal->id]['score'];
+				}
 			}
-
-			// save the downloaded voting result and set date for clearing
-			$issue->vote = json_encode($question);
-			$issue->state = "finished";
-			$issue->update(array("vote", "state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
 
 		}
 
-		//}
+		foreach ( $proposals as $proposal ) {
+			$proposal->accepted = ( $proposal->yes > $proposal->no );
+			$proposal->update(array('yes', 'no', 'abstention', 'score', 'accepted'));
+		}
 
 	}
 
@@ -386,7 +393,7 @@ class Issue extends Relation {
 		}
 		$sql .= " WHERE issue=".intval($this->id);
 		if ($admitted) $sql .= " AND state='admitted'";
-		$sql .= " ORDER BY state DESC, rank, id";
+		$sql .= " ORDER BY state DESC, accepted, score DESC, id";
 		$result = DB::query($sql);
 		$proposals = array();
 		$submitted = false;
@@ -409,8 +416,9 @@ class Issue extends Relation {
 	 * @param integer $period_rowspan
 	 * @param boolean $show_results      (optional) display the result column
 	 * @param integer $selected_proposal (optional)
+	 * @param array   $vote              (optional)
 	 */
-	function display_proposals(array $proposals, $submitted=false, $period_rowspan=0, $show_results=false, $selected_proposal=0) {
+	function display_proposals(array $proposals, $submitted=false, $period_rowspan=0, $show_results=false, $selected_proposal=0, array $vote=array()) {
 
 		$first = true;
 		$first_admitted = true;
@@ -441,17 +449,27 @@ class Issue extends Relation {
 			if (BN=="vote.php") {
 ?>
 		<td class="nowrap">
-			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="1"><?=_("Yes")?>
-			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="0"><?=_("No")?>
-			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="-1" checked><?=_("Abstention")?>
-			<? if ($num_rows > 1) {
+			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="1"<?
+				if ($vote[$proposal->id]['acceptance'] == 1) { ?> checked<? }
+				?>><?=_("Yes")?>
+			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="0"<?
+				if ($vote[$proposal->id]['acceptance'] == 0) { ?> checked<? }
+				?>><?=_("No")?>
+			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="-1"<?
+				if ($vote[$proposal->id]['acceptance'] == -1) { ?> checked<? }
+				?>><?=_("Abstention")?>
+<?
+				if ($num_rows > 1) {
 					if ($num_rows > 3) $max_score = 9; else $max_score = 3;
 					for ( $score = 0; $score <= $max_score; $score++ ) {
 ?>
-						<input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<? if ($score==0) { ?> checked<? } ?>><?=$score?>
-						<?
+						<input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?
+						if ($score == $vote[$proposal->id]['score']) { ?> checked<? }
+						?>><?=$score?>
+<?
 					}
-				} ?>
+				}
+?>
 		</td>
 <?
 			} else {
@@ -473,19 +491,19 @@ class Issue extends Relation {
 ?>
 		<td class="result" onClick="location.href='vote_result.php?issue=<?=$this->id?>'"><?
 						if ($first) {
-							// get number of options and highest number of points
+							// get number of options and highest score
 							$options_count = 0;
-							$points_max = 0;
+							$score_max = 0;
 							foreach ( $proposals as $proposal_vote ) {
-								if ($proposal_vote->rank === null) continue; // skip cancelled proposals
-								$points_max = max($points_max, $proposal_vote->points);
+								if ($proposal_vote->yes === null) continue; // skip cancelled proposals
+								$score_max = max($score_max, $proposal_vote->score);
 								$options_count++;
 							}
 						}
-						if ( $proposal->rank !== null ) { // skip cancelled proposals
+						if ( $proposal->yes !== null ) { // skip cancelled proposals
 							$proposal->bargraph_acceptance($proposal->yes, $proposal->no, $proposal->abstention, $proposal->accepted);
 							if ( $options_count > 1 ) {
-								$proposal->bargraph_score($proposal->rank, $proposal->points, $points_max);
+								$proposal->bargraph_score($proposal->score, $score_max);
 							}
 						}
 						?></td>
