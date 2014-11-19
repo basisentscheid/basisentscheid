@@ -347,7 +347,7 @@ function create_case($case, $stopcase) {
 			}
 
 			// random votes
-			$proposals = $issue->proposals();
+			$proposals = $issue->proposals(true);
 			$acceptance_array = array();
 			$score_array = array();
 			foreach ( $proposals as $proposal ) {

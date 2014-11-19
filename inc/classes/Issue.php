@@ -142,7 +142,7 @@ class Issue extends Relation {
 	 */
 	public function counting() {
 
-		$proposals = $this->proposals();
+		$proposals = $this->proposals(true);
 
 		foreach ( $proposals as $proposal ) {
 			$proposal->yes        = 0;
@@ -461,7 +461,7 @@ class Issue extends Relation {
 	/**
 	 * proposals to display in the list
 	 *
-	 * @param unknown $admitted (optional)
+	 * @param boolean $admitted (optional) get only admitted proposals
 	 * @return array
 	 */
 	public function proposals_list($admitted=false) {
@@ -474,7 +474,7 @@ class Issue extends Relation {
 		}
 		$sql .= " WHERE issue=".intval($this->id);
 		if ($admitted) $sql .= " AND state='admitted'";
-		$sql .= " ORDER BY state DESC, accepted, score DESC, id";
+		$sql .= " ORDER BY state DESC, accepted DESC, score DESC, id";
 		$result = DB::query($sql);
 		$proposals = array();
 		$submitted = false;
@@ -632,7 +632,11 @@ class Issue extends Relation {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center"><?
 						if ($this->state=="voting") {
-							?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
+							if ( Login::$member and Login::$member->entitled($this->area()->ngroup) ) {
+								?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
+							} else {
+								echo _("Voting");
+							}
 						} else {
 							echo $this->state_name();
 						}
