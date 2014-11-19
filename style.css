@@ -926,6 +926,10 @@ table.proposals td.result {
 	white-space: nowrap;
 }
 
+table.proposals td.vote {
+	padding-right: 8px;
+}
+
 form.proposal h2,
 div.proposal_info h2,
 div.proposal_content h2,

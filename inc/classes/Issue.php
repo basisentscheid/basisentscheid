@@ -354,24 +354,41 @@ class Issue extends Relation {
 
 
 	/**
+	 * head for proposals table
 	 *
 	 * @param boolean $show_results (optional) display the result column
+	 * @param boolean $show_score   (optional) display the score column
 	 */
-	public static function display_proposals_th($show_results=false) {
+	public static function display_proposals_th($show_results=false, $show_score=false) {
 ?>
 	<tr>
 		<th class="proposal"><?=_("Proposal")?></th>
-<? if (BN=="vote.php") { ?>
-		<th class="vote"><?=_("Vote")?></th>
-<? } else { ?>
+<?
+		if (BN=="vote.php") {
+?>
+		<th><?=_("Acceptance")?></th>
+<?
+			if ($show_score) {
+?>
+		<th><?=_("Score")?></th>
+<?
+			}
+		} else {
+?>
 		<th class="support"><?=_("Support")?></th>
-<? if ($show_results) { ?>
+<?
+			if ($show_results) {
+?>
 		<th class="result"><?=_("Result")?></th>
-<? } ?>
+<?
+			}
+?>
 		<th class="state"><?=_("State")?></th>
 		<th class="period"><?=_("Period")?></th>
 		<th class="voting_type"><?=_("Voting type")?></th>
-<? } ?>
+<?
+		}
+?>
 	</tr>
 <?
 	}
@@ -448,30 +465,34 @@ class Issue extends Relation {
 			// column "vote"
 			if (BN=="vote.php") {
 ?>
-		<td class="nowrap">
-			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="1"<?
+		<td class="vote nowrap">
+			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="1"<?
 				if ($vote[$proposal->id]['acceptance'] == 1) { ?> checked<? }
-				?>><?=_("Yes")?>
-			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="0"<?
+				?>><?=_("Yes")?></label>
+			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="0"<?
 				if ($vote[$proposal->id]['acceptance'] == 0) { ?> checked<? }
-				?>><?=_("No")?>
-			<input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="-1"<?
+				?>><?=_("No")."\n"?></label>
+			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="-1"<?
 				if ($vote[$proposal->id]['acceptance'] == -1) { ?> checked<? }
-				?>><?=_("Abstention")?>
+				?>><?=_("Abstention")?></label>
+		</td>
 <?
 				if ($num_rows > 1) {
+?>
+		<td class="vote nowrap">
+<?
 					if ($num_rows > 3) $max_score = 9; else $max_score = 3;
 					for ( $score = 0; $score <= $max_score; $score++ ) {
 ?>
-						<input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?
+			<label><input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?
 						if ($score == $vote[$proposal->id]['score']) { ?> checked<? }
-						?>><?=$score?>
+						?>><?=$score?></label>
 <?
 					}
-				}
 ?>
 		</td>
 <?
+				}
 			} else {
 
 				// column "support"

@@ -93,8 +93,9 @@ form("vote.php?issue=".$issue->id);
 <input type="hidden" name="action" value="submit">
 <table class="proposals">
 <?
-Issue::display_proposals_th();
+
 list($proposals, $submitted) = $issue->proposals_list(true);
+Issue::display_proposals_th(false, count($proposals) > 1);
 
 $sql = "SELECT vote FROM vote WHERE token=".DB::esc($token)." ORDER BY votetime DESC";
 $result = DB::query($sql);
@@ -113,7 +114,9 @@ $issue->display_proposals($proposals, $submitted, count($proposals), false, 0, $
 ?>
 	<tr>
 		<td></td>
-		<td><input type="submit" value="<?=_("Submit vote")?>"></td>
+		<td<?
+if (count($proposals) > 1) { ?> colspan="2"<? }
+?> class="th"><input type="submit" value="<?=_("Submit vote")?>"></td>
 	</tr>
 </table>
 <?
