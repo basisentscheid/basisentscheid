@@ -58,10 +58,13 @@ if ($issue->state == 'cleared') {
 		?></tr>
 <?
 	}
-	$sql = "SELECT token, vote, votetime FROM vote
+
+	if (Login::$member) $token = $issue->vote_token(); else $token = null;
+
+	$sql = "SELECT vote.token, vote, votetime FROM vote
  		JOIN vote_tokens ON vote.token = vote_tokens.token
  		WHERE vote_tokens.issue=".intval($issue->id)."
- 		ORDER BY token, votetime";
+ 		ORDER BY vote.token, votetime";
 	$result = DB::query($sql);
 	$last_votetime = null;
 	while ( $row = DB::fetch_assoc($result) ) {
@@ -72,7 +75,9 @@ if ($issue->state == 'cleared') {
 		}
 		$last_votetime = $row['votetime'];
 ?>
-<tr class="<?=stripes()?>"><td><?=$row['token']?></td><td><?=date(DATETIMEYEAR_FORMAT, $row['votetime'])?></td><?
+<tr class="<?=stripes();
+		if ($token == $row['token']) { ?> highlight<? }
+		?>"><td><?=$row['token']?></td><td><?=$row['votetime']?></td><?
 		$vote = unserialize($row['vote']);
 		foreach ($proposals as $proposal) {
 			// acceptance

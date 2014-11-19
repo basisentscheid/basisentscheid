@@ -35,6 +35,20 @@ function out($text) {
 
 
 /**
+ * message, that an action was successful
+ *
+ * @param string  $text
+ */
+function success($text) {
+	// In tests or cron jobs we're not interested in this.
+	if (PHP_SAPI=="cli") return;
+?>
+<p class="success">&#10003; <?=h($text)?></p>
+<?
+}
+
+
+/**
  * a notice to the user
  *
  * @param string  $text

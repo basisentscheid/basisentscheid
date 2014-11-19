@@ -287,18 +287,6 @@ function html_foot() {
 
 
 /**
- * message, that an action was successful
- *
- * @param string  $text
- */
-function success($text) {
-?>
-<p class="success">&#10003; <?=h($text)?></p>
-<?
-}
-
-
-/**
  * a fatal user error
  *
  * @param string  $text
