@@ -120,6 +120,7 @@ class Notification {
 			$sql .= "
 				JOIN notify               ON          notify.member = members.id
 				LEFT JOIN members_ngroups ON members_ngroups.member = members.id
+				LEFT JOIN participants    ON    participants.member = members.id
 				LEFT JOIN supporters      ON      supporters.member = members.id
 				WHERE members.mail IS NOT NULL
 					AND notify.".$this->type."=TRUE
@@ -127,24 +128,34 @@ class Notification {
 
 			if ($this->period) {
 				$sql .= "
-						OR (notify.interest='ngroups'     AND members_ngroups.ngroup=".intval($this->period->id).")
-						OR (notify.interest='participant' AND members_ngroups.ngroup=".intval($this->period->id)." AND members_ngroups.participant IS NOT NULL)";
+						OR (notify.interest='ngroups' AND members_ngroups.ngroup=".intval($this->period->id).")";
 			}
 
+			$areas     = array();
 			$proposals = array();
 			if ($this->issues) {
 				foreach ($this->issues as $issue) {
+					$areas[] = $issue->area;
 					foreach ($issue->proposals() as $proposal) {
 						$proposals[] = $proposal->id;
 					}
 				}
 			} elseif ($this->issue) {
+				$areas[] = $this->issue->area;
 				foreach ($this->issue->proposals() as $proposal) {
 					$proposals[] = $proposal->id;
 				}
 			} elseif ($this->proposal) {
+				$areas[] = $this->proposal->issue()->area;
 				$proposals[] = $this->proposal->id;
 			}
+
+			if ($areas) {
+				$areas = join(",", array_unique($areas));
+				$sql .= "
+						OR (notify.interest='participant' AND participants.area IN (".$areas."))";
+			}
+
 			if ($proposals) {
 				$proposals = join(",", $proposals);
 				$sql .= "
