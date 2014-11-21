@@ -803,6 +803,14 @@ ALTER TABLE ONLY members
 
 
 --
+-- Name: members_password_reset_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY members
+    ADD CONSTRAINT members_password_reset_code_key UNIQUE (password_reset_code);
+
+
+--
 -- Name: members_username_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
