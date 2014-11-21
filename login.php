@@ -37,7 +37,9 @@ if (!empty($_POST['origin'])) input_hidden("origin", $_POST['origin']);
 ?>
 <fieldset>
 <label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username"></span></label>
-<label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span> <a href="request_password_reset.php"><?=_("Forgot password?")?></a></label>
+	<label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span><?
+if ($scope=="member") { ?> <a href="request_password_reset.php"><?=_("Forgot password?")?></a><? }
+?></label>
 <div class="th"><input type="submit" value="<?=_("login")?>"></div>
 </fieldset>
 <?
