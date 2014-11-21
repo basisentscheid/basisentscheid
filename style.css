@@ -640,6 +640,9 @@ fieldset.member {
 	border: none;
 	display: inline-block;
 }
+fieldset.member div.description {
+	padding: 3px 10px;
+}
 fieldset.member div.input {
 	margin: 1px 0;
 	padding: 0;
@@ -1126,6 +1129,10 @@ form.login input[type=submit] {
 
 table.notify th.type {
 	width: 13%;
+}
+
+span.unconfirmed {
+	color: #C00;
 }
 
 

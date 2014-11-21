@@ -66,14 +66,15 @@ function notice($text) {
  * a non fatal user error
  *
  * @param string  $text
+ * @param boolean $content2html (optional) format content
  */
-function warning($text) {
+function warning($text, $content2html=false) {
 	if (PHP_SAPI=="cli") {
 		// for tests
 		trigger_error($text, E_USER_WARNING);
 	} else {
 ?>
-<p class="warning">&#9747; <?=h($text)?></p>
+<p class="warning">&#9747; <?= $content2html ? content2html($text) : h($text) ?></p>
 <?
 	}
 }
@@ -355,31 +356,4 @@ function send_mail($to, $subject, $body, array $headers=array()) {
 	$to = ERROR_MAIL;
 
 	return mail($to, $subject, $body, join("\r\n", $headers));
-}
-
-
-/**
- * fetch something from the ID server
- *
- * @param string  $url
- * @return string
- */
-function curl_fetch($url) {
-
-	$ch = curl_init();
-
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL, $url);
-
-	// https handling
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-	curl_setopt($ch, CURLOPT_CAINFO,  DOCROOT."ssl/cacerts.pem");
-	curl_setopt($ch, CURLOPT_SSLCERT, DOCROOT."ssl/cmr.cx.pem");
-	curl_setopt($ch, CURLOPT_SSLKEY,  DOCROOT."ssl/cmr.cx_priv.pem");
-
-	$result = curl_exec($ch);
-	if (!$result) trigger_error(curl_error($ch), E_USER_NOTICE);
-	curl_close($ch);
-
-	return $result;
 }

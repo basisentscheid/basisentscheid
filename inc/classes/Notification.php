@@ -91,6 +91,7 @@ class Notification {
 
 		$headers = array();
 		if (count($recipients) > 1) {
+			$to = "";
 			$headers[] = "Bcc: ".join(", ", $recipients);
 		} else {
 			$to = $recipients[0];

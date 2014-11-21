@@ -13,7 +13,7 @@ Login::access("member");
 if ($action) {
 	switch ($action) {
 	case "save":
-		action_required_parameters('username', 'mail');
+		action_required_parameters('username', 'password', 'password2', 'mail');
 
 		// save notification settings
 		foreach ( Notification::$default_settings as $interest => $types ) {
@@ -24,30 +24,45 @@ if ($action) {
 			DB::insert_or_update("notify", $fields_values, array('member', 'interest'));
 		}
 
+		$save_fields = array();
 		$success_msgs = array();
 
+		// username
 		$username = trim($_POST['username']);
 		if ($username != Login::$member->username) {
-			if ($username) {
-				Login::$member->username = Login::$member->set_unique_username($username);
-				$success_msgs[] = _("The new username has been saved.");
+			if (!$username) {
+				warning(_("Please enter a username!"));
 			} else {
-				Login::$member->username = NULL;
-				$success_msgs[] = _("You are now anonymous.");
+				Login::$member->set_unique_username($username);
+				$save_fields[] = "username";
+				$success_msgs[] = _("The new username has been saved.");
 			}
 		}
 
-		Login::$member->update(array('username'));
+		// save password
+		$password  = trim($_POST['password']);
+		$password2 = trim($_POST['password2']);
+		if ($password or $password2) {
+			if ($password != $password2) {
+				warning(_("The two password fields do not match!"));
+			} else {
+				Login::$member->password = crypt($password);
+				$save_fields[] = "password";
+				$success_msgs[] = _("The new password has been saved.");
+			}
+		}
+
+		Login::$member->update($save_fields);
 		foreach ($success_msgs as $msg) success($msg);
 
 		// save mail
 		$mail = trim($_POST['mail']);
 		if ($mail != Login::$member->mail) {
-			if ( ! preg_match('/^[^@%s]+@[^@%s]+\.[a-z]+$/i', $mail) ) {
+			if ( ! filter_var($mail, FILTER_VALIDATE_EMAIL) ) {
 				warning(_("This email address is not valid!"));
-				break;
+			} else {
+				Login::$member->set_mail($mail);
 			}
-			Login::$member->set_mail($mail);
 		}
 
 		redirect();
@@ -66,8 +81,25 @@ form(BN);
 <fieldset class="member">
 	<div class="input td0">
 		<label for="username"><?=_("Username")?></label>
-		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="25">
-			(<?=_('leave empty to be displayed as "anonymous"')?>)</span>
+		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="25"></span>
+	</div>
+	<div class="input td1">
+		<label for="password"><?=_("Password")?></label>
+		<span class="input"><input type="password" name="password" size="25"> <?=_("again")?>: <input type="password" name="password2" size="25"></span>
+	</div>
+	<div class="input td0">
+		<label for="mail"><?=_("Mail address for notifications")?></label>
+		<span class="input"><input type="text" name="mail" value="<?
+if (Login::$member->mail) {
+	echo Login::$member->mail;
+	$unconfirmed = false;
+} else {
+	echo Login::$member->mail_unconfirmed;
+	$unconfirmed = true;
+}
+?>" size="40"><?
+if ($unconfirmed) { ?> <span class="unconfirmed"><?=_("Not yet confirmed!")?></span><? }
+?></span>
 	</div>
 	<div class="input td1">
 		<label><?=_("Real name (optional)")?></label>
@@ -91,10 +123,6 @@ $sql = "SELECT name FROM members_ngroups
 echo join(", ", DB::fetchfieldarray($sql));
 
 ?></span>
-	</div>
-	<div class="input td1">
-		<label for="mail"><?=_("Mail address for notifications")?></label>
-		<span class="input"><input type="text" name="mail" value="<?=h(Login::$member->mail)?>" size="40"></span>
 	</div>
 </fieldset>
 

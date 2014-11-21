@@ -5,16 +5,15 @@
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  * @see about.php
- * @see admin.php
  * @see admin_areas.php
  * @see admin_members.php
  * @see admin_ngroups.php
  * @see admins.php
  * @see areas.php
- * @see auth.php
  * @see ballot_edit.php
  * @see ballots.php
  * @see confirm_mail.php
+ * @see create_member.php
  * @see diff.php
  * @see draft.php
  * @see index.php
@@ -25,6 +24,7 @@
  * @see proposal.php
  * @see proposal_edit.php
  * @see proposals.php
+ * @see register.php
  * @see test_dbtableadmin.php
  * @see test_redirect_errors.php
  * @see vote.php

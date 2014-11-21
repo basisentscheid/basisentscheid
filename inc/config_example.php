@@ -24,6 +24,8 @@ define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 define("MAIL_FROM", "example@example.com");
 define("MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 
+define("MAIL_SUPPORT", "example@example.com");
+
 define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 
 // names of areas to create for new ngroups
@@ -66,15 +68,3 @@ define("ARGUMENTS_LIMIT_0", 5);
 define("ARGUMENTS_LIMIT_1", 2);
 define("ARGUMENTS_LIMIT_2", 1);
 define("ARGUMENTS_LIMIT_3", 1);
-
-define("OAUTH2_BASEURL", "https://example.com/");
-define("OAUTH2_CLIENT_ID",     'example');
-define("OAUTH2_CLIENT_SECRET", 'example');
-define("OAUTH2_AUTHORIZATION_ENDPOINT", OAUTH2_BASEURL."authorize/");
-define("OAUTH2_TOKEN_ENDPOINT",         OAUTH2_BASEURL."token/");
-define("API_BASEURL",                   OAUTH2_BASEURL."api/");
-define("SHARE_URL",   "https://beoapi.example.com/shares/portal/");
-define("NGROUPS_URL", "https://beoapi.example.com/nested_groups/");
-define("CAINFO",  DOCROOT."ssl/cacerts.pem");
-define("SSLCERT", DOCROOT."ssl/example.pem");
-define("SSLKEY",  DOCROOT."ssl/example_priv.pem");

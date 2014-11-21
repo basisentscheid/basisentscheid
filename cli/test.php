@@ -22,11 +22,9 @@ require DOCROOT."inc/common_cli.php";
 $date = dechex(time());
 
 // create main member
-$login = new Member;
-$login->username = "t".$date."login";
-$login->auid = $login->username;
-$login->entitled = true;
-$login->create();
+$password = crypt("test");
+create_member("t".$date."login");
+$login = Login::$member;
 
 $ngroup = 1;
 
@@ -445,12 +443,7 @@ function no_branch_skip($branch, array $bcase, array $exclude_branches=array()) 
 function add_supporter(Proposal $proposal, $case, $i) {
 	global $date;
 
-	Login::$member = new Member;
-	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
-	Login::$member->auid = Login::$member->username;
-	Login::$member->entitled = true;
-	Login::$member->create();
-	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
+	create_member("t".$date."c".$case."p".$proposal->id.$i);
 	$proposal->add_support();
 }
 
@@ -465,12 +458,7 @@ function add_supporter(Proposal $proposal, $case, $i) {
 function add_proponent(Proposal $proposal, $case, $i) {
 	global $date;
 
-	Login::$member = new Member;
-	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
-	Login::$member->auid = Login::$member->username;
-	Login::$member->entitled = true;
-	Login::$member->create();
-	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
+	create_member("t".$date."c".$case."p".$proposal->id.$i);
 	$proposal->add_proponent(Login::$member->username, true);
 }
 
@@ -485,13 +473,27 @@ function add_proponent(Proposal $proposal, $case, $i) {
 function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
 	global $date;
 
-	Login::$member = new Member;
-	Login::$member->username = "t".$date."c".$case."p".$proposal->id.$i;
-	Login::$member->auid = Login::$member->username;
-	Login::$member->entitled = true;
-	Login::$member->create();
-	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
+	create_member("t".$date."c".$case."p".$proposal->id.$i);
 	$proposal->issue()->demand_ballot_voting();
+}
+
+
+/**
+ *
+ * @param string  $username
+ */
+function create_member($username) {
+	global $password;
+
+	Login::$member = new Member;
+	Login::$member->invite = Login::generate_token(24);
+	Login::$member->create();
+	Login::$member->username = $username;
+	Login::$member->password = $password;
+	Login::$member->entitled = true;
+	//Login::$member->mail = Login::$member->username."@example.com";
+	Login::$member->update(array('username', 'password', 'entitled', 'mail'));
+	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
 }
 
 

@@ -15,12 +15,7 @@ html_head("Willkommen auf dem Testserver des Basisentscheid-Portals!");
 
 <p>Ihr könnt hier gerne alles anschauen und ausprobieren. Lasst euch von den automatisch generierten Testdaten, die überall drin stehen, nicht irritieren. Sie machen es zwar teilweise etwas unübersichtlich, aber dafür kann man damit so ziemlich alle möglichen Zustände sehen.</p>
 
-Es gibt drei Möglichkeiten zur Anmeldung:
-<ul>
-	<li>als normales Mitglied mit dem Button "anmelden" rechts oben (über den ID-Server) <i>Username: test, Passwort: test</i>
-	<li><a href="admin.php">als Verantwortlicher</a> <i>Username: test, Passwort: test</i>
-	<li><a href="local_member_login.php">als lokales Mitglied</a> – Damit kann man sich ohne Passwort als normales Mitglied mit	beliebigem Benutzernamen anmelden. Dieses	Mitglied wird dann automatisch angelegt. Das ist natürlich nur zum Testen gedacht und wird für ein Live-System wieder entfernt.
-</ul>
+<p>In diesem Testsystem könnt ihr euch selbst einen <a href="create_member.php">Account erstellen</a>. Außerdem kann man sich auch als <a href="login.php?admin=1">Verantwortlicher anmelden</a>.</p>
 
 <p>Wenn ihr Fehler findet, könnt ihr die in das <a href="https://github.com/basisentscheid/portal/issues">Ticketsystem</a> eintragen. Ihr müsst aber nicht unbedingt nach Fehlern suchen, es gibt sicherlich noch viele. Interessanter ist die Frage, ob alles so umgesetzt ist, wie wir es haben wollen. Welche Funktionen fehlen oder verhalten sich anders, als es vielleicht sinnvoller wäre? Wenn euch da etwas auffällt, könnt ihr das an die <a href="https://lists.piratenpartei-bayern.de/mailman/listinfo/basisentscheid">Mailingliste der Projektgruppe Basisentscheid</a> schicken, <a href="http://wiki.piratenpartei.de/Benutzer:Cmrcx">mir mailen oder mich anrufen</a>, oder – sofern es etwas konkretes ist – es auch in das <a href="https://github.com/basisentscheid/portal/issues">Ticketsystem</a> eintragen.</p>
 

@@ -9,8 +9,12 @@
 
 class Member extends Relation {
 
-	public $auid;
+	public $invite;
+	public $invite_expiry;
+	public $created;
+	public $activated;
 	public $username;
+	public $password;
 	public $public_id = "";
 	public $profile   = "";
 	public $entitled;
@@ -22,10 +26,23 @@ class Member extends Relation {
 	public $hide_help;
 
 	protected $boolean_fields = array("entitled");
-	protected $create_fields = array("auid", "username", "public_id", "profile", "entitled");
 	protected $update_fields = array("username");
 
 	private $ngroups;
+
+
+	/**
+	 * create a new member
+	 *
+	 * @return boolean
+	 */
+	public function create() {
+		$sql = "INSERT INTO members (invite, invite_expiry) VALUES (".DB::esc($this->invite).", now() + interval '1 month') RETURNING id";
+		if ( $result = DB::query($sql) ) {
+			list($this->id) = DB::fetch_row($result);
+		}
+		return $result;
+	}
 
 
 	/**

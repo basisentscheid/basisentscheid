@@ -43,10 +43,14 @@ abstract class Login {
 			self::$member = new Member($_SESSION['member']);
 			// automatically logout if member was deleted from the database
 			if (!self::$member->id) self::logout();
+			// prevent double logins
+			unset($_SESSION['admin']);
 		} elseif (!empty($_SESSION['admin'])) {
 			self::$admin = new Admin($_SESSION['admin']);
 			// automatically logout if admin was deleted from the database
 			if (!self::$admin->id) self::logout();
+			// prevent double logins
+			unset($_SESSION['member']);
 		}
 
 	}

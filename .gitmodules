@@ -1,6 +1,3 @@
 [submodule "inc/libs/PHP-FineDiff"]
 	path = inc/libs/PHP-FineDiff
 	url = https://github.com/thomasbachem/PHP-FineDiff.git
-[submodule "inc/libs/PHP-OAuth2"]
-	path = inc/libs/PHP-OAuth2
-	url = https://github.com/adoy/PHP-OAuth2.git

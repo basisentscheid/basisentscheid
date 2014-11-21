@@ -265,7 +265,7 @@ function html_user() {
 		// login as member via ID server
 		form("login.php", 'class="button"');
 ?>
-<input type="hidden" name="origin" value="<?=h($_SERVER['REQUEST_URI'])?>">
+<input type="hidden" name="origin" value="<?=URI::$uri?>">
 <input type="submit" value="<?=_("Login")?>">
 <?
 		form_end();

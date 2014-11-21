@@ -372,16 +372,16 @@ function cron($skip_if_locked=false) {
 /**
  * upload voter lists for postal voting and for each ballot
  *
+ * @return boolean
  * @param Period  $period
  * @param boolean $include_ballot_voters (optional)
- * @return boolean
  */
 function upload_voters($period, $include_ballot_voters=false) {
 
 	$data = array();
 
 	// postal voters
-	$sql = "SELECT auid FROM members
+	$sql = "SELECT invite FROM members
 		JOIN voters ON voters.member = members.id AND voters.ballot IS NULL AND voters.period = ".intval($period->id);
 	$data[0] = array(
 		'name'   => "postal voting",
@@ -393,7 +393,7 @@ function upload_voters($period, $include_ballot_voters=false) {
 		$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($period->id)." AND approved=TRUE";
 		$result_ballot = DB::query($sql_ballot);
 		while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
-			$sql = "SELECT auid FROM members
+			$sql = "SELECT invite FROM members
 				JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id);
 			$data[$ballot->id] = array(
 				'name'    => $ballot->name,
@@ -406,48 +406,8 @@ function upload_voters($period, $include_ballot_voters=false) {
 		}
 	}
 
-	return upload_share( json_encode($data) );
-}
+	// For now we don't use the data.
 
-
-/**
- * upload data to the ID server share
- *
- * @param string  $json
- * @return boolean
- */
-function upload_share($json) {
-
-	// for testing
-	//print_r($json);
-	if (defined("SKIP_UPDOWNLOAD")) return true;
-
-	$ch = curl_init();
-
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL, SHARE_URL);
-
-	// POST
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-
-	// https handling
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-	curl_setopt($ch, CURLOPT_CAINFO,  CAINFO);
-	curl_setopt($ch, CURLOPT_SSLCERT, SSLCERT);
-	curl_setopt($ch, CURLOPT_SSLKEY,  SSLKEY);
-
-	curl_exec($ch);
-
-	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	$curl_error = curl_error($ch);
-	curl_close($ch);
-
-	if ($http_code==201) return true;
-
-	trigger_error("HTTP code other than 201, ".$curl_error, E_USER_NOTICE);
-	return false;
 }
 
 

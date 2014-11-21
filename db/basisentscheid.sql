@@ -371,10 +371,14 @@ ALTER SEQUENCE issues_id_seq OWNED BY issues.id;
 
 CREATE TABLE members (
     id integer NOT NULL,
-    auid character varying(36) NOT NULL,
+    invite character(24) NOT NULL,
+    invite_expiry timestamp with time zone NOT NULL,
+    created timestamp with time zone DEFAULT now() NOT NULL,
+    activated timestamp with time zone,
     username character varying(32),
-    public_id text NOT NULL,
-    profile text NOT NULL,
+    password character varying(123),
+    public_id text DEFAULT ''::text NOT NULL,
+    profile text DEFAULT ''::text NOT NULL,
     entitled boolean DEFAULT false NOT NULL,
     mail text,
     mail_unconfirmed text,
@@ -781,19 +785,27 @@ ALTER TABLE ONLY issues
 
 
 --
--- Name: members_auid_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY members
-    ADD CONSTRAINT members_auid_key UNIQUE (auid);
-
-
---
 -- Name: members_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY members_ngroups
     ADD CONSTRAINT members_groups_pkey PRIMARY KEY (member, ngroup);
+
+
+--
+-- Name: members_invite_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY members
+    ADD CONSTRAINT members_invite_key UNIQUE (invite);
+
+
+--
+-- Name: members_mail_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY members
+    ADD CONSTRAINT members_mail_key UNIQUE (mail);
 
 
 --
