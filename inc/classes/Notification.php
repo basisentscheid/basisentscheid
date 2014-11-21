@@ -386,6 +386,9 @@ class Notification {
 			break;
 		}
 
+		// remove HTML line break hints
+		$body = strtr($body, array("&shy;"=>""));
+
 		return array($subject, $body);
 	}
 

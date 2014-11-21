@@ -266,7 +266,7 @@ function html_user() {
 		form("login.php", 'class="button"');
 ?>
 <input type="hidden" name="origin" value="<?=URI::$uri?>">
-<input type="submit" value="<?=_("Login")?>">
+<input type="submit" value="<?=_("login")?>">
 <?
 		form_end();
 	}
