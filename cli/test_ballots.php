@@ -23,11 +23,15 @@ $date = dechex(time());
 $ngroup = new Ngroup(1);
 
 // create main member
+$password = crypt("test");
 $login = new Member;
-$login->username = "t".$date."login";
-$login->auid = $login->username;
+$login->invite = Login::generate_token(24);
 $login->entitled = true;
 $login->create();
+$login->username = "t".$date."login";
+$login->password = $password;
+$login->mail = ERROR_MAIL;
+$login->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
 
 
 // go through all cases
@@ -169,13 +173,16 @@ function create_case($case, $stopcase) {
  * @param string  $i
  */
 function add_participant(Period $period, $ballot, $case, $i) {
-	global $date;
+	global $date, $password;
 
 	Login::$member = new Member;
-	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
-	Login::$member->auid = Login::$member->username;
+	Login::$member->invite = Login::generate_token(24);
 	Login::$member->entitled = true;
 	Login::$member->create();
+	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
+	Login::$member->password = $password;
+	Login::$member->mail = ERROR_MAIL;
+	Login::$member->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
 	Login::$member->update_ngroups(array(1));
 	if ($ballot) {
 		if (is_object($ballot)) $period->select_ballot($ballot); else $period->select_postal();
