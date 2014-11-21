@@ -134,7 +134,7 @@ function create_case($case, $stopcase) {
 
 	if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
 		$proposal->remove_proponent(Login::$member);
-		add_proponent($proposal, $case, "px");
+		add_proponent($proposal, "px");
 		time_warp($issue, "1 week");
 		cron();
 		$casetitle = "remove proponent from draft, add new proponent";
@@ -143,7 +143,7 @@ function create_case($case, $stopcase) {
 
 	// add proponents
 	for ( $i=2; $i<=REQUIRED_PROPONENTS; $i++ ) {
-		add_proponent($proposal, $case, "pi".$i);
+		add_proponent($proposal, "pi".$i);
 		$proponents[] = Login::$member;
 	}
 
@@ -170,7 +170,7 @@ function create_case($case, $stopcase) {
 				$proposal->remove_proponent($proponent);
 			}
 			for ( $i=1; $i<=REQUIRED_PROPONENTS-1; $i++ ) {
-				add_proponent($proposal, $case, "pr".$i);
+				add_proponent($proposal, "pr".$i);
 			}
 			time_warp($issue, "1 week");
 			cron();
@@ -183,7 +183,7 @@ function create_case($case, $stopcase) {
 				$proposal->remove_proponent($proponent);
 			}
 			for ( $i=1; $i<=REQUIRED_PROPONENTS; $i++ ) {
-				add_proponent($proposal, $case, "pr".$i);
+				add_proponent($proposal, "pr".$i);
 			}
 			time_warp($issue, "1 week");
 			cron();
@@ -197,7 +197,7 @@ function create_case($case, $stopcase) {
 		$supporter_count = ${'branch'.$branch.'_array'}[$bcase[$branch]];
 
 		for ( $i=1; $i<=$supporter_count-REQUIRED_PROPONENTS; $i++ ) {
-			add_supporter($proposal, $case, "a".$supporter_count."i".$i);
+			add_supporter($proposal, "a".$i);
 		}
 
 		if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
@@ -228,7 +228,7 @@ function create_case($case, $stopcase) {
 
 		// add proponents
 		for ( $i=1; $i<=4; $i++ ) {
-			add_proponent($proposal2, $case, "qi".$i);
+			add_proponent($proposal2, "qi".$i);
 			$proponents[] = Login::$member;
 		}
 
@@ -254,7 +254,7 @@ function create_case($case, $stopcase) {
 		$supporter_count2 = ${'branch'.$branch.'_array'}[$bcase[$branch]];
 
 		for ( $i=1; $i<=$supporter_count2; $i++ ) {
-			add_supporter($proposal2, $case, "a".$supporter_count."b".$supporter_count2."i".$i);
+			add_supporter($proposal2, "a".$i);
 		}
 
 		if ($stopcase == ++$stop) {
@@ -308,7 +308,7 @@ function create_case($case, $stopcase) {
 			$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[$bcase[$branch]];
 
 			for ( $i=1; $i<=$ballot_voting_demanders_count; $i++ ) {
-				add_ballot_voting_demander($proposal2, $case, "a".$supporter_count."b".$supporter_count2."s".$ballot_voting_demanders_count."i".$i);
+				add_ballot_voting_demander($proposal2, "a".$i);
 			}
 
 			if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
@@ -367,7 +367,7 @@ function create_case($case, $stopcase) {
 			$sql = "SELECT * FROM members
  				JOIN members_ngroups ON members.id = members_ngroups.member
 				WHERE members_ngroups.ngroup = 1 AND members.entitled = TRUE
-				LIMIT ".rand(0, 1000);
+				LIMIT ".rand(0, 100);
 			$result = DB::query($sql);
 			while ( Login::$member = DB::fetch_object($result, "Member") ) {
 				$vote = array();
@@ -437,13 +437,10 @@ function no_branch_skip($branch, array $bcase, array $exclude_branches=array()) 
  * create a new member and let it support the supplied proposal
  *
  * @param object  $proposal
- * @param integer $case
  * @param string  $i
  */
-function add_supporter(Proposal $proposal, $case, $i) {
-	global $date;
-
-	create_member("t".$date."c".$case."p".$proposal->id.$i);
+function add_supporter(Proposal $proposal, $i) {
+	create_member("user".$i);
 	$proposal->add_support();
 }
 
@@ -452,13 +449,10 @@ function add_supporter(Proposal $proposal, $case, $i) {
  * create a new member and let it support the supplied proposal
  *
  * @param object  $proposal
- * @param integer $case
  * @param string  $i
  */
-function add_proponent(Proposal $proposal, $case, $i) {
-	global $date;
-
-	create_member("t".$date."c".$case."p".$proposal->id.$i);
+function add_proponent(Proposal $proposal, $i) {
+	create_member("user".$i);
 	$proposal->add_proponent(Login::$member->username, true);
 }
 
@@ -467,33 +461,50 @@ function add_proponent(Proposal $proposal, $case, $i) {
  * create a new member and let it support ballot voting for the supplied proposal
  *
  * @param object  $proposal
- * @param integer $case
  * @param string  $i
  */
-function add_ballot_voting_demander(Proposal $proposal, $case, $i) {
-	global $date;
-
-	create_member("t".$date."c".$case."p".$proposal->id.$i);
+function add_ballot_voting_demander(Proposal $proposal, $i) {
+	create_member("user".$i);
 	$proposal->issue()->demand_ballot_voting();
 }
 
 
 /**
+ * create a member once
  *
  * @param string  $username
  */
 function create_member($username) {
 	global $password;
 
+	static $members = array();
+
+	if (isset($members[$username])) {
+		Login::$member = $members[$username];
+		return;
+	}
+
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
+	Login::$member->entitled = true;
 	Login::$member->create();
 	Login::$member->username = $username;
 	Login::$member->password = $password;
-	Login::$member->entitled = true;
-	//Login::$member->mail = Login::$member->username."@example.com";
-	Login::$member->update(array('username', 'password', 'entitled', 'mail'));
+	Login::$member->mail = ERROR_MAIL;
+	Login::$member->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
 	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
+
+	// activate all notifications
+	foreach ( Notification::$default_settings as $interest => $types ) {
+		$fields_values = array('member'=>Login::$member->id, 'interest'=>$interest);
+		foreach ( $types as $type => $value ) {
+			$fields_values[$type] = true;
+		}
+		DB::insert_or_update("notify", $fields_values, array('member', 'interest'));
+	}
+
+	$members[$username] = Login::$member;
+
 }
 
 

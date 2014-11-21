@@ -34,16 +34,14 @@ if (!$member) {
 
 ?>
 <form action="<?=BN?>" method="GET">
-
 <fieldset class="member">
+	<div class="description td0"><?=_("Please enter the invite code you've received.")?></div>
 	<div class="input td0">
-			<?=_("Please enter the invite code you've received.")?><br>
 		<label for="invite"><?=_("Invite code")?></label>
 		<span class="input"><input type="text" name="invite" size="30" value="<?=h($invite)?>"></span>
 	</div>
+	<div class="button th"><input type="submit" value="<?=_("Proceed with registration")?>"></div>
 </fieldset>
-<br>
-<input type="submit" value="<?=_("Proceed with registration")?>">
 </form>
 <?
 
@@ -107,7 +105,7 @@ if ($action) {
 
 		Login::$member->set_unique_username($username);
 		Login::$member->password = crypt($password);
-		if ( ! Login::$member->update(array('username', 'password')) ) break;
+		if ( ! Login::$member->update(array('username', 'password'), 'activated=now()') ) break;
 		success(_("Your account has been activated."));
 
 		Login::$member->set_mail($mail);
@@ -143,11 +141,9 @@ form(h(BN."?invite=".$invite));
 		<label for="mail"><?=_("Mail address for notifications")?></label>
 		<span class="input"><input type="text" name="mail" value="<?=h($mail)?>" size="40"></span>
 	</div>
+	<div class="button th"><input type="submit" value="<?=_("Activate account")?>"></div>
 </fieldset>
-
-<br>
 <input type="hidden" name="action" value="activate">
-<input type="submit" value="<?=_("Activate account")?>">
 <?
 form_end();
 

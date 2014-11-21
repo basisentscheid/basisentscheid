@@ -627,7 +627,7 @@ CREATE TABLE vote (
 CREATE TABLE vote_tokens (
     member integer NOT NULL,
     issue integer NOT NULL,
-    token character(16) NOT NULL
+    token character(8) NOT NULL
 );
 
 
@@ -798,14 +798,6 @@ ALTER TABLE ONLY members_ngroups
 
 ALTER TABLE ONLY members
     ADD CONSTRAINT members_invite_key UNIQUE (invite);
-
-
---
--- Name: members_mail_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY members
-    ADD CONSTRAINT members_mail_key UNIQUE (mail);
 
 
 --

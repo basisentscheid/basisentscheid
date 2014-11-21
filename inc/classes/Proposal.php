@@ -483,7 +483,7 @@ class Proposal extends Relation {
 		DB::transaction_commit();
 
 		// notification to the other proponents
-		$notification = new Notification("confirm_proponent");
+		$notification = new Notification("removed_proponent");
 		$notification->proposal = $this;
 		$notification->proponent = $proponent;
 		$notification->send($this->proponents());

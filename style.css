@@ -667,6 +667,14 @@ fieldset.member div.input span.input {
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
 
+fieldset.member div.button {
+	margin-top: 5px;
+}
+fieldset.member input[type=submit] {
+	margin-left: 212px;
+	margin-left: 21.2rem;
+}
+
 
 /* 5. classes for specific pages */
 
@@ -1081,8 +1089,10 @@ h2.postal {
 form.login {
 	margin-top: 10px;
 	margin-bottom: 20px;
+	text-align: center;
 }
 form.login fieldset {
+	text-align: left;
 	display: inline-block;
 	margin: 0;
 	padding: 0;

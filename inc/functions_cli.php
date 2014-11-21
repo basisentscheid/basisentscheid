@@ -303,7 +303,7 @@ function cron($skip_if_locked=false) {
 				foreach ( $members as $member_id ) {
 					DB::transaction_start();
 					do {
-						$token = Login::generate_token(16);
+						$token = Login::generate_token(8);
 						$sql = "SELECT token FROM vote_tokens WHERE token=".DB::esc($token);
 					} while ( DB::numrows($sql) );
 					$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member_id).", ".intval($issue->id).", ".DB::esc($token).")";

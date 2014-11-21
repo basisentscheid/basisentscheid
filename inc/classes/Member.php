@@ -37,11 +37,9 @@ class Member extends Relation {
 	 * @return boolean
 	 */
 	public function create() {
-		$sql = "INSERT INTO members (invite, invite_expiry) VALUES (".DB::esc($this->invite).", now() + interval '1 month') RETURNING id";
-		if ( $result = DB::query($sql) ) {
-			list($this->id) = DB::fetch_row($result);
-		}
-		return $result;
+		$fields_values = array('invite' => $this->invite, 'entitled' => $this->entitled);
+		$extra = array('invite_expiry' => "now() + interval '1 month'");
+		return DB::insert("members", $fields_values, $this->id, $extra);
 	}
 
 

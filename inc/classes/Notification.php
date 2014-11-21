@@ -315,17 +315,22 @@ class Notification {
 			$body .= _("Voting has started on the following proposals").":\n";
 
 			foreach ( $this->issues as $issue ) {
-				$body .= "\n";
-				foreach ( $issue->proposals() as $proposal ) {
+				$body .= "\n"._("Issue")." ".$issue->id."\n";
+				foreach ( $issue->proposals(true) as $proposal ) {
 					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
 				$body .= _("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
-					._("Your vote token").": ".$this->personal_tokens[$issue->id]."\n"
-					._("All vote tokens").": ".join(", ", $this->all_tokens[$issue->id])."\n"; // TODO: formatting
+					._("Your vote token").": ".$this->personal_tokens[$issue->id]."\n";
 			}
 
-			$body .= "\n"._("Voting end").": ".datetimeformat($this->period->counting)."\n";
+			$body .= "\n"._("Voting end").": ".datetimeformat($this->period->counting)
+				."\n\n===== "._("Lists of all vote tokens")." =====\n";
+			foreach ( $this->issues as $issue ) {
+				$body .= "\n"
+					._("Issue")." ".$issue->id.":\n"
+					.join(", ", $this->all_tokens[$issue->id])."\n";
+			}
 
 			break;
 		case "finished":
@@ -336,7 +341,7 @@ class Notification {
 
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n";
-				$proposals = $issue->proposals();
+				$proposals = $issue->proposals(true);
 				foreach ( $proposals as $proposal ) {
 					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n".

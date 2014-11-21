@@ -353,7 +353,5 @@ function send_mail($to, $subject, $body, array $headers=array()) {
 	$headers[] = "Content-Transfer-Encoding: 8bit";
 	if (MAIL_FROM) $headers[] = "From: ".MAIL_FROM;
 
-	$to = ERROR_MAIL;
-
 	return mail($to, $subject, $body, join("\r\n", $headers));
 }
