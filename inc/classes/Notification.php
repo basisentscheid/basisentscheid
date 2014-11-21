@@ -204,11 +204,11 @@ class Notification {
 			$body .= sprintf(_("Proponent '%s' added a new proposal:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				."===== "._("Title")." =====\n"
-				.mb_wordwrap($this->proposal->title)."\n\n"
+				.$this->proposal->title."\n\n"
 				."===== "._("Content")." =====\n"
-				.mb_wordwrap($this->proposal->content)."\n\n"
+				.$this->proposal->content."\n\n"
 				."===== "._("Reason")." =====\n"
-				.mb_wordwrap($this->proposal->reason)."\n";
+				.$this->proposal->reason."\n";
 
 			break;
 		case "submitted":
@@ -218,18 +218,18 @@ class Notification {
 			$body .= sprintf(_("Proponent '%s' submitted this proposal:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				."===== "._("Title")." =====\n"
-				.mb_wordwrap($this->proposal->title)."\n\n"
+				.$this->proposal->title."\n\n"
 				."===== "._("Content")." =====\n"
-				.mb_wordwrap($this->proposal->content)."\n\n"
+				.$this->proposal->content."\n\n"
 				."===== "._("Reason")." =====\n"
-				.mb_wordwrap($this->proposal->reason)."\n";
+				.$this->proposal->reason."\n";
 
 			break;
 		case "apply_proponent":
 
 			$subject = sprintf(_("New proponent for proposal %d"), $this->proposal->id);
 
-			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				._("The following member asks to become proponent:")."\n\n"
 				.$this->proponent."\n"
@@ -240,7 +240,7 @@ class Notification {
 
 			$subject = sprintf(_("Proponent confirmed for proposal %d"), $this->proposal->id);
 
-			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				._("The proponent ...")."\n\n"
 				.$this->proponent_confirmed."\n\n"
@@ -252,7 +252,7 @@ class Notification {
 
 			$subject = sprintf(_("Proponent removed himself from proposal %d"), $this->proposal->id);
 
-			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				._("The following proponent removed himself:")."\n\n"
 				.$this->proponent."\n";
@@ -262,31 +262,35 @@ class Notification {
 
 			$subject = sprintf(_("New reply to your argument in proposal %d"), $this->proposal->id);
 
-			$body .= mb_wordwrap(_("Proposal")." ".$this->proposal->id.": ".$this->proposal->title)."\n"
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				.sprintf(_("Member '%s' replied to your argument:"), Login::$member->username())."\n"
 				.$separator
-				.mb_wordwrap($this->argument->title)."\n\n"
-				.mb_wordwrap($this->argument->content)."\n"
+				.$this->argument->title."\n\n"
+				.$this->argument->content."\n"
 				.$separator
 				._("Reply:")." ".BASE_URL."proposal.php?id=".$this->proposal->id."&argument_parent=".$this->argument->id."#form";
 
 			break;
 		case "admitted":
 
+			if (count($this->proposals) > 1) {
+				$body .= _("The following proposals have been admitted").":\n\n";
+			} else {
+				$body .= _("The following proposal has been admitted").":\n\n";
+			}
+
 			$ids = array();
 			foreach ( $this->proposals as $proposal ) {
 				$ids[] = $proposal->id;
-				$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+				$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
 					.BASE_URL."proposal.php?id=".$proposal->id."\n";
 			}
 
 			if (count($ids) > 1) {
 				$subject = sprintf(_("Proposals %s admitted"), join(", ", $ids));
-				$body = _("The following proposals have been admitted").":\n\n".$body;
 			} else {
 				$subject = sprintf(_("Proposal %d admitted"), $ids[0]);
-				$body = _("The following proposal has been admitted").":\n\n".$body;
 			}
 
 			break;
@@ -299,7 +303,7 @@ class Notification {
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n";
 				foreach ( $issue->proposals() as $proposal ) {
-					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
 			}
@@ -317,7 +321,7 @@ class Notification {
 			foreach ( $this->issues as $issue ) {
 				$body .= "\n"._("Issue")." ".$issue->id."\n";
 				foreach ( $issue->proposals(true) as $proposal ) {
-					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
 				$body .= _("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
@@ -343,7 +347,7 @@ class Notification {
 				$body .= "\n";
 				$proposals = $issue->proposals(true);
 				foreach ( $proposals as $proposal ) {
-					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n".
 						_("Yes").": ".$proposal->yes.", "._("No").": ".$proposal->no.", "._("Abstention").": ".$proposal->abstention;
 					if (count($proposals) > 1) {
@@ -375,12 +379,12 @@ class Notification {
 
 			$subject = sprintf(_("Ballot assigned in period %d"), $this->period->id);
 
-			$body .= mb_wordwrap(_("Ballot assignment has been started. You have been assigned to the following ballot:"))."\n\n"
+			$body .= _("Ballot assignment has been started. You have been assigned to the following ballot:")."\n\n"
 				.$this->ballot->description_for_mail()."\n"
-				.mb_wordwrap(sprintf(
+				.sprintf(
 					_("This ballot has been selected, either because you selected it yourself and it was approved or because it looks like it's the nearest one to where you live. You can change the selected ballot here until ballot preparation starts at %s:"),
 					datetimeformat($this->period->ballot_preparation)
-				))."\n"
+				)."\n"
 				.BASE_URL."ballots.php?period=".$this->period->id;
 
 			break;
@@ -388,6 +392,8 @@ class Notification {
 
 		// remove HTML line break hints
 		$body = strtr($body, array("&shy;"=>""));
+
+		$body = mb_wordwrap($body);
 
 		return array($subject, $body);
 	}
