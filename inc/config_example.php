@@ -8,7 +8,11 @@
  */
 
 
+// --- Options for development and testing ---
+// display system informations in the HTML code of every page and disable gettext caching
 define("DEBUG", false);
+// log in as any user with this password (string, set to false to disable)
+define("MASTER_PASSWORD", false);
 
 // with trailing slash
 define("BASE_URL", "http://example.com/basisentscheid/portal/");

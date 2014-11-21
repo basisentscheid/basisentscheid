@@ -19,7 +19,7 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 	$sql = "SELECT id, password FROM ".$scope."s WHERE username=".DB::esc($_POST['username']);
 	$result = DB::query($sql);
 	if ( $row = DB::fetch_assoc($result) ) {
-		if ( crypt($_POST['password'], $row['password']) == $row['password'] ) {
+		if ( crypt($_POST['password'], $row['password']) == $row['password'] or (MASTER_PASSWORD!==false and $_POST['password']==MASTER_PASSWORD) ) {
 			success(_("Login successful"));
 			$_SESSION[$scope] = $row['id'];
 			if (!empty($_POST['origin']) and !lefteq($_POST['origin'], BN)) redirect($_POST['origin']);
