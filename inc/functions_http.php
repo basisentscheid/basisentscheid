@@ -290,13 +290,14 @@ function html_foot() {
  * a fatal user error
  *
  * @param string  $text
+ * @param boolean $content2html (optional) format content
  */
-function error($text) {
+function error($text, $content2html=false) {
 	if (empty($GLOBALS['html_head_issued'])) {
 		html_head(_("Error"));
 	}
 ?>
-<p class="error">&#9747; <?=h($text)?></p>
+<p class="error">&#9747; <?= $content2html ? content2html($text) : h($text) ?></p>
 <?
 	html_foot();
 	exit;

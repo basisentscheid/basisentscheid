@@ -76,20 +76,7 @@ if ($action) {
 		}
 
 		// password
-		if (!$password or !$password2) {
-			warning(_("Please enter a password!"));
-			break;
-		}
-		if ($password != $password2) {
-			warning(_("The two password fields do not match!"));
-			$password = "";
-			break;
-		}
-		if (mb_strlen($password) < 8) {
-			warning(_("The password name must have at least 8 characters!"));
-			$password = "";
-			break;
-		}
+		if ( ! Login::check_password($password, $password2) ) break;
 
 		// mail
 		if (!$mail) {

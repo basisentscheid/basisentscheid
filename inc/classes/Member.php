@@ -20,8 +20,8 @@ class Member extends Relation {
 	public $entitled;
 	public $mail;
 	public $mail_unconfirmed;
-	public $mail_secret;
-	public $mail_secret_expiry;
+	public $mail_code;
+	public $mail_code_expiry;
 	public $mail_lock_expiry;
 	public $hide_help;
 
@@ -180,19 +180,19 @@ class Member extends Relation {
 
 		DB::transaction_start();
 		do {
-			$this->mail_secret = Login::generate_token(16);
-			$sql = "SELECT id FROM members WHERE mail_secret=".DB::esc($this->mail_secret);
+			$this->mail_code = Login::generate_token(16);
+			$sql = "SELECT id FROM members WHERE mail_code=".DB::esc($this->mail_code);
 		} while ( DB::numrows($sql) );
-		$this->update(array('mail_unconfirmed', 'mail_secret'), "mail_secret_expiry = now() + interval '7 days'");
+		$this->update(array('mail_unconfirmed', 'mail_code'), "mail_code_expiry = now() + interval '7 days'");
 		DB::transaction_commit();
 
 		$subject = _("Email confirmation request");
-		$body = _("Please confirm your email address by clicking the following link:")."\n\n"
-			.BASE_URL."confirm_mail.php?secret=".$this->mail_secret."\n\n"
+		$body = _("Please confirm your email address by clicking the following link:")."\n"
+			.BASE_URL."confirm_mail.php?code=".$this->mail_code."\n\n"
 			._("If this link does not work, please open the following URL in your web browser:")."\n\n"
-			.BASE_URL."confirm_mail.php\n\n"
-			._("On that page enter the confirmation code:")."\n\n"
-			.$this->mail_secret."\n\n";
+			.BASE_URL."confirm_mail.php\n"
+			._("On that page enter the code:")."\n"
+			.$this->mail_code;
 
 		if ( send_mail($mail, $subject, $body) ) {
 			$this->update(array(), "mail_lock_expiry = now() + interval '1 hour'");

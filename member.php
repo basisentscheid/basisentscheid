@@ -43,9 +43,7 @@ if ($action) {
 		$password  = trim($_POST['password']);
 		$password2 = trim($_POST['password2']);
 		if ($password or $password2) {
-			if ($password != $password2) {
-				warning(_("The two password fields do not match!"));
-			} else {
+			if ( Login::check_password($password, $password2) ) {
 				Login::$member->password = crypt($password);
 				$save_fields[] = "password";
 				$success_msgs[] = _("The new password has been saved.");

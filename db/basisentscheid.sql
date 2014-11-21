@@ -382,10 +382,12 @@ CREATE TABLE members (
     entitled boolean DEFAULT false NOT NULL,
     mail text,
     mail_unconfirmed text,
-    mail_secret character varying(16),
-    mail_secret_expiry timestamp with time zone,
+    mail_code character(16),
+    mail_code_expiry timestamp with time zone,
     mail_lock_expiry timestamp with time zone,
-    hide_help text DEFAULT ''::text NOT NULL
+    hide_help text DEFAULT ''::text NOT NULL,
+    password_reset_code character(24),
+    password_reset_code_expiry timestamp with time zone
 );
 
 

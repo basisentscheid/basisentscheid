@@ -25,6 +25,8 @@
  * @see proposal_edit.php
  * @see proposals.php
  * @see register.php
+ * @see request_password_reset.php
+ * @see reset_password.php
  * @see test_dbtableadmin.php
  * @see test_redirect_errors.php
  * @see vote.php
@@ -82,6 +84,7 @@ if (!empty($_GET['ngroup'])) {
 if (isset($_POST['action'])) $action = $_POST['action']; else $action = null;
 
 // detect CSRF attacks
+// To make this work the 'action' parameter should be used on every POST form.
 if ($action) {
 	if (empty($_POST['csrf'])) {
 		error("CSRF token missing in POST request!");

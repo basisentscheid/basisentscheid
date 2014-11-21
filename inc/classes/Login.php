@@ -127,4 +127,31 @@ abstract class Login {
 	}
 
 
+	/**
+	 * check if an entered password meets the requirements
+	 *
+	 * @param string  $password  (reference)
+	 * @param string  $password2
+	 * @return boolean
+	 */
+	public static function check_password(&$password, $password2) {
+		if (!$password or !$password2) {
+			warning(_("Please enter a password!"));
+			$password = "";
+			return false;
+		}
+		if ($password != $password2) {
+			warning(_("The two password fields do not match!"));
+			$password = "";
+			return false;
+		}
+		if (mb_strlen($password) < 8) {
+			warning(_("The password name must have at least 8 characters!"));
+			$password = "";
+			return false;
+		}
+		return true;
+	}
+
+
 }

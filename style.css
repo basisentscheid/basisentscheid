@@ -1098,10 +1098,11 @@ form.login fieldset {
 	padding: 0;
 	border: none;
 }
-form.login label {
+form.login label,
+form.login div {
 	display: block;
 	margin: 1px 0;
-	padding: 0;
+	padding: 0 5px;
 	white-space: nowrap;
 }
 form.login label span.label {
@@ -1125,10 +1126,7 @@ form.login input[type=password] {
 	width: 14rem;
 }
 form.login div {
-	display: inline-block;
 	margin-top: 5px;
-	width: 259px;
-	width: 25.9rem;
 }
 form.login input[type=submit] {
 	margin-left: 10.9rem;
