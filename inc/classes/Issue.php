@@ -120,7 +120,9 @@ class Issue extends Relation {
 					if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".$vote_proposal['score'];
 					$body .= "\n\n";
 				}
-				$body .= _("Your vote token").": ".$token."\n"
+				$body .= _("Your user name").": ".Login::$member->username."\n"
+					._("Your user ID").": ".Login::$member->id."\n"
+					._("Your vote token").": ".$token."\n"
 					._("Voting time").": ".datetimeformat($votetime)."\n\n"
 					._("You can change your vote by voting again on:")."\n"
 					.BASE_URL."vote.php?issue=".$this->id."\n";
