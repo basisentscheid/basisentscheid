@@ -279,13 +279,15 @@ abstract class DB {
 	 * @param string  $table
 	 * @param array   $fields_values (optional) Associative array with database fields as keys and unescaped values as values (optional)
 	 * @param mixed   $insert_id     (optional, reference)
+	 * @param array   $extra         (optional) additional assignments without escaping
 	 * @return resource
 	 */
-	public static function insert($table, array $fields_values=array(), &$insert_id=false) {
+	public static function insert($table, array $fields_values=array(), &$insert_id=false, array $extra=array()) {
 
 		//self::transaction_start();
 
 		$fields_values = array_map("self::value_to_sql", $fields_values);
+		if ($extra) $fields_values += $extra;
 
 		$sql = "INSERT INTO ".$table." (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
 
@@ -314,8 +316,8 @@ abstract class DB {
 	 *
 	 * @param string  $table
 	 * @param mixed   $where         WHERE part of the SQL statement
-	 * @param array   $fields_values (optional) Associative array with database fields as keys and unescaped values as values (optional)
-	 * @param string  $extra         (optional)
+	 * @param array   $fields_values (optional) associative array with database fields as keys and unescaped values as values (optional)
+	 * @param string  $extra         (optional) additional assignments without escaping
 	 * @return resource
 	 */
 	public static function update($table, $where, array $fields_values=array(), $extra="") {
