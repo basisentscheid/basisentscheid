@@ -381,10 +381,7 @@ class Notification {
 
 			$body .= _("Ballot assignment has been started. You have been assigned to the following ballot:")."\n\n"
 				.$this->ballot->description_for_mail()."\n"
-				.sprintf(
-					_("This ballot has been selected, either because you selected it yourself and it was approved or because it looks like it's the nearest one to where you live. You can change the selected ballot here until ballot preparation starts at %s:"),
-					datetimeformat($this->period->ballot_preparation)
-				)."\n"
+				.sprintf(_("This ballot has been selected, either because you selected it yourself and it was approved or because it looks like it's the nearest one to where you live. You can change the selected ballot here until ballot preparation starts at %s:"), datetimeformat($this->period->ballot_preparation))."\n"
 				.BASE_URL."ballots.php?period=".$this->period->id;
 
 			break;
