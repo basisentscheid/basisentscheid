@@ -71,8 +71,8 @@ form(BN, 'class="login"');
 input_hidden("action", "request_password_reset");
 ?>
 <fieldset>
-<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username"></span></label>
-<div class="th"><input type="submit" value="<?=_("Request password reset")?>"></div>
+	<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username" size="32" maxlength="32"></span></label>
+	<div class="th"><input type="submit" value="<?=_("Request password reset")?>"></div>
 </fieldset>
 <?
 form_end();

@@ -128,6 +128,35 @@ abstract class Login {
 
 
 	/**
+	 * check if a username meets the requirements
+	 *
+	 * @param string  $username
+	 * @return boolean
+	 */
+	public static function check_username($username) {
+		if (!$username) {
+			warning(_("Please enter a user name!"));
+			return false;
+		}
+		$len = mb_strlen($username);
+		if ($len < 3) {
+			warning(_("The user name must have at least 3 characters!"));
+			return false;
+		}
+		if ($len > 32) {
+			warning(_("The user name must have not more than 32 characters!"));
+			return false;
+		}
+		$sql = "SELECT COUNT(1) FROM members WHERE username=".DB::esc($username);
+		if ( DB::fetchfield($sql) ) {
+			warning(_("This user name is already used by someone else. Please try a different one!"));
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
 	 * check if an entered password meets the requirements
 	 *
 	 * @param string  $password  (reference)
@@ -148,6 +177,25 @@ abstract class Login {
 		if (mb_strlen($password) < 8) {
 			warning(_("The password name must have at least 8 characters!"));
 			$password = "";
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
+	 * check if an email address is valid
+	 *
+	 * @param string  $mail
+	 * @return boolean
+	 */
+	public static function check_mail($mail) {
+		if (!$mail) {
+			warning(_("Please enter an email address!"));
+			return false;
+		}
+		if ( ! filter_var($mail, FILTER_VALIDATE_EMAIL) ) {
+			warning(_("This email address is not valid!"));
 			return false;
 		}
 		return true;

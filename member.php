@@ -29,25 +29,19 @@ if ($action) {
 
 		// username
 		$username = trim($_POST['username']);
-		if ($username != Login::$member->username) {
-			if (!$username) {
-				warning(_("Please enter a username!"));
-			} else {
-				Login::$member->set_unique_username($username);
-				$save_fields[] = "username";
-				$success_msgs[] = _("The new username has been saved.");
-			}
+		if ( $username != Login::$member->username and Login::check_username($username) ) {
+			Login::$member->username = $username;
+			$save_fields[] = "username";
+			$success_msgs[] = _("The new username has been saved.");
 		}
 
 		// save password
 		$password  = trim($_POST['password']);
 		$password2 = trim($_POST['password2']);
-		if ($password or $password2) {
-			if ( Login::check_password($password, $password2) ) {
-				Login::$member->password = crypt($password);
-				$save_fields[] = "password";
-				$success_msgs[] = _("The new password has been saved.");
-			}
+		if ( ($password or $password2) and Login::check_password($password, $password2) ) {
+			Login::$member->password = crypt($password);
+			$save_fields[] = "password";
+			$success_msgs[] = _("The new password has been saved.");
 		}
 
 		Login::$member->update($save_fields);
@@ -55,12 +49,8 @@ if ($action) {
 
 		// save mail
 		$mail = trim($_POST['mail']);
-		if ($mail != Login::$member->mail) {
-			if ( ! filter_var($mail, FILTER_VALIDATE_EMAIL) ) {
-				warning(_("This email address is not valid!"));
-			} else {
-				Login::$member->set_mail($mail);
-			}
+		if ( $mail != Login::$member->mail and Login::check_mail($mail) ) {
+			Login::$member->set_mail($mail);
 		}
 
 		redirect();
@@ -79,11 +69,11 @@ form(BN);
 <fieldset class="member">
 	<div class="input td0">
 		<label for="username"><?=_("Username")?></label>
-		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="25"></span>
+		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32"></span>
 	</div>
 	<div class="input td1">
 		<label for="password"><?=_("Password")?></label>
-		<span class="input"><input type="password" name="password" size="25"> <?=_("again")?>: <input type="password" name="password2" size="25"></span>
+		<span class="input"><input type="password" name="password" size="25"> <?=_("again")?> <input type="password" name="password2" size="25"></span>
 	</div>
 	<div class="input td0">
 		<label for="mail"><?=_("Mail address for notifications")?></label>

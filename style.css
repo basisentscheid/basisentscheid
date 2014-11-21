@@ -1105,20 +1105,17 @@ form.login div {
 	padding: 0 5px;
 	white-space: nowrap;
 }
+form.login label span.input,
 form.login label span.label {
 	display: inline-block;
 	vertical-align: middle;
-	width: 100px;
-	width: 10rem;
-	text-align: right;
 	margin: 2px    0 2px    5px;
 	margin: 0.2rem 0 0.2rem 0.5rem;
 }
-form.login label span.input {
-	display: inline-block;
-	vertical-align: middle;
-	margin: 2px    3px    2px    5px;
-	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
+form.login label span.label {
+	width: 100px;
+	width: 10rem;
+	text-align: right;
 }
 form.login input[type=text],
 form.login input[type=password] {

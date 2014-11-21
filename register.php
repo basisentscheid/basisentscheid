@@ -65,32 +65,13 @@ if ($action) {
 		$password2 = trim($_POST['password2']);
 		$mail      = trim($_POST['mail']);
 
-		// username
-		if (!$username) {
-			warning(_("Please enter a user name!"));
-			break;
-		}
-		if (mb_strlen($username) < 3) {
-			warning(_("The user name must have at least 3 characters!"));
-			break;
-		}
-
-		// password
+		if ( ! Login::check_username($username)             ) break;
 		if ( ! Login::check_password($password, $password2) ) break;
-
-		// mail
-		if (!$mail) {
-			warning(_("Please enter a mail address!"));
-			break;
-		}
-		if ( ! filter_var($mail, FILTER_VALIDATE_EMAIL) ) {
-			warning(_("This email address is not valid!"));
-			break;
-		}
+		if ( ! Login::check_mail($mail)                     ) break;
 
 		Login::$member = $member;
 
-		Login::$member->set_unique_username($username);
+		Login::$member->username = $username;
 		Login::$member->password = crypt($password);
 		if ( ! Login::$member->update(array('username', 'password'), 'activated=now()') ) break;
 		success(_("Your account has been activated."));
@@ -116,12 +97,12 @@ form(h(BN."?invite=".$invite));
 	<div class="description td0"><?=_("Please choose a user name, i.e. your real name or your nick name. This name will be used for login and will be shown to others to identify you. The user name is case sensitive.")?></div>
 	<div class="input td0">
 		<label for="username"><?=_("Username")?></label>
-		<span class="input"><input type="text" name="username" value="<?=h($username)?>" size="25"></span>
+		<span class="input"><input type="text" name="username" value="<?=h($username)?>" size="32" maxlength="32"></span>
 	</div>
 	<div class="description td1"><?=_("Please choose a password and enter it twice. The password is case sensitive and has to be at least 8 characters long.")?></div>
 	<div class="input td1">
 		<label for="password"><?=_("Password")?></label>
-		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25"> <?=_("again")?>: <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
+		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25"> <?=_("again")?> <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
 	</div>
 	<div class="description td0"><?=_("Please enter your email address. This address will be used for automatic notifications (if you request them) and in case you've lost your password. This address will not be published. After registration you will receive an email with a confirmation link.")?></div>
 	<div class="input td0">
