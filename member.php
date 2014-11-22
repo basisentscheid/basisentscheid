@@ -49,7 +49,7 @@ if ($action) {
 
 		// save mail
 		$mail = trim($_POST['mail']);
-		if ( $mail != Login::$member->mail and Login::check_mail($mail) ) {
+		if ( $mail != Login::$member->mail and $mail != Login::$member->mail_unconfirmed and Login::check_mail($mail) ) {
 			Login::$member->set_mail($mail);
 		}
 
