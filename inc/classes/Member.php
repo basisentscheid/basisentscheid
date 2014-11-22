@@ -189,7 +189,7 @@ class Member extends Relation {
 		$subject = _("Email confirmation request");
 		$body = _("Please confirm your email address by clicking the following link:")."\n"
 			.BASE_URL."confirm_mail.php?code=".$this->mail_code."\n\n"
-			._("If this link does not work, please open the following URL in your web browser:")."\n\n"
+			._("If this link does not work, please open the following URL in your web browser:")."\n"
 			.BASE_URL."confirm_mail.php\n"
 			._("On that page enter the code:")."\n"
 			.$this->mail_code;
