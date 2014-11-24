@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-11-24 13:04+0200\n"
+"PO-Revision-Date: 2014-11-24 14:36+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,6 @@ msgstr "Mitglied"
 #
 # File: admin_members.php, line: 18
 # File: admins.php, line: 17
-# File: local_member_login.php, line: 46
 # File: login.php, line: 39
 # File: member.php, line: 71
 # File: register.php, line: 99
@@ -481,7 +480,6 @@ msgstr "antworten"
 msgid "save"
 msgstr "speichern"
 #
-# File: local_member_login.php, line: 42
 msgid "Local member login"
 msgstr "Anmeldung als lokales Mitglied"
 #
@@ -847,11 +845,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 528
+# File: inc/functions_http.php, line: 563
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 538
+# File: inc/functions_http.php, line: 541
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -1026,8 +1024,8 @@ msgstr "Unbekannte Aktion"
 msgid "The ballot could not be created!"
 msgstr "Die Urne konnte nicht angelegt werden!"
 #
-# File: inc/classes/Login.php, line: 97
-# File: inc/classes/Login.php, line: 100
+# File: inc/classes/Login.php, line: 101
+# File: inc/classes/Login.php, line: 104
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 #
@@ -1364,7 +1362,7 @@ msgstr "Abstimmung in Periode %d startet"
 msgid "voting in period %d closes"
 msgstr "Abstimmung in Periode %d endet"
 #
-# File: inc/classes/Login.php, line: 198
+# File: inc/classes/Login.php, line: 202
 msgid "This email address is not valid!"
 msgstr "Diese E-Mail-Adresse ist ungültig!"
 #
@@ -1556,7 +1554,6 @@ msgstr "Keine Gliederungen gefunden"
 msgid "entitled"
 msgstr "stimmberechtigt"
 #
-# File: local_member_login.php, line: 55
 # File: login.php, line: 43
 # File: inc/functions_http.php, line: 269
 msgid "login"
@@ -2195,35 +2192,35 @@ msgstr "Deine Stimme wurde gespeichert, aber der Beleg konnte nicht verschickt w
 msgid "Your vote could not be saved!"
 msgstr "Deine Stimme konnte nicht gespeichert werden!"
 #
-# File: inc/classes/Login.php, line: 138
+# File: inc/classes/Login.php, line: 142
 msgid "Please enter a user name!"
 msgstr "Bitte gib einen Benutzernamen ein!"
 #
-# File: inc/classes/Login.php, line: 143
+# File: inc/classes/Login.php, line: 147
 msgid "The user name must have at least 3 characters!"
 msgstr "Der Benutzername muss mindestens 3 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 147
+# File: inc/classes/Login.php, line: 151
 msgid "The user name must have not more than 32 characters!"
 msgstr "Der Benutzername darf nicht mehr als 32 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 152
+# File: inc/classes/Login.php, line: 156
 msgid "This user name is already used by someone else. Please try a different one!"
 msgstr "Dieser Benutzername wird bereits von jemand anderem verwendet. Bitte versuche es mit einem anderen!"
 #
-# File: inc/classes/Login.php, line: 168
+# File: inc/classes/Login.php, line: 172
 msgid "Please enter a password!"
 msgstr "Bitte gib ein Passwort ein!"
 #
-# File: inc/classes/Login.php, line: 173
+# File: inc/classes/Login.php, line: 177
 msgid "The two password fields do not match!"
 msgstr "Die beiden Passwörter stimmen nicht überein!"
 #
-# File: inc/classes/Login.php, line: 178
+# File: inc/classes/Login.php, line: 182
 msgid "The password name must have at least 8 characters!"
 msgstr "Das Passwort muss mindestens acht Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 194
+# File: inc/classes/Login.php, line: 198
 msgid "Please enter an email address!"
 msgstr "Bitte gib eine E-Mail-Adresse ein!"
 #
@@ -2292,3 +2289,7 @@ msgstr "Du kannst zu diesem Thema nicht abstimmen, weil du in der Gliederung nic
 # File: inc/classes/Issue.php, line: 745
 msgid "You have voted on this issue."
 msgstr "Du hast zu diesem Thema abgestimmt."
+#
+# File: inc/common.php, line: 100
+msgid "You have logged out."
+msgstr "Du hast dich abgemeldet."
