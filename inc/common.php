@@ -17,7 +17,6 @@
  * @see diff.php
  * @see draft.php
  * @see index.php
- * @see local_member_login.php
  * @see login.php
  * @see member.php
  * @see periods.php
