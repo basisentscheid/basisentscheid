@@ -43,6 +43,10 @@ if ($action) {
 
 html_head(_("Vote"));
 
+?>
+<p><?=sprintf(_("Voting goes until %s."), datetimeformat($issue->period()->counting))?></p>
+<?
+
 form("vote.php?issue=".$issue->id);
 ?>
 <input type="hidden" name="action" value="submit">
