@@ -32,7 +32,7 @@ abstract class Timebar {
 		}
 		unset($time);
 
-		usort($times, "self::sort_cmp");
+		usort($times, ["self", "sort_cmp"]);
 
 		$from_time = strtotime(date("Y-m-d", $times[0][0]));
 		$to_time = max(
@@ -49,7 +49,7 @@ abstract class Timebar {
 			$show_year = false;
 		}
 
-		usort($times, "self::sort_cmp");
+		usort($times, ["self", "sort_cmp"]);
 
 		// display multiple parts if there are big gaps
 		$from_time_part = $from_time;
