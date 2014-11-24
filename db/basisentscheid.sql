@@ -616,9 +616,9 @@ ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
 --
 
 CREATE TABLE vote (
+    token character(16) NOT NULL,
     vote text,
-    votetime timestamp with time zone DEFAULT now() NOT NULL,
-    token character(16) NOT NULL
+    votetime timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
