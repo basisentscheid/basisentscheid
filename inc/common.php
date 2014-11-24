@@ -99,11 +99,9 @@ case "logout":
 	Login::logout();
 	redirect();
 case "hide_help":
-	Login::access_action("member");
-	Login::$member->hide_help(BN);
+	hide_help();
 	redirect();
 case "show_help":
-	Login::access_action("member");
-	Login::$member->show_help(BN);
+	show_help();
 	redirect();
 }

@@ -516,19 +516,22 @@ function stripes($change=false, $suffix="") {
 /**
  * display help text
  *
+ * default for logged in members:      show all help
+ * default for not logged in sessions: hide all help
+ *
  * This function should not be used on pages with forms, because users will lose their already filled in data if they click on the help buttons.
  */
 function help() {
-	if (!Login::$member) return;
-	$pages = explode_no_empty(",", Login::$member->hide_help);
-	if (in_array(BN, $pages)) {
-		form(URI::same(), 'class="show_help"');
-?>
-<input type="hidden" name="action" value="show_help">
-<input type="submit" value="<?=_("show help")?>">
-<?
-		form_end();
+	if (Login::$member) {
+		$show = !in_array(BN, Login::$member->hide_help());
 	} else {
+		if ( isset($_SESSION['show_help']) ) {
+			$show = in_array(BN, $_SESSION['show_help']);
+		} else {
+			$show = false;
+		}
+	}
+	if ($show) {
 ?>
 <div class="help">
 <?
@@ -553,6 +556,47 @@ function help() {
 ?>
 </div>
 <?
+	} else {
+		form(URI::same(), 'class="show_help"');
+?>
+<input type="hidden" name="action" value="show_help">
+<input type="submit" value="<?=_("show help")?>">
+<?
+		form_end();
+	}
+}
+
+
+/**
+ * hide help on a page
+ */
+function hide_help() {
+	if (Login::$member) {
+		$hide = Login::$member->hide_help();
+		if (!in_array(BN, $hide)) {
+			$hide[] = BN;
+			Login::$member->update_help($hide);
+		}
+	} else {
+		if (!empty($_SESSION['show_help'])) array_remove_value($_SESSION['show_help'], BN);
+	}
+}
+
+
+/**
+ * show help on a page
+ */
+function show_help() {
+	if (Login::$member) {
+		$hide = Login::$member->hide_help();
+		array_remove_value($hide, BN);
+		Login::$member->update_help($hide);
+	} else {
+		if (empty($_SESSION['show_help'])) {
+			$_SESSION['show_help'] = array(BN);
+		} elseif (!in_array(BN, $_SESSION['show_help'])) {
+			$_SESSION['show_help'][] = BN;
+		}
 	}
 }
 

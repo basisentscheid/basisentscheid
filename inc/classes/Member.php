@@ -205,30 +205,22 @@ class Member extends Relation {
 
 
 	/**
-	 * hide help on a page
+	 * get pages where to hide help
 	 *
-	 * @param string  $basename
+	 * @return array
 	 */
-	public function hide_help($basename) {
-		$pages = explode_no_empty(",", $this->hide_help);
-		$pages[] = $basename;
-		$pages = array_unique($pages);
-		$this->hide_help = join(",", $pages);
-		$this->update(array("hide_help"));
+	public function hide_help() {
+		return explode_no_empty(",", $this->hide_help);
 	}
 
 
 	/**
-	 * hide help on a page
+	 * save pages where to hide help
 	 *
-	 * @param string  $basename
+	 * @param array   $hide
 	 */
-	public function show_help($basename) {
-		$pages = explode_no_empty(",", $this->hide_help);
-		foreach ( $pages as $key => $page ) {
-			if ($page==$basename) unset($pages[$key]);
-		}
-		$this->hide_help = join(",", $pages);
+	public function update_help(array $hide) {
+		$this->hide_help = join(",", $hide);
 		$this->update(array("hide_help"));
 	}
 

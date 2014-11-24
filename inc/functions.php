@@ -285,6 +285,17 @@ function explode_no_empty($delimiter, $string) {
 
 
 /**
+ * remove a value from an array
+ *
+ * @param array   $array (reference)
+ * @param mixed   $value
+ */
+function array_remove_value(&$array, $value) {
+	foreach ( array_keys($array, $value) as $key ) unset($array[$key]);
+}
+
+
+/**
  * truncate a string and add dots
  *
  * @param string  $string
