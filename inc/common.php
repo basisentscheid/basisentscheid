@@ -97,6 +97,7 @@ if ($action) {
 switch ($action) {
 case "logout":
 	Login::logout();
+	success(_("You have logged out."));
 	redirect();
 case "hide_help":
 	hide_help();

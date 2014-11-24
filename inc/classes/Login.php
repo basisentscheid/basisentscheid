@@ -93,6 +93,10 @@ abstract class Login {
 				trigger_error("Unknown allowed users keyword", E_USER_ERROR);
 			}
 		}
+		// after logout on a non-public page
+		if ( isset($_SESSION['redirects'][0]['POST']['action']) and $_SESSION['redirects'][0]['POST']['action'] == "logout" ) {
+			redirect("index.php");
+		}
 		if ($redirect) {
 			warning(_("Access denied"));
 			redirect();
