@@ -133,7 +133,7 @@ abstract class Timebar {
 			}
 		}
 		?></div>
-	<div class="beam" style="width:calc(<?=round(self::day_width * $days, self::round_precision)?>em + 1px)"></div>
+	<div class="beam" style="width:calc(<?=round(self::day_width * $days, self::round_precision)."em"?> + 1px)"></div>
 	<div class="datespace" style="width:<?=round(($times[0][0] - $from_time) * $second_width - self::tick_width, self::round_precision)?>em"></div><?
 		$line = 0;
 		foreach ( $times as $index => $time ) {
