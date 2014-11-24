@@ -36,7 +36,9 @@ abstract class Timebar {
 
 		$from_time = strtotime(date("Y-m-d", $times[0][0]));
 		$to_time = max(
+			// show at least 2 days more than the last timestamp
 			strtotime(date("Y-m-d", $times[count($times)-1][0])." + 2 days"),
+			// show at least 10 days
 			$from_time + 10 * self::one_day
 		);
 
@@ -101,11 +103,14 @@ abstract class Timebar {
 			if ($t <= $to_time - self::one_day) {
 				?><div class="day nowrap"><?
 				if (date("n", $t)!=$month) {
-					if ($show_year) {
-						echo date("F Y", $t);
-						$show_year = false; // show year only at the first month
-					} else {
-						echo date("F", $t);
+					// show month name only if there is enough space
+					if ( date("t", $t) - date("j", $t) > 3 ) {
+						if ($show_year) {
+							echo date("F Y", $t);
+							$show_year = false; // show year only at the first month
+						} else {
+							echo date("F", $t);
+						}
 					}
 					$month = date("n", $t);
 				}
