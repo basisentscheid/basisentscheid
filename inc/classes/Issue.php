@@ -639,15 +639,7 @@ class Issue extends Relation {
 					if ($first) {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center"><?
-						if ($this->state=="voting") {
-							if ( Login::$member and Login::$member->entitled($this->area()->ngroup) ) {
-								?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
-							} else {
-								echo _("Voting");
-							}
-						} else {
-							echo $this->state_name();
-						}
+						if ($this->state=="voting") $this->display_voting(); else echo $this->state_name();
 						if ( $state_info = $this->state_info() ) {
 							?><br><span class="stateinfo"><?=$state_info?></span><?
 						}
@@ -728,6 +720,33 @@ class Issue extends Relation {
 			$first = false;
 		}
 
+	}
+
+
+	/**
+	 * display voting in state column
+	 */
+	private function display_voting() {
+		if ( !Login::$member ) {
+			echo _("Voting");
+			return;
+		}
+		if ( !Login::$member->entitled($this->area()->ngroup) ) {
+			?><span title="<?=_("You can not vote on this issue, because you are are not entitled in the group.")?>"><?=_("Voting")?></span><?
+			return;
+		}
+		$sql = "SELECT vote.token FROM vote_tokens
+			LEFT JOIN vote ON vote_tokens.token = vote.token
+			WHERE vote_tokens.member=".intval(Login::$member->id)." AND vote_tokens.issue=".intval($this->id);
+		$result = DB::query($sql);
+		if ( list($token) = DB::fetch_row($result) ) {
+			?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
+			if ($token) {
+				?><span title="<?=_("You have voted on this issue.")?>">&#10003;</span><?
+			}
+		} else {
+			?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
+		}
 	}
 
 
