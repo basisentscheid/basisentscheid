@@ -13,7 +13,7 @@ Login::access("member");
 if ($action) {
 	switch ($action) {
 	case "save":
-		action_required_parameters('username', 'password', 'password2', 'mail');
+		action_required_parameters('username', 'password', 'password2', 'mail', 'profile');
 
 		// save notification settings
 		foreach ( Notification::$default_settings as $interest => $types ) {
@@ -27,7 +27,7 @@ if ($action) {
 		$save_fields = array();
 		$success_msgs = array();
 
-		// username
+		// save username
 		$username = trim($_POST['username']);
 		if ( $username != Login::$member->username and Login::check_username($username) ) {
 			Login::$member->username = $username;
@@ -39,9 +39,17 @@ if ($action) {
 		$password  = trim($_POST['password']);
 		$password2 = trim($_POST['password2']);
 		if ( ($password or $password2) and Login::check_password($password, $password2) ) {
-			Login::$member->password = crypt($password);
+			Login::$member->set_new_password($password);
 			$save_fields[] = "password";
 			$success_msgs[] = _("The new password has been saved.");
+		}
+
+		// save profile
+		$profile = trim($_POST['profile']);
+		if ( $profile != Login::$member->profile ) {
+			Login::$member->set_profile($profile);
+			$save_fields[] = "profile";
+			$success_msgs[] = _("The profile has been saved.");
 		}
 
 		Login::$member->update($save_fields);
@@ -49,7 +57,11 @@ if ($action) {
 
 		// save mail
 		$mail = trim($_POST['mail']);
-		if ( $mail != Login::$member->mail and $mail != Login::$member->mail_unconfirmed and Login::check_mail($mail) ) {
+		if (
+			$mail != Login::$member->mail and
+			( $mail != Login::$member->mail_unconfirmed or !empty($_POST['submit_mail']) ) and
+			Login::check_mail($mail)
+		) {
 			Login::$member->set_mail($mail);
 		}
 
@@ -76,18 +88,12 @@ form(BN);
 		<span class="input"><input type="password" name="password" size="25"> <?=_("again")?> <input type="password" name="password2" size="25"></span>
 	</div>
 	<div class="input td0">
-		<label for="mail"><?=_("Mail address for notifications")?></label>
-		<span class="input"><input type="text" name="mail" value="<?
-if (Login::$member->mail) {
-	echo Login::$member->mail;
-	$unconfirmed = false;
-} else {
-	echo Login::$member->mail_unconfirmed;
-	$unconfirmed = true;
-}
-?>" size="40"><?
-if ($unconfirmed) { ?> <span class="unconfirmed"><?=_("Not yet confirmed!")?></span><? }
-?></span>
+		<label for="mail"><?=_("Email address for notifications")?></label>
+		<span class="input">
+			<p><?=_("confirmed")?>: <?=h(Login::$member->mail)?></p>
+			<?=_("new")?>: <input type="text" name="mail" value="<?=h(Login::$member->mail_unconfirmed)?>" size="40">
+			<input type="submit" name="submit_mail" value="<?=_("send the confirmation email again")?>">
+		</span>
 	</div>
 	<div class="input td1">
 		<label><?=_("Real name (optional)")?></label>
@@ -95,7 +101,7 @@ if ($unconfirmed) { ?> <span class="unconfirmed"><?=_("Not yet confirmed!")?></s
 	</div>
 	<div class="input td0">
 		<label><?=_("Profile")?></label>
-		<span class="input"><?=h(Login::$member->profile)?></span>
+		<span class="input"><textarea name="profile" cols="80" rows="5" maxlength="<?=Argument::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
 	</div>
 	<div class="input td1">
 		<label><?=_("Entitled and verified")?></label>

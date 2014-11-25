@@ -17,6 +17,7 @@ class Member extends Relation {
 	public $password;
 	public $public_id = "";
 	public $profile   = "";
+	const profile_length = 2000;
 	public $entitled;
 	public $mail;
 	public $mail_unconfirmed;
@@ -165,6 +166,26 @@ class Member extends Relation {
 
 
 	/**
+	 * save new password
+	 *
+	 * @param string $password
+	 */
+	public function set_new_password($password) {
+
+		$this->password = crypt($password);
+
+		// notification
+		if ($this->mail) {
+			$subject = _("Change of your password");
+			$body = _("Someone, probably you, changed your password.")."\n\n"
+				.sprintf(_("If this was not you, somebody else got access to your account. In this case please contact %s as soon as possible!"), MAIL_SUPPORT);
+			send_mail($this->mail, $subject, $body);
+		}
+
+	}
+
+
+	/**
 	 * save not yet confirmed mail address and send confirmation request
 	 *
 	 * @param string  $mail
@@ -172,7 +193,7 @@ class Member extends Relation {
 	public function set_mail($mail) {
 
 		if ( strtotime($this->mail_lock_expiry) > time() ) {
-			warning(_("We have sent an email with activation link already in the last hour. Please try again later!"));
+			warning(_("We have sent an email with a confirmation code already in the last hour. Please try again later!"));
 			redirect();
 		}
 
@@ -183,6 +204,7 @@ class Member extends Relation {
 			$this->mail_code = Login::generate_token(16);
 			$sql = "SELECT id FROM members WHERE mail_code=".DB::esc($this->mail_code);
 		} while ( DB::numrows($sql) );
+		// The member has 7 days to confirm the email address.
 		$this->update(array('mail_unconfirmed', 'mail_code'), "mail_code_expiry = now() + interval '7 days'");
 		DB::transaction_commit();
 
@@ -193,12 +215,38 @@ class Member extends Relation {
 			.BASE_URL."confirm_mail.php\n"
 			._("On that page enter the code:")."\n"
 			.$this->mail_code;
-
 		if ( send_mail($mail, $subject, $body) ) {
 			$this->update(array(), "mail_lock_expiry = now() + interval '1 hour'");
-			success(_("Your email address has been saved. A confirmation request has been sent."));
+			success(_("Your email address has been saved. An email with a confirmation code has been sent."));
 		} else {
-			warning(_("Your email address has been saved, but the confirmation request could not be sent. Try again later or contact the system administrator."));
+			warning(sprintf(_("Your email address has been saved, but the email with the confirmation code could not be sent. Try again later or contact %s.")), MAIL_SUPPORT);
+		}
+
+		// notification to old mail address
+		if ($this->mail) {
+			$subject = _("Change of your email address");
+			$body = _("Someone, probably you, changed your email address to:")."\n"
+				.$this->mail_unconfirmed."\n\n"
+				._("If this was not you, somebody else got access to your account. In this case please log in as soon as possible and change your password:")."\n"
+				.BASE_URL."member.php\n"
+				.sprintf(_("Then try to set the email address back to your one and contact %s!"), MAIL_SUPPORT);
+			send_mail($this->mail, $subject, $body);
+		}
+
+	}
+
+
+	/**
+	 * save profile
+	 *
+	 * @param string $profile
+	 */
+	public function set_profile($profile) {
+
+		$this->profile = $profile;
+		if (mb_strlen($this->profile) > self::profile_length) {
+			$this->profile = limitstr($this->profile, self::profile_length);
+			warning(sprintf(_("The profile has been truncated to the maximum allowed length of %d characters!"), self::profile_length));
 		}
 
 	}

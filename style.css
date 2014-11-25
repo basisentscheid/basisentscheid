@@ -666,11 +666,15 @@ fieldset.member div.input span.input {
 	margin: 2px    3px    2px    5px;
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
+fieldset.member div.input span.input p {
+	margin-top: 0.1em;
+	margin-bottom: 0.3em;
+}
 
 fieldset.member div.button {
 	margin-top: 5px;
 }
-fieldset.member input[type=submit] {
+fieldset.member div.button input[type=submit] {
 	margin-left: 212px;
 	margin-left: 21.2rem;
 }

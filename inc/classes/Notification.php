@@ -390,8 +390,6 @@ class Notification {
 		// remove HTML line break hints
 		$body = strtr($body, array("&shy;"=>""));
 
-		$body = mb_wordwrap($body);
-
 		return array($subject, $body);
 	}
 

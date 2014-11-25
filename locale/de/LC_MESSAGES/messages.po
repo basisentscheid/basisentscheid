@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-11-24 14:36+0200\n"
+"PO-Revision-Date: 2014-11-25 21:20+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -30,21 +30,21 @@ msgid "subscribe"
 msgstr "anmelden"
 #
 # File: admin_members.php, line: 28
-# File: member.php, line: 65
+# File: member.php, line: 77
 msgid "Member"
 msgstr "Mitglied"
 #
 # File: admin_members.php, line: 18
 # File: admins.php, line: 17
 # File: login.php, line: 39
-# File: member.php, line: 71
+# File: member.php, line: 83
 # File: register.php, line: 99
 # File: request_password_reset.php, line: 77
 msgid "Username"
 msgstr "Benutzername"
 #
 # File: ballot_edit.php, line: 138
-# File: member.php, line: 153
+# File: member.php, line: 159
 # File: proposal_edit.php, line: 187
 msgid "Save"
 msgstr "Speichern"
@@ -138,7 +138,7 @@ msgstr "abmelden"
 msgid "Login"
 msgstr "Anmeldung"
 #
-# File: inc/classes/Member.php, line: 129
+# File: inc/classes/Member.php, line: 130
 # File: inc/classes/Proposal.php, line: 827
 # File: inc/classes/Proposal.php, line: 834
 msgid "anonymous"
@@ -365,7 +365,7 @@ msgid "Admin login"
 msgstr "Anmeldung als Verantwortlicher"
 #
 # File: login.php, line: 40
-# File: member.php, line: 75
+# File: member.php, line: 87
 # File: register.php, line: 104
 # File: reset_password.php, line: 81
 msgid "Password"
@@ -1008,7 +1008,7 @@ msgstr "Abstimmungsperiode %d"
 # File: ballots.php, line: 82
 # File: confirm_mail.php, line: 13
 # File: create_member.php, line: 34
-# File: member.php, line: 59
+# File: member.php, line: 71
 # File: proposal_edit.php, line: 130
 # File: proposal.php, line: 236
 # File: proposals.php, line: 21
@@ -1029,7 +1029,7 @@ msgstr "Die Urne konnte nicht angelegt werden!"
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 #
-# File: inc/classes/Member.php, line: 105
+# File: inc/classes/Member.php, line: 106
 msgid "The username is already used by someone else, so we added a number to it."
 msgstr "Der Benutzername wird bereits vor jemand anderem verwendet, deshalb wird eine Zahl angehängt."
 #
@@ -1223,7 +1223,6 @@ msgstr "Deine E-Mail-Adresse wurde gespeichert."
 msgid "leave empty to be displayed as \"anonymous\""
 msgstr "leer lassen um als \"anonym\" angezeigt zu werden"
 #
-# File: member.php, line: 79
 # File: register.php, line: 109
 msgid "Mail address for notifications"
 msgstr "E-Mail-Adresse für Benachrichtigungen"
@@ -1232,11 +1231,11 @@ msgstr "E-Mail-Adresse für Benachrichtigungen"
 msgid "Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also the following will be shown to the other proponents:"
 msgstr "Gib Deinen Namen und Kontaktdaten so ein, wie Du sie im Antrag stehen haben willst. Um die Vortäuschung falscher Identitäten zu vermeiden, wird auch Folgendes den anderen Antragstellern angezeigt:"
 #
-# File: inc/classes/Member.php, line: 139
+# File: inc/classes/Member.php, line: 140
 msgid "Real name"
 msgstr "Realname"
 #
-# File: inc/classes/Member.php, line: 140
+# File: inc/classes/Member.php, line: 141
 msgid "User name"
 msgstr "Benutzername"
 #
@@ -1366,7 +1365,7 @@ msgstr "Abstimmung in Periode %d endet"
 msgid "This email address is not valid!"
 msgstr "Diese E-Mail-Adresse ist ungültig!"
 #
-# File: member.php, line: 117
+# File: member.php, line: 123
 msgid "Email notification settings"
 msgstr "Einstellungen E-Mail-Benachrichtigungen"
 #
@@ -1410,31 +1409,28 @@ msgstr "Diesen Antrag in einen anderen Antragsblock verschieben"
 msgid "move proposal to the selected issue"
 msgstr "Antrag zum ausgewählten Antragsblock verschieben"
 #
-# File: inc/classes/Member.php, line: 175
 msgid "We have sent an email with activation link already in the last hour. Please try again later!"
 msgstr "Wir haben bereits innerhalb der letzten Stunde eine E-Mail mit einem Bestätigungslink verschickt. Bitte versuche es später noch einmal!"
 #
-# File: inc/classes/Member.php, line: 189
+# File: inc/classes/Member.php, line: 206
 msgid "Email confirmation request"
 msgstr "Bestätigung der E-Mail-Adresse"
 #
-# File: inc/classes/Member.php, line: 190
+# File: inc/classes/Member.php, line: 207
 msgid "Please confirm your email address by clicking the following link:"
 msgstr "Bitte bestätige Deine E-Mail-Adresse durch Klick auf folgenden Link:"
 #
 # File: request_password_reset.php, line: 44
-# File: inc/classes/Member.php, line: 192
+# File: inc/classes/Member.php, line: 209
 msgid "If this link does not work, please open the following URL in your web browser:"
 msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web-Browser:"
 #
 msgid "On that page enter the confirmation code:"
 msgstr "Auf dieser Seite gib den Bestätigungscode ein:"
 #
-# File: inc/classes/Member.php, line: 199
 msgid "Your email address has been saved. A confirmation request has been sent."
 msgstr "Deine E-Mail-Adresse wurde gespeichert und eine Bestätigungsmail verschickt."
 #
-# File: inc/classes/Member.php, line: 201
 msgid "Your email address has been saved, but the confirmation request could not be sent. Try again later or contact the system administrator."
 msgstr "Deine E-Mail-Adresse wurde gespeichert, aber die Bestätigungsmail konnte nicht verschickt werden. Versuche es später noch einmal oder wende Dich an einen Systemadminstrator."
 #
@@ -1532,7 +1528,7 @@ msgstr "Nr."
 #
 # File: admin_ngroups.php, line: 29
 # File: index.php, line: 85
-# File: member.php, line: 105
+# File: member.php, line: 111
 # File: inc/functions_http.php, line: 188
 msgid "Groups"
 msgstr "Gliederungen"
@@ -1921,15 +1917,15 @@ msgstr "Der Verantwortliche %id% wurde gelöscht."
 msgid "no admin available for this view"
 msgstr "kein Verantwortlicher in dieser Ansicht"
 #
-# File: member.php, line: 93
+# File: member.php, line: 99
 msgid "Real name (optional)"
 msgstr "Realname (optional)"
 #
-# File: member.php, line: 97
+# File: member.php, line: 103
 msgid "Profile"
 msgstr "Profil"
 #
-# File: member.php, line: 101
+# File: member.php, line: 107
 msgid "Entitled and verified"
 msgstr "stimmberechtigt und verifiziert"
 #
@@ -2008,13 +2004,12 @@ msgstr "Passwort vergessen?"
 msgid "The new password has been saved."
 msgstr "Das neue Passwort wurde gespeichert."
 #
-# File: member.php, line: 76
+# File: member.php, line: 88
 # File: register.php, line: 105
 # File: reset_password.php, line: 82
 msgid "again"
 msgstr "Wdh."
 #
-# File: member.php, line: 89
 msgid "Not yet confirmed!"
 msgstr "Noch nicht bestätigt!"
 #
@@ -2224,7 +2219,7 @@ msgstr "Das Passwort muss mindestens acht Zeichen lang sein!"
 msgid "Please enter an email address!"
 msgstr "Bitte gib eine E-Mail-Adresse ein!"
 #
-# File: inc/classes/Member.php, line: 194
+# File: inc/classes/Member.php, line: 211
 msgid "On that page enter the code:"
 msgstr "Gib auf dieser Seite den Code ein:"
 #
@@ -2293,3 +2288,71 @@ msgstr "Du hast zu diesem Thema abgestimmt."
 # File: inc/common.php, line: 100
 msgid "You have logged out."
 msgstr "Du hast dich abgemeldet."
+#
+# File: inc/classes/Member.php, line: 239
+#, php-format
+msgid "The profile has been truncated to the maximum allowed length of %d characters!"
+msgstr "Das Profil wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
+#
+# File: member.php, line: 52
+msgid "The profile has been saved."
+msgstr "Das Profil wurde gespeichert."
+#
+# File: member.php, line: 91
+msgid "Email address for notifications"
+msgstr "E-Mail-Adresse für Benachrichtigungen"
+#
+# File: member.php, line: 93
+msgid "confirmed"
+msgstr "bestätigt"
+#
+# File: member.php, line: 94
+msgid "new"
+msgstr "neu"
+#
+# File: member.php, line: 95
+msgid "send the confirmation email again"
+msgstr "Bestätigungs-E-Mail nocheinmal senden"
+#
+# File: inc/classes/Member.php, line: 191
+msgid "We have sent an email with a confirmation code already in the last hour. Please try again later!"
+msgstr "Wir haben bereits innerhalb der letzten Stunde eine E-Mail mit einem Bestätigungscode verschickt. Bitte versuche es später noch einmal!"
+#
+# File: inc/classes/Member.php, line: 215
+msgid "Your email address has been saved. An email with a confirmation code has been sent."
+msgstr "Deine E-Mail-Adresse wurde gespeichert und eine E-Mail mit einem Bestätigungscode verschickt."
+#
+# File: inc/classes/Member.php, line: 217
+#, php-format
+msgid "Your email address has been saved, but the email with the confirmation code could not be sent. Try again later or contact %s."
+msgstr "Deine E-Mail-Adresse wurde gespeichert, aber die E-Mail mit dem Bestätigungscode konnte nicht verschickt werden. Versuche es später noch einmal oder wende Dich an %s."
+#
+# File: inc/classes/Member.php, line: 222
+msgid "Change of your email address"
+msgstr "Änderung deiner E-Mail-Adresse"
+#
+# File: inc/classes/Member.php, line: 223
+msgid "Someone, probably you, changed your email address to:"
+msgstr "Jemand, vermutlich Du, hat Deine E-Mail-Adresse geändert auf:"
+#
+# File: inc/classes/Member.php, line: 225
+msgid "If this was not you, somebody else got access to your account. In this case please log in as soon as possible and change your password:"
+msgstr "Falls das nicht Du gewesen sein solltest, hat jemand anderer Zugriff auf Deinen Account bekommen. Logge Dich bitte in diesem Fall so bald wie möglich ein und ändere Dein Passwort:"
+#
+# File: inc/classes/Member.php, line: 227
+#, php-format
+msgid "Then try to set the email address back to your one and contact %s!"
+msgstr "Versuche dann, wieder Deine richtige E-Mail-Adresse einzutragen und wende Dich an %s!"
+#
+# File: inc/classes/Member.php, line: 174
+msgid "Change of your password"
+msgstr "Änderung Deines Passworts"
+#
+# File: inc/classes/Member.php, line: 175
+msgid "Someone, probably you, changed your password."
+msgstr "Jemand, vermutlich Du, hat Dein Passwort geändert."
+#
+# File: inc/classes/Member.php, line: 176
+#, php-format
+msgid "If this was not you, somebody else got access to your account. In this case please contact %s as soon as possible!"
+msgstr "Falls das nicht Du gewesen sein solltest, hat jemand anderer Zugriff auf Deinen Account bekommen. Wende Dich in diesem Fall bitte so bald wie möglich an %s!"
