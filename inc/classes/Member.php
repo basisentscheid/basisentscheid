@@ -110,24 +110,12 @@ class Member extends Relation {
 
 
 	/**
-	 * get the username or "anonymous"
+	 * get the username
 	 *
 	 * @return string
 	 */
 	public function username() {
-		return self::username_static($this->username);
-	}
-
-
-	/**
-	 * get the username or "anonymous"
-	 *
-	 * @param string  $username
-	 * @return string
-	 */
-	public static function username_static($username) {
-		if ($username) return $username;
-		return _("anonymous");
+		return $this->username;
 	}
 
 

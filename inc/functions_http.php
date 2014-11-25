@@ -247,7 +247,7 @@ function html_user() {
 		if (Login::$member) {
 			printf(
 				_("logged in as %s"),
-				'<a href="settings.php" class="user">'.Member::username_static(Login::$member->username).'</a>'
+				'<a href="settings.php" class="user">'.Login::$member->username().'</a>'
 			);
 		} else {
 			printf(
