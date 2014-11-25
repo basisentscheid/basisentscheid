@@ -26,6 +26,7 @@
  * @see register.php
  * @see request_password_reset.php
  * @see reset_password.php
+ * @see settings.php
  * @see test_dbtableadmin.php
  * @see test_redirect_errors.php
  * @see vote.php

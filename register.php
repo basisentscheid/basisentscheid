@@ -80,7 +80,7 @@ if ($action) {
 
 		$_SESSION['member'] = Login::$member->id;
 
-		redirect("member.php");
+		redirect("settings.php");
 
 	default:
 		warning(_("Unknown action"));

@@ -660,7 +660,7 @@ function display_arguments($side, $parent, $level) {
 			!$argument->removed
 		) {
 ?>
-		<div class="author"><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
+		<div class="author"><?=$member->link()?> <?=datetimeformat($argument->created)?></div>
 <?
 			if (strtotime($argument->created) > Argument::edit_limit()) {
 ?>
@@ -693,7 +693,7 @@ function display_arguments($side, $parent, $level) {
 			) {
 				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
 			}
-			?><?=$member->username()?> <?=datetimeformat($argument->created)?></div>
+			echo $member->link()?> <?=datetimeformat($argument->created)?></div>
 <?
 			$display_content = true;
 		}

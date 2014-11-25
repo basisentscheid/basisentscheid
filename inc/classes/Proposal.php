@@ -827,13 +827,13 @@ class Proposal extends Relation {
 					$supporters[] = '<span class="self">'._("anonymous").'</span>';
 				} else {
 					$is_supporter = true;
-					$supporters[] = '<span class="self">'.$member->username().'</span>';
+					$supporters[] = '<span class="self">'.$member->link().'</span>';
 				}
 			} else {
 				if ($row['anonymous']===DB::value_true) {
 					$supporters[] = _("anonymous");
 				} else {
-					$supporters[] = $member->username();
+					$supporters[] = $member->link();
 				}
 			}
 			if ($row['proponent']!==null) {

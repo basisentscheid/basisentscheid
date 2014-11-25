@@ -143,6 +143,20 @@ class Member extends Relation {
 
 
 	/**
+	 * username with link to profile
+	 *
+	 * @return string
+	 */
+	public function link() {
+		if ($this->profile) {
+			return '<a href="member.php?id='.$this->id.'">'.$this->username().'</a>';
+		} else {
+			return $this->username();
+		}
+	}
+
+
+	/**
 	 * get the current notification settings
 	 *
 	 * @return array
@@ -168,7 +182,7 @@ class Member extends Relation {
 	/**
 	 * save new password
 	 *
-	 * @param string $password
+	 * @param string  $password
 	 */
 	public function set_new_password($password) {
 
@@ -228,7 +242,7 @@ class Member extends Relation {
 			$body = _("Someone, probably you, changed your email address to:")."\n"
 				.$this->mail_unconfirmed."\n\n"
 				._("If this was not you, somebody else got access to your account. In this case please log in as soon as possible and change your password:")."\n"
-				.BASE_URL."member.php\n"
+				.BASE_URL."settings.php\n"
 				.sprintf(_("Then try to set the email address back to your one and contact %s!"), MAIL_SUPPORT);
 			send_mail($this->mail, $subject, $body);
 		}
@@ -239,7 +253,7 @@ class Member extends Relation {
 	/**
 	 * save profile
 	 *
-	 * @param string $profile
+	 * @param string  $profile
 	 */
 	public function set_profile($profile) {
 
