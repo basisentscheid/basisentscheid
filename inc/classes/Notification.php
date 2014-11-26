@@ -312,31 +312,6 @@ class Notification {
 				._("Voting").": ".datetimeformat($this->period->voting)."\n";
 
 			break;
-		case "voting":
-
-			$subject = sprintf(_("Voting started in period %d"), $this->period->id);
-
-			$body .= _("Voting has started on the following proposals").":\n";
-
-			foreach ( $this->issues as $issue ) {
-				$body .= "\n"._("Issue")." ".$issue->id."\n";
-				foreach ( $issue->proposals(true) as $proposal ) {
-					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
-						.BASE_URL."proposal.php?id=".$proposal->id."\n";
-				}
-				$body .= _("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
-					._("Your vote token").": ".$this->personal_tokens[$issue->id]."\n";
-			}
-
-			$body .= "\n"._("Voting end").": ".datetimeformat($this->period->counting)
-				."\n\n===== "._("Lists of all vote tokens")." =====\n";
-			foreach ( $this->issues as $issue ) {
-				$body .= "\n"
-					._("Issue")." ".$issue->id.":\n"
-					.join(", ", $this->all_tokens[$issue->id])."\n";
-			}
-
-			break;
 		case "finished":
 
 			$subject = sprintf(_("Voting finished in period %d"), $this->period->id);

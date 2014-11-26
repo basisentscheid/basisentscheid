@@ -260,6 +260,22 @@ abstract class DB {
 
 
 	/**
+	 * query and fetch all objects at once
+	 *
+	 * @param string  $sql
+	 * @param string  $classname
+	 * @return array
+	 */
+	static function fetchobjectarray($sql, $classname) {
+		$result = self::query($sql);
+		$objectarray = array();
+		while ( $object = self::fetch_object($result, $classname) ) $objectarray[] = $object;
+		pg_free_result($result);
+		return $objectarray;
+	}
+
+
+	/**
 	 * query and get number of found rows
 	 *
 	 * @param string  $sql

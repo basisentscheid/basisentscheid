@@ -14,6 +14,7 @@ if ($action) {
 	switch ($action) {
 	case "save":
 		action_required_parameters('username', 'password', 'password2', 'mail', 'profile');
+		if (GNUPG_SIGN_KEY) action_required_parameters('fingerprint', 'key');
 
 		// save notification settings
 		foreach ( Notification::$default_settings as $interest => $types ) {
@@ -44,6 +45,16 @@ if ($action) {
 			$success_msgs[] = _("The new password has been saved.");
 		}
 
+		// save fingerprint
+		if (GNUPG_SIGN_KEY) {
+			$fingerprint = trim($_POST['fingerprint']);
+			if ( $fingerprint != Login::$member->fingerprint ) {
+				Login::$member->set_fingerprint($fingerprint);
+				$save_fields[] = "fingerprint";
+				$success_msgs[] = _("The PGP public key fingerprint has been saved.");
+			}
+		}
+
 		// save profile
 		$profile = trim($_POST['profile']);
 		if ( $profile != Login::$member->profile ) {
@@ -63,6 +74,31 @@ if ($action) {
 			Login::check_mail($mail)
 		) {
 			Login::$member->set_mail($mail);
+		}
+
+		// import PGP public key
+		if (GNUPG_SIGN_KEY and $_POST['key']) {
+			$gnupg = new_gnupg();
+			$import = $gnupg->import($_POST['key']);
+			//var_dump($return);
+			if ($import['imported'] + $import['unchanged'] > 1) {
+				notice(sprintf(_("Multiple keys were uploaded at once. %d keys have been imported and %d keys are unchanged."), $import['imported'], $import['unchanged']));
+			} elseif ($import['imported']) {
+				if ($import['fingerprint'] != Login::$member->fingerprint()) {
+					notice(_("The key has been imported, but does not match the fingerprint."));
+				} else {
+					$info = $gnupg->keyinfo($import['fingerprint']);
+					if ( !Login::$member->keyinfo_matches_email($info) ) {
+						notice(_("The key has been imported, but does not match the email address."));
+					} else {
+						success(_("The key has been imported."));
+					}
+				}
+			} elseif ($import['unchanged']) {
+				notice(_("The key has already been imported."));
+			} else {
+				warning(_("The key could not be imported."));
+			}
 		}
 
 		redirect();
@@ -95,6 +131,20 @@ form(BN);
 			<input type="submit" name="submit_mail" value="<?=_("send the confirmation email again")?>">
 		</span>
 	</div>
+<? if (GNUPG_SIGN_KEY) { ?>
+	<div class="input td1">
+		<label><?=_("PGP Public Key Fingerprint")?></label>
+		<span class="input"><input type="text" name="fingerprint" value="<?=h(Login::$member->fingerprint)?>" size="50" maxlength="<?=Member::fingerprint_length?>">
+<?
+	Login::$member->display_fingerprint_info();
+?>
+		</span>
+	</div>
+	<div class="input td0">
+		<label><?=_("PGP Public Key import")?></label>
+		<span class="input"><textarea name="key" cols="80" rows="5" maxlength="10000"></textarea></span>
+	</div>
+<? } ?>
 	<div class="input td1">
 		<label><?=_("Real name (optional)")?></label>
 		<span class="input"><?=h(Login::$member->public_id)?></span>

@@ -1140,10 +1140,12 @@ table.notify th.type {
 	width: 13%;
 }
 
-span.unconfirmed {
+span.problem {
 	color: #C00;
 }
-
+span.fine {
+	color: #0A0;
+}
 
 /* 5.6 vote result */
 

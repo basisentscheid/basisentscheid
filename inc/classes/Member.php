@@ -24,6 +24,8 @@ class Member extends Relation {
 	public $mail_code;
 	public $mail_code_expiry;
 	public $mail_lock_expiry;
+	public $fingerprint;
+	const fingerprint_length = 100;
 	public $hide_help;
 
 	protected $boolean_fields = array("entitled");
@@ -250,6 +252,86 @@ class Member extends Relation {
 			$this->profile = limitstr($this->profile, self::profile_length);
 			warning(sprintf(_("The profile has been truncated to the maximum allowed length of %d characters!"), self::profile_length));
 		}
+
+	}
+
+
+	/**
+	 * save fingerprint
+	 *
+	 * @param string  $fingerprint
+	 */
+	public function set_fingerprint($fingerprint) {
+		$this->fingerprint = limitstr($fingerprint, self::fingerprint_length);
+	}
+
+
+	/**
+	 * fingerprint without spaces
+	 *
+	 * @return string
+	 */
+	public function fingerprint() {
+		return str_replace(" ", "", $this->fingerprint);
+	}
+
+
+	/**
+	 * check if the email address is among the key uids
+	 *
+	 * @param array   $info return of gnupg::keyinfo()
+	 * @return boolean
+	 */
+	public function keyinfo_matches_email(array $info) {
+		if (!isset($info[0]["uids"])) return false;
+		foreach ( $info[0]["uids"] as $uid ) {
+			if ( $uid['email'] == Login::$member->mail and !$uid["revoked"] and !$uid["invalid"] ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * check if the matching key is available
+	 */
+	public function display_fingerprint_info() {
+
+		if (!Login::$member->fingerprint) return;
+
+		$gnupg = new_gnupg();
+
+		$info = $gnupg->keyinfo($this->fingerprint());
+		//var_dump($info);
+
+		if ( !$this->keyinfo_matches_email($info) ) {
+			?><span class="problem"><?=_("No matching key was found.")?></span><?
+			return;
+		}
+
+		if ($info[0]["disabled"]) {
+			?><span class="problem"><?=_("This key is disabled.")?></span><?
+			return;
+		}
+		if ($info[0]["expired"]) {
+			?><span class="problem"><?=_("This key is expired.")?></span><?
+			return;
+		}
+		if ($info[0]["revoked"]) {
+			?><span class="problem"><?=_("This key is revoked.")?></span><?
+			return;
+		}
+		if ($info[0]["is_secret"]) {
+			?><span class="problem"><?=_("This key is a secret key.")?></span><?
+			return;
+		}
+		if (!$info[0]["can_encrypt"]) {
+			?><span class="problem"><?=_("This key can not encrypt.")?></span><?
+			return;
+		}
+
+		?><span class="fine" title="<?=_("The key was found and is usable.")?>">&#10003;</span><?
 
 	}
 

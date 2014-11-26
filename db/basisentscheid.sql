@@ -387,8 +387,16 @@ CREATE TABLE members (
     mail_lock_expiry timestamp with time zone,
     hide_help text DEFAULT ''::text NOT NULL,
     password_reset_code character(24),
-    password_reset_code_expiry timestamp with time zone
+    password_reset_code_expiry timestamp with time zone,
+    fingerprint text DEFAULT ''::text NOT NULL
 );
+
+
+--
+-- Name: COLUMN members.fingerprint; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN members.fingerprint IS 'PGP fingerprint for email encryption';
 
 
 --

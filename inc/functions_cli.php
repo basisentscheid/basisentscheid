@@ -290,27 +290,27 @@ function cron($skip_if_locked=false) {
 		if ($issues_start_voting) {
 
 			// entitled members of the ngroup
-			$sql = "SELECT id FROM members
+			$sql = "SELECT members.* FROM members
 				JOIN members_ngroups ON members.id = members_ngroups.member AND members_ngroups.ngroup=".intval($period->ngroup)."
 				WHERE entitled=TRUE";
-			$members = DB::fetchfieldarray($sql);
+			$members = DB::fetchobjectarray($sql, "Member");
 
 			$personal_tokens = array();
 			$all_tokens      = array();
 			foreach ($issues_start_voting as $issue) {
 
 				// generate vote tokens
-				foreach ( $members as $member_id ) {
+				foreach ( $members as $member ) {
 					DB::transaction_start();
 					do {
 						$token = Login::generate_token(8);
 						$sql = "SELECT token FROM vote_tokens WHERE token=".DB::esc($token);
 					} while ( DB::numrows($sql) );
-					$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member_id).", ".intval($issue->id).", ".DB::esc($token).")";
+					$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member->id).", ".intval($issue->id).", ".DB::esc($token).")";
 					DB::query($sql);
 					DB::transaction_commit();
-					$personal_tokens[$member_id][$issue->id] = $token;
-					$all_tokens[$issue->id][]                = $token;
+					$personal_tokens[$member->id][$issue->id] = $token;
+					$all_tokens[$issue->id][]                 = $token;
 				}
 
 				$issue->state = "voting";
@@ -318,19 +318,35 @@ function cron($skip_if_locked=false) {
 
 			}
 
-			foreach ( $members as $member_id ) {
-				$notification = new Notification("voting");
-				$notification->period = $period;
-				$notification->issues = $issues_start_voting;
-				$notification->personal_tokens = $personal_tokens[$member_id];
-				$notification->all_tokens      = $all_tokens;
-				$notification->send($member_id);
+			// receipt mails
+			$subject = sprintf(_("Voting started in period %d"), $period->id);
+			$body_top = _("Group").": ".$period->ngroup()->name."\n\n"
+				._("Voting has started on the following proposals").":\n";
+			$body_lists = "\n"._("Voting end").": ".datetimeformat($period->counting)
+				."\n\n===== "._("Lists of all vote tokens")." =====\n";
+			$issues_blocks = array();
+			foreach ( $issues_start_voting as $issue ) {
+				$body_lists .= "\n"
+					._("Issue")." ".$issue->id.":\n"
+					.join(", ", $all_tokens[$issue->id])."\n";
+				$issues_blocks[$issue->id] = "\n"._("Issue")." ".$issue->id."\n";
+				foreach ( $issue->proposals(true) as $proposal ) {
+					$issues_blocks[$issue->id] .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n";
+				}
+			}
+			foreach ( $members as $member ) {
+				$body = $body_top;
+				foreach ( $issues_start_voting as $issue ) {
+					$body .= $issues_blocks[$issue->id]
+						._("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
+						._("Your vote token").": ".$personal_tokens[$member->id][$issue->id]."\n";
+				}
+				$body .= $body_lists;
+				send_mail($member->mail, $subject, $body, array(), true, $member->fingerprint);
 			}
 
 		}
-
-
-
 
 	}
 

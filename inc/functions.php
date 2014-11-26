@@ -353,10 +353,12 @@ function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
  * @param string  $to
  * @param string  $subject
  * @param string  $body
- * @param array   $headers (optional)
- * @return boolean
+ * @param array   $headers     (optional)
+ * @param boolean $sign        (optional) sign mail with the configured private key
+ * @param string  $fingerprint (optional) encrypt mail with the public key with this fingerprint
+ * @return bool
  */
-function send_mail($to, $subject, $body, array $headers=array()) {
+function send_mail($to, $subject, $body, array $headers=array(), $sign=false, $fingerprint="") {
 
 	$subject = MAIL_SUBJECT_PREFIX.$subject;
 
@@ -366,5 +368,36 @@ function send_mail($to, $subject, $body, array $headers=array()) {
 
 	$body = mb_wordwrap($body);
 
+	if ($sign and GNUPG_SIGN_KEY) {
+		$gnupg = new_gnupg();
+		if ( $gnupg->addsignkey(GNUPG_SIGN_KEY) ) {
+			if ($fingerprint) {
+				if ( $gnupg->addencryptkey($fingerprint) ) {
+					$body = $gnupg->encryptsign($body);
+				} else {
+					$body .= "\n\n".mb_wordwrap(_("This email should be encrypted, but no available key matching your fingerprint was found! Please check your settings:")." ".BASE_URL."settings.php");
+					$body = $gnupg->sign($body);
+				}
+			} else {
+				$body = $gnupg->sign($body);
+			}
+		} else {
+			trigger_error("Gnupg sign key cound not be added", E_USER_WARNING);
+		}
+	}
+
 	return mail($to, $subject, $body, join("\r\n", $headers));
+}
+
+
+/**
+ * new gnupg object
+ *
+ * @return object
+ */
+function new_gnupg() {
+	$gnupg = new gnupg();
+	putenv('GNUPGHOME='.GNUPGHOME);
+	if (DEBUG) $gnupg->seterrormode(GNUPG_ERROR_WARNING);
+	return $gnupg;
 }

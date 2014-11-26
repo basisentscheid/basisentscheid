@@ -3,6 +3,7 @@
 
 requirements:
 - PHP >= 5.4 with modules: apache2 (or whatever webserver you use), cli, postgres, gettext, session, curl, ssl, unicode
+- if you want to sign/encrypt emails: gnupg PECL module http://pecl.php.net/package/gnupg
 - PostgreSQL
 
 configuration:

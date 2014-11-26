@@ -28,6 +28,7 @@
  * @see reset_password.php
  * @see settings.php
  * @see test_dbtableadmin.php
+ * @see test_mail.php
  * @see test_redirect_errors.php
  * @see vote.php
  * @see vote_result.php

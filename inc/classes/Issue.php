@@ -127,7 +127,7 @@ class Issue extends Relation {
 					._("You can change your vote by voting again on:")."\n"
 					.BASE_URL."vote.php?issue=".$this->id."\n";
 
-				if ( send_mail(Login::$member->mail, $subject, $body) ) {
+				if ( send_mail(Login::$member->mail, $subject, $body, array(), true, Login::$member->fingerprint) ) {
 					success(_("Your vote has been saved and an email receipt has been sent to you."));
 				} else {
 					warning(_("Your vote has been saved, but the email receipt could not be sent!"));

@@ -30,6 +30,11 @@ define("MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 
 define("MAIL_SUPPORT", "example@example.com");
 
+// home for gnupg
+define("GNUPGHOME", "/www/basisentscheid/var/gnupg");
+// identifier of the PGP private key for signing (leave empty to disable signing and encryption)
+define("GNUPG_SIGN_KEY", "");
+
 define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 
 // names of areas to create for new ngroups

@@ -1,4 +1,8 @@
 *
 !.gitignore
 !.htaccess
+!errors
+!gnupg
+!log
+!sessions
 
