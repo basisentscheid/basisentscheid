@@ -120,8 +120,11 @@ form(BN);
 		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32"></span>
 	</div>
 	<div class="input td1">
-		<label for="password"><?=_("Password")?></label>
-		<span class="input"><input type="password" name="password" size="25"> <?=_("again")?> <input type="password" name="password2" size="25"></span>
+		<label for="password"><?=_("Change password")?></label>
+		<span class="input">
+			<?=_("To change the password, enter the new password twice:")?><br>
+			<input type="password" name="password" size="25"> <?=_("again")?> <input type="password" name="password2" size="25">
+		</span>
 	</div>
 	<div class="input td0">
 		<label for="mail"><?=_("Email address for notifications")?></label>
