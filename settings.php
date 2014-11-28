@@ -131,7 +131,9 @@ form(BN);
 		<span class="input">
 			<p><?=_("confirmed")?>: <?=h(Login::$member->mail)?></p>
 			<?=_("new")?>: <input type="text" name="mail" value="<?=h(Login::$member->mail_unconfirmed)?>" size="40">
+<? if (Login::$member->mail_unconfirmed) { ?>
 			<input type="submit" name="submit_mail" value="<?=_("send the confirmation email again")?>">
+<? } ?>
 		</span>
 	</div>
 <? if (GNUPG_SIGN_KEY) { ?>
