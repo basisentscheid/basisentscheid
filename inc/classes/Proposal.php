@@ -821,7 +821,7 @@ class Proposal extends Relation {
 				if ($row['proponent_confirmed']) {
 					$is_proponent = true;
 					$is_supporter = true;
-					$supporters[] = '<span class="proponent">'.$row['proponent'].'</span>';
+					$supporters[] = '<span class="self">'.$row['proponent'].' <i>('._("proponent").')</i></span>';
 				} elseif ($row['anonymous']===DB::value_true) {
 					$is_supporter = "anonymous";
 					$supporters[] = '<span class="self">'._("anonymous").'</span>';
@@ -830,7 +830,9 @@ class Proposal extends Relation {
 					$supporters[] = '<span class="self">'.$member->link().'</span>';
 				}
 			} else {
-				if ($row['anonymous']===DB::value_true) {
+				if ($row['proponent_confirmed']) {
+					$supporters[] = $row['proponent'].' <i>('._("proponent").')</i>';
+				} elseif ($row['anonymous']===DB::value_true) {
 					$supporters[] = _("anonymous");
 				} else {
 					$supporters[] = $member->link();
