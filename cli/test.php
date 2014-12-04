@@ -490,7 +490,10 @@ function create_member($username) {
 	Login::$member->create();
 	Login::$member->username = $username;
 	Login::$member->password = $password;
-	Login::$member->mail = ERROR_MAIL;
+
+	// Enable this only in local development environment, because it will lead to extremely many notification mails!
+	//Login::$member->mail = ERROR_MAIL;
+
 	Login::$member->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
 	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
 

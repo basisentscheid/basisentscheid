@@ -89,6 +89,10 @@ class Notification {
 		// nobody to notify
 		if (!$recipients) return;
 
+		if (PHP_SAPI=="cli" AND DEBUG) {
+			echo "Send ".$this->type." notification to ".count($recipients)." recipients\n";
+		}
+
 		$headers = array();
 		if (count($recipients) > 1) {
 			$to = "";
