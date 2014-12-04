@@ -386,7 +386,8 @@ class Issue extends Relation {
 		// admit other proposals too, if they reached the quorum due to the now lower level
 		foreach ( $this->proposals() as $proposal ) {
 			if ($proposal->id==$admitted_proposal->id) continue;
-			if ($proposal->supporters >= $proposal->quorum_required()) {
+			if ( !$proposal->quorum_reached and $proposal->supporters >= $proposal->quorum_required() ) {
+				// admit proposal
 				$proposal->quorum_reached = true;
 				$proposal->state = "admitted";
 				$proposal->update(array("quorum_reached", "state"), "admitted=now()");
