@@ -490,11 +490,13 @@ function create_member($username) {
 	Login::$member->create();
 	Login::$member->username = $username;
 	Login::$member->password = $password;
+	$update_fields = array('username', 'password', 'entitled');
 
 	// Enable this only in local development environment, because it will lead to extremely many notification mails!
 	//Login::$member->mail = ERROR_MAIL;
+	//$update_fields[] = "mail";
 
-	Login::$member->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
+	Login::$member->update($update_fields, 'activated=now()');
 	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
 
 	// activate all notifications
