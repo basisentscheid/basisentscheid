@@ -2,9 +2,34 @@
 === Installation ===
 
 requirements:
-- PHP >= 5.4 with modules: apache2 (or whatever webserver you use), cli, postgres, gettext, session, curl, ssl, unicode
-- if you want to sign/encrypt emails: gnupg PECL module http://pecl.php.net/package/gnupg
+- PHP >= 5.4 with modules:
+  - apache2 (or whatever webserver you use)
+  - cli
+  - postgres
+  - gettext
+  - session
+  - unicode
+  - gnupg PECL module http://pecl.php.net/package/gnupg (only if you want to sign/encrypt emails)
 - PostgreSQL
+- GnuPG (only if you want to sign/encrypt emails)
+
+generate PGP keys (only if you want to sign/encrypt emails):
+$ gpg --homedir <base>/var/gnupg --gen-key
+Leave the passphrase empty.
+
+send the public key to a key server:
+$ gpg --homedir <base>/var/gnupg --keyserver hkp://keys.gnupg.net --send-keys <key-id>
+
+The directory /var/ and all subdirectories need write access for the users as which PHP runs for web and cli. For
+example you could use a group with the user of the webserver. Usually a group called www-data, apache or httpd is
+already provided by the system, but you could also create a new group for this. The cli user could own the files or
+also be added to the group.
+$ find var/ -exec chgrp www-data {} \;
+$ find var/ -type d -exec chmod 770 {} \;
+$ find var/ -type f -exec chmod 660 {} \;
+
+For PHP configuration and for blocking access to some directories, use the provided .htaccess files or copy their
+contents to the webserver config.
 
 configuration:
 $ cd inc/
@@ -12,13 +37,16 @@ $ cp config_example.php config.php
 $ vi config.php
 
 create database:
-$ cd ../db/
-$ ./recreate_schema.sh
+$ db/recreate_schema.sh
 
-The directory /var/ and all subdirectories need write access for the users as which PHP runs for web and cli:
-$ find var/ -type d -exec chmod a+rwx {} \;
 
-You can use the provided .htaccess files for configuration or copy their contents to the webserver config.
+create initial data:
+$ cli/create_admin.php
+$ cli/create_ngroups.php
+
+run tests:
+$ cli/test.php
+$ cli/test_ballots.php
 
 
 === License ===
