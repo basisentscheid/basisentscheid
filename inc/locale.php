@@ -18,6 +18,7 @@ $languages = array(
 
 // activate language
 putenv("LANG=".LANG);
+putenv("LANGUAGE=".LANG);
 $locale = $languages[LANG];
 if ( setlocale(LC_MESSAGES, $locale) === false ) {
 	trigger_error("setlocale to ".$locale." failed", E_USER_WARNING);
