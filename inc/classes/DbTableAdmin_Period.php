@@ -159,27 +159,33 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 */
 	protected function beforesave() {
 
-		$debate      = strtotime($this->object->debate);
-		$preparation = strtotime($this->object->preparation);
-		$voting      = strtotime($this->object->voting);
-		$counting    = strtotime($this->object->counting);
-
+		$debate = strtotime($this->object->debate);
 		if (!$debate) {
 			warning(_("The debate time is not valid!"));
 			return false;
 		}
+		$this->object->debate = date("c", $debate);
+
+		$preparation = strtotime($this->object->preparation);
 		if (!$preparation) {
 			warning(_("The preparation time is not valid!"));
 			return false;
 		}
+		$this->object->preparation = date("c", $preparation);
+
+		$voting = strtotime($this->object->voting);
 		if (!$voting) {
 			warning(_("The voting time is not valid!"));
 			return false;
 		}
+		$this->object->voting = date("c", $voting);
+
+		$counting = strtotime($this->object->counting);
 		if (!$counting) {
 			warning(_("The counting time is not valid!"));
 			return false;
 		}
+		$this->object->counting = date("c", $counting);
 
 		if ($debate >= $preparation) {
 			warning(_("The debate must start before the preparation!"));
@@ -202,6 +208,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				warning(_("The ballot assignment time is not valid!"));
 				return false;
 			}
+			$this->object->ballot_assignment = date("c", $ballot_assignment);
 		}
 		if ($ballot_preparation) {
 			$ballot_preparation = strtotime($this->object->ballot_preparation);
@@ -209,6 +216,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				warning(_("The ballot preparation time is not valid!"));
 				return false;
 			}
+			$this->object->ballot_preparation = date("c", $ballot_preparation);
 		}
 
 		if ($ballot_assignment and $ballot_preparation and $ballot_assignment >= $ballot_preparation) {

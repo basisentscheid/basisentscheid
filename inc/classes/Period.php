@@ -354,7 +354,11 @@ class Period extends Relation {
 	 * @param array   $column
 	 */
 	public function dbtableadmin_edit_timestamp($colname, $default, $id, $disabled, array $column) {
-		if ($default) $default = datetimeformat($default);
+		if ($default) {
+			// adjust time format if it is a valid time
+			$time = strtotime($default);
+			if ($time) $default = date(DATETIMEYEAR_FORMAT, $time);
+		}
 		input_text($colname, $default, $disabled, 'size="30"');
 	}
 
