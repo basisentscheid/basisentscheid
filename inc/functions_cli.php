@@ -318,7 +318,7 @@ function cron($skip_if_locked=false) {
 
 			}
 
-			// receipt mails
+			// notification mails
 			$subject = sprintf(_("Voting started in period %d"), $period->id);
 			$body_top = _("Group").": ".$period->ngroup()->name."\n\n"
 				._("Voting has started on the following proposals").":\n";
@@ -336,6 +336,7 @@ function cron($skip_if_locked=false) {
 				}
 			}
 			foreach ( $members as $member ) {
+				if (!$member->mail) continue;
 				$body = $body_top;
 				foreach ( $issues_start_voting as $issue ) {
 					$body .= $issues_blocks[$issue->id]
