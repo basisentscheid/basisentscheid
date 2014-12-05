@@ -11,7 +11,7 @@
 
 if (PHP_SAPI != "cli") {
 	require "inc/common.php";
-	html_head(_("Test mail signing, encryption and sending"));
+	html_head("Test mail signing, encryption and sending");
 }
 
 
