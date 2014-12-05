@@ -20,4 +20,6 @@
 /db/tmp_*.sql
 /ssl/
 /*.sh
+/phpinfo.php
+/robots.txt
 
