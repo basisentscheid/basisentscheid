@@ -19,6 +19,7 @@ if ($issue->state != 'finished' and $issue->state != 'cleared') {
 
 html_head(_("Vote result"));
 
+help();
 
 ?>
 <table class="proposals">

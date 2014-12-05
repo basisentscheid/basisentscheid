@@ -110,7 +110,9 @@ if ($action) {
 }
 
 
-html_head(_("Member"));
+html_head(_("Member settings"));
+
+help();
 
 form(BN);
 ?>

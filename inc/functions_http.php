@@ -525,12 +525,33 @@ function help() {
 		form_end();
 		// read help content
 		$display = false;
+		$list = false;
 		foreach ( file(DOCROOT."locale/help_".LANG.".txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
 			if ($display) {
-				if (substr($line, 0, 3) == "===") break;
+				$line_begin = mb_substr($line, 0, 3);
+				if ($line_begin == "===") break;
+				// list / paragraph
+				if ($line_begin == " * ") {
+					if (!$list) {
+						$list = true;
+?>
+<ul>
+<?
+					}
+?>
+	<li><?=mb_substr($line, 3)?></li>
+<?
+				} else {
+					if ($list) {
+?>
+</ul>
+<?
+						$list = false;
+					}
 ?>
 <p><?=$line?></p>
 <?
+				}
 			} elseif ($line == "===".BN) {
 				$display = true;
 			}

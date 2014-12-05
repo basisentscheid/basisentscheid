@@ -1,6 +1,54 @@
+===index.php
+
+Es gibt zwei Möglichkeiten, zu den Inhalten der Gliederungen zu kommen: Man kann in der <b>Menüleiste</b> oben erst eine Gliederung auswählen und dann rechts daneben zu einer Seite dieser Gliederung gehen. Oder man folgt unten in der <b>Tabelle der Gliederungen</b> direkt einem der Links. In beiden Fällen zeigen die Haken, in welchen Gliederungen der angemeldete Benutzer stimmberechtigt ist.
+
+===proposals.php
+
+Anträge durchlaufen folgende <b>Phasen</b>:
+ * Entwurf: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn 5 Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
+ * Zulassung: Der Antrag sammelt nun Unterstützer, um das Quorum zur Zulassung zu erreichen.
+ * zugelassen: Der Antrag hat das Zulassungsquorum erreicht und wartet darauf, von den Verantwortlichen einer Abstimmungsperiode zugeordnet zu werden, in der dann die weiteren Phasen ablaufen.
+
+Die aktuelle Phase eines Antrags wird in der Spalte <i>Status</i> angezeigt.
+
+===proposal.php
+
+Rechts oben werden die <b>Antragsteller</b> des Antrags angezeigt. Jeder kann sich dort als weiterer Antragsteller bewerben. Die derzeitigen Antragsteller entscheiden über die Aufnahme neuer Antragsteller.
+
+Der <b>Zeitstrahl</b> zeigt vergangene und zukünftige Ereignisse. Wenn du mit der Maus über ein Ereignis fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
+
+Um zur Abstimmung zugelassen zu werden, benötigt ein Antrag <b>Unterstützer</b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Sobald ein Antrag das Quorum erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
+
+Solange ein Antragsblock noch nicht die Debatte erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
+
+Bis zur Abstimmungsvorbereitung kannst du eine <b>geheime Abstimmung</b> eines Antragsblocks fordern. Wenn bis dahin 5% der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Antragsblock die 5% erreicht hat, wird dies angezeigt.
+
 ===proposal_edit.php
 
 Der Titel und der Antragstext können bis zur Einreichung bearbeitet werden, die Begründung sogar bis zur Abstimmungsvorbereitung.
+
+===vote.php
+
+Hier kannst du über die Anträge eines Antragsblocks abstimmen. Bei jedem Antrag kannst du mit Ja oder Nein abgestimmen oder dich enthalten. Wenn der Antragsblock mehrere Anträge enthält, kannst du die Anträge zusätzlich mit Punkten bewerten. Falls bei der Auszählung mehr als ein Antrag mehr Ja- als Nein-Stimmen erhalten hat, gewinnt der Antrag mit den meisten Punkten. Die Stimme wird erst gespeichert, wenn du auf den Button "Stimme abgeben" klickst.
+
+Bis zum Ende der Abstimmung kannst du deine abgegebene Stimme beliebig oft korrigieren, indem du einfach noch einmal abstimmst. Die alte Stimme wird dann durchgestrichen angezeigt und bei der Auszählung nicht mehr mitgezählt.
+
+Wenn du die Anträge oder die Argumente dazu noch einmal nachlesen willst, kannst du auf die Titel der Anträge klicken.
+
+===vote_result.php
+
+Wenn du mit der Maus über die Balken in der Spalte <i>Ergebnis</i> fährst, wird das Ergebnis in Zahlen angezeigt.
+
+Unten ist eine Liste mit allen Abstimmungskennungen und allen abgegebenen Stimmen zu diesem Antragsblock. Wenn ein Mitglied keine Stimme abgegeben hat, steht nur die Abstimmungskennung in der Zeile. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert.
+
+Anhand dieser Liste kannst du folgendes überprüfen:
+
+ * Du kannst die Auszählung nachzählen.
+ * Du kannst prüfen, ob deine eigene Stimme korrekt in der Liste steht. Du solltest bei der Abstimmung eine Beleg-E-Mail bekommen haben, die du nun hiermit vergleichen kannst.
+ * Du kannst prüfen, ob die Abstimmungskennungen mit der Liste in der Benachrichtigungs-E-Mail über den Abstimmungsbeginn übereinstimmen. Es dürfen keine Abstimmungskennungen dazugekommen oder verschwunden sein.
+ * Du kannst prüfen, ob deine Abstimmungskennung in den beiden E-Mails und der Liste hier übereinstimmt.
+
+Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die Verantwortlichen!
 
 ===periods.php
 
@@ -28,14 +76,22 @@ Anstatt einer Urne kann auch <b>Briefabstimmung</b> ausgewählt werden. Dies ist
 
 ===ballot_edit.php
 
-Wenn Du am Stichtag als Urnenbeauftragter eine Urne betreiben möchtest, kannst Du die Urne hier anmelden. Trage dazu bitte Dich und die weiteren vorgesehenen Urnenbeauftragten und die Kontaktdaten in das Feld <b>Beauftragte</b> ein.
+Wenn du am Stichtag als Urnenbeauftragter eine Urne betreiben möchtest, kannst du die Urne hier anmelden. Trage dazu bitte Dich und die weiteren vorgesehenen Urnenbeauftragten und die Kontaktdaten in das Feld <b>Beauftragte</b> ein.
 
-Wähle als <b>Gliederung des Ortes</b> bitte die niedrigste Gliederung aus, in deren Gebiet der vorgesehene Ort der Urne liegt. Diese kann von Deiner Gliederungszugehörigkeit abweichen.
+Wähle als <b>Gliederung des Ortes</b> bitte die niedrigste Gliederung aus, in deren Gebiet der vorgesehene Ort der Urne liegt. Diese kann von deiner Gliederungszugehörigkeit abweichen.
 
 ===areas.php
 
-Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. Durch Einreichung, Unterstützung oder Abstimmung eines Antrags meldest du dich automatisch beim entsprechenden Themenbereich an. Die Anmeldung verfällt nach dem zweiten Stichtag nach der letzten Anmeldung.
+Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. durch Einreichung, Unterstützung oder Abstimmung eines Antrags meldest du dich automatisch beim entsprechenden Themenbereich an. Die Anmeldung verfällt nach dem zweiten Stichtag nach der letzten Anmeldung.
 
 Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für das <b>Quorum</b> zur Zulassung eines Antrags und für das Quorum zur Urnenabstimmung.
 
+===settings.php
 
+Eine Änderung des <b>Benutzernamens</b> ist jederzeit möglich, sofern der neue noch nicht vergeben ist. Bei Unterstützerlisten und Argumenten wird fortan der neue Benutzername angezeigt, bei Antragstellern und Urnenbeauftragten dagegen bleiben die Namen so, wie sie angegeben wurden.
+
+Bei der Registrierung wird eine E-Mail mit einem Bestätigungscode an die eingegebene <b>E-Mail-Adresse</b> geschickt. Erst wenn auf den Link in dieser E-Mail geklickt wurde, gilt die E-Mail-Adresse als bestätigt und wird verwendet. Falls diese E-Mail nicht angekommen sein sollte, kann man sich mit dem entsprechenden Button die "Bestätigungs-E-Mail nocheinmal senden". Man kann auch eine andere E-Mail-Adresse angeben und sich an diese die Bestätigungsmail schicken lassen. Die E-Mail-Adresse wird nur für Benachrichtigungsmails verwendet und nie irgendjemand anderem angezeigt.
+
+Um E-Mail-Benachrichtigungen mit vertraulichen Daten in verschlüsselter Form zu bekommen, gibt es die Möglichkeit, einen <b>öffentlichen PGP-Schlüssel</b> hochzuladen. Dieser ist im ACSII-Armor-Format in das Textfeld zu kopieren. In einem weiteren Feld ist der Fingerabdruck diesen Schlüssels anzugeben. Der Schlüssel muss außerdem die angegebene E-Mail-Adresse enthalten.
+
+Das <b>Profil</b> wird anderen Benutzern angezeigt, wenn sie auf den Benutzernamen klicken. Hier können beispielsweise Kontaktinformationen angegeben werden.

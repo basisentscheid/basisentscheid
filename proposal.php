@@ -244,6 +244,7 @@ list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->suppor
 
 html_head(_("Proposal")." ".$proposal->id);
 
+help();
 
 // messages
 if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member, false)) {

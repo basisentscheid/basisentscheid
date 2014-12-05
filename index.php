@@ -21,6 +21,10 @@ html_head("Willkommen auf dem Testserver des Basisentscheid-Portals!");
 
 <hr>
 
+<?
+help();
+?>
+
 <div class="dates">
 	<h2><?=_("Upcoming dates")?></h2>
 	<table>

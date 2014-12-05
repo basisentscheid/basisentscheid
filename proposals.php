@@ -26,6 +26,8 @@ if ($action) {
 
 html_head(_("Proposals"));
 
+help();
+
 if (Login::$member and Login::$member->entitled($ngroup->id)) {
 ?>
 <div class="add_record"><a href="proposal_edit.php?ngroup=<?=$ngroup->id?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add proposal")?></a></div>
