@@ -47,21 +47,17 @@ html_head(_("Vote"));
 <p><?=sprintf(_("Voting goes until %s."), datetimeformat($issue->period()->counting))?></p>
 <?
 
-form("vote.php?issue=".$issue->id);
-?>
-<input type="hidden" name="action" value="submit">
-<table class="proposals">
-<?
-
 list($proposals, $submitted) = $issue->proposals_list(true);
-Issue::display_proposals_th(false, count($proposals) > 1);
 
-$sql = "SELECT vote FROM vote WHERE token=".DB::esc($token)." ORDER BY votetime DESC";
+$sql = "SELECT token, vote, votetime FROM vote
+	WHERE token=".DB::esc($token)."
+	ORDER BY votetime DESC";
 $result = DB::query($sql);
-// fetch only the first record, which is the latest vote
+// get only the first record, which is the last submitted vote
 if ( $row = DB::fetch_assoc($result) ) {
 	$vote = unserialize($row['vote']);
 } else {
+	// default
 	$vote = array();
 	foreach ( $proposals as $proposal ) {
 		$vote[$proposal->id]['acceptance'] = -1; // default is abstention
@@ -69,6 +65,13 @@ if ( $row = DB::fetch_assoc($result) ) {
 	}
 }
 
+// voting form
+form("vote.php?issue=".$issue->id);
+?>
+<input type="hidden" name="action" value="submit">
+<table class="proposals">
+<?
+Issue::display_proposals_th(false, count($proposals) > 1);
 $issue->display_proposals($proposals, $submitted, count($proposals), false, 0, $vote);
 ?>
 	<tr>
@@ -80,6 +83,16 @@ if (count($proposals) > 1) { ?> colspan="2"<? }
 </table>
 <?
 form_end();
+
+// submitted votes
+if ( DB::num_rows($result) ) {
+?>
+<h2><?=_("Your submitted votes on this issue:")?></h2>
+<?
+	DB::result_seek($result, 0);
+	Issue::display_votes($proposals, $result);
+}
+
 ?>
 
 <div class="clearfix"></div>

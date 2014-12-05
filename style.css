@@ -1147,10 +1147,22 @@ span.fine {
 	color: #0A0;
 }
 
+
 /* 5.6 vote result */
 
 table.votes td {
+	font-family: monospace;
 	text-align: center;
+}
+table.votes tr.overridden {
+	text-decoration: line-through;
+	color: #888;
+}
+table.votes tr.self {
+	background-color: #F8B;
+}
+table.votes tr.self td.tdc {
+	background-color: #F877AA;
 }
 
 

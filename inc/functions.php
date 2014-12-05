@@ -168,20 +168,28 @@ function first() {
 
 
 /**
+ * convert acceptance value for display
  *
  * @param integer $value
  * @return string
  */
 function acceptance($value) {
-	switch ($value) {
-	case -1:
-		return _("Abstention");
-	case 0:
-		return _("No");
-	case 1:
-		return _("Yes");
-	}
+	if ($value ===  1) return _("Yes");
+	if ($value ===  0) return _("No");
+	if ($value === -1) return _("Abstention");
 	return "illegal value: ".h($value);
+}
+
+
+/**
+ * convert score value for display
+ *
+ * @param integer $value
+ * @return string
+ */
+function score($value) {
+	if ($value === -1) return _("Abstention");
+	return h($value);
 }
 
 

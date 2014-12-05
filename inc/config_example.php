@@ -70,6 +70,7 @@ define("DATETIMEYEAR_FORMAT", "j.n.Y G:i");
 define("DATE_FORMAT",         "j.n.");
 define("DATETIME_FORMAT",     "j.n. G:i");
 define("TIME_FORMAT",              "G:i");
+define("VOTETIME_FORMAT",     "d.m.Y H:i:s");
 
 define("ARGUMENT_EDIT_INTERVAL", "1 hour");
 // how many arguments to show on each level

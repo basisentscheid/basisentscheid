@@ -97,6 +97,12 @@ class Issue extends Relation {
 		// example for two proposals:
 		// array( 123 => array('acceptance' => 1, 'score' => 2), 456 => array('acceptance' => -1, 'score' => 0) )
 
+		// convert strings to integers
+		foreach ( $vote as &$value ) {
+			$value = array_map('intval', $value);
+		}
+		unset($value);
+
 		DB::transaction_start();
 
 		$sql = "INSERT INTO vote (token, vote) VALUES (".DB::esc($token).", ".DB::esc(serialize($vote)).") RETURNING votetime";
@@ -117,13 +123,13 @@ class Issue extends Relation {
 					$body .= mb_wordwrap(_("Proposal")." ".$proposal_id.": ".$proposal->title)."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n"
 						._("Acceptance").": ".acceptance($vote_proposal['acceptance']);
-					if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".$vote_proposal['score'];
+					if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".score($vote_proposal['score']);
 					$body .= "\n\n";
 				}
 				$body .= _("Your user name").": ".Login::$member->username."\n"
 					._("Your user ID").": ".Login::$member->id."\n"
 					._("Your vote token").": ".$token."\n"
-					._("Voting time").": ".datetimeformat($votetime)."\n\n"
+					._("Voting time").": ".date(VOTETIME_FORMAT, strtotime($votetime))."\n\n"
 					._("You can change your vote by voting again on:")."\n"
 					.BASE_URL."vote.php?issue=".$this->id."\n";
 
@@ -162,7 +168,7 @@ class Issue extends Relation {
 		$sql = "SELECT vote, votetime FROM vote
  			JOIN vote_tokens ON vote.token = vote_tokens.token
 			WHERE vote_tokens.issue=".intval($this->id)."
-			ORDER BY vote.token, vote.votetime";
+			ORDER BY vote.token ASC, vote.votetime DESC";
 		$result = DB::query($sql);
 		$last_votetime = null;
 		while ( $row = DB::fetch_assoc($result) ) {
@@ -848,6 +854,79 @@ class Issue extends Relation {
 		}
 
 		return true;
+	}
+
+
+	/**
+	 * display a list of votes
+	 *
+	 * @param array   $proposals
+	 * @param string  $result
+	 * @param string  $token     (optional) token of the logged in member for highlighting
+	 */
+	public static function display_votes(array $proposals, $result, $token="") {
+?>
+<table class="votes">
+<?
+		// table head
+		if (count($proposals) == 1) {
+			$show_scores = false;
+?>
+<tr><th><?=_("Vote token")?></th><th><?=_("Voting time")?></th><th><?=_("Acceptance")?></th></tr>
+<?
+		} else {
+			$show_scores = true;
+?>
+<tr><th rowspan="2"><?=_("Vote token")?></th><th rowspan="2"><?=_("Voting time")?></th><?
+			foreach ($proposals as $proposal) {
+				?><th colspan="2"><?=_("Proposal")?> <?=$proposal->id?></th><?
+			}
+			?></tr>
+<tr><?
+			foreach ($proposals as $proposal) {
+				?><th><?=_("Acceptance")?></th><th><?=_("Score")?></th><?
+			}
+			?></tr>
+<?
+		}
+
+		// votes
+		$last_token = null;
+		while ( $row = DB::fetch_assoc($result) ) {
+?>
+<tr class="<?=stripes();
+			// highlight votes of the logged in member
+			if ($token == $row['token']) { ?> self<? }
+			// strike through votes, which have been overridden by a later vote
+			if ($row['token'] == $last_token) { ?> overridden<? } else $last_token = $row['token'];
+			?>"><td><?=$row['token']?></td><?
+
+			if ($row['vote']) {
+				?><td class="tdc"><?=date(VOTETIME_FORMAT, strtotime($row['votetime']))?></td><?
+				$vote = unserialize($row['vote']);
+				foreach ($proposals as $proposal) {
+					?><td><?=acceptance($vote[$proposal->id]['acceptance'])?></td><?
+					if ($show_scores) {
+						?><td class="tdc"><?=score($vote[$proposal->id]['score'])?></td><?
+					}
+				}
+			} else {
+				// member did not vote
+				?><td class="tdc"></td><?
+				foreach ($proposals as $proposal) {
+					?><td></td><?
+					if ($show_scores) {
+						?><td class="tdc"></td><?
+					}
+				}
+			}
+
+			?></tr>
+<?
+		}
+?>
+</table>
+<?
 	}
 
 

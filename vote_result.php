@@ -24,7 +24,7 @@ html_head(_("Vote result"));
 <table class="proposals">
 <?
 Issue::display_proposals_th(true);
-list($proposals, $submitted) = $issue->proposals_list();
+list($proposals, $submitted) = $issue->proposals_list(true);
 $issue->display_proposals($proposals, $submitted, count($proposals), true);
 ?>
 </table>
@@ -37,71 +37,14 @@ if ($issue->state == 'cleared') {
 <p><? printf(_("Raw data has been cleared at %s."), datetimeformat($issue->cleared)); ?></p>
 <?
 } else {
-?>
-<table class="votes">
-<?
-	if (count($proposals) == 1) {
-?>
-<tr><th><?=_("Token")?></th><th><?=_("Time")?></th><th><?=_("Acceptance")?></th></tr>
-<?
-	} else {
-?>
-<tr><th rowspan="2"><?=_("Token")?></th><th rowspan="2"><?=_("Time")?></th><?
-		foreach ($proposals as $proposal) {
-			?><th colspan="2"><?=_("Proposal")?> <?=$proposal->id?></th><?
-		}
-		?></tr>
-<tr><?
-		foreach ($proposals as $proposal) {
-			?><th><?=_("Acceptance")?></th><th><?=_("Score")?></th><?
-		}
-		?></tr>
-<?
-	}
-
-	if (Login::$member) $token = $issue->vote_token(); else $token = null;
-
-	$sql = "SELECT vote.token, vote, votetime FROM vote
- 		JOIN vote_tokens ON vote.token = vote_tokens.token
+	// display list of votes
+	$sql = "SELECT vote_tokens.token, vote.vote, vote.votetime FROM vote_tokens
+ 		LEFT JOIN vote ON vote.token = vote_tokens.token
  		WHERE vote_tokens.issue=".intval($issue->id)."
- 		ORDER BY vote.token, votetime";
+ 		ORDER BY vote_tokens.token ASC, vote.votetime DESC";
 	$result = DB::query($sql);
-	$last_votetime = null;
-	while ( $row = DB::fetch_assoc($result) ) {
-		if ($row['votetime']==$last_votetime) {
-			$class_overridden = " overridden";
-		} else {
-			$class_overridden = "";
-		}
-		$last_votetime = $row['votetime'];
-?>
-<tr class="<?=stripes();
-		if ($token == $row['token']) { ?> highlight<? }
-		?>"><td><?=$row['token']?></td><td><?=$row['votetime']?></td><?
-		$vote = unserialize($row['vote']);
-		foreach ($proposals as $proposal) {
-			// acceptance
-			?><td class="tdc<?=$class_overridden?>"><?=acceptance($vote[$proposal->id]['acceptance'])?></td><?
-			// score
-			if (isset($vote[$proposal->id]['score'])) {
-				?><td class="tdc<?=$class_overridden?>"><?
-				switch ($vote[$proposal->id]['score']) {
-				case -1:
-					echo _("Abstention");
-					break;
-				default:
-					echo h($vote[$proposal->id]['score']);
-				}
-				?></td><?
-			}
-		}
-		?></tr>
-<?
-	}
-?>
-</table>
-<?
-
+	if (Login::$member) $token = $issue->vote_token(); else $token = null;
+	Issue::display_votes($proposals, $result, $token);
 }
 
 ?>
