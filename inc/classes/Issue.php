@@ -524,7 +524,9 @@ class Issue extends Relation {
 			$link = "proposal.php?id=".$proposal->id;
 
 ?>
-	<tr class="proposal">
+	<tr class="proposal"<?
+	if ($first) { ?> id="issue<?=$this->id?>"<? }
+	?>>
 		<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
 			switch ($proposal->state) {
@@ -660,7 +662,7 @@ class Issue extends Relation {
 					if (Login::$admin) {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
-						if ( !$this->display_edit_state() ) {
+						if ( !$this->display_edit_period() ) {
 							?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 						}
 						?></td>
@@ -671,7 +673,7 @@ class Issue extends Relation {
 <?
 					}
 ?>
-		<td rowspan="<?=$num_rows?>" class="center"<?
+		<td rowspan="<?=$num_rows?>" class="center" id="voting_type"<?
 
 					if ($this->voting_type_determination($submitted)) {
 						?> title="<?
@@ -691,7 +693,7 @@ class Issue extends Relation {
 								?>&#10003;<?
 							}
 							if ($selected_proposal and $entitled) {
-								form(URI::same());
+								form(URI::same()."#voting_type");
 								if ($this->ballot_voting_demanded_by_member) {
 									echo _("You demand ballot voting.")?>
 <input type="hidden" name="action" value="revoke_demand_for_ballot_voting">
@@ -831,13 +833,13 @@ class Issue extends Relation {
 	 *
 	 * @return boolean true if the period may be changed
 	 */
-	private function display_edit_state() {
+	private function display_edit_period() {
 
 		$options =& $this->available_periods();
 		if (!$options) return false;
 
 		if (@$_GET['edit_period']==$this->id) {
-			form(URI::strip(array('edit_period')));
+			form(URI::strip(array('edit_period'))."#issue".$this->id);
 			input_select("period", $options, $this->period);
 			?><br><?
 			input_hidden("issue", $this->id);
@@ -850,7 +852,7 @@ class Issue extends Relation {
 			if ($this->period) {
 				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 			}
-			?><a href="<?=URI::append(array('edit_period'=>$this->id))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
+			?><a href="<?=URI::append(array('edit_period'=>$this->id))?>#issue<?=$this->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}
 
 		return true;

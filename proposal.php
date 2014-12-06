@@ -828,7 +828,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 	global $ngroup;
 ?>
 <div class="quorum">
-<h2><?=_("Supporters")?>:</h2>
+<h2 id="supporters"><?=_("Supporters")?>:</h2>
 <div class="bargraph_container">
 <?
 	$proposal->bargraph_quorum($is_supporter);
@@ -844,7 +844,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 <br class="clear">
 <?
 			if ($is_supporter) {
-				form(URI::same(), 'class="supported"');
+				form(URI::same()."#supporters", 'class="supported"');
 ?>
 &#10003; <?
 				if ($is_supporter==="anonymous") {
@@ -858,13 +858,13 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 <?
 				form_end();
 			} else {
-				form(URI::same(), 'style="display:inline-block"');
+				form(URI::same()."#supporters", 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
 <?
 				form_end();
-				form(URI::same(), 'style="display:inline-block"');
+				form(URI::same()."#supporters", 'style="display:inline-block"');
 ?>
 <input type="hidden" name="action" value="add_support_anonym">
 <input type="submit" value="<?=_("Support this proposal anonymously")?>">
