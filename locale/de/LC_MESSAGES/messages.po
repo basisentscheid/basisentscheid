@@ -1460,7 +1460,7 @@ msgstr "Abstimmung"
 #
 # File: inc/classes/Notification.php, line: 77
 msgid "finished"
-msgstr "beendet"
+msgstr "abgeschlossen"
 #
 # File: inc/classes/Notification.php, line: 298
 #, php-format
