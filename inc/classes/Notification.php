@@ -28,11 +28,11 @@ class Notification {
 	public $all_tokens;
 
 	public static $default_settings = array(
-		'all'         => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'ngroups'     => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'participant' => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'supporter'   => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true),
-		'proponent'   => array('new_proposal'=>true, 'submitted'=>true, 'admitted'=>true, 'debate'=>true, 'voting'=>true, 'finished'=>true)
+		'all'         => array('new_proposal'=>false, 'submitted'=>false, 'admitted'=>false, 'debate'=>false, 'finished'=>false),
+		'ngroups'     => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'participant' => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'supporter'   => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'proponent'   => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true)
 	);
 
 
@@ -46,21 +46,23 @@ class Notification {
 
 
 	/**
+	 * for translation
 	 *
 	 * @return array
 	 */
 	public static function interests() {
 		return array(
-			'all'         => _("all"),
-			'ngroups'     => _("ngroups"),
-			'participant' => _("area participant"),
-			'supporter'   => _("supporter"),
-			'proponent'   => _("proponent")
+			'all'         => _("all proposals"),
+			'ngroups'     => _("proposals in my ngroups"),
+			'participant' => _("proposals in areas where I'm participant"),
+			'supporter'   => _("proposals which I support"),
+			'proponent'   => _("proposals where I'm proponent")
 		);
 	}
 
 
 	/**
+	 * for translation
 	 *
 	 * @return array
 	 */
@@ -70,7 +72,8 @@ class Notification {
 			'submitted'    => _("submitted"),
 			'admitted'     => _("admitted"),
 			'debate'       => _("debate"),
-			'voting'       => _("voting"),
+			// voting start notifications are sent to all entitled members of the group
+			// vote receipts are sent individually
 			'finished'     => _("finished")
 		);
 	}

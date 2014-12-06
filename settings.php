@@ -177,10 +177,10 @@ echo join(", ", DB::fetchfieldarray($sql));
 	</div>
 </fieldset>
 
-<h2><?=_("Email notification settings")?></h2>
+<h2><?=_("Email notifications")?></h2>
 <table class="notify">
 	<tr>
-		<th></th>
+		<td></td>
 <?
 $types = Notification::types();
 foreach ($types as $type => $type_title) {
