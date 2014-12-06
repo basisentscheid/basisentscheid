@@ -1037,7 +1037,7 @@ function draft_select(side, draft) {
 				$proponent_name = "("._("proponent revoked").")";
 				foreach ($proponents as $proponent) {
 					if ($proponent->id == $author->id) {
-						$proponent_name = $proponent->proponent_name;
+						$proponent_name = limitstr($proponent->proponent_name, 50);
 						break;
 					}
 				}
@@ -1069,7 +1069,7 @@ function draft_select(side, draft) {
 				?> disabled<?
 			}
 			?> onClick="draft_select(1, <?=$j?>)"></td>
-	<td class="content" onClick="location.href='<?=$link?>'"><a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=limitstr($proponent_name, 30)?></td>
+	<td class="content" onClick="location.href='<?=$link?>'"><a href="<?=$link?>"><?=datetimeformat_smart($draft->created)?></a> <?=$proponent_name?></td>
 </tr>
 <?
 			$i--;
