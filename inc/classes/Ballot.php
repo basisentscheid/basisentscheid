@@ -31,6 +31,7 @@ class Ballot extends Relation {
 	 */
 	public function create( array $fields = array("name", "agents", "period", "opening", "ngroup") ) {
 
+		$fields_values = array();
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
