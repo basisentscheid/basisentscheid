@@ -743,7 +743,7 @@ class DbTableAdmin {
 		foreach ( $this->columns as $column ) {
 			if (isset($column[3]) and $column[3]===false) continue;
 ?>
-		<th<?=$this->cellclass($column)?>><?
+		<th<? $this->cellclass($column) ?>><?
 			if (empty($column['noorder']) and $column[0]!==false) {
 				?><a href="<?=URI::append(
 					array(
@@ -806,7 +806,7 @@ class DbTableAdmin {
 			foreach ( $this->columns as $column ) {
 				if (isset($column[3]) and $column[3]===false) continue;
 ?>
-		<td<?=$this->cellclass($column)?>><?
+		<td<? $this->cellclass($column) ?>><?
 
 				$method = "print_".(!empty($column[3])?$column[3]:"text");
 				if (method_exists($this, $method)) {
