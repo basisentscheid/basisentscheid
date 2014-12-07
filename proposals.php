@@ -158,6 +158,7 @@ Issue::display_proposals_th($show_results);
 
 // display issues and proposals
 foreach ( $issues as $i => $issue ) {
+	/** @var $issue Issue */
 ?>
 	<tr><td colspan="<?= $period_rowspan[$i] ? 6 : 5 ?>" class="issue_separator"></td></tr>
 <?

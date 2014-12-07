@@ -1,7 +1,9 @@
 <?
+
 /**
  * Proposal
  *
+ * @property  supported_by_member
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

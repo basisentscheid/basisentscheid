@@ -143,6 +143,7 @@ class Notification {
 			$proposals = array();
 			if ($this->issues) {
 				foreach ($this->issues as $issue) {
+					/** @var $issue Issue */
 					$areas[] = $issue->area;
 					foreach ($issue->proposals() as $proposal) {
 						$proposals[] = $proposal->id;
@@ -308,6 +309,7 @@ class Notification {
 			$body .= _("Debate has started on the following proposals").":\n";
 
 			foreach ( $this->issues as $issue ) {
+				/** @var $issue Issue */
 				$body .= "\n";
 				foreach ( $issue->proposals() as $proposal ) {
 					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
@@ -326,6 +328,7 @@ class Notification {
 			$body .= _("Voting has finished on the following proposals").":\n";
 
 			foreach ( $this->issues as $issue ) {
+				/** @var $issue Issue */
 				$body .= "\n";
 				$proposals = $issue->proposals(true);
 				foreach ( $proposals as $proposal ) {

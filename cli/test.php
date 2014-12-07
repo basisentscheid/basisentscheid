@@ -65,6 +65,7 @@ function create_case_wrapper($case, $stopcase) {
 			$proposal->update(array('title'));
 		}
 		if ($proposal2) {
+			/** @var $proposal2 Proposal */
 			$proposal2->title .= " - ".$casetitle;
 			$proposal2->update(array('title'));
 		}
@@ -288,6 +289,8 @@ function create_case($case, $stopcase) {
 
 			// assign issue to period
 			$issue->period = $period;
+
+			/** @var $issue Issue */
 			$issue->update(array("period"));
 
 			// assigned, but not yet started
@@ -436,7 +439,7 @@ function no_branch_skip($branch, array $bcase, array $exclude_branches=array()) 
 /**
  * create a new member and let it support the supplied proposal
  *
- * @param object  $proposal
+ * @param Proposal $proposal
  * @param string  $i
  */
 function add_supporter(Proposal $proposal, $i) {
@@ -448,7 +451,7 @@ function add_supporter(Proposal $proposal, $i) {
 /**
  * create a new member and let it support the supplied proposal
  *
- * @param object  $proposal
+ * @param Proposal $proposal
  * @param string  $i
  */
 function add_proponent(Proposal $proposal, $i) {
@@ -460,7 +463,7 @@ function add_proponent(Proposal $proposal, $i) {
 /**
  * create a new member and let it support ballot voting for the supplied proposal
  *
- * @param object  $proposal
+ * @param Proposal $proposal
  * @param string  $i
  */
 function add_ballot_voting_demander(Proposal $proposal, $i) {

@@ -198,6 +198,7 @@ class Issue extends Relation {
 		}
 
 		foreach ( $proposals as $proposal ) {
+			/** @var $proposal Proposal */
 			$proposal->accepted = ( $proposal->yes > $proposal->no );
 			$proposal->update(array('yes', 'no', 'abstention', 'score', 'accepted'));
 		}
@@ -391,6 +392,7 @@ class Issue extends Relation {
 
 		// admit other proposals too, if they reached the quorum due to the now lower level
 		foreach ( $this->proposals() as $proposal ) {
+			/** @var $proposal Proposal */
 			if ($proposal->id==$admitted_proposal->id) continue;
 			if ( !$proposal->quorum_reached and $proposal->supporters >= $proposal->quorum_required() ) {
 				// admit proposal
@@ -520,13 +522,14 @@ class Issue extends Relation {
 		$first_admitted = true;
 		$num_rows = count($proposals);
 		foreach ( $proposals as $proposal ) {
+			/** @var $proposal Proposal */
 
 			$link = "proposal.php?id=".$proposal->id;
 
 ?>
 	<tr class="proposal"<?
-	if ($first) { ?> id="issue<?=$this->id?>"<? }
-	?>>
+			if ($first) { ?> id="issue<?=$this->id?>"<? }
+			?>>
 		<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
 			switch ($proposal->state) {

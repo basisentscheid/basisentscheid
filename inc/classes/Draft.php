@@ -14,6 +14,7 @@ class Draft extends Relation {
 	public $reason;
 	public $proposal;
 	public $author;
+	public $created;
 
 	protected $create_fields = array("proposal", "title", "content", "reason", "author");
 

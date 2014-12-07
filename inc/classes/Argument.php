@@ -42,7 +42,7 @@ class Argument extends Relation {
 	/**
 	 * wrapper for create()
 	 *
-	 * @param object  $proposal
+	 * @param Proposal $proposal
 	 */
 	function add(Proposal $proposal) {
 		if (mb_strlen($this->title) > self::title_length) {

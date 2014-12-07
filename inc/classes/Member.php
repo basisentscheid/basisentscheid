@@ -1,7 +1,10 @@
 <?
+
 /**
  * Member
  *
+ * @property  proponent_name
+ * @property  proponent_confirmed
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

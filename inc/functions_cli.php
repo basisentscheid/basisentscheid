@@ -152,6 +152,7 @@ function cron($skip_if_locked=false) {
 
 					// cancel proposals
 					foreach ( $issue->proposals() as $proposal ) {
+						/** @var $proposal Proposal */
 						if ($proposal->state=="revoked" or $proposal->state=="cancelled" or $proposal->state=="done") continue;
 						if ($proposal->state=="admitted") continue;
 						$proposal->cancel();
@@ -298,6 +299,7 @@ function cron($skip_if_locked=false) {
 			$personal_tokens = array();
 			$all_tokens      = array();
 			foreach ($issues_start_voting as $issue) {
+				/** @var $issue Issue */
 
 				// generate vote tokens
 				foreach ( $members as $member ) {
