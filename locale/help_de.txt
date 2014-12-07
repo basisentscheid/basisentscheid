@@ -48,6 +48,8 @@ Anhand dieser Liste kannst du folgendes überprüfen:
  * Du kannst prüfen, ob die Abstimmungskennungen mit der Liste in der Benachrichtigungs-E-Mail über den Abstimmungsbeginn übereinstimmen. Es dürfen keine Abstimmungskennungen dazugekommen oder verschwunden sein.
  * Du kannst prüfen, ob deine Abstimmungskennung in den beiden E-Mails und der Liste hier übereinstimmt.
 
+Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
+
 Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die Verantwortlichen!
 
 ===periods.php
