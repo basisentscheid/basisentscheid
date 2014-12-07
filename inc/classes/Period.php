@@ -360,6 +360,7 @@ class Period extends Relation {
 			if ($time) $default = date(DATETIMEYEAR_FORMAT, $time);
 		}
 		input_text($colname, $default, $disabled, 'size="30"');
+		?> <?=sprintf(_("date and time, format e.g. %s"), date(DATETIMEYEAR_FORMAT, 2117003400));
 	}
 
 
