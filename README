@@ -3,14 +3,14 @@
 
 requirements:
 - PHP >= 5.4 with modules:
-  - apache2 (or whatever webserver you use)
+  - apache2, cgi or whatever you like to use
   - cli
   - postgres
   - gettext
   - session
   - unicode
   - gnupg PECL module http://pecl.php.net/package/gnupg (only if you want to sign/encrypt emails)
-- PostgreSQL
+- PostgreSQL (works at least with 9.1 and 9.3)
 - GnuPG (only if you want to sign/encrypt emails)
 
 generate PGP keys (only if you want to sign/encrypt emails):
@@ -18,13 +18,15 @@ $ gpg --homedir <base>/var/gnupg --gen-key
 Leave the passphrase empty.
 
 send the public key to a key server:
+Maybe you have to remove some permissions, because gpg refuses to upload the key otherwise:
+$ chmod g-rwx gnupg/
 $ gpg --homedir <base>/var/gnupg --keyserver hkp://keys.gnupg.net --send-keys <key-id>
 
 The directory /var/ and all subdirectories need write access for the users as which PHP runs for web and cli. For
 example you could use a group with the user of the webserver. Usually a group called www-data, apache or httpd is
 already provided by the system, but you could also create a new group for this. The cli user could own the files or
 also be added to the group.
-$ find var/ -exec chgrp www-data {} \;
+# find var/ -exec chgrp www-data {} \;
 $ find var/ -type d -exec chmod 770 {} \;
 $ find var/ -type f -exec chmod 660 {} \;
 
@@ -37,8 +39,9 @@ $ cp config_example.php config.php
 $ vi config.php
 
 create database:
+In Postgres create an empty database and make the role you're going to use owner of the schema "public" in that
+database. Enter database name, role and password if needed to config.php. Then run:
 $ db/recreate_schema.sh
-
 
 create initial data:
 $ cli/create_admin.php

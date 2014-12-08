@@ -62,6 +62,7 @@ define("QUORUM_VOTINGMODE_NUM", 1); // 5%
 define("QUORUM_VOTINGMODE_DEN", 20);
 
 // language, currently supported: "en" and "de"
+// See inc/locale.php for a list of available languages and make sure the corresponding locale is installed in your system.
 define("LANG", "en");
 
 // date and time format, see http://php.net/manual/en/function.date.php
@@ -78,3 +79,4 @@ define("ARGUMENTS_LIMIT_0", 5);
 define("ARGUMENTS_LIMIT_1", 2);
 define("ARGUMENTS_LIMIT_2", 1);
 define("ARGUMENTS_LIMIT_3", 1);
+
