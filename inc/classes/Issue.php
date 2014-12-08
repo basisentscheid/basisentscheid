@@ -11,8 +11,8 @@ class Issue extends Relation {
 
 	public $period;
 	public $area;
-	public $ballot_voting_demanders;
-	public $ballot_voting_reached;
+	public $votingmode_demanders;
+	public $votingmode_reached;
 	public $debate_started;
 	public $preparation_started;
 	public $voting_started;
@@ -21,12 +21,10 @@ class Issue extends Relation {
 	public $cleared;
 	public $state;
 
-	public $ballot_voting_demanded_by_member;
-
 	private $area_obj;
 	private $period_obj;
 
-	protected $boolean_fields = array("ballot_voting_reached", "ballot_voting_demanded_by_member");
+	protected $boolean_fields = array("votingmode_reached");
 	protected $create_fields = array("area");
 	protected $update_fields = array("period", "area", "state");
 
@@ -74,139 +72,6 @@ class Issue extends Relation {
 
 
 	/**
-	 * get the vote token of the logged in member
-	 *
-	 * @return string
-	 */
-	public function vote_token() {
-		$sql = "SELECT token FROM vote_tokens WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
-		return DB::fetchfield($sql);
-	}
-
-
-	/**
-	 * save vote for this issue
-	 *
-	 * @param string  $token
-	 * @param array   $vote
-	 */
-	public function vote($token, array $vote) {
-
-		// example for one single proposal:
-		// array( 123 => array('acceptance' => 0) )
-		// example for two proposals:
-		// array( 123 => array('acceptance' => 1, 'score' => 2), 456 => array('acceptance' => -1, 'score' => 0) )
-
-		// convert strings to integers
-		foreach ( $vote as &$value ) {
-			$value = array_map('intval', $value);
-		}
-		unset($value);
-
-		DB::transaction_start();
-
-		$sql = "INSERT INTO vote (token, vote) VALUES (".DB::esc($token).", ".DB::esc(serialize($vote)).") RETURNING votetime";
-		if ( $result = DB::query($sql) ) {
-			list($votetime) = pg_fetch_row($result);
-
-			if (!Login::$member->mail) {
-				warning(_("Your vote has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
-			} else {
-
-				$subject = _("Vote receipt");
-
-				$body = _("Group").": ".$this->area()->ngroup()->name."\n\n";
-
-				$body .= sprintf(_("Vote receipt for your vote on issue %d:"), $this->id)."\n\n";
-				foreach ( $vote as $proposal_id => $vote_proposal ) {
-					$proposal = new Proposal($proposal_id);
-					$body .= mb_wordwrap(_("Proposal")." ".$proposal_id.": ".$proposal->title)."\n"
-						.BASE_URL."proposal.php?id=".$proposal->id."\n"
-						._("Acceptance").": ".acceptance($vote_proposal['acceptance']);
-					if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".score($vote_proposal['score']);
-					$body .= "\n\n";
-				}
-				$body .= _("Your user name").": ".Login::$member->username."\n"
-					._("Your user ID").": ".Login::$member->id."\n"
-					._("Your vote token").": ".$token."\n"
-					._("Voting time").": ".date(VOTETIME_FORMAT, strtotime($votetime))."\n\n"
-					._("You can change your vote by voting again on:")."\n"
-					.BASE_URL."vote.php?issue=".$this->id."\n";
-
-				if ( send_mail(Login::$member->mail, $subject, $body, array(), true, Login::$member->fingerprint) ) {
-					success(_("Your vote has been saved and an email receipt has been sent to you."));
-				} else {
-					warning(_("Your vote has been saved, but the email receipt could not be sent!"));
-				}
-
-			}
-
-			DB::transaction_commit();
-
-		} else {
-			warning(_("Your vote could not be saved!"));
-			DB::transaction_rollback();
-		}
-
-	}
-
-
-	/**
-	 * counting of votes
-	 */
-	public function counting() {
-
-		$proposals = $this->proposals(true);
-
-		foreach ( $proposals as $proposal ) {
-			$proposal->yes        = 0;
-			$proposal->no         = 0;
-			$proposal->abstention = 0;
-			$proposal->score      = 0;
-		}
-
-		$sql = "SELECT vote, votetime FROM vote
- 			JOIN vote_tokens ON vote.token = vote_tokens.token
-			WHERE vote_tokens.issue=".intval($this->id)."
-			ORDER BY vote.token ASC, vote.votetime DESC";
-		$result = DB::query($sql);
-		$last_votetime = null;
-		while ( $row = DB::fetch_assoc($result) ) {
-
-			if ($row['votetime']==$last_votetime) continue;
-			$last_votetime = $row['votetime'];
-
-			$vote = unserialize($row['vote']);
-
-			foreach ( $proposals as $proposal ) {
-				switch ($vote[$proposal->id]['acceptance']) {
-				case -1:
-					$proposal->abstention++;
-					break;
-				case 0:
-					$proposal->no++;
-					break;
-				case 1:
-					$proposal->yes++;
-					break;
-				}
-				if ( count($proposals) > 1 ) {
-					$proposal->score += $vote[$proposal->id]['score'];
-				}
-			}
-
-		}
-
-		foreach ( $proposals as $proposal ) {
-			/** @var $proposal Proposal */
-			$proposal->accepted = ( $proposal->yes > $proposal->no );
-			$proposal->update(array('yes', 'no', 'abstention', 'score', 'accepted'));
-		}
-
-	}
-
-
-	/**
 	 * get all proposals in this issue
 	 *
 	 * @param boolean $open (optional) get only open proposals
@@ -221,16 +86,6 @@ class Issue extends Relation {
 			$proposals[] = $proposal;
 		}
 		return $proposals;
-	}
-
-
-	/**
-	 * look if the logged in member demands ballot voting
-	 */
-	public function read_ballot_voting_demanded_by_member() {
-		$sql = "SELECT * FROM ballot_voting_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
-		$result = DB::query($sql);
-		$this->ballot_voting_demanded_by_member = ( DB::num_rows($result) == true );
 	}
 
 
@@ -287,74 +142,54 @@ class Issue extends Relation {
 
 
 	/**
-	 * look if we are in the phase of voting type determination
+	 * create a unique token for the member and the current issue
 	 *
-	 * @param boolean $submitted
+	 * @param string  $table  database table
+	 * @param Member  $member
+	 * @return string
+	 */
+	private function create_unique_token($table, Member $member) {
+		DB::transaction_start();
+		do {
+			$token = Login::generate_token(8);
+			$sql = "SELECT token FROM ".$table." WHERE token=".DB::esc($token);
+		} while ( DB::numrows($sql) );
+		$sql = "INSERT INTO ".$table." (member, issue, token) VALUES (".intval($member->id).", ".intval($this->id).", ".DB::esc($token).")";
+		DB::query($sql);
+		DB::transaction_commit();
+		return $token;
+	}
+
+
+	/**
+	 * look if we are in the phase of voting mode determination
+	 *
+	 * The phase starts at the submission of the first proposal.
+	 *
+	 * @param boolean $submitted (optional) provide information if at least one proposal is already submitted
 	 * @return boolean
 	 */
-	public function voting_type_determination($submitted=null) {
+	public function votingmode_determination($submitted=null) {
 
-		if ($this->ballot_voting_reached) return false;
-
-		if ($this->state=="debate") return true;
-
-		if ($this->state!="admission") return false;
+		if ( $this->votingmode_determination_finished() ) return false;
 
 		if ($submitted!==null) return $submitted==true;
-
 		// look if there is at least one already submitted proposal
-		$sql = "SELECT COUNT(1) FROM proposals	WHERE issue=".intval($this->id)." AND state!='draft'";
-		return DB::fetchfield($sql) == true;
+		$sql = "SELECT COUNT(1) FROM proposals WHERE issue=".intval($this->id)." AND state!='draft'";
+		return DB::fetchfield($sql) > 0;
 	}
 
 
 	/**
-	 *
-	 * @param boolean $anonymous
-	 * @return boolean
-	 */
-	function demand_ballot_voting($anonymous=false) {
-		if (!$this->voting_type_determination()) {
-			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
-			return false;
-		}
-		$sql = "INSERT INTO ballot_voting_demanders (issue, member, anonymous)
-			VALUES (".intval($this->id).", ".intval(Login::$member->id).", ".DB::bool_to_sql($anonymous).")";
-		DB::query($sql);
-		$this->update_ballot_voting_cache();
-	}
-
-
-	/**
+	 * Voting mode determination is finished if eigher the quorum is reached or voting preparation starts.
 	 *
 	 * @return boolean
 	 */
-	function revoke_demand_for_ballot_voting() {
-		if (!$this->voting_type_determination()) {
-			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
-			return false;
-		}
-		$sql = "DELETE FROM ballot_voting_demanders WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id);
-		DB::query($sql);
-		$this->update_ballot_voting_cache();
-	}
+	public function votingmode_determination_finished() {
 
+		if ($this->votingmode_reached) return true;
 
-	/**
-	 *
-	 */
-	function update_ballot_voting_cache() {
-
-		$sql = "SELECT COUNT(1) FROM ballot_voting_demanders WHERE issue=".intval($this->id);
-		$count = DB::fetchfield($sql);
-
-		if ($count >= $this->quorum_ballot_voting_required()) {
-			$sql = "UPDATE issues SET ballot_voting_demanders=".intval($count).", ballot_voting_reached=TRUE WHERE id=".intval($this->id);
-			DB::query($sql);
-		} else {
-			$sql = "UPDATE issues SET ballot_voting_demanders=".intval($count)." WHERE id=".intval($this->id);
-			DB::query($sql);
-		}
+		if ($this->state!="debate" and $this->state!="admission") return true;
 
 	}
 
@@ -364,8 +199,8 @@ class Issue extends Relation {
 	 *
 	 * @return array
 	 */
-	function quorum_ballot_voting_level() {
-		return array(QUORUM_BALLOT_VOTING_NUM, QUORUM_BALLOT_VOTING_DEN);
+	function quorum_votingmode_level() {
+		return array(QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN);
 	}
 
 
@@ -374,10 +209,303 @@ class Issue extends Relation {
 	 *
 	 * @return integer
 	 */
-	function quorum_ballot_voting_required() {
-		list($num, $den) = $this->quorum_ballot_voting_level();
+	function quorum_votingmode_required() {
+		list($num, $den) = $this->quorum_votingmode_level();
 		$area = new Area($this->area);
 		return ceil($area->population() * $num / $den);
+	}
+
+
+	/**
+	 * look if the logged in member demands ballot voting
+	 *
+	 * @return boolean
+	 */
+	public function votingmode_demanded_by_member() {
+		$sql = "SELECT demand
+ 			FROM votingmode_votes
+			JOIN votingmode_tokens USING (token)
+			WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id)."
+ 			ORDER BY votetime DESC
+ 			LIMIT 1";
+		$result = DB::query($sql);
+		if ( $row = DB::fetch_assoc($result) ) {
+			DB::to_bool($row['demand']);
+			return $row['demand'];
+		} else {
+			return false;
+		}
+	}
+
+
+	/**
+	 * demand ballot voting
+	 *
+	 * @return boolean
+	 */
+	function demand_votingmode() {
+		if (!$this->votingmode_determination()) {
+			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
+			return false;
+		}
+		$token = $this->votingmode_token(true);
+		$this->votingmode_vote($token, true);
+		$this->update_votingmode_cache();
+	}
+
+
+	/**
+	 * revoke demand for ballot voting
+	 *
+	 * @return boolean
+	 */
+	function revoke_votingmode() {
+		if (!$this->votingmode_determination()) {
+			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
+			return false;
+		}
+		// The token has already been created when ballot voting was demanded.
+		$token = $this->votingmode_token();
+		$this->votingmode_vote($token, false);
+		$this->update_votingmode_cache();
+	}
+
+
+	/**
+	 * count ballot voting demanders and save the result
+	 */
+	function update_votingmode_cache() {
+
+		// count demanding latest votes
+		$sql = "SELECT token, demand
+ 			FROM votingmode_votes
+			JOIN votingmode_tokens USING (token)
+			WHERE issue=".intval($this->id)."
+ 			ORDER BY token, votetime DESC";
+		$result = DB::query($sql);
+		$count = 0;
+		$previous_token = null;
+		while ( $row = DB::fetch_assoc($result) ) {
+
+			// skip overridden votes
+			if ($row['token']==$previous_token) continue;
+			$previous_token = $row['token'];
+
+			DB::to_bool($row['demand']);
+			if ($row['demand']) $count++;
+
+		}
+
+		if ( $count >= $this->quorum_votingmode_required() ) {
+			$sql = "UPDATE issues SET votingmode_demanders=".intval($count).", votingmode_reached=TRUE WHERE id=".intval($this->id);
+		} else {
+			$sql = "UPDATE issues SET votingmode_demanders=".intval($count)." WHERE id=".intval($this->id);
+		}
+		DB::query($sql);
+
+	}
+
+
+	/**
+	 * get the token of the logged in member for demanding ballot voting
+	 *
+	 * @param boolean $create (optional) create a new token if it does not exist yet
+	 * @return string
+	 */
+	public function votingmode_token($create=false) {
+		$sql = "SELECT token FROM votingmode_tokens WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
+		$result = DB::query($sql);
+		if ( $row = DB::fetch_assoc($result) ) return $row['token'];
+		if ($create) return $this->create_unique_token("votingmode_tokens", Login::$member);
+	}
+
+
+	/**
+	 * save vote for voting mode for this issue
+	 *
+	 * @param string  $token
+	 * @param boolean $demand
+	 */
+	public function votingmode_vote($token, $demand) {
+
+		DB::transaction_start();
+
+		$sql = "INSERT INTO votingmode_votes (token, demand) VALUES (".DB::esc($token).", ".DB::bool_to_sql($demand).") RETURNING votetime";
+		if ( $result = DB::query($sql) ) {
+			list($votetime) = pg_fetch_row($result);
+
+			if (!Login::$member->mail) {
+				warning(_("Your vote von the voting mode has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
+			} else {
+
+				// Since the subject can not be encrypted, we don't show which issue.
+				$subject = _("Vote receipt for voting mode");
+
+				$body = _("Group").": ".$this->area()->ngroup()->name."\n\n";
+
+				$body .= sprintf(_("Receipt for your vote on the voting mode for issue %d:"), $this->id)."\n\n";
+				foreach ( $this->proposals() as $proposal ) {
+					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n\n";
+				}
+				$body .= _("You demand ballot voting").": ".($demand?_("Yes"):_("No"))."\n\n"
+					._("Your user name").": ".Login::$member->username."\n"
+					._("Your user ID").": ".Login::$member->id."\n"
+					._("Your voting mode token").": ".$token."\n"
+					._("Voting time").": ".date(VOTETIME_FORMAT, strtotime($votetime))."\n\n"
+					._("You can change your choice again:")."\n"
+					.BASE_URL."vote.php?issue=".$this->id."\n";
+
+				if ( send_mail(Login::$member->mail, $subject, $body, array(), true, Login::$member->fingerprint) ) {
+					success(_("Your vote on the voting mode has been saved and an email receipt has been sent to you."));
+				} else {
+					warning(_("Your vote on the voting mode has been saved, but the email receipt could not be sent!"));
+				}
+
+			}
+
+			DB::transaction_commit();
+
+		} else {
+			warning(_("Your vote on the voting mode could not be saved!"));
+			DB::transaction_rollback();
+		}
+
+	}
+
+
+	/**
+	 * get the vote token of the logged in member
+	 *
+	 * @return string
+	 */
+	public function vote_token() {
+		$sql = "SELECT token FROM vote_tokens WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
+		return DB::fetchfield($sql);
+	}
+
+
+	/**
+	 * save vote for this issue
+	 *
+	 * @param string  $token
+	 * @param array   $vote
+	 */
+	public function vote($token, array $vote) {
+
+		// example for one single proposal:
+		// array( 123 => array('acceptance' => 0) )
+		// example for two proposals:
+		// array( 123 => array('acceptance' => 1, 'score' => 2), 456 => array('acceptance' => -1, 'score' => 0) )
+
+		// convert strings to integers
+		foreach ( $vote as &$value ) {
+			$value = array_map('intval', $value);
+		}
+		unset($value);
+
+		DB::transaction_start();
+
+		$sql = "INSERT INTO vote_votes (token, vote) VALUES (".DB::esc($token).", ".DB::esc(serialize($vote)).") RETURNING votetime";
+		if ( $result = DB::query($sql) ) {
+			list($votetime) = pg_fetch_row($result);
+
+			if (!Login::$member->mail) {
+				warning(_("Your vote has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
+			} else {
+
+				// Since the subject can not be encrypted, we don't show which issue.
+				$subject = _("Vote receipt");
+
+				$body = _("Group").": ".$this->area()->ngroup()->name."\n\n";
+
+				$body .= sprintf(_("Vote receipt for your vote on issue %d:"), $this->id)."\n\n";
+				foreach ( $vote as $proposal_id => $vote_proposal ) {
+					$proposal = new Proposal($proposal_id);
+					$body .= mb_wordwrap(_("Proposal")." ".$proposal_id.": ".$proposal->title)."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n"
+						._("Acceptance").": ".acceptance($vote_proposal['acceptance']);
+					if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".score($vote_proposal['score']);
+					$body .= "\n\n";
+				}
+				$body .= _("Your user name").": ".Login::$member->username."\n"
+					._("Your user ID").": ".Login::$member->id."\n"
+					._("Your vote token").": ".$token."\n"
+					._("Voting time").": ".date(VOTETIME_FORMAT, strtotime($votetime))."\n\n"
+					._("You can change your vote by voting again on:")."\n"
+					.BASE_URL."vote.php?issue=".$this->id."\n";
+
+				if ( send_mail(Login::$member->mail, $subject, $body, array(), true, Login::$member->fingerprint) ) {
+					success(_("Your vote has been saved and an email receipt has been sent to you."));
+				} else {
+					warning(_("Your vote has been saved, but the email receipt could not be sent!"));
+				}
+
+			}
+
+			DB::transaction_commit();
+
+		} else {
+			warning(_("Your vote could not be saved!"));
+			DB::transaction_rollback();
+		}
+
+	}
+
+
+	/**
+	 * counting of votes
+	 */
+	public function counting() {
+
+		$proposals = $this->proposals(true);
+
+		foreach ( $proposals as $proposal ) {
+			$proposal->yes        = 0;
+			$proposal->no         = 0;
+			$proposal->abstention = 0;
+			$proposal->score      = 0;
+		}
+
+		$sql = "SELECT token, vote FROM vote_votes
+ 			JOIN vote_tokens USING (token)
+			WHERE issue=".intval($this->id)."
+			ORDER BY token, votetime DESC";
+		$result = DB::query($sql);
+		$previous_token = null;
+		while ( $row = DB::fetch_assoc($result) ) {
+
+			// skip overridden votes
+			if ($row['token']==$previous_token) continue;
+			$previous_token = $row['token'];
+
+			$vote = unserialize($row['vote']);
+
+			foreach ( $proposals as $proposal ) {
+				switch ($vote[$proposal->id]['acceptance']) {
+				case -1:
+					$proposal->abstention++;
+					break;
+				case 0:
+					$proposal->no++;
+					break;
+				case 1:
+					$proposal->yes++;
+					break;
+				}
+				if ( count($proposals) > 1 ) {
+					$proposal->score += $vote[$proposal->id]['score'];
+				}
+			}
+
+		}
+
+		foreach ( $proposals as $proposal ) {
+			/** @var $proposal Proposal */
+			$proposal->accepted = ( $proposal->yes > $proposal->no );
+			$proposal->update(array('yes', 'no', 'abstention', 'score', 'accepted'));
+		}
+
 	}
 
 
@@ -466,7 +594,7 @@ class Issue extends Relation {
 ?>
 		<th class="state"><?=_("State")?></th>
 		<th class="period"><?=_("Period")?></th>
-		<th class="voting_type"><?=_("Voting type")?></th>
+		<th class="votingmode"><?=_("Voting mode")?></th>
 <?
 		}
 ?>
@@ -660,7 +788,7 @@ class Issue extends Relation {
 					}
 				}
 
-				// columns "period" and "voting type"
+				// columns "period" and "votingmode"
 				if ($first) {
 					if (Login::$admin) {
 ?>
@@ -676,47 +804,51 @@ class Issue extends Relation {
 <?
 					}
 ?>
-		<td rowspan="<?=$num_rows?>" class="center" id="voting_type"<?
+		<td rowspan="<?=$num_rows?>" class="center<?
 
-					if ($this->voting_type_determination($submitted)) {
-						?> title="<?
-						$entitled = ( Login::$member and Login::$member->entitled($this->area()->ngroup) );
-						if ($this->ballot_voting_demanded_by_member) {
-							echo _("You demand ballot voting.");
-						} elseif ($entitled) {
-							echo _("You can demand ballot voting.");
-						} else {
-							echo _("Members can demand ballot voting.");
-						}
-						?>">
+					if ($this->votingmode_determination($submitted)) {
+						?>" title="<?
+						if (Login::$member) {
+							$entitled = Login::$member->entitled($this->area()->ngroup);
+							$votingmode_demanded = $this->votingmode_demanded_by_member();
+							if ($votingmode_demanded) {
+								echo _("You demand ballot voting.");
+							} elseif ($entitled) {
+								echo _("You can demand ballot voting.");
+							} else {
+								echo _("You are not entitled in this group.");
+							}
+							?>">
 <img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
 <?
-						if (Login::$member) {
-							if ($this->ballot_voting_demanded_by_member) {
-								?>&#10003;<?
-							}
+							if ($votingmode_demanded) { ?>&#10003;<? }
 							if ($selected_proposal and $entitled) {
-								form(URI::same()."#voting_type");
-								if ($this->ballot_voting_demanded_by_member) {
+								form(URI::same());
+								if ($votingmode_demanded) {
 									echo _("You demand ballot voting.")?>
-<input type="hidden" name="action" value="revoke_demand_for_ballot_voting">
+<input type="hidden" name="action" value="revoke_votingmode">
 <input type="submit" value="<?=_("Revoke")?>">
 <?
 								} else {
 ?>
-<input type="hidden" name="action" value="demand_ballot_voting">
+<input type="hidden" name="action" value="demand_votingmode">
 <input type="submit" value="<?=_("Demand ballot voting")?>">
 <?
 								}
 								form_end();
 							}
+						} else {
+							echo _("Members can demand ballot voting.");
+							?>">
+<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
+<?
 						}
-					} elseif ($this->ballot_voting_reached) {
-						?> title="<?=_("ballot voting")?>"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"><?
+					} elseif ($this->votingmode_reached) {
+						?> result" title="<?=_("ballot voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"><?
 					} elseif ($this->state!="admission") {
-						?> title="<?=_("online voting")?>"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"><?
+						?> result" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"><?
 					} else {
-						?>><?
+						?>"><?
 					}
 
 					?></td>
@@ -747,9 +879,9 @@ class Issue extends Relation {
 			?><span title="<?=_("You can not vote on this issue, because you are are not entitled in the group.")?>"><?=_("Voting")?></span><?
 			return;
 		}
-		$sql = "SELECT vote.token FROM vote_tokens
-			LEFT JOIN vote ON vote_tokens.token = vote.token
-			WHERE vote_tokens.member=".intval(Login::$member->id)." AND vote_tokens.issue=".intval($this->id);
+		$sql = "SELECT vote_votes.token FROM vote_tokens
+			LEFT JOIN vote_votes USING (token)
+			WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
 		$result = DB::query($sql);
 		if ( list($token) = DB::fetch_row($result) ) {
 			?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
@@ -926,6 +1058,39 @@ class Issue extends Relation {
 				}
 			}
 
+			?></tr>
+<?
+		}
+?>
+</table>
+<?
+	}
+
+
+	/**
+	 * display a list of voting mode votes
+	 *
+	 * @param string  $result
+	 * @param string  $token  (optional) token of the logged in member for highlighting
+	 */
+	public static function display_votingmode_votes($result, $token="") {
+?>
+<table class="votes">
+<tr><th><?=_("Vote token")?></th><th><?=_("Voting time")?></th><th><?=_("Demands ballot voting")?></th></tr>
+<?
+		// votes
+		$previous_token = null;
+		while ( $row = DB::fetch_assoc($result) ) {
+			DB::to_bool($row['demand']);
+?>
+<tr class="<?=stripes();
+			// highlight votes of the logged in member
+			if ($token == $row['token']) { ?> self<? }
+			// strike through votes, which have been overridden by a later vote
+			if ($row['token'] == $previous_token) { ?> overridden<? } else $previous_token = $row['token'];
+			?>"><td><?=$row['token']?></td><?
+			?><td class="tdc"><?=date(VOTETIME_FORMAT, strtotime($row['votetime']))?></td><?
+			?><td><? display_checked($row['demand']) ?></td><?
 			?></tr>
 <?
 		}

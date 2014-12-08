@@ -74,19 +74,9 @@ if ($filter) input_hidden("filter", $filter);
 
 $pager = new Pager(10);
 
-if (Login::$member) {
-	$sql = "SELECT issues.*, ballot_voting_demanders.member AS ballot_voting_demanded_by_member
-		FROM issues
-		JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id)."
-		LEFT JOIN ballot_voting_demanders
-			ON issues.id = ballot_voting_demanders.issue
-			AND ballot_voting_demanders.member = ".intval(Login::$member->id);
-} else {
-	$sql = "SELECT issues.*
-		FROM issues
-		JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id);
-}
-
+$sql = "SELECT issues.*
+	FROM issues
+	JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id);
 $where = array();
 $order_by = " ORDER BY issues.id DESC";
 $show_results = false;
@@ -112,12 +102,11 @@ default: // open
 }
 
 if ($search) {
-	$sql .= " JOIN proposals ON proposals.issue = issues.id";
 	$pattern = DB::esc("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
 	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
-	$sql .= DB::where_and($where);
-	$sql .= " GROUP BY issues.id";
-	if (Login::$member) $sql .= ", ballot_voting_demanders.member";
+	$sql .= " JOIN proposals ON proposals.issue = issues.id"
+		.DB::where_and($where)
+		." GROUP BY issues.id";
 } else {
 	$sql .= DB::where_and($where);
 }

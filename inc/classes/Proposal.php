@@ -661,7 +661,7 @@ class Proposal extends Relation {
 			$new_issue->period = $old_issue->period;
 			$new_issue->state  = $old_issue->state;
 			// If the old issue reached ballot voting, the new issue gets ballot voting unseen the number of ballot voting demanders.
-			$new_issue->ballot_voting_reached = $old_issue->ballot_voting_reached;
+			$new_issue->votingmode_reached = $old_issue->votingmode_reached;
 			$new_issue->debate_started = $old_issue->debate_started;
 			$new_issue->create();
 		}
@@ -672,7 +672,8 @@ class Proposal extends Relation {
 			return;
 		}
 
-		// copy ballot voting demanders
+		// copy voting mode demanders
+		/* TODO
 		$sql = "INSERT INTO ballot_voting_demanders (issue, member, anonymous)
 			SELECT ".intval($new_issue->id).", old.member, old.anonymous
 			FROM ballot_voting_demanders old
@@ -686,10 +687,11 @@ class Proposal extends Relation {
 			DB::transaction_rollback();
 			return;
 		}
+		*/
 
 		DB::transaction_commit();
 
-		$new_issue->update_ballot_voting_cache();
+		$new_issue->update_votingmode_cache();
 
 		// remove empty issue
 		if ( ! $old_issue->proposals() ) {

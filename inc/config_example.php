@@ -58,8 +58,8 @@ define("QUORUM_SUPPORT_DEN", 10);
 define("QUORUM_SUPPORT_ALTERNATIVE_NUM", 1); // 5%
 define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 20);
 // quorum for ballot voting
-define("QUORUM_BALLOT_VOTING_NUM", 1); // 5%
-define("QUORUM_BALLOT_VOTING_DEN", 20);
+define("QUORUM_VOTINGMODE_NUM", 1); // 5%
+define("QUORUM_VOTINGMODE_DEN", 20);
 
 // language, currently supported: "en" and "de"
 define("LANG", "en");

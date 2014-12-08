@@ -1,6 +1,6 @@
 <?
 /**
- * vote result
+ * voting mode result
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -13,11 +13,11 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error("The requested issue does not exist.");
 }
-if ($issue->state != 'finished' and $issue->state != 'cleared') {
-	error("This issue is not finished.");
+if (!$issue->votingmode_determination_finished()) {
+	error("Voting mode determination is not finished yet.");
 }
 
-html_head(_("Vote result"));
+html_head(_("Voting mode result"));
 
 help();
 
@@ -39,13 +39,13 @@ if ($issue->state == 'cleared') {
 <?
 } else {
 	// display list of votes
-	$sql = "SELECT token, vote, votetime FROM vote_tokens
- 		LEFT JOIN vote_votes USING (token)
+	$sql = "SELECT token, demand, votetime FROM votingmode_tokens
+ 		LEFT JOIN votingmode_votes USING (token)
  		WHERE issue=".intval($issue->id)."
  		ORDER BY token ASC, votetime DESC";
 	$result = DB::query($sql);
-	if (Login::$member) $token = $issue->vote_token(); else $token = null;
-	Issue::display_votes($proposals, $result, $token);
+	if (Login::$member) $token = $issue->votingmode_token(); else $token = null;
+	Issue::display_votingmode_votes($result, $token);
 }
 
 ?>

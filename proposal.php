@@ -90,14 +90,14 @@ if ($action) {
 		$proposal->revoke_support();
 		redirect();
 		break;
-	case "demand_ballot_voting":
+	case "demand_votingmode":
 		Login::access_action("entitled", $ngroup);
-		$issue->demand_ballot_voting(@$_POST['anonymous']==1);
+		$issue->demand_votingmode();
 		redirect();
 		break;
-	case "revoke_demand_for_ballot_voting":
+	case "revoke_votingmode":
 		Login::access_action("entitled", $ngroup);
-		$issue->revoke_demand_for_ballot_voting();
+		$issue->revoke_votingmode();
 		redirect();
 		break;
 
@@ -449,7 +449,6 @@ if (Login::$member) {
 <h2><?=_("This and alternative proposals")?></h2>
 <table class="proposals">
 <?
-if (Login::$member) $issue->read_ballot_voting_demanded_by_member();
 $show_results = in_array($issue->state, array('finished', 'cleared', 'cancelled'));
 Issue::display_proposals_th($show_results);
 list($proposals, $submitted) = $issue->proposals_list();

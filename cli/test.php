@@ -305,17 +305,17 @@ function create_case($case, $stopcase) {
 			time_warp($issue, "1 week");
 			cron();
 
-			$ballot_voting_required = $issue->quorum_ballot_voting_required();
+			$votingmode_required = $issue->quorum_votingmode_required();
 
-			${'branch'.++$branch.'_array'} = array(0, $ballot_voting_required-1, $ballot_voting_required);
-			$ballot_voting_demanders_count = ${'branch'.$branch.'_array'}[$bcase[$branch]];
+			${'branch'.++$branch.'_array'} = array(0, $votingmode_required-1, $votingmode_required);
+			$votingmode_demanders_count = ${'branch'.$branch.'_array'}[$bcase[$branch]];
 
-			for ( $i=1; $i<=$ballot_voting_demanders_count; $i++ ) {
-				add_ballot_voting_demander($proposal2, "a".$i);
+			for ( $i=1; $i<=$votingmode_demanders_count; $i++ ) {
+				add_votingmode_demander($proposal2, "a".$i);
 			}
 
 			if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
-				$casetitle = "issue with $ballot_voting_demanders_count ballot voting demanders";
+				$casetitle = "issue with $votingmode_demanders_count ballot voting demanders";
 				return;
 			}
 
@@ -466,9 +466,9 @@ function add_proponent(Proposal $proposal, $i) {
  * @param Proposal $proposal
  * @param string  $i
  */
-function add_ballot_voting_demander(Proposal $proposal, $i) {
+function add_votingmode_demander(Proposal $proposal, $i) {
 	create_member("user".$i);
-	$proposal->issue()->demand_ballot_voting();
+	$proposal->issue()->demand_votingmode();
 }
 
 

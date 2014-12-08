@@ -193,17 +193,6 @@ ALTER SEQUENCE arguments_id_seq OWNED BY arguments.id;
 
 
 --
--- Name: ballot_voting_demanders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE ballot_voting_demanders (
-    member integer NOT NULL,
-    issue integer NOT NULL,
-    anonymous boolean DEFAULT false NOT NULL
-);
-
-
---
 -- Name: ballots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -334,8 +323,8 @@ CREATE TABLE issues (
     id integer NOT NULL,
     period integer,
     area integer NOT NULL,
-    ballot_voting_demanders integer DEFAULT 0 NOT NULL,
-    ballot_voting_reached boolean DEFAULT false,
+    votingmode_demanders integer DEFAULT 0 NOT NULL,
+    votingmode_reached boolean DEFAULT false,
     debate_started timestamp with time zone,
     preparation_started timestamp with time zone,
     voting_started timestamp with time zone,
@@ -620,17 +609,6 @@ ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
 
 
 --
--- Name: vote; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE vote (
-    token character(8) NOT NULL,
-    vote text,
-    votetime timestamp with time zone DEFAULT now() NOT NULL
-);
-
-
---
 -- Name: vote_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -638,6 +616,17 @@ CREATE TABLE vote_tokens (
     member integer NOT NULL,
     issue integer NOT NULL,
     token character(8) NOT NULL
+);
+
+
+--
+-- Name: vote_votes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vote_votes (
+    token character(8) NOT NULL,
+    vote text,
+    votetime timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -658,6 +647,28 @@ CREATE TABLE voters (
 --
 
 COMMENT ON COLUMN voters.ballot IS 'NULL = postal voting';
+
+
+--
+-- Name: votingmode_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE votingmode_tokens (
+    member integer NOT NULL,
+    issue integer NOT NULL,
+    token character(8) NOT NULL
+);
+
+
+--
+-- Name: votingmode_votes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE votingmode_votes (
+    token character(8) NOT NULL,
+    demand boolean NOT NULL,
+    votetime timestamp with time zone DEFAULT now() NOT NULL
+);
 
 
 --
@@ -763,6 +774,14 @@ ALTER TABLE ONLY arguments
 
 
 --
+-- Name: ballot_voting_demanders_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY votingmode_tokens
+    ADD CONSTRAINT ballot_voting_demanders_token_key UNIQUE (token);
+
+
+--
 -- Name: ballots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -838,7 +857,7 @@ ALTER TABLE ONLY notify
 -- Name: offline_demanders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY ballot_voting_demanders
+ALTER TABLE ONLY votingmode_tokens
     ADD CONSTRAINT offline_demanders_pkey PRIMARY KEY (member, issue);
 
 
@@ -955,6 +974,14 @@ ALTER TABLE ONLY arguments
 
 
 --
+-- Name: ballot_voting_demanders_votes_token_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY votingmode_votes
+    ADD CONSTRAINT ballot_voting_demanders_votes_token_fkey FOREIGN KEY (token) REFERENCES votingmode_tokens(token) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
 -- Name: ballots_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1022,7 +1049,7 @@ ALTER TABLE ONLY notify
 -- Name: offlinedemanders_issue_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ballot_voting_demanders
+ALTER TABLE ONLY votingmode_tokens
     ADD CONSTRAINT offlinedemanders_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
@@ -1030,7 +1057,7 @@ ALTER TABLE ONLY ballot_voting_demanders
 -- Name: offlinedemanders_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ballot_voting_demanders
+ALTER TABLE ONLY votingmode_tokens
     ADD CONSTRAINT offlinedemanders_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
@@ -1102,7 +1129,7 @@ ALTER TABLE ONLY supporters
 -- Name: vote_token_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vote
+ALTER TABLE ONLY vote_votes
     ADD CONSTRAINT vote_token_fkey FOREIGN KEY (token) REFERENCES vote_tokens(token) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 

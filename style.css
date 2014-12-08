@@ -879,7 +879,7 @@ table.proposals th.state {
 table.proposals th.period {
 	width: 1%;
 }
-table.proposals th.voting_type {
+table.proposals th.votingmode {
 	width: 7%;
 }
 table.proposals th.result {

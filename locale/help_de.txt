@@ -52,6 +52,20 @@ Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich 
 
 Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die Verantwortlichen!
 
+===votingmode_result.php
+
+Unten ist eine Liste mit allen abgegebenen Stimmen zum Abstimmungsverfahren bei diesem Antragsblock. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert, sofern du eine abgegeben hast.
+
+Anhand dieser Liste kannst du folgendes überprüfen:
+
+ * Du kannst die Stimmen zählen und die Anzahl mit dem Quorum vergleichen.
+ * Du kannst prüfen, ob deine eigene Stimme korrekt in der Liste steht. Du solltest bei der Abstimmung eine Beleg-E-Mail bekommen haben, die du nun hiermit vergleichen kannst.
+ * Du kannst prüfen, ob deine Abstimmungskennung in der Beleg-E-Mails und die in der Liste hier übereinstimmt.
+
+Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
+
+Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die Verantwortlichen!
+
 ===periods.php
 
 Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.

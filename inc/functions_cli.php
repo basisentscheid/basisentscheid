@@ -195,8 +195,8 @@ function cron($skip_if_locked=false) {
 			case "preparation":
 				if (!$period->voting_now) break;
 
-				// check if the period provides the right voting type
-				if ( ($issue->ballot_voting_reached and $period->ballot_voting) or (!$issue->ballot_voting_reached and $period->online_voting) ) {
+				// check if the period provides the right voting mode
+				if ( ($issue->votingmode_reached and $period->ballot_voting) or (!$issue->votingmode_reached and $period->online_voting) ) {
 
 					$issues_start_voting[] = $issue;
 
@@ -206,14 +206,14 @@ function cron($skip_if_locked=false) {
 					$sql = "SELECT id FROM periods
 						WHERE ngroup=".intval($period->ngroup)."
 							AND preparation >= now()
-							AND ". $issue->ballot_voting_reached?"ballot_voting":"online_voting" ."=TRUE
+							AND ". $issue->votingmode_reached?"ballot_voting":"online_voting" ."=TRUE
 						ORDER BY preparation
 						LIMIT 1";
 					$issue->period = DB::fetchfield($sql);
 					if ($issue->period) {
 						$issue->update(array("period"));
 					} else {
-						trigger_error(sprintf(_("Voting for issue %d could not be started, because the determined voting type is not available in the current and all further voting periods!"), $issue->id), E_USER_WARNING);
+						trigger_error(sprintf(_("Voting for issue %d could not be started, because the determined voting mode is not available in the current and all further voting periods!"), $issue->id), E_USER_WARNING);
 					}
 
 				}
@@ -259,6 +259,8 @@ function cron($skip_if_locked=false) {
 
 				// delete raw voting data
 				$sql = "DELETE FROM vote_tokens WHERE issue=".intval($issue->id);
+				DB::query($sql);
+				$sql = "DELETE FROM votingmode_tokens WHERE issue=".intval($issue->id);
 				DB::query($sql);
 
 				$issue->clear = null;
