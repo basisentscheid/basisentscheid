@@ -94,11 +94,11 @@ case "voting":
 	$order_by = " ORDER BY issues.period DESC, issues.id DESC";
 	break;
 case "closed":
-	$where[] = "(issues.state='finished' OR issues.state='cleared' OR issues.state='cancelled')";
+	$where[] = "(issues.state='finished' OR issues.state='cancelled')";
 	$show_results = true;
 	break;
 default: // open
-	$where[] = "(issues.state!='finished' AND issues.state!='cleared' AND issues.state!='cancelled')";
+	$where[] = "(issues.state!='finished' AND issues.state!='cancelled')";
 }
 
 if ($search) {

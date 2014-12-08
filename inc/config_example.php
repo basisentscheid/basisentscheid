@@ -79,4 +79,3 @@ define("ARGUMENTS_LIMIT_0", 5);
 define("ARGUMENTS_LIMIT_1", 2);
 define("ARGUMENTS_LIMIT_2", 1);
 define("ARGUMENTS_LIMIT_3", 1);
-

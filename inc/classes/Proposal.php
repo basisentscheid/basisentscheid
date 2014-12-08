@@ -656,6 +656,7 @@ class Proposal extends Relation {
 				redirect();
 			}
 		} else {
+			// create a new empty issue
 			$new_issue = new Issue;
 			$new_issue->area   = $old_issue->area;
 			$new_issue->period = $old_issue->period;
@@ -667,36 +668,30 @@ class Proposal extends Relation {
 		}
 
 		$this->issue = $new_issue->id;
+
 		if ( ! $this->update(array('issue')) ) {
 			DB::transaction_rollback();
 			return;
 		}
 
-		// copy voting mode demanders
-		/* TODO
-		$sql = "INSERT INTO ballot_voting_demanders (issue, member, anonymous)
-			SELECT ".intval($new_issue->id).", old.member, old.anonymous
-			FROM ballot_voting_demanders old
-			WHERE old.issue=".intval($old_issue->id)."
-			  AND old.member NOT IN (
-					SELECT member FROM ballot_voting_demanders
-					WHERE issue=".intval($new_issue->id)."
-						OR issue=".intval($old_issue->id)."
-				)";
-		if ( ! DB::query($sql) ) {
-			DB::transaction_rollback();
-			return;
-		}
-		*/
-
 		DB::transaction_commit();
 
-		$new_issue->update_votingmode_cache();
+		// cancel empty issue
+		if ( ! $old_issue->proposals() ) $old_issue->cancel();
 
-		// remove empty issue
-		if ( ! $old_issue->proposals() ) {
-			DB::query("DELETE FROM issues WHERE id=".intval($old_issue->id));
-		}
+		// send notification
+		$notification = new Notification("proposal_moved");
+		$notification->period    = $period;
+		$notification->issue_old = $old_issue;
+		$notification->issue     = $new_issue;
+		$notification->proposal  = $this;
+		// votingmode voters of both issues
+		$sql = "SELECT DISTINCT member FROM votingmode_tokens WHERE issue=".intval($old_issue->id)." OR issue=".intval($new_issue->id);
+		$recipients = DB::fetchfieldarray($sql);
+		// supporters and proponents of the proposal
+		$sql = "SELECT DISTINCT member FROM supporters WHERE proposal=".intval($this->id);
+		$recipients = array_unique($recipients, DB::fetchfieldarray($sql));
+		$notification->send($recipients);
 
 	}
 
@@ -731,8 +726,7 @@ class Proposal extends Relation {
 		}
 
 		// cancel issue
-		$issue->state = "cancelled";
-		$issue->update(array("state"));
+		$issue->cancel();
 
 	}
 

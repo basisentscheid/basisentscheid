@@ -100,12 +100,11 @@ function cron($skip_if_locked=false) {
 
 
 		// proposals and issues
-		$sql_issue = "SELECT *, clear <= now() AS clear_now FROM issues
-		  WHERE period=".intval($period->id)."
-		    AND state NOT IN ('cleared', 'cancelled')";
+		$sql_issue = "SELECT * FROM issues
+			WHERE period=".intval($period->id)."
+			AND state NOT IN ('finished', 'cancelled')";
 		$result_issue = DB::query($sql_issue);
 		while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
-			DB::to_bool($issue->clear_now);
 
 			switch ($issue->state) {
 
@@ -129,8 +128,7 @@ function cron($skip_if_locked=false) {
 				}
 
 				if ($all_proposals_revoked) {
-					$issue->state = "cancelled";
-					$issue->update(array("state"));
+					$issue->cancel();
 					break;
 				}
 
@@ -252,26 +250,10 @@ function cron($skip_if_locked=false) {
 				}
 
 				break;
-
-				// clear
-			case "finished":
-				if (!$issue->clear_now) break;
-
-				// delete raw voting data
-				$sql = "DELETE FROM vote_tokens WHERE issue=".intval($issue->id);
-				DB::query($sql);
-				$sql = "DELETE FROM votingmode_tokens WHERE issue=".intval($issue->id);
-				DB::query($sql);
-
-				$issue->clear = null;
-				$issue->state = "cleared";
-				$issue->update(array("state"), "cleared=now()");
-
-				// "cleared" and "cancelled" are the final issue states.
+				// "finished" and "cancelled" are the final issue states.
 			}
 
 		}
-
 
 		// debate start notifications
 		if ($issues_start_debate) {
@@ -290,71 +272,9 @@ function cron($skip_if_locked=false) {
 		}
 
 		// start voting and send individual notifications with tokens
-		if ($issues_start_voting) {
-
-			// entitled members of the ngroup
-			$sql = "SELECT members.* FROM members
-				JOIN members_ngroups ON members.id = members_ngroups.member AND members_ngroups.ngroup=".intval($period->ngroup)."
-				WHERE entitled=TRUE";
-			$members = DB::fetchobjectarray($sql, "Member");
-
-			$personal_tokens = array();
-			$all_tokens      = array();
-			foreach ($issues_start_voting as $issue) {
-				/** @var $issue Issue */
-
-				// generate vote tokens
-				foreach ( $members as $member ) {
-					DB::transaction_start();
-					do {
-						$token = Login::generate_token(8);
-						$sql = "SELECT token FROM vote_tokens WHERE token=".DB::esc($token);
-					} while ( DB::numrows($sql) );
-					$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member->id).", ".intval($issue->id).", ".DB::esc($token).")";
-					DB::query($sql);
-					DB::transaction_commit();
-					$personal_tokens[$member->id][$issue->id] = $token;
-					$all_tokens[$issue->id][]                 = $token;
-				}
-
-				$issue->state = "voting";
-				$issue->update(array("state"), 'voting_started=now()');
-
-			}
-
-			// notification mails
-			$subject = sprintf(_("Voting started in period %d"), $period->id);
-			$body_top = _("Group").": ".$period->ngroup()->name."\n\n"
-				._("Voting has started on the following proposals").":\n";
-			$body_lists = "\n"._("Voting end").": ".datetimeformat($period->counting)
-				."\n\n===== "._("Lists of all vote tokens")." =====\n";
-			$issues_blocks = array();
-			foreach ( $issues_start_voting as $issue ) {
-				$body_lists .= "\n"
-					._("Issue")." ".$issue->id.":\n"
-					.join(", ", $all_tokens[$issue->id])."\n";
-				$issues_blocks[$issue->id] = "\n"._("Issue")." ".$issue->id."\n";
-				foreach ( $issue->proposals(true) as $proposal ) {
-					$issues_blocks[$issue->id] .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
-						.BASE_URL."proposal.php?id=".$proposal->id."\n";
-				}
-			}
-			foreach ( $members as $member ) {
-				if (!$member->mail) continue;
-				$body = $body_top;
-				foreach ( $issues_start_voting as $issue ) {
-					$body .= $issues_blocks[$issue->id]
-						._("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
-						._("Your vote token").": ".$personal_tokens[$member->id][$issue->id]."\n";
-				}
-				$body .= $body_lists;
-				send_mail($member->mail, $subject, $body, array(), true, $member->fingerprint);
-			}
-
-		}
+		if ($issues_start_voting) $period->start_voting($issues_start_voting);
 
 	}
-
 
 	// revoke due proposals, which have have less than required proponents
 	$sql = "SELECT * FROM proposals WHERE revoke < now()";
@@ -372,7 +292,6 @@ function cron($skip_if_locked=false) {
 		}
 	}
 
-
 	// cancel proposals, which have not been admitted within 6 months
 	// https://basisentscheid.piratenpad.de/entscheidsordnung
 	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
@@ -384,9 +303,20 @@ function cron($skip_if_locked=false) {
 		$proposal->cancel();
 	}
 
+	// clear issues
+	$sql = "SELECT * FROM issues WHERE clear <= now()";
+	$result = DB::query($sql);
+	while ( $issue = DB::fetch_object($result, "Issue") ) {
+		// delete raw voting data
+		$sql_delete = "DELETE FROM vote_tokens WHERE issue=".intval($issue->id);
+		DB::query($sql_delete);
+		$sql_delete = "DELETE FROM votingmode_tokens WHERE issue=".intval($issue->id);
+		DB::query($sql_delete);
+		$issue->clear = null;
+		$issue->update(array("clear"), "cleared=now()");
+	}
 
 	cron_unlock();
-
 }
 
 

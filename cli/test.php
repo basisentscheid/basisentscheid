@@ -369,6 +369,7 @@ function create_case($case, $stopcase) {
 			}
 			$sql = "SELECT * FROM members
  				JOIN members_ngroups ON members.id = members_ngroups.member
+ 				JOIN vote_tokens ON vote_tokens.member = members.id AND vote_tokens.issue = ".intval($issue->id)."
 				WHERE members_ngroups.ngroup = 1 AND members.entitled = TRUE
 				LIMIT ".rand(0, 100);
 			$result = DB::query($sql);
@@ -393,11 +394,11 @@ function create_case($case, $stopcase) {
 				return;
 			}
 
-			// move on to state "cleared"
+			// move on to cleared
 			time_warp($issue, CLEAR_INTERVAL);
 			cron();
 
-			$casetitle = "issue in cleared state";
+			$casetitle = "issue finished and cleared";
 
 		} else {
 			$casetitle = "no admitted proposal";

@@ -15,6 +15,7 @@ class Notification {
 	public $period;
 	public $issues;
 	public $issue;
+	public $issue_old;
 	public $proposals;
 	public $proposal;
 	public $proponent;
@@ -342,6 +343,27 @@ class Notification {
 				}
 				$body .= _("Vote result").": ".BASE_URL."vote_result.php?issue=".$issue->id."\n";
 			}
+
+			break;
+		case "proposal_moved":
+
+			$subject = sprintf(_("Proposal %d moved to a different issue"), $this->proposal->id);
+
+			$body .= sprintf(_("An administrator moved the following proposal from issue %d to issue %d:"), $this->issue_old->id, $this->issue->id)
+				._("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				.sprintf(_("Proposals in the old issue %d:"), $this->issue_old->id)."\n";
+			foreach ( $this->issue_old->proposals() as $proposal ) {
+				$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
+					.BASE_URL."proposal.php?id=".$proposal->id."\n";
+			}
+			$body .= "\n"
+				.sprintf(_("Proposals in the new issue %d:"), $this->issue->id)."\n";
+			foreach ( $this->issue->proposals() as $proposal ) {
+				$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
+					.BASE_URL."proposal.php?id=".$proposal->id."\n";
+			}
+			$body .= _("Notice that if you demanded ballot voting for the old issue, this was not automatically transferred to the new issue. If you still want ballot voting, you should demand it again on the new issue!")."\n";
 
 			break;
 		case "ballot_approved":

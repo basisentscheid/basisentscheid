@@ -13,7 +13,7 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error(_("The requested issue does not exist."));
 }
-if ($issue->state == 'finished' or $issue->state == 'cleared') {
+if ($issue->state == 'finished') {
 	error(_("The voting on this issue is already closed."));
 } elseif ($issue->state != 'voting') {
 	error(_("The issue is not in voting state."));

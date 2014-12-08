@@ -32,7 +32,6 @@ CREATE TYPE issue_state AS ENUM (
     'voting',
     'counting',
     'finished',
-    'cleared',
     'cancelled'
 );
 

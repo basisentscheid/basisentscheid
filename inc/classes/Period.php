@@ -68,6 +68,75 @@ class Period extends Relation {
 
 
 	/**
+	 * start voting
+	 *
+	 * @param array   $issues
+	 */
+	public function start_voting(array $issues) {
+
+		// entitled members of the ngroup
+		$sql = "SELECT members.* FROM members
+			JOIN members_ngroups ON members.id = members_ngroups.member AND members_ngroups.ngroup=".intval($this->ngroup)."
+			WHERE entitled=TRUE";
+		$members = DB::fetchobjectarray($sql, "Member");
+
+		$personal_tokens = array();
+		$all_tokens      = array();
+		foreach ($issues as $issue) {
+			/** @var $issue Issue */
+
+			// generate vote tokens
+			foreach ( $members as $member ) {
+				DB::transaction_start();
+				do {
+					$token = Login::generate_token(8);
+					$sql = "SELECT token FROM vote_tokens WHERE token=".DB::esc($token);
+				} while ( DB::numrows($sql) );
+				$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member->id).", ".intval($issue->id).", ".DB::esc($token).")";
+				DB::query($sql);
+				DB::transaction_commit();
+				$personal_tokens[$member->id][$issue->id] = $token;
+				$all_tokens[$issue->id][]                 = $token;
+			}
+
+			$issue->state = "voting";
+			$issue->update(array("state"), 'voting_started=now()');
+
+		}
+
+		// notification mails
+		$subject = sprintf(_("Voting started in period %d"), $this->id);
+		$body_top = _("Group").": ".$this->ngroup()->name."\n\n"
+			._("Voting has started on the following proposals").":\n";
+		$body_lists = "\n"._("Voting end").": ".datetimeformat($this->counting)
+			."\n\n===== "._("Lists of all vote tokens")." =====\n";
+		$issues_blocks = array();
+		foreach ( $issues as $issue ) {
+			$body_lists .= "\n"
+				._("Issue")." ".$issue->id.":\n"
+				.join(", ", $all_tokens[$issue->id])."\n";
+			$issues_blocks[$issue->id] = "\n"._("Issue")." ".$issue->id."\n";
+			foreach ( $issue->proposals(true) as $proposal ) {
+				$issues_blocks[$issue->id] .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
+					.BASE_URL."proposal.php?id=".$proposal->id."\n";
+			}
+		}
+		foreach ( $members as $member ) {
+			if (!$member->mail) continue;
+			$body = $body_top;
+			foreach ( $issues as $issue ) {
+				$body .= $issues_blocks[$issue->id]
+					._("Vote").": ".BASE_URL."vote.php?issue=".$issue->id."\n"
+					._("Your vote token").": ".$personal_tokens[$member->id][$issue->id]."\n";
+			}
+			$body .= $body_lists;
+			send_mail($member->mail, $subject, $body, array(), true, $member->fingerprint);
+		}
+
+	}
+
+
+	/**
 	 * information about the ballot phase
 	 *
 	 * @return string

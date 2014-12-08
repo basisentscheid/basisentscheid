@@ -33,7 +33,7 @@ $issue->display_proposals($proposals, $submitted, count($proposals), true);
 <h2><?=_("Votes")?></h2>
 <?
 
-if ($issue->state == 'cleared') {
+if ($issue->cleared) {
 ?>
 <p><? printf(_("Raw data has been cleared at %s."), datetimeformat($issue->cleared)); ?></p>
 <?

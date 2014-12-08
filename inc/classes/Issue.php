@@ -142,6 +142,15 @@ class Issue extends Relation {
 
 
 	/**
+	 * set the issue to state "cancelled" and set time for clearing
+	 */
+	public function cancel() {
+		$this->state = "cancelled";
+		$this->update(array("state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
+	}
+
+
+	/**
 	 * create a unique token for the member and the current issue
 	 *
 	 * @param string  $table  database table
@@ -716,7 +725,7 @@ class Issue extends Relation {
 
 				// column "voting results"
 				if ($show_results) {
-					if ($this->state != 'finished' and $this->state != 'cleared') {
+					if ($this->state != 'finished') {
 ?>
 		<td></td>
 <?
