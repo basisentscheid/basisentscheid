@@ -309,7 +309,7 @@ class Member extends Relation {
 		//var_dump($info);
 
 		if ( !$this->keyinfo_matches_email($info) ) {
-			?><span class="problem"><?=_("No matching key was found.")?></span><?
+			?><span class="problem"><?=_("No key matching fingerprint and email address was found.")?></span><?
 			return;
 		}
 

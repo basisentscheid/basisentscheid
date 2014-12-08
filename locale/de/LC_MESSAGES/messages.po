@@ -2436,7 +2436,6 @@ msgstr "Benutzer-ID"
 msgid "Vote token"
 msgstr "Abstimmungskennung"
 #
-# File: inc/classes/Member.php, line: 312
 msgid "No matching key was found."
 msgstr "Es wurde kein passender Schlüssel gefunden."
 #
@@ -2573,3 +2572,7 @@ msgstr "Anträge im neuen Antragsblock %d:"
 # File: inc/classes/Notification.php, line: 366
 msgid "Notice that if you demanded ballot voting for the old issue, this was not automatically transferred to the new issue. If you still want ballot voting, you should demand it again on the new issue!"
 msgstr "Beachte, dass die Stimmen für eine Urnenabstimmung bei dem alten Antragsblock nicht automatisch in den neuen Antragsblock übernommen werden. Falls du immer noch eine Urnenabstimmung möchtest, solltest du das im neuen Antragsblock noch einmal fordern!"
+#
+# File: inc/classes/Member.php, line: 312
+msgid "No key matching fingerprint and email address was found."
+msgstr "Kein zum Fingerabdruck und zur E-Mail-Adresse passender Schlüssel gefunden."

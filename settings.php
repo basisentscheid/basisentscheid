@@ -149,7 +149,7 @@ form(BN);
 	</div>
 	<div class="input td0">
 		<label><?=_("PGP Public Key import")?></label>
-		<span class="input"><textarea name="key" cols="80" rows="5" maxlength="10000"></textarea></span>
+		<span class="input"><textarea name="key" cols="80" rows="5"></textarea></span>
 	</div>
 <? } ?>
 	<div class="input td1">
