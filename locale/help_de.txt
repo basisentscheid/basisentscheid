@@ -9,7 +9,11 @@ Anträge durchlaufen folgende <b>Phasen</b>:
  * Zulassung: Der Antrag sammelt nun Unterstützer, um das Quorum zur Zulassung zu erreichen.
  * zugelassen: Der Antrag hat das Zulassungsquorum erreicht und wartet darauf, von den Verantwortlichen einer Abstimmungsperiode zugeordnet zu werden, in der dann die weiteren Phasen ablaufen.
 
-Die aktuelle Phase eines Antrags wird in der Spalte <i>Status</i> angezeigt.
+Die aktuelle Phase eines Antrags wird in der Spalte <b>Status</b> angezeigt.
+
+Wenn eine Abstimmung abgeschlossen ist, kommst du mit einem Klick auf die Spalte <b>Ergebnis</b> zu einer Liste aller abgegebenen Stimmen.
+
+Wenn das Abstimmungsverfahren für einen Antragsblock feststeht, kommst du mit einem Klick auf die Spalte <b>Abstimmungsverfahren</b> zu einer Liste aller dazu abgegebenen Stimmen.
 
 ===proposal.php
 

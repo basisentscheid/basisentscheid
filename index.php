@@ -9,13 +9,13 @@
 
 require "inc/common.php";
 
-html_head("Willkommen auf dem Testserver des Basisentscheid-Portals!");
+html_head("Willkommen auf der Testinstallation der Basisentscheid-Software!");
 
 ?>
 
 <p>Ihr könnt hier gerne alles anschauen und ausprobieren. Lasst euch von den automatisch generierten Testdaten, die überall drin stehen, nicht irritieren. Sie machen es zwar teilweise etwas unübersichtlich, aber dafür kann man damit so ziemlich alle möglichen Zustände sehen.</p>
 
-<p>Ihr könnt euch selbst einen <a href="create_member.php">Mitglieds-Account erstellen</a>. Um z.B. das Abstimmen auszuprobieren kann man sich als einer der bei einem Antrag eingetragenen Unterstützer einloggen, diese Test-Benutzer haben alle das Passwort "test". Außerdem kann man sich auch als <a href="login.php?admin=1">Verantwortlicher anmelden</a>, mit Benutzer "test" und Passwort "test".</p>
+<p>Ihr könnt euch selbst einen <a href="create_member.php">Mitglieds-Account erstellen</a>. Um z.B. das Abstimmen auszuprobieren kann man sich als einer der bei einem Antrag eingetragenen Unterstützer einloggen, diese Test-Benutzer haben alle das Passwort "test". Außerdem kann man sich auch als <a href="login.php?admin=1">Verantwortlicher anmelden</a>, mit Benutzer "test" und Passwort "test". Zu den Funktionalitäten für die Verantwortlichen gibt es eine separate <a href="https://praktikabler-basisentscheid.piratenpad.de/4">Dokumentation</a>.</p>
 
 <p>Wenn ihr Fehler findet, könnt ihr die in das <a href="https://praktikabler-basisentscheid.piratenpad.de/2">Pad <i>Bugs/Fehler</i></a> eintragen. Ihr müsst aber nicht unbedingt nach Fehlern suchen, es gibt sicherlich noch viele. Interessanter ist die Frage, ob alles so umgesetzt ist, wie wir es haben wollen. Welche Funktionen fehlen oder verhalten sich anders, als es vielleicht sinnvoller wäre? Wenn euch da etwas auffällt, könnt ihr das in das <a href="https://praktikabler-basisentscheid.piratenpad.de/1">Pad <i>Funktionalität</i></a> eintragen.</p>
 
