@@ -556,6 +556,7 @@ class Proposal extends Relation {
 	function set_admission_decision($text) {
 		DB::transaction_start();
 		$this->read();
+		$this->admission_decision = $text;
 		if ($this->state=="draft" or $this->state=="submitted") {
 			$this->state = "admitted";
 			$this->update(array("admission_decision", "state"), 'admitted=now()');

@@ -883,15 +883,14 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 			form(URI::same()."#admission_decision", 'class="admission_decision"');
 			if ($proposal->admission_decision!==null) {
 ?>
-
-<b><?=_("Admitted by decision")?>:</b><br>
-<input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>"><br>
+<b><?=_("Admitted by decision")?>:</b>
+<input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>">
 <input type="submit" value="<?=_("apply changes")?>">
 <?
 			} else {
 ?>
-<b id="admission_decision"><?=_("Admit proposal due to a decision")?>:</b><br>
-<input type="text" name="admission_decision"><br>
+<b id="admission_decision"><?=_("Admit proposal due to a decision")?>:</b>
+<input type="text" name="admission_decision">
 <input type="submit" value="<?=_("admit proposal")?>">
 <?
 			}
@@ -899,26 +898,27 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 <input type="hidden" name="action" value="admission_decision">
 <?
 			form_end();
+		} elseif ($proposal->admission_decision!==null) {
+?>
+<div id="admission_decision" class="admission_decision">
+	<b><?=_("Admitted by decision")?>:</b>
+	<?=content2html($proposal->admission_decision)?>
+	&nbsp;
+	<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+</div>
+<?
 		} else {
 ?>
 <div class="admission_decision">
-<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
+	<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
 </div>
 <?
 		}
 	} elseif ($proposal->admission_decision!==null) {
 ?>
 <div id="admission_decision" class="admission_decision">
-<b><?=_("Admitted by decision")?>:</b>
-<?=content2html($proposal->admission_decision)?>
-<?
-		if (Login::$admin) {
-?>
-&nbsp;
-<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
-<?
-		}
-?>
+	<b><?=_("Admitted by decision")?>:</b>
+	<?=content2html($proposal->admission_decision)?>
 </div>
 <?
 	}
