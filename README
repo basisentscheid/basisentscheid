@@ -19,16 +19,20 @@ Leave the passphrase empty.
 
 send the public key to a key server:
 Maybe you have to remove some permissions, because gpg refuses to upload the key otherwise:
-$ chmod g-rwx gnupg/
+$ chmod go-rwx <base>/var/gnupg/
 $ gpg --homedir <base>/var/gnupg --keyserver hkp://keys.gnupg.net --send-keys <key-id>
 
-The directory /var/ and all subdirectories need write access for the users as which PHP runs for web and cli. For
-example you could use a group with the user of the webserver. Usually a group called www-data, apache or httpd is
-already provided by the system, but you could also create a new group for this. The cli user could own the files or
-also be added to the group.
-# find var/ -exec chgrp www-data {} \;
-$ find var/ -type d -exec chmod 770 {} \;
-$ find var/ -type f -exec chmod 660 {} \;
+The directory /var/ and all subdirectories need write access for the users as which PHP runs for web (usually
+"apache", "www-data" or "httpd") and cli. You could use your login user for cli or a new dedicated user. In this
+example we assume the user "cmr" for cli and "apache" for the webserver.
+# groupadd basisentscheid
+# usermod -G basisentscheid -a cmr
+# usermod -G basisentscheid -a apache
+# chgrp -R basisentscheid var/
+# find var/ -type d -exec chmod 770 {} \;
+# find var/ -type f -exec chmod 660 {} \;
+To make the webserver use the new group, we have to restart it:
+# /etc/init.d/apache2 restart
 
 For PHP configuration and for blocking access to some directories, use the provided .htaccess files or copy their
 contents to the webserver config.
