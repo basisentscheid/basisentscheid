@@ -81,6 +81,7 @@ class Proposal extends Relation {
 			$this->issue = $issue->id;
 		}
 
+		$fields_values = array();
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
