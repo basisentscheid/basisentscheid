@@ -291,7 +291,8 @@ CREATE TABLE ngroups (
     id integer NOT NULL,
     parent integer,
     name text NOT NULL,
-    active boolean DEFAULT false NOT NULL
+    active boolean DEFAULT false NOT NULL,
+    minimum_population integer DEFAULT 500 NOT NULL
 );
 
 

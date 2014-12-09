@@ -49,8 +49,6 @@ define("CANCEL_NOT_ADMITTED_INTERVAL", '6 months');
 define("CLEAR_INTERVAL", '1 week');
 // time of day when ballots close (Opening time is individual for each ballot.)
 define("BALLOT_CLOSE_TIME", "18:00");
-// number used for quorum calculation if there are less than this area participants
-define("MINIMUM_POPULATION", 500);
 // quorum for the first proposal
 define("QUORUM_SUPPORT_NUM", 1); // 10%
 define("QUORUM_SUPPORT_DEN", 10);

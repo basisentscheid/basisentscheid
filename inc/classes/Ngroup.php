@@ -13,6 +13,7 @@ class Ngroup extends Relation {
 	public $parent;
 	public $name;
 	public $active;
+	public $minimum_population;
 
 	protected $boolean_fields = array("active");
 

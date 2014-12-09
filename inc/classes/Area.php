@@ -74,7 +74,7 @@ class Area extends Relation {
 	 * @return integer
 	 */
 	function population() {
-		return max($this->participants, MINIMUM_POPULATION);
+		return max($this->participants, $this->ngroup()->minimum_population);
 	}
 
 
