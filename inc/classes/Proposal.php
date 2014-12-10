@@ -229,6 +229,10 @@ class Proposal extends Relation {
 		$this->state = "submitted";
 		$this->update(array('state'), "submitted=now()");
 
+		// check if the supporters are already enough
+		$this->read();
+		$this->update_supporters_cache();
+
 		$notification = new Notification("submitted");
 		$notification->proposal = $this;
 		$notification->proponent = $this->proponent_name(Login::$member->id);
@@ -536,7 +540,7 @@ class Proposal extends Relation {
 				AND created > current_date - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
 		$this->supporters = DB::fetchfield($sql);
 
-		if ( !$this->quorum_reached and $this->supporters >= $this->quorum_required() ) {
+		if ( $this->submitted and !$this->quorum_reached and $this->supporters >= $this->quorum_required() ) {
 			// admit proposal
 			$this->quorum_reached = true;
 			$this->state = "admitted";
