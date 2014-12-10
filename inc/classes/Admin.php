@@ -20,7 +20,7 @@ class Admin extends Relation {
 	 */
 	public function dbtableadmin_edit_password() {
 ?>
-<input type="password" name="password"><br>
+<input type="password" name="password">
 <input type="password" name="password2">
 <?
 	}

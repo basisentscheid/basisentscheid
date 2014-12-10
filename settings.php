@@ -125,7 +125,7 @@ form(BN);
 		<label for="password"><?=_("Change password")?></label>
 		<span class="input">
 			<?=_("To change the password, enter the new password twice:")?><br>
-			<input type="password" name="password" size="25"> <?=_("again")?> <input type="password" name="password2" size="25">
+			<input type="password" name="password" size="25"> <input type="password" name="password2" size="25">
 		</span>
 	</div>
 	<div class="input td0">

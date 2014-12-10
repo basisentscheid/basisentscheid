@@ -102,7 +102,7 @@ form(h(BN."?invite=".$invite));
 	<div class="description td1"><?=_("Please choose a password and enter it twice. The password is case sensitive and has to be at least 8 characters long.")?></div>
 	<div class="input td1">
 		<label for="password"><?=_("Password")?></label>
-		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25"> <?=_("again")?> <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
+		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25"> <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
 	</div>
 	<div class="description td0"><?=_("Please enter your email address. This address will be used for automatic notifications (if you request them) and in case you've lost your password. This address will not be published. After registration you will receive an email with a confirmation link.")?></div>
 	<div class="input td0">
