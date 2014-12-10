@@ -61,7 +61,7 @@ foreach ( $dates as $index => $time ) {
 	list($field, $period) = $info[$index];
 ?>
 			<tr class="<?=stripes()?>">
-				<td><?=datetimeformat($time)?></td>
+				<td><?=datetimeformat_smart($time)?></td>
 				<td><?=$period->ngroup()->name?></td>
 				<td><?
 	switch ($field) {
@@ -120,8 +120,8 @@ foreach ($ngroups as $ngroup) {
 	if ($ngroup->active) {
 ?>
 		<td><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
-		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("Proposals")?></a></td>
-		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("Periods")?></a></td>
+		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("Proposals")?> (<?=$ngroup->proposals_count()?>)</a></td>
+		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("Periods")?> (<?=$ngroup->periods_count()?>)</a></td>
 		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("Areas")?></a></td>
 <?
 	} else {
@@ -135,7 +135,12 @@ foreach ($ngroups as $ngroup) {
 	if ($entitled) {
 ?>
 		<td class="center"><?
-		if ($ngroup->member and $ngroup->active) { ?>&#10003;<? }
+		if ($ngroup->member and $ngroup->active) {
+			?>&#10003;<?
+			if ( $nyvic = $ngroup->not_yet_voted_issues_count() ) {
+				?> <a href="proposals.php?ngroup=<?=$ngroup->id?>&filter=voting"><?=Ngroup::not_yet_voted($nyvic)?></a><?
+			}
+		}
 		?></td>
 <?
 	}

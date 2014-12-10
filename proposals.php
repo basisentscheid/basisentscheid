@@ -37,12 +37,50 @@ if (Login::$member and Login::$member->entitled($ngroup->id)) {
 $filter = @$_GET['filter'];
 $search = trim(@$_GET['search']);
 
+// count issues in each state
+$sql = "SELECT state, count(*)
+	FROM issues
+	JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id)."
+	GROUP BY state";
+$result = DB::query($sql);
+$counts = array(
+	'admission'   => 0,
+	'debate'      => 0,
+	'preparation' => 0,
+	'voting'      => 0,
+	'counting'    => 0,
+	'finished'    => 0,
+	'cancelled'   => 0
+);
+while ( $row = DB::fetch_row($result) ) $counts[$row[0]] = $row[1];
+
+$nyvic = $ngroup->not_yet_voted_issues_count();
+
 $filters = array(
-	'' => _("Open"),
-	'admission' => _("Admission"),
-	'debate' => _("Debate"),
-	'voting' => _("Voting"),
-	'closed' => _("Closed")
+	'' => array(
+		_("Open"),
+		_("issues in admission, debate and voting phases")
+	),
+	'admission' => array(
+		_("Admission")." (".$counts['admission'].")",
+		$counts['admission']==1 ? _("1 issue in admission phase") : sprintf(_("%d issues in admission phase"), $counts['admission'])
+	),
+	'debate' => array(
+		_("Debate")." (".$counts['debate'].")",
+		$counts['debate']==1 ? _("1 issue in debate phase") : sprintf(_("%d issues in debate phase"), $counts['debate'])
+	),
+	'voting' => array(
+		_("Voting")." (".($counts['voting']+$counts['preparation']+$counts['counting'])
+		.($nyvic?(", ".sprintf(_("not voted on %d"), $nyvic)):"").")",
+		sprintf(_("%d issues in voting, %d in voting preparation and %d in counting phase"),
+			$counts['voting'], $counts['preparation'], $counts['counting'])
+		.($nyvic?(" &mdash; ".Ngroup::not_yet_voted($nyvic)):"")
+	),
+	'closed' => array(
+		_("Closed")." (".($counts['finished']+$counts['cancelled']).")",
+		sprintf(_("%d issues are finished, %d issues are cancelled"),
+			$counts['finished'], $counts['cancelled'])
+	)
 );
 
 ?>
@@ -54,18 +92,20 @@ foreach ( $filters as $key => $name ) {
 	if ($search) $params['search'] = $search;
 ?>
 <a href="<?=URI::build($params)?>"<?
+	?> title="<?=$name[1]?>"<?
 	if ($key==$filter) { ?> class="active"<? }
-	?>><?=$name?></a>
+	?>><?=$name[0]?></a>
 <?
 }
 ?>
-<form action="<?=BN?>" method="GET">
+<form id="search" action="<?=BN?>" method="GET">
 <?
 input_hidden('ngroup', $ngroup->id);
 if ($filter) input_hidden("filter", $filter);
 ?>
 <?=_("Search")?>: <input type="text" name="search" value="<?=h($search)?>">
 <input type="submit" value="<?=_("search")?>">
+<a href="<?=URI::strip(['search'])?>"><?=_("reset")?></a>
 </form>
 </div>
 

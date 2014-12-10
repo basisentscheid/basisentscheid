@@ -162,4 +162,58 @@ class Ngroup extends Relation {
 	}
 
 
+	/**
+	 * number of proposals
+	 *
+	 * @return integer
+	 */
+	public function proposals_count() {
+		$sql = "SELECT count(1) FROM proposals
+			JOIN issues ON proposals.issue = issues.id
+ 			JOIN areas ON issues.area = areas.id
+ 			WHERE ngroup=".intval($this->id);
+		return DB::fetchfield($sql);
+	}
+
+
+	/**
+	 * number of voting periods
+	 *
+	 * @return integer
+	 */
+	public function periods_count() {
+		$sql = "SELECT count(1) FROM periods
+ 			WHERE ngroup=".intval($this->id);
+		return DB::fetchfield($sql);
+	}
+
+
+	/**
+	 * number of issues the logged in member has not yet voted on
+	 *
+	 * @return integer
+	 */
+	public function not_yet_voted_issues_count() {
+		$sql = "SELECT count(1) FROM vote_tokens
+			JOIN issues ON issues.id = vote_tokens.issue AND issues.state = 'voting'
+ 			JOIN areas ON issues.area = areas.id AND areas.ngroup = ".intval($this->id)."
+ 			LEFT JOIN vote_votes USING (token)
+			WHERE vote_tokens.member = ".intval(Login::$member->id)."
+				AND vote_votes.vote IS NULL";
+		return DB::fetchfield($sql);
+	}
+
+
+	/**
+	 * message about not yet voted issues
+	 *
+	 * @param integer $count
+	 * @return string
+	 */
+	public static function not_yet_voted($count) {
+		if ($count == 1) return _("You have not yet voted on 1 issue.");
+		return sprintf(_("You have not yet voted on %d issues."), $count);
+	}
+
+
 }
