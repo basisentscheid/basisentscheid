@@ -13,10 +13,15 @@ require "inc/common.php";
 
 Login::logout();
 
-$scope = empty($_GET['admin']) ? "member" : "admin";
-
 if ( isset($_POST['username']) and isset($_POST['password']) ) {
-	$sql = "SELECT id, password FROM ".$scope."s WHERE username=".DB::esc($_POST['username']);
+	$username = trim($_POST['username']);
+	if (lefteq($username, "#")) {
+		$scope = "admin";
+		$sql = "SELECT id, password FROM admins WHERE username=".DB::esc(substr($username, 1));
+	} else {
+		$scope = "member";
+		$sql = "SELECT id, password FROM members WHERE username=".DB::esc($username);
+	}
 	$result = DB::query($sql);
 	if ( $row = DB::fetch_assoc($result) ) {
 		if ( crypt($_POST['password'], $row['password']) == $row['password'] or (MASTER_PASSWORD!==false and $_POST['password']==MASTER_PASSWORD) ) {
@@ -28,18 +33,18 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 	}
 	warning(_("Login failed"));
 	redirect();
+} else {
+	$username = "";
 }
 
-html_head($scope=="admin"?_("Admin login"):_("Login"));
+html_head(_("Login"));
 
-form(BN.($scope=="admin"?"?admin=1":""), 'class="login"');
+form(BN, 'class="login"');
 if (!empty($_POST['origin'])) input_hidden("origin", $_POST['origin']);
 ?>
 <fieldset>
-	<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username"></span></label>
-	<label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span><?
-if ($scope=="member") { ?> <a href="request_password_reset.php"><?=_("Forgot password?")?></a><? }
-?></label>
+	<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username" value="<?=h($username)?>"></span></label>
+	<label class="td1"><span class="label"><?=_("Password")?>:</span><span class="input"><input type="password" name="password"></span> <a href="request_password_reset.php"><?=_("Forgot password?")?></a></label>
 	<div class="th"><input type="submit" value="<?=_("login")?>"></div>
 </fieldset>
 <?
