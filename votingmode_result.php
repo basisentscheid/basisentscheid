@@ -21,31 +21,39 @@ html_head(_("Voting mode result"));
 
 help();
 
+if ($issue->votingmode_admin) {
+?>
+<p><?=_("Offline voting has been selected by admins.")?></p>
+<?
+} else {
+
 ?>
 <table class="proposals">
 <?
-Issue::display_proposals_th(true);
-list($proposals, $submitted) = $issue->proposals_list(true);
-$issue->display_proposals($proposals, $submitted, count($proposals), true);
+	Issue::display_proposals_th(true);
+	list($proposals, $submitted) = $issue->proposals_list(true);
+	$issue->display_proposals($proposals, $submitted, count($proposals), true);
 ?>
 </table>
 
 <h2><?=_("Votes")?></h2>
 <?
 
-if ($issue->cleared) {
+	if ($issue->cleared) {
 ?>
 <p><? printf(_("Raw data has been cleared at %s."), datetimeformat($issue->cleared)); ?></p>
 <?
-} else {
-	// display list of votes
-	$sql = "SELECT token, demand, votetime FROM votingmode_tokens
+	} else {
+		// display list of votes
+		$sql = "SELECT token, demand, votetime FROM votingmode_tokens
  		LEFT JOIN votingmode_votes USING (token)
  		WHERE issue=".intval($issue->id)."
  		ORDER BY token ASC, votetime DESC";
-	$result = DB::query($sql);
-	if (Login::$member) $token = $issue->votingmode_token(); else $token = null;
-	Issue::display_votingmode_votes($result, $token);
+		$result = DB::query($sql);
+		if (Login::$member) $token = $issue->votingmode_token(); else $token = null;
+		Issue::display_votingmode_votes($result, $token);
+	}
+
 }
 
 ?>

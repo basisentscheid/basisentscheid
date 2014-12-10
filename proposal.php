@@ -101,6 +101,12 @@ if ($action) {
 		redirect();
 		break;
 
+	case "save_votingmode_admin":
+		Login::access_action("admin");
+		$issue->save_votingmode_admin(!empty($_POST['votingmode_admin']));
+		redirect();
+		break;
+
 	case "select_period":
 		Login::access_action("admin");
 		action_proposal_select_period();
@@ -402,14 +408,14 @@ if ($proposal->submitted or $proposal->revoke) {
 		if (!$proposal->cancelled or $proposal->cancelled > $issue->voting_started) {
 			$times[] = array($issue->voting_started, _("Voting"), _("Voting started at %s."));
 		}
-	} elseif ($issue->period and !$proposal->cancelled and !$issue->votingmode_reached) {
+	} elseif ($issue->period and !$proposal->cancelled and !$issue->votingmode_offline()) {
 		$times[] = array($issue->period()->voting, _("Voting"), _("Voting starts at %s."));
 	}
 	if ($issue->counting_started) {
 		if (!$proposal->cancelled or $proposal->cancelled > $issue->counting_started) {
 			$times[] = array($issue->counting_started, _("Counting"), ("Counting started at %s."));
 		}
-	} elseif ($issue->period and !$proposal->cancelled and !$issue->votingmode_reached) {
+	} elseif ($issue->period and !$proposal->cancelled and !$issue->votingmode_offline()) {
 		$times[] = array($issue->period()->counting, _("Counting"), _("Counting starts at %s."));
 	}
 	if ($issue->finished and !$proposal->cancelled) {

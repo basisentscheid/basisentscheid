@@ -194,7 +194,7 @@ function cron($skip_if_locked=false) {
 				if (!$period->voting_now) break;
 
 				// collect issues for online voting start
-				if ( !$issue->votingmode_reached ) $issues_start_voting[] = $issue;
+				if ( !$issue->votingmode_offline() ) $issues_start_voting[] = $issue;
 				// Issues which reached offline voting, stay in preparation state until an admin enters the voting result.
 
 				break;

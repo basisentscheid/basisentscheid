@@ -15,7 +15,7 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error(_("The requested issue does not exist."));
 }
-if (!$issue->votingmode_reached) {
+if (!$issue->votingmode_offline()) {
 	error(_("This issue does not use offline voting."));
 }
 if ($issue->state != 'preparation' and $issue->state != 'finished') {

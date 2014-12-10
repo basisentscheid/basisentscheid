@@ -13,6 +13,7 @@ class Issue extends Relation {
 	public $area;
 	public $votingmode_demanders;
 	public $votingmode_reached;
+	public $votingmode_admin;
 	public $debate_started;
 	public $preparation_started;
 	public $voting_started;
@@ -25,7 +26,7 @@ class Issue extends Relation {
 	private $area_obj;
 	private $period_obj;
 
-	protected $boolean_fields = array("votingmode_reached");
+	protected $boolean_fields = array("votingmode_reached", "votingmode_admin");
 	protected $create_fields = array("area");
 	protected $update_fields = array("period", "area", "state");
 
@@ -123,7 +124,7 @@ class Issue extends Relation {
 				'<span class="datetime">'.datetimeformat_smart($this->period()->preparation).'</span>'
 			);
 		case "preparation":
-			if ($this->votingmode_reached) return;
+			if ($this->votingmode_offline()) return;
 			return sprintf(
 				_("until %s"),
 				'<span class="datetime">'.datetimeformat_smart($this->period()->voting).'</span>'
@@ -176,6 +177,16 @@ class Issue extends Relation {
 
 
 	/**
+	 * offline instead of online voting is used
+	 *
+	 * @return boolean
+	 */
+	public function votingmode_offline() {
+		return $this->votingmode_reached or $this->votingmode_admin;
+	}
+
+
+	/**
 	 * look if we are in the phase of voting mode determination
 	 *
 	 * The phase starts at the submission of the first proposal.
@@ -200,11 +211,18 @@ class Issue extends Relation {
 	 * @return boolean
 	 */
 	public function votingmode_determination_finished() {
+		if ($this->votingmode_offline()) return true;
+		if (!$this->votingmode_determination_admin()) return true;
+	}
 
-		if ($this->votingmode_reached) return true;
 
-		if ($this->state!="debate" and $this->state!="admission") return true;
-
+	/**
+	 * Voting mode determination for admins is finished if voting preparation starts.
+	 *
+	 * @return boolean
+	 */
+	public function votingmode_determination_admin() {
+		if ($this->state=="debate" or $this->state=="admission") return true;
 	}
 
 
@@ -275,13 +293,29 @@ class Issue extends Relation {
 	 */
 	function revoke_votingmode() {
 		if (!$this->votingmode_determination()) {
-			warning("Demand for ballot voting can not be removed, because the proposal is not in admission, admitted or debate phase!");
+			warning("Demand for ballot voting can not be removed, because the issue is not in admission or debate phase!");
 			return false;
 		}
 		// The token has already been created when ballot voting was demanded.
 		$token = $this->votingmode_token();
 		$this->votingmode_vote($token, false);
 		$this->update_votingmode_cache();
+	}
+
+
+	/**
+	 * save offline voting selected by admin
+	 *
+	 * @param boolean $value
+	 * @return boolean
+	 */
+	function save_votingmode_admin($value) {
+		if (!$this->votingmode_determination_admin()) {
+			warning("Voting mode can not be set anymore, because the issue is not in admission or debate phase!");
+			return false;
+		}
+		$this->votingmode_admin = $value;
+		$this->update(['votingmode_admin']);
 	}
 
 
@@ -820,7 +854,7 @@ class Issue extends Relation {
 				if ( $state_info = $this->state_info() ) {
 					?><br><span class="stateinfo"><?=$state_info?></span><?
 				}
-				if (Login::$admin and $this->votingmode_reached and BN!="admin_vote_result.php") {
+				if (Login::$admin and $this->votingmode_offline() and BN!="admin_vote_result.php") {
 					if ($this->state=="preparation") {
 						?><br><a href="admin_vote_result.php?issue=<?=$this->id?>"><?=_("enter result")?></a><?
 					} elseif ($this->state=="finished") {
@@ -932,12 +966,29 @@ class Issue extends Relation {
 <img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
 <?
 			}
-		} elseif ($this->votingmode_reached) {
-			?> result" title="<?=_("ballot voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"><?
+		} elseif ($this->votingmode_offline()) {
+			?>" title="<?=_("ballot voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"></a><?
 		} elseif ($this->state!="admission") {
-			?> result" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"><?
+			?>" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
 		} else {
 			?>"><?
+		}
+
+		// offline voting by admin
+		if (Login::$admin) {
+			if ($selected_proposal and $this->votingmode_determination_admin()) {
+				form(URI::same()."#votingmode", 'id="votingmode"');
+				input_hidden("action", "save_votingmode_admin");
+?>
+			<label><input type="checkbox" name="votingmode_admin" value="1"<?
+				if ($this->votingmode_admin) { ?> checked<? }
+				?>><?=_("offline voting by admin")?></label><br>
+<?
+				input_submit(_("apply"));
+				form_end();
+			} elseif ($this->votingmode_admin) {
+				?><br><?=_("offline voting by admin");
+			}
 		}
 
 		?></td>

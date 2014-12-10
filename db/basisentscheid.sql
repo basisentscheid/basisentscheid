@@ -329,10 +329,11 @@ CREATE TABLE issues (
     preparation_started timestamp with time zone,
     voting_started timestamp with time zone,
     counting_started timestamp with time zone,
-    finished timestamp with time zone,
     clear date,
     cleared timestamp with time zone,
-    state issue_state DEFAULT 'admission'::issue_state NOT NULL
+    state issue_state DEFAULT 'admission'::issue_state NOT NULL,
+    finished timestamp with time zone,
+    votingmode_admin boolean DEFAULT false NOT NULL
 );
 
 
