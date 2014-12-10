@@ -194,6 +194,7 @@ class Ngroup extends Relation {
 	 * @return integer
 	 */
 	public function not_yet_voted_issues_count() {
+		if (!Login::$member) return;
 		$sql = "SELECT count(1) FROM vote_tokens
 			JOIN issues ON issues.id = vote_tokens.issue AND issues.state = 'voting'
  			JOIN areas ON issues.area = areas.id AND areas.ngroup = ".intval($this->id)."
