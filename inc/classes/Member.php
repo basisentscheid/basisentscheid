@@ -90,31 +90,6 @@ class Member extends Relation {
 
 
 	/**
-	 * set the username
-	 *
-	 * @param string  $username
-	 */
-	function set_unique_username($username) {
-
-		$this->username = $username;
-
-		$suffix = 0;
-		do {
-			$sql = "SELECT * FROM members WHERE username=".DB::esc($this->username);
-			$result = DB::query($sql);
-			if ( $exists = DB::num_rows($result) ) {
-				$this->username = $username . ++$suffix;
-			}
-		} while ($exists);
-
-		if ($this->username != $username) {
-			notice(_("The username is already used by someone else, so we added a number to it."));
-		}
-
-	}
-
-
-	/**
 	 * get the username
 	 *
 	 * @return string

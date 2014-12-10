@@ -15,13 +15,7 @@ require DOCROOT."inc/common_cli.php";
 require DOCROOT."inc/functions_test.php";
 
 
-// create ngroup
-$ngroup = new Ngroup;
-$ngroup->id = 9;
-$ngroup->name = "Test group";
-$ngroup->active = true;
-$ngroup->minimum_population = 500;
-$ngroup->create(['id', 'name', 'active', 'minimum_population']);
+$ngroup = new_ngroup("Test group", 500);
 
 // to aviod conflicts with existing usernames
 $date = dechex(time());
@@ -448,8 +442,10 @@ function add_votingmode_demander(Proposal $proposal, $i) {
 function create_member($username) {
 	global $password, $ngroup;
 
-	static $members = array();
+	// make usernames unique
+	$username .= " ".$ngroup->id;
 
+	static $members = array();
 	if (isset($members[$username])) {
 		Login::$member = $members[$username];
 		return;

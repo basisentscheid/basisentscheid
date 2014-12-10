@@ -12,15 +12,13 @@ if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 define('DOCROOT', "../");
 require DOCROOT."inc/common_cli.php";
 
+require DOCROOT."inc/functions_test.php";
 
-// delete everything
-//DB::query("TRUNCATE periods CASCADE");
-//DB::query("TRUNCATE members CASCADE");
 
 // to avoid conflicts with existing usernames
 $date = dechex(time());
 
-$ngroup = new Ngroup(1);
+$ngroup = new_ngroup("Test ballots group", 500);
 
 // create main member
 $password = crypt("test");

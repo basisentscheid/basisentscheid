@@ -51,3 +51,39 @@ function random_votes(Issue $issue) {
 	}
 
 }
+
+
+/**
+ * set the username
+ *
+ * @param Member  $member
+ * @param string  $username
+ */
+function set_unique_username(Member $member, $username) {
+	$member->username = $username;
+	$suffix = 0;
+	do {
+		$sql = "SELECT count(1) FROM members WHERE username=".DB::esc($member->username);
+		if ( $exists = DB::fetchfield($sql) ) {
+			$member->username = $username . ++$suffix;
+		}
+	} while ($exists);
+}
+
+
+/**
+ * create ngroup
+ *
+ * @param string  $name
+ * @param integer $minimum_population
+ * @return Ngroup
+ */
+function new_ngroup($name, $minimum_population) {
+	$ngroup = new Ngroup;
+	$ngroup->id = DB::fetchfield("SELECT max(id) FROM ngroups") + 1;
+	$ngroup->name = $name." ".$ngroup->id;
+	$ngroup->active = true;
+	$ngroup->minimum_population = $minimum_population;
+	$ngroup->create(['id', 'name', 'active', 'minimum_population']);
+	return $ngroup;
+}
