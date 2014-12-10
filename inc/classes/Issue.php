@@ -133,11 +133,6 @@ class Issue extends Relation {
 				_("until %s"),
 				'<span class="datetime">'.datetimeformat_smart($this->period()->counting).'</span>'
 			);
-		case "finished":
-			return sprintf(
-				_("will be cleared on %s"),
-				dateformat_smart($this->clear)
-			);
 		}
 	}
 
