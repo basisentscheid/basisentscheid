@@ -325,15 +325,15 @@ CREATE TABLE issues (
     area integer NOT NULL,
     votingmode_demanders integer DEFAULT 0 NOT NULL,
     votingmode_reached boolean DEFAULT false,
+    votingmode_admin boolean DEFAULT false NOT NULL,
     debate_started timestamp with time zone,
     preparation_started timestamp with time zone,
     voting_started timestamp with time zone,
     counting_started timestamp with time zone,
+    finished timestamp with time zone,
     clear date,
     cleared timestamp with time zone,
-    state issue_state DEFAULT 'admission'::issue_state NOT NULL,
-    finished timestamp with time zone,
-    votingmode_admin boolean DEFAULT false NOT NULL
+    state issue_state DEFAULT 'admission'::issue_state NOT NULL
 );
 
 
@@ -368,6 +368,8 @@ CREATE TABLE members (
     activated timestamp with time zone,
     username character varying(32),
     password character varying(123),
+    password_reset_code character(24),
+    password_reset_code_expiry timestamp with time zone,
     public_id text DEFAULT ''::text NOT NULL,
     profile text DEFAULT ''::text NOT NULL,
     entitled boolean DEFAULT false NOT NULL,
@@ -376,10 +378,8 @@ CREATE TABLE members (
     mail_code character(16),
     mail_code_expiry timestamp with time zone,
     mail_lock_expiry timestamp with time zone,
-    hide_help text DEFAULT ''::text NOT NULL,
-    password_reset_code character(24),
-    password_reset_code_expiry timestamp with time zone,
-    fingerprint text DEFAULT ''::text NOT NULL
+    fingerprint text DEFAULT ''::text NOT NULL,
+    hide_help text DEFAULT ''::text NOT NULL
 );
 
 
@@ -426,12 +426,12 @@ CREATE TABLE members_ngroups (
 CREATE TABLE notify (
     member integer NOT NULL,
     interest notify_interest NOT NULL,
+    new_proposal boolean DEFAULT false NOT NULL,
     admitted boolean DEFAULT false NOT NULL,
+    submitted boolean DEFAULT false NOT NULL,
     debate boolean DEFAULT false NOT NULL,
     voting boolean DEFAULT false NOT NULL,
-    finished boolean DEFAULT false NOT NULL,
-    new_proposal boolean DEFAULT false NOT NULL,
-    submitted boolean DEFAULT false NOT NULL
+    finished boolean DEFAULT false NOT NULL
 );
 
 
@@ -456,10 +456,10 @@ CREATE TABLE periods (
     debate timestamp with time zone NOT NULL,
     preparation timestamp with time zone NOT NULL,
     voting timestamp with time zone NOT NULL,
-    ballot_assignment timestamp with time zone,
-    ballot_preparation timestamp with time zone,
     counting timestamp with time zone NOT NULL,
     ballot_voting boolean NOT NULL,
+    ballot_assignment timestamp with time zone,
+    ballot_preparation timestamp with time zone,
     state period_state DEFAULT 'ballot_application'::period_state NOT NULL,
     postage boolean DEFAULT false NOT NULL
 );
