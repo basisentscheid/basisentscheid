@@ -12,11 +12,16 @@ if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 define('DOCROOT', "../");
 require DOCROOT."inc/common_cli.php";
 
+require DOCROOT."inc/functions_test.php";
 
-// delete everything
-//DB::query("TRUNCATE periods CASCADE");
-//DB::query("TRUNCATE members CASCADE");
-//DB::query("TRUNCATE areas CASCADE");
+
+// create ngroup
+$ngroup = new Ngroup;
+$ngroup->id = 9;
+$ngroup->name = "Test group";
+$ngroup->active = true;
+$ngroup->minimum_population = 500;
+$ngroup->create(['id', 'name', 'active', 'minimum_population']);
 
 // to aviod conflicts with existing usernames
 $date = dechex(time());
@@ -25,8 +30,6 @@ $date = dechex(time());
 $password = crypt("test");
 create_member("t".$date."login");
 $login = Login::$member;
-
-$ngroup = 1;
 
 $bcase = array(1=>0, 2=>0, 3=>0, 4=>0);
 // read start branches from command line
@@ -99,7 +102,7 @@ function create_case($case, $stopcase) {
 
 	// create area
 	$area = new Area;
-	$area->ngroup = $ngroup;
+	$area->ngroup = $ngroup->id;
 	$area->name = "Test area case ".$casedesc;
 	$area->create();
 
@@ -281,7 +284,7 @@ function create_case($case, $stopcase) {
 				now() + interval '4 weeks',
 				true,
 				true,
-				".$ngroup."
+				".$ngroup->id."
 			) RETURNING id";
 			$result = DB::query($sql);
 			$row = DB::fetch_row($result);
@@ -289,7 +292,6 @@ function create_case($case, $stopcase) {
 
 			// assign issue to period
 			$issue->period = $period;
-
 			/** @var $issue Issue */
 			$issue->update(array("period"));
 
@@ -348,42 +350,7 @@ function create_case($case, $stopcase) {
 			}
 
 			// random votes
-			$proposals = $issue->proposals(true);
-			$acceptance_array = array();
-			$score_array = array();
-			foreach ( $proposals as $proposal ) {
-				$part = rand(1, 10);
-				$acceptance_array[$proposal->id] = array_merge(
-					array_fill(1, rand(1, 10),     -1),
-					array_fill(1, pow($part,    2), 0),
-					array_fill(1, pow(11-$part, 2), 1)
-				);
-				if (count($proposals) > 1) {
-					$score_array[$proposal->id] = array_merge(
-						array_fill(1, pow(rand(1, 12), 2), 0),
-						array_fill(1, pow(rand(1,  3), 2), 1),
-						array_fill(1, pow(rand(1,  3), 2), 2),
-						array_fill(1, pow(rand(1, 12), 2), 3)
-					);
-				}
-			}
-			$sql = "SELECT * FROM members
- 				JOIN members_ngroups ON members.id = members_ngroups.member
- 				JOIN vote_tokens ON vote_tokens.member = members.id AND vote_tokens.issue = ".intval($issue->id)."
-				WHERE members_ngroups.ngroup = 1 AND members.entitled = TRUE
-				LIMIT ".rand(0, 100);
-			$result = DB::query($sql);
-			while ( Login::$member = DB::fetch_object($result, "Member") ) {
-				$vote = array();
-				foreach ( $proposals as $proposal ) {
-					$vote[$proposal->id]['acceptance'] = $acceptance_array[$proposal->id][ array_rand($acceptance_array[$proposal->id]) ];
-					if (count($proposals) > 1) {
-						$vote[$proposal->id]['score'] = $score_array[$proposal->id][ array_rand($score_array[$proposal->id]) ];
-					}
-				}
-				$token = $issue->vote_token();
-				$issue->vote($token, $vote);
-			}
+			random_votes($issue);
 
 			// move on to state "counting" and then "finished"
 			time_warp($issue, "1 week");
@@ -479,7 +446,7 @@ function add_votingmode_demander(Proposal $proposal, $i) {
  * @param string  $username
  */
 function create_member($username) {
-	global $password;
+	global $password, $ngroup;
 
 	static $members = array();
 
@@ -501,7 +468,7 @@ function create_member($username) {
 	//$update_fields[] = "mail";
 
 	Login::$member->update($update_fields, 'activated=now()');
-	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>1));
+	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>$ngroup->id));
 
 	// activate all notifications
 	foreach ( Notification::$default_settings as $interest => $types ) {
