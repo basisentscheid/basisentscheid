@@ -402,21 +402,23 @@ if ($proposal->submitted or $proposal->revoke) {
 		if (!$proposal->cancelled or $proposal->cancelled > $issue->voting_started) {
 			$times[] = array($issue->voting_started, _("Voting"), _("Voting started at %s."));
 		}
-	} elseif ($issue->period and !$proposal->cancelled) {
+	} elseif ($issue->period and !$proposal->cancelled and !$issue->votingmode_reached) {
 		$times[] = array($issue->period()->voting, _("Voting"), _("Voting starts at %s."));
 	}
 	if ($issue->counting_started) {
 		if (!$proposal->cancelled or $proposal->cancelled > $issue->counting_started) {
 			$times[] = array($issue->counting_started, _("Counting"), ("Counting started at %s."));
 		}
-	} elseif ($issue->period and !$proposal->cancelled) {
+	} elseif ($issue->period and !$proposal->cancelled and !$issue->votingmode_reached) {
 		$times[] = array($issue->period()->counting, _("Counting"), _("Counting starts at %s."));
 	}
+	if ($issue->finished and !$proposal->cancelled) {
+		$times[] = array($issue->finished, _("Finished"), _("Finished at %s."));
+	}
 	if ($issue->cleared) {
-		if (!$proposal->cancelled or $proposal->cancelled > $issue->cleared) {
-			$times[] = array($issue->cleared, _("Cleared"), _("Cleared at %s."));
-		}
-	} elseif ($issue->clear and !$proposal->cancelled) {
+		$times[] = array($issue->cleared, _("Cleared"), _("Cleared at %s."));
+	}
+	if ($issue->clear) {
 		$times[] = array($issue->clear, _("Clear"), _("Will be cleared at %s."));
 	}
 	Timebar::display($times);

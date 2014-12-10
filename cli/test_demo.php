@@ -34,13 +34,12 @@ $password = crypt("test");
 
 // period in finished state
 
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting, ngroup)
+$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
 	VALUES (
 		now() - interval '4 weeks',
 		now() - interval '2 weeks',
 		now() - interval '1 week',
 		now(),
-		true,
 		true,
 		".$ngroup->id."
 	) RETURNING id";
@@ -62,13 +61,12 @@ cron();
 
 // period in voting state
 
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting, ngroup)
+$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
 	VALUES (
 		now() - interval '2 weeks',
 		now() - interval '3 days',
 		now(),
 		now() + interval '2 weeks',
-		true,
 		true,
 		".$ngroup->id."
 	) RETURNING id";
@@ -105,13 +103,12 @@ for ( $i=6; $i<=25; $i++ ) {
 	$proposal10->add_support();
 }
 
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting, ngroup)
+$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
 	VALUES (
 		now(),
 		now() + interval '2 weeks',
 		now() + interval '3 weeks',
 		now() + interval '4 weeks',
-		true,
 		true,
 		".$ngroup->id."
 	) RETURNING id";
@@ -323,6 +320,36 @@ function create_vote_proposals($period) {
 	$issue2->period = $period;
 	/** @var $issue Issue */
 	$issue2->update(['period']);
+
+	// single proposal for offline voting
+	login(1);
+	$proposal6 = new Proposal;
+	$proposal6->title = "einzelner Beispielantrag";
+	$proposal6->content = $blindtext."\n\n".$blindtext;
+	$proposal6->reason = $blindtext;
+	$proposal6->create(Login::$member->username, $area->id);
+	for ( $i=2; $i<=5; $i++ ) {
+		login($i);
+		$proposal6->add_proponent(Login::$member->username, true);
+	}
+	$proposal6->submit();
+	$proposal6->read();
+	for ( $i=6; $i<=23; $i++ ) {
+		login($i);
+		$proposal6->add_support();
+	}
+
+	$issue3 = $proposal6->issue();
+
+	for ( $i=1; $i<=23; $i++ ) {
+		login($i);
+		$issue3->demand_votingmode();
+	}
+
+	// assign issue to period
+	$issue3->period = $period;
+	/** @var $issue Issue */
+	$issue3->update(['period']);
 
 }
 

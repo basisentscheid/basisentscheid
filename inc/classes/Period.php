@@ -16,14 +16,13 @@ class Period extends Relation {
 	public $ballot_assignment;
 	public $ballot_preparation;
 	public $counting;
-	public $online_voting;
 	public $ballot_voting;
 	public $state;
 	public $postage;
 
 	private $ngroup_obj;
 
-	protected $boolean_fields = array("online_voting", "ballot_voting", "postage");
+	protected $boolean_fields = array("ballot_voting", "postage");
 
 
 	/**
@@ -68,7 +67,7 @@ class Period extends Relation {
 
 
 	/**
-	 * start voting
+	 * start online voting
 	 *
 	 * @param array   $issues
 	 */
@@ -107,7 +106,7 @@ class Period extends Relation {
 		// notification mails
 		$subject = sprintf(_("Voting started in period %d"), $this->id);
 		$body_top = _("Group").": ".$this->ngroup()->name."\n\n"
-			._("Voting has started on the following proposals").":\n";
+			._("Online voting has started on the following proposals").":\n";
 		$body_lists = "\n"._("Voting end").": ".datetimeformat($this->counting)
 			."\n\n===== "._("Lists of all vote tokens")." =====\n";
 		$issues_blocks = array();

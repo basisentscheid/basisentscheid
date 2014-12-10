@@ -17,6 +17,7 @@ class Issue extends Relation {
 	public $preparation_started;
 	public $voting_started;
 	public $counting_started;
+	public $finished;
 	public $clear;
 	public $cleared;
 	public $state;
@@ -122,6 +123,7 @@ class Issue extends Relation {
 				'<span class="datetime">'.datetimeformat_smart($this->period()->preparation).'</span>'
 			);
 		case "preparation":
+			if ($this->votingmode_reached) return;
 			return sprintf(
 				_("until %s"),
 				'<span class="datetime">'.datetimeformat_smart($this->period()->voting).'</span>'
@@ -137,6 +139,15 @@ class Issue extends Relation {
 				dateformat_smart($this->clear)
 			);
 		}
+	}
+
+
+	/**
+	 * set the issue to state "finished" and set time for clearing
+	 */
+	public function finish() {
+		$this->state = "finished";
+		$this->update(array("state"), "finished = now(), clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
 	}
 
 
@@ -555,7 +566,6 @@ class Issue extends Relation {
 		$sql = "SELECT id FROM periods
 			WHERE ngroup=".intval($this->period()->ngroup)."
 				AND debate > now()
-				AND online_voting=TRUE
 			ORDER BY debate
 			LIMIT 1";
 		$this->period = DB::fetchfield($sql);
@@ -591,10 +601,24 @@ class Issue extends Relation {
 <?
 			}
 		} else {
+			if (BN!="admin_vote_result.php") {
 ?>
 		<th class="support"><?=_("Support")?></th>
 <?
+			}
 			if ($show_results) {
+				if (BN=="admin_vote_result.php") {
+?>
+		<th class="result"><?=_("Yes")?></th>
+		<th class="result"><?=_("No")?></th>
+		<th class="result"><?=_("Abstention")?></th>
+<?
+					if ($show_score) {
+?>
+		<th class="result"><?=_("Score")?></th>
+<?
+					}
+				}
 ?>
 		<th class="result"><?=_("Result")?></th>
 <?
@@ -681,190 +705,30 @@ class Issue extends Relation {
 			}
 			?>" onClick="location.href='<?=$link?>'"><?=_("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
-
-			// column "vote"
 			if (BN=="vote.php") {
-?>
-		<td class="vote nowrap">
-			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="1"<?
-				if ($vote[$proposal->id]['acceptance'] == 1) { ?> checked<? }
-				?>><?=_("Yes")?></label>
-			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="0"<?
-				if ($vote[$proposal->id]['acceptance'] == 0) { ?> checked<? }
-				?>><?=_("No")."\n"?></label>
-			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="-1"<?
-				if ($vote[$proposal->id]['acceptance'] == -1) { ?> checked<? }
-				?>><?=_("Abstention")?></label>
-		</td>
-<?
-				if ($num_rows > 1) {
-?>
-		<td class="vote nowrap">
-<?
-					if ($num_rows > 3) $max_score = 9; else $max_score = 3;
-					for ( $score = 0; $score <= $max_score; $score++ ) {
-?>
-			<label><input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?
-						if ($score == $vote[$proposal->id]['score']) { ?> checked<? }
-						?>><?=$score?></label>
-<?
-					}
-?>
-		</td>
-<?
-				}
+				$this->display_column_vote($proposal, $vote, $num_rows);
 			} else {
-
 				// column "support"
+				if (BN!="admin_vote_result.php") {
 ?>
 		<td><?
-				$proposal->bargraph_quorum($proposal->supported_by_member);
-				?></td>
-<?
-
-				// column "voting results"
-				if ($show_results) {
-					if ($this->state != 'finished') {
-?>
-		<td></td>
-<?
-					} else {
-?>
-		<td class="result" onClick="location.href='vote_result.php?issue=<?=$this->id?>'"><?
-						if ($first) {
-							// get number of options and highest score
-							$options_count = 0;
-							$score_max = 0;
-							foreach ( $proposals as $proposal_vote ) {
-								if ($proposal_vote->yes === null) continue; // skip cancelled proposals
-								$score_max = max($score_max, $proposal_vote->score);
-								$options_count++;
-							}
-						}
-						if ( $proposal->yes !== null ) { // skip cancelled proposals
-							$proposal->bargraph_acceptance($proposal->yes, $proposal->no, $proposal->abstention, $proposal->accepted);
-							if ( $options_count > 1 ) {
-								$proposal->bargraph_score($proposal->score, $score_max);
-							}
-						}
-						?></td>
-<?
-					}
-				}
-
-				// column "state"
-				if ($this->state=="admission" or $this->state=="cancelled") {
-					// individual proposal states
-					if ($proposal->state=="admitted") {
-						if ($first_admitted) {
-							// count admitted proposals for rowspan
-							$num_admitted_rows = 0;
-							foreach ($proposals as $p) {
-								if ($p->state=="admitted") $num_admitted_rows++;
-							}
-?>
-		<td rowspan="<?=$num_admitted_rows?>" class="center"><?=$proposal->state_name();
-							if ($this->period) {
-								?><br><span class="stateinfo"><?
-								printf(
-									_("Debate starts at %s"),
-									'<span class="datetime">'.datetimeformat_smart($this->period()->debate).'</span>'
-								);
-								?></span><?
-							}
-							?></td>
-<?
-							$first_admitted = false;
-						}
-					} else {
-						// submitted, cancelled, revoked, done
-?>
-		<td class="center"><?=$proposal->state_name()?></td>
-<?
-					}
-				} else {
-					// issue states
-					if ($first) {
-?>
-		<td rowspan="<?=$num_rows?>" class="center"><?
-						if ($this->state=="voting") $this->display_voting(); else echo $this->state_name();
-						if ( $state_info = $this->state_info() ) {
-							?><br><span class="stateinfo"><?=$state_info?></span><?
-						}
-						?></td>
-<?
-					}
-				}
-
-				// columns "period" and "votingmode"
-				if ($first) {
-					if (Login::$admin) {
-?>
-		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
-						if ( !$this->display_edit_period() ) {
-							?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
-						}
-						?></td>
-<?
-					} elseif ($period_rowspan) {
-?>
-		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a></td>
-<?
-					}
-?>
-		<td rowspan="<?=$num_rows?>" class="center<?
-
-					if ($this->votingmode_determination($submitted)) {
-						?>" title="<?
-						if (Login::$member) {
-							$entitled = Login::$member->entitled($this->area()->ngroup);
-							$votingmode_demanded = $this->votingmode_demanded_by_member();
-							if ($votingmode_demanded) {
-								echo _("You demand ballot voting.");
-							} elseif ($entitled) {
-								echo _("You can demand ballot voting.");
-							} else {
-								echo _("You are not entitled in this group.");
-							}
-							?>">
-<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
-<?
-							if ($votingmode_demanded) { ?>&#10003;<? }
-							if ($selected_proposal and $entitled) {
-								form(URI::same());
-								if ($votingmode_demanded) {
-									echo _("You demand ballot voting.")?>
-<input type="hidden" name="action" value="revoke_votingmode">
-<input type="submit" value="<?=_("Revoke")?>">
-<?
-								} else {
-?>
-<input type="hidden" name="action" value="demand_votingmode">
-<input type="submit" value="<?=_("Demand ballot voting")?>">
-<?
-								}
-								form_end();
-							}
-						} else {
-							echo _("Members can demand ballot voting.");
-							?>">
-<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
-<?
-						}
-					} elseif ($this->votingmode_reached) {
-						?> result" title="<?=_("ballot voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"><?
-					} elseif ($this->state!="admission") {
-						?> result" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"><?
-					} else {
-						?>"><?
-					}
-
+					$proposal->bargraph_quorum($proposal->supported_by_member);
 					?></td>
 <?
 				}
-
+				// column "voting results"
+				if ($show_results) {
+					if (BN=="admin_vote_result.php") $this->display_column_admin_vote_result($proposal, $num_rows);
+					$this->display_results($proposal, $proposals, $first);
+				}
+				// column "state"
+				$this->display_column_state($proposal, $proposals, $first, $first_admitted, $num_rows);
+				// columns "period" and "votingmode"
+				if ($first) {
+					$this->display_period($period_rowspan, $num_rows);
+					$this->display_votingmode($num_rows, $submitted, $selected_proposal);
+				}
 			}
-
 ?>
 	</tr>
 <?
@@ -872,6 +736,106 @@ class Issue extends Relation {
 			$first = false;
 		}
 
+	}
+
+
+	/**
+	 * column "results"
+	 *
+	 * @param Proposal $proposal
+	 * @param array   $proposals
+	 * @param boolean $first
+	 */
+	private function display_results(Proposal $proposal, array $proposals, $first) {
+		if ($this->state != 'finished') {
+?>
+		<td></td>
+<?
+			return;
+		}
+?>
+		<td class="result" onClick="location.href='vote_result.php?issue=<?=$this->id?>'"><?
+		static $options_count, $score_max;
+		if ($first) {
+			// get number of options and highest score
+			$options_count = 0;
+			$score_max = 0;
+			foreach ( $proposals as $proposal_vote ) {
+				if ($proposal_vote->yes === null) continue; // skip cancelled proposals
+				$score_max = max($score_max, $proposal_vote->score);
+				$options_count++;
+			}
+		}
+		if ( $proposal->yes !== null ) { // skip cancelled proposals
+			$proposal->bargraph_acceptance($proposal->yes, $proposal->no, $proposal->abstention, $proposal->accepted);
+			if ( $options_count > 1 ) {
+				$proposal->bargraph_score($proposal->score, $score_max);
+			}
+		}
+		?></td>
+<?
+	}
+
+
+	/**
+	 * column "state"
+	 *
+	 * @param Proposal $proposal
+	 * @param array   $proposals
+	 * @param boolean $first
+	 * @param boolean $first_admitted
+	 * @param integer $num_rows
+	 */
+	private function display_column_state(Proposal $proposal, array $proposals, $first, &$first_admitted, $num_rows) {
+		if ($this->state=="admission" or $this->state=="cancelled") {
+			// individual proposal states
+			if ($proposal->state=="admitted") {
+				if ($first_admitted) {
+					// count admitted proposals for rowspan
+					$num_admitted_rows = 0;
+					foreach ($proposals as $p) {
+						if ($p->state=="admitted") $num_admitted_rows++;
+					}
+?>
+		<td rowspan="<?=$num_admitted_rows?>" class="center"><?=$proposal->state_name();
+					if ($this->period) {
+						?><br><span class="stateinfo"><?
+						printf(
+							_("Debate starts at %s"),
+							'<span class="datetime">'.datetimeformat_smart($this->period()->debate).'</span>'
+						);
+						?></span><?
+					}
+					?></td>
+<?
+					$first_admitted = false;
+				}
+			} else {
+				// submitted, cancelled, revoked, done
+?>
+		<td class="center"><?=$proposal->state_name()?></td>
+<?
+			}
+		} else {
+			// issue states
+			if ($first) {
+?>
+		<td rowspan="<?=$num_rows?>" class="center"><?
+				if ($this->state=="voting") $this->display_voting(); else echo $this->state_name();
+				if ( $state_info = $this->state_info() ) {
+					?><br><span class="stateinfo"><?=$state_info?></span><?
+				}
+				if (Login::$admin and $this->votingmode_reached and BN!="admin_vote_result.php") {
+					if ($this->state=="preparation") {
+						?><br><a href="admin_vote_result.php?issue=<?=$this->id?>"><?=_("enter result")?></a><?
+					} elseif ($this->state=="finished") {
+						?><br><a href="admin_vote_result.php?issue=<?=$this->id?>"><?=_("edit result")?></a><?
+					}
+				}
+				?></td>
+<?
+			}
+		}
 	}
 
 
@@ -898,6 +862,150 @@ class Issue extends Relation {
 			}
 		} else {
 			?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
+		}
+	}
+
+
+	/**
+	 * column "period"
+	 *
+	 * @param integer $period_rowspan
+	 * @param integer $num_rows
+	 */
+	private function display_period($period_rowspan, $num_rows) {
+		if (Login::$admin and BN!="admin_vote_result.php") {
+?>
+		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
+			if ( !$this->display_edit_period() ) {
+				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
+			}
+			?></td>
+<?
+		} elseif ($period_rowspan) {
+?>
+		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a></td>
+<?
+		}
+	}
+
+
+	/**
+	 * column "voting mode"
+	 *
+	 * @param integer $num_rows
+	 * @param boolean $submitted
+	 * @param integer $selected_proposal enable form only on detail page
+	 */
+	private function display_votingmode($num_rows, $submitted, $selected_proposal) {
+?>
+		<td rowspan="<?=$num_rows?>" class="center<?
+
+		if ($this->votingmode_determination($submitted)) {
+			?>" title="<?
+			if (Login::$member) {
+				$entitled = Login::$member->entitled($this->area()->ngroup);
+				$votingmode_demanded = $this->votingmode_demanded_by_member();
+				if ($votingmode_demanded) {
+					echo _("You demand ballot voting.");
+				} elseif ($entitled) {
+					echo _("You can demand ballot voting.");
+				} else {
+					echo _("You are not entitled in this group.");
+				}
+				?>">
+<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
+<?
+				if ($votingmode_demanded) { ?>&#10003;<? }
+				if ($selected_proposal and $entitled) {
+					form(URI::same());
+					if ($votingmode_demanded) {
+						echo _("You demand ballot voting.")?>
+<input type="hidden" name="action" value="revoke_votingmode">
+<input type="submit" value="<?=_("Revoke")?>">
+<?
+					} else {
+?>
+<input type="hidden" name="action" value="demand_votingmode">
+<input type="submit" value="<?=_("Demand ballot voting")?>">
+<?
+					}
+					form_end();
+				}
+			} else {
+				echo _("Members can demand ballot voting.");
+				?>">
+<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
+<?
+			}
+		} elseif ($this->votingmode_reached) {
+			?> result" title="<?=_("ballot voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"><?
+		} elseif ($this->state!="admission") {
+			?> result" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"><?
+		} else {
+			?>"><?
+		}
+
+		?></td>
+<?
+	}
+
+
+	/**
+	 * column "vote" on vote.php
+	 *
+	 * @param Proposal $proposal
+	 * @param array   $vote
+	 * @param integer $num_rows
+	 */
+	private function display_column_vote(Proposal $proposal, array $vote, $num_rows) {
+?>
+		<td class="vote nowrap">
+			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="1"<?
+		if ($vote[$proposal->id]['acceptance'] == 1) { ?> checked<? }
+		?>><?=_("Yes")?></label>
+			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="0"<?
+		if ($vote[$proposal->id]['acceptance'] == 0) { ?> checked<? }
+		?>><?=_("No")."\n"?></label>
+			<label><input type="radio" name="vote[<?=$proposal->id?>][acceptance]" value="-1"<?
+		if ($vote[$proposal->id]['acceptance'] == -1) { ?> checked<? }
+		?>><?=_("Abstention")?></label>
+		</td>
+<?
+		if ($num_rows > 1) {
+?>
+		<td class="vote nowrap">
+<?
+			if ($num_rows > 3) $max_score = 9; else $max_score = 3;
+			for ( $score = 0; $score <= $max_score; $score++ ) {
+?>
+			<label><input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?
+				if ($score == $vote[$proposal->id]['score']) { ?> checked<? }
+				?>><?=$score?></label>
+<?
+			}
+?>
+		</td>
+<?
+		}
+	}
+
+
+	/**
+	 * vote result form on page admin_vote_result.php
+	 *
+	 * @param Proposal $proposal
+	 * @param integer $num_rows
+	 */
+	private function display_column_admin_vote_result(Proposal $proposal, $num_rows) {
+?>
+		<td><input type="text" size="5" name="yes[<?=$proposal->id?>]" value="<?=$proposal->yes?>"></td>
+		<td><input type="text" size="5" name="no[<?=$proposal->id?>]" value="<?=$proposal->no?>"></td>
+		<td><input type="text" size="5" name="abstention[<?=$proposal->id?>]" value="<?=$proposal->abstention?>"></td>
+<?
+		if ($num_rows > 1) {
+?>
+		<td><input type="text" size="7" name="score[<?=$proposal->id?>]" value="<?=$proposal->score?>"></td>
+<?
 		}
 	}
 

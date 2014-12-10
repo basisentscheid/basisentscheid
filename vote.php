@@ -30,6 +30,7 @@ if (!$token) {
 if ($action) {
 	switch ($action) {
 	case "submit":
+		action_required_parameters('vote');
 		$issue->vote($token, $_POST['vote']);
 		//redirect("proposals.php?ngroup=".$ngroup->id."&filter=voting");
 		redirect();
@@ -68,7 +69,7 @@ if ( $row = DB::fetch_assoc($result) ) {
 }
 
 // voting form
-form("vote.php?issue=".$issue->id);
+form(BN."?issue=".$issue->id);
 ?>
 <input type="hidden" name="action" value="submit">
 <table class="proposals">

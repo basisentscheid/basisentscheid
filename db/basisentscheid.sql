@@ -329,6 +329,7 @@ CREATE TABLE issues (
     preparation_started timestamp with time zone,
     voting_started timestamp with time zone,
     counting_started timestamp with time zone,
+    finished timestamp with time zone,
     clear date,
     cleared timestamp with time zone,
     state issue_state DEFAULT 'admission'::issue_state NOT NULL
@@ -457,7 +458,6 @@ CREATE TABLE periods (
     ballot_assignment timestamp with time zone,
     ballot_preparation timestamp with time zone,
     counting timestamp with time zone NOT NULL,
-    online_voting boolean NOT NULL,
     ballot_voting boolean NOT NULL,
     state period_state DEFAULT 'ballot_application'::period_state NOT NULL,
     postage boolean DEFAULT false NOT NULL

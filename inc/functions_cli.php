@@ -169,7 +169,7 @@ function cron($skip_if_locked=false) {
 			case "debate":
 				if (!$period->preparation_now) break;
 
-				// revoke proposals, which have were scheduled for revokation (and still have less than required proponents)
+				// revoke proposals, which were scheduled for revokation (and still have less than required proponents)
 				$sql = "SELECT * FROM proposals
 					WHERE issue=".intval($issue->id)."
 						AND revoke IS NOT NULL";
@@ -193,28 +193,9 @@ function cron($skip_if_locked=false) {
 			case "preparation":
 				if (!$period->voting_now) break;
 
-				// check if the period provides the right voting mode
-				if ( ($issue->votingmode_reached and $period->ballot_voting) or (!$issue->votingmode_reached and $period->online_voting) ) {
-
-					$issues_start_voting[] = $issue;
-
-				} else {
-
-					// skip to next available period
-					$sql = "SELECT id FROM periods
-						WHERE ngroup=".intval($period->ngroup)."
-							AND preparation >= now()
-							AND ". $issue->votingmode_reached?"ballot_voting":"online_voting" ."=TRUE
-						ORDER BY preparation
-						LIMIT 1";
-					$issue->period = DB::fetchfield($sql);
-					if ($issue->period) {
-						$issue->update(array("period"));
-					} else {
-						trigger_error(sprintf(_("Voting for issue %d could not be started, because the determined voting mode is not available in the current and all further voting periods!"), $issue->id), E_USER_WARNING);
-					}
-
-				}
+				// collect issues for online voting start
+				if ( !$issue->votingmode_reached ) $issues_start_voting[] = $issue;
+				// Issues which reached offline voting, stay in preparation state until an admin enters the voting result.
 
 				break;
 
@@ -226,10 +207,7 @@ function cron($skip_if_locked=false) {
 				$issue->update(array("state"), 'counting_started=now()');
 
 				$issue->counting();
-
-				// set date for clearing
-				$issue->state = "finished";
-				$issue->update(array("state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
+				$issue->finish();
 
 				$issues_finished_voting[] = $issue;
 

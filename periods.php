@@ -18,11 +18,10 @@ $d->columns = array(
 	array("debate",             _("Debate"),                 "period", "timestamp", "timestamp"), // 4 weeks before counting
 	array("preparation",        _("Voting preparation"),     "period", "timestamp", "timestamp"), // 1 week before voting
 	array("voting",             _("Online voting"),          "period", "timestamp", "timestamp"), // 2 weeks before counting
+	array("counting",           _("Counting/End of period"), "period", "timestamp", "timestamp"), // "Stichtag"
+	array("ballot_voting", _("Ballot voting"), "center", "boolean", "boolean", 'type'=>"boolean"),
 	array("ballot_assignment",  _("Ballot assignment"),      "period", "timestamp", "timestamp", 'null'=>true), // 3 weeks before counting
 	array("ballot_preparation", _("Ballot preparation"),     "period", "timestamp", "timestamp", 'null'=>true), // 1 week before counting
-	array("counting",           _("Counting/End of period"), "period", "timestamp", "timestamp"), // "Stichtag"
-	array("online_voting", _("Online voting"), "center", "boolean", "boolean", 'type'=>"boolean"),
-	array("ballot_voting", _("Ballot voting"), "center", "boolean", "boolean", 'type'=>"boolean"),
 	array("postage", _("Postage"), "center", "boolean", "postage", 'type'=>"boolean"),
 	array(false, _("Ballots"), "center", "ballots", false)
 );

@@ -270,13 +270,12 @@ function create_case($case, $stopcase) {
 		if ($proposal->state=="admitted" or $proposal2->state=="admitted") {
 
 			// create period
-			$sql = "INSERT INTO periods (debate, preparation, voting, counting, online_voting, ballot_voting, ngroup)
+			$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
 			VALUES (
 				now() + interval '1 week',
 				now() + interval '2 weeks',
 				now() + interval '3 weeks',
 				now() + interval '4 weeks',
-				true,
 				true,
 				".$ngroup->id."
 			) RETURNING id";

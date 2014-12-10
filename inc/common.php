@@ -8,6 +8,7 @@
  * @see admin_areas.php
  * @see admin_members.php
  * @see admin_ngroups.php
+ * @see admin_vote_result.php
  * @see admins.php
  * @see areas.php
  * @see ballot_edit.php

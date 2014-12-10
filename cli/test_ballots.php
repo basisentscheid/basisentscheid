@@ -64,7 +64,7 @@ function create_case($case, $stopcase) {
 	// create period
 	if ($stopcase == ++$stop) {
 		// period without ballot voting
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup)
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, ballot_voting, ngroup)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -72,7 +72,6 @@ function create_case($case, $stopcase) {
 			NULL,
 			NULL,
 			now() + interval '4 weeks',
-			true,
 			false,
 			".$ngroup->id."
 		)";
@@ -80,7 +79,7 @@ function create_case($case, $stopcase) {
 		return;
 	} else {
 		// period with ballot voting
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, online_voting, ballot_voting, ngroup, postage)
+		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, ballot_voting, ngroup, postage)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -88,7 +87,6 @@ function create_case($case, $stopcase) {
 			now() + interval '1 week',
 			now() + interval '3 weeks',
 			now() + interval '4 weeks',
-			true,
 			true,
 			".$ngroup->id.",
 			true
