@@ -825,7 +825,7 @@ function display_arguments($side, $parent, $level) {
 
 
 /**
- * display supporters and ballot voting demanders
+ * display supporters and offline voting demanders
  *
  * @param Proposal $proposal
  * @param array   $supporters

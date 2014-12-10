@@ -55,7 +55,7 @@ define("QUORUM_SUPPORT_DEN", 10);
 // quorum for the alternative proposals
 define("QUORUM_SUPPORT_ALTERNATIVE_NUM", 1); // 5%
 define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 20);
-// quorum for ballot voting
+// quorum for offline voting
 define("QUORUM_VOTINGMODE_NUM", 1); // 5%
 define("QUORUM_VOTINGMODE_DEN", 20);
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-12-10 21:20+0200\n"
+"PO-Revision-Date: 2014-12-10 21:46+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -285,18 +285,6 @@ msgstr "Antrag bearbeiten"
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 #
-msgid "Ballot voting demanders"
-msgstr "Urnenabstimmungsforderer"
-#
-msgid "You demand ballot voting for this issue."
-msgstr "Du forderst eine Urnenabstimmung bei diesem Antragsblock"
-#
-msgid "Revoke your demand for ballot voting"
-msgstr "Forderung nach Urnenabstimmung zurückziehen"
-#
-msgid "Demand ballot voting for this issue"
-msgstr "Urnenabstimmung zu diesem Antragsblock fordern"
-#
 # File: proposal.php, line: 457
 msgid "This and alternative proposals"
 msgstr "Dieser und dazu konkurrierende Anträge"
@@ -388,9 +376,6 @@ msgstr "Name oder Ort der Urne"
 msgid "Agents"
 msgstr "Beauftragte"
 #
-msgid "Opening"
-msgstr "Öffnung"
-#
 # File: periods.php, line: 26
 # File: inc/classes/DbTableAdmin_Period.php, line: 134
 msgid "Ballots"
@@ -416,9 +401,6 @@ msgstr "Du hast diese Urne für die Abstimmung ausgewählt."
 # File: ballots.php, line: 246
 msgid "remove selection"
 msgstr "Auswahl zurückziehen"
-#
-msgid "select"
-msgstr "auswählen"
 #
 # File: ballots.php, line: 218
 msgid "apply approved"
@@ -691,9 +673,6 @@ msgstr "Urnen&shy;zuordnung"
 msgid "Ballot preparation"
 msgstr "Urnen&shy;vorbereitung"
 #
-msgid "In the current phase of the period ballot applications are not allowed anymore."
-msgstr "In der aktuellen Phase der Abstimmungsperiode können keine Urnenanträge mehr angenommen werden."
-#
 # File: ballots.php, line: 43
 msgid "In ballot preparation phase it is not allowed anymore to select or change the ballot."
 msgstr "Nach Beginn der Urnenvorbereitung kann keine Urne mehr ausgewählt werden."
@@ -809,8 +788,8 @@ msgid "New argument"
 msgstr "Neues Argument"
 #
 #, php-format
-msgid "%d of currently required %d (%s of %d) for ballot voting"
-msgstr "%d von momentan für Urnenabstimmung erforderlichen %d (%s von %d)"
+msgid "%d of currently required %d (%s of %d) for offline voting"
+msgstr "%d von momentan für Offline-Abstimmung erforderlichen %d (%s von %d)"
 #
 #, php-format
 msgid "%d of currently required %d (%s of %d) for admission"
@@ -877,20 +856,10 @@ msgstr "Perioden pro Seite"
 msgid "You support this proposal anonymously."
 msgstr "Du unterstützt diesen Antrag anonym."
 #
-msgid "You demand ballot voting for this issue anonymously."
-msgstr "Du forderst anonym eine Urnenabstimmung bei diesem Antragsblock."
-#
-msgid "Participant"
-msgstr "Teilnehmer"
-#
 # File: admin_members.php, line: 33
 # File: inc/functions_http.php, line: 186
 msgid "Members"
 msgstr "Mitglieder"
-#
-msgid "Participation activated"
-msgstr "Teilnahme aktiviert"
-#
 #
 # File: proposal_edit.php, line: 80
 # File: inc/classes/Argument.php, line: 50
@@ -908,9 +877,6 @@ msgstr "Der Inhalt wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt
 #, php-format
 msgid "The reason has been truncated to the maximum allowed length of %d characters!"
 msgstr "Die Begründung wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
-#
-msgid "The proposal has already been submitted and may not be changed anymore."
-msgstr "Der Antrag wurde bereits eingereicht und kann nicht mehr verändert werden."
 #
 # File: proposal_edit.php, line: 27
 # File: proposal.php, line: 38
@@ -958,9 +924,6 @@ msgstr "Entwürfe"
 # File: proposal.php, line: 589
 msgid "submit proposal"
 msgstr "Antrag einreichen"
-#
-msgid "revoke proposal"
-msgstr "Antrag zurückziehen"
 #
 # File: ballots.php, line: 105
 # File: proposal.php, line: 335
@@ -1038,8 +1001,8 @@ msgid "Ballot voting"
 msgstr "Urnen&shy;abstimmung"
 #
 # File: inc/classes/Issue.php, line: 970
-msgid "ballot voting"
-msgstr "Urnen&shy;abstimmung"
+msgid "offline voting"
+msgstr "Offline-Abstimmung"
 #
 # File: inc/classes/Issue.php, line: 972
 msgid "online voting"
@@ -1055,9 +1018,6 @@ msgstr "antworten"
 #, php-format
 msgid "The input has been truncated to the maximum allowed length of %d characters!"
 msgstr "Die Eingabe wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
-#
-msgid "Proponent"
-msgstr "Antragsteller"
 #
 # File: proposal_edit.php, line: 247
 msgid "Enter your name and contact details as you would like to see them in the proposal."
@@ -1198,9 +1158,6 @@ msgstr "Dich selbst aus der Antragstellerliste löschen"
 msgid "confirm"
 msgstr "bestätigen"
 #
-msgid "Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, your user name will also be shown to the other proponents:"
-msgstr "Gib Deinen Namen und Kontaktdaten so ein, wie Du sie im Antrag stehen haben willst. Um die Vortäuschung falscher Identitäten zu vermeiden, wird auch Dein Benutzername den anderen Antragstellern angezeigt:"
-#
 # File: proposal.php, line: 560
 msgid "apply to become proponent"
 msgstr "Anfrage abschicken"
@@ -1217,15 +1174,6 @@ msgstr "jetzt ist %s"
 # File: settings.php, line: 36
 msgid "The new username has been saved."
 msgstr "Der neue Benutzername wurde gespeichert."
-#
-msgid "You are now anonymous."
-msgstr "Du bist jetzt anonym."
-#
-msgid "Your mail address has been saved."
-msgstr "Deine E-Mail-Adresse wurde gespeichert."
-#
-msgid "leave empty to be displayed as \"anonymous\""
-msgstr "leer lassen um als \"anonym\" angezeigt zu werden"
 #
 # File: register.php, line: 109
 msgid "Mail address for notifications"
@@ -1269,13 +1217,13 @@ msgid "The argument has been removed."
 msgstr "Das Argument wurde entfernt."
 #
 # File: inc/classes/Issue.php, line: 940
-msgid "You can demand ballot voting."
-msgstr "Du kannst eine Urnenabstimmung fordern."
+msgid "You can demand offline voting."
+msgstr "Du kannst eine Offline-Abstimmung fordern."
 #
 # File: inc/classes/Issue.php, line: 938
 # File: inc/classes/Issue.php, line: 951
-msgid "You demand ballot voting."
-msgstr "Du forderst eine Urnenabstimmung."
+msgid "You demand offline voting."
+msgstr "Du forderst eine Offline-Abstimmung."
 #
 # File: proposal.php, line: 370
 # File: inc/classes/Issue.php, line: 953
@@ -1283,8 +1231,8 @@ msgid "Revoke"
 msgstr "zurückziehen"
 #
 # File: inc/classes/Issue.php, line: 958
-msgid "Demand ballot voting"
-msgstr "Urnenabstimmung fordern"
+msgid "Demand offline voting"
+msgstr "Offline-Abstimmung fordern"
 #
 # File: inc/classes/Proposal.php, line: 1041
 # File: inc/classes/Proposal.php, line: 1107
@@ -1321,9 +1269,6 @@ msgstr "%d Unterstützer von %d Teilnehmern - %d Unterstützer (%s) momentan erf
 # File: confirm_mail.php, line: 24
 msgid "Email address confirmation"
 msgstr "Bestätigung der E-Mail-Adresse"
-#
-msgid "Confirmation code"
-msgstr "Bestätigungscode"
 #
 # File: confirm_mail.php, line: 52
 msgid "Your email address is confirmed now."
@@ -1406,15 +1351,6 @@ msgstr "Abgebrochen am %s weil zu lange nicht angenommen"
 msgid "Cancelled at %s because for other proposals of the same issue the debate was started."
 msgstr "Abgebrochen am %s, weil für andere Anträge des gleichen Antragsblocks die Debatte gestartet wurde"
 #
-msgid "Move this proposal to a different issue"
-msgstr "Diesen Antrag in einen anderen Antragsblock verschieben"
-#
-msgid "move proposal to the selected issue"
-msgstr "Antrag zum ausgewählten Antragsblock verschieben"
-#
-msgid "We have sent an email with activation link already in the last hour. Please try again later!"
-msgstr "Wir haben bereits innerhalb der letzten Stunde eine E-Mail mit einem Bestätigungslink verschickt. Bitte versuche es später noch einmal!"
-#
 # File: inc/classes/Member.php, line: 193
 msgid "Email confirmation request"
 msgstr "Bestätigung der E-Mail-Adresse"
@@ -1428,27 +1364,6 @@ msgstr "Bitte bestätige Deine E-Mail-Adresse durch Klick auf folgenden Link:"
 msgid "If this link does not work, please open the following URL in your web browser:"
 msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web-Browser:"
 #
-msgid "On that page enter the confirmation code:"
-msgstr "Auf dieser Seite gib den Bestätigungscode ein:"
-#
-msgid "Your email address has been saved. A confirmation request has been sent."
-msgstr "Deine E-Mail-Adresse wurde gespeichert und eine Bestätigungsmail verschickt."
-#
-msgid "Your email address has been saved, but the confirmation request could not be sent. Try again later or contact the system administrator."
-msgstr "Deine E-Mail-Adresse wurde gespeichert, aber die Bestätigungsmail konnte nicht verschickt werden. Versuche es später noch einmal oder wende Dich an einen Systemadminstrator."
-#
-msgid "all"
-msgstr "Alle"
-#
-msgid "ngroups"
-msgstr "Deine Gliederungen"
-#
-msgid "area participant"
-msgstr "Themenbereichsteilnehmer"
-#
-msgid "supporter"
-msgstr "Unterstützer"
-#
 # File: inc/classes/Proposal.php, line: 829
 # File: inc/classes/Proposal.php, line: 839
 msgid "proponent"
@@ -1461,9 +1376,6 @@ msgstr "zugelassen"
 # File: inc/classes/Notification.php, line: 75
 msgid "debate"
 msgstr "Debatte"
-#
-msgid "voting"
-msgstr "Abstimmung"
 #
 # File: inc/classes/Notification.php, line: 78
 msgid "finished"
@@ -1532,18 +1444,6 @@ msgstr "Nr."
 msgid "Groups"
 msgstr "Gliederungen"
 #
-msgid "proposals"
-msgstr "Anträge"
-#
-msgid "periods"
-msgstr "Perioden"
-#
-msgid "areas"
-msgstr "Themenbereiche"
-#
-msgid "No groups found"
-msgstr "Keine Gliederungen gefunden"
-#
 # File: index.php, line: 97
 # File: inc/classes/Ngroup.php, line: 154
 msgid "entitled"
@@ -1555,8 +1455,8 @@ msgid "login"
 msgstr "anmelden"
 #
 # File: inc/classes/Issue.php, line: 964
-msgid "Members can demand ballot voting."
-msgstr "Mitglieder können Urnenabstimmung fordern."
+msgid "Members can demand offline voting."
+msgstr "Mitglieder können eine Offline-Abstimmung fordern."
 #
 # File: ballot_edit.php, line: 17
 msgid "This ballot does not exist!"
@@ -1708,8 +1608,8 @@ msgstr "Vorbereitung"
 #
 # File: inc/classes/Issue.php, line: 945
 # File: inc/classes/Issue.php, line: 966
-msgid "determination if online or ballot voting"
-msgstr "Entscheidung ob Online- oder Urnenabstimmung"
+msgid "determination if online or offline voting"
+msgstr "Entscheidung ob Online- oder Offline-Abstimmung"
 #
 # File: inc/classes/Ngroup.php, line: 49
 msgid "No active groups found"
@@ -1946,12 +1846,6 @@ msgstr "Abgegebene Stimmen"
 msgid "Raw data has been cleared at %s."
 msgstr "Die Rohdaten wurden am %s gelöscht."
 #
-msgid "Token"
-msgstr "Token"
-#
-msgid "Time"
-msgstr "Zeit"
-#
 # File: inc/classes/Issue.php, line: 475
 # File: inc/classes/Issue.php, line: 625
 # File: inc/classes/Issue.php, line: 1174
@@ -2004,12 +1898,6 @@ msgstr "Passwort vergessen?"
 # File: settings.php, line: 45
 msgid "The new password has been saved."
 msgstr "Das neue Passwort wurde gespeichert."
-#
-msgid "again"
-msgstr "Wdh."
-#
-msgid "Not yet confirmed!"
-msgstr "Noch nicht bestätigt!"
 #
 # File: register.php, line: 21
 #, php-format
@@ -2428,17 +2316,11 @@ msgstr "Deine abgegebenen Stimmen zu diesem Thema:"
 msgid "This email should be encrypted, but no available key matching your fingerprint was found! Please check your settings:"
 msgstr "Diese E-Mail sollte eigentlich verschlüsselt werden, aber es wurde kein verwendbarer Schlüssel zu deinem Fingerabdruck gefunden! Bitte überprüfe deine Einstellungen:"
 #
-msgid "User ID"
-msgstr "Benutzer-ID"
-#
 # File: inc/classes/Issue.php, line: 1174
 # File: inc/classes/Issue.php, line: 1179
 # File: inc/classes/Issue.php, line: 1241
 msgid "Vote token"
 msgstr "Abstimmungskennung"
-#
-msgid "No matching key was found."
-msgstr "Es wurde kein passender Schlüssel gefunden."
 #
 # File: inc/classes/Member.php, line: 292
 msgid "This key is disabled."
@@ -2502,8 +2384,8 @@ msgid "Voting mode result"
 msgstr "Ergebnis der Ermittlung des Abstimmungsverfahrens"
 #
 # File: inc/classes/Issue.php, line: 399
-msgid "You demand ballot voting"
-msgstr "Du forderst eine Urnenabstimmung."
+msgid "You demand offline voting"
+msgstr "Du forderst eine Offline-Abstimmung."
 #
 # File: inc/classes/Issue.php, line: 404
 msgid "You can change your choice again:"
@@ -2518,8 +2400,8 @@ msgid "You are not entitled in this group."
 msgstr "Du bis in dieser Gliederung nicht stimmberechtigt."
 #
 # File: inc/classes/Issue.php, line: 1241
-msgid "Demands ballot voting"
-msgstr "Fordert eine Urnenabstimmung"
+msgid "Demands offline voting"
+msgstr "Fordert eine Offline-Abstimmung"
 #
 # File: inc/classes/Issue.php, line: 386
 msgid "Your vote von the voting mode has been saved, but the email receipt could not be sent, because you have no confirmed email address!"
@@ -2571,8 +2453,8 @@ msgid "Proposals in the new issue %d:"
 msgstr "Anträge im neuen Antragsblock %d:"
 #
 # File: inc/classes/Notification.php, line: 366
-msgid "Notice that if you demanded ballot voting for the old issue, this was not automatically transferred to the new issue. If you still want ballot voting, you should demand it again on the new issue!"
-msgstr "Beachte, dass die Stimmen für eine Urnenabstimmung bei dem alten Antragsblock nicht automatisch in den neuen Antragsblock übernommen werden. Falls du immer noch eine Urnenabstimmung möchtest, solltest du das im neuen Antragsblock noch einmal fordern!"
+msgid "Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!"
+msgstr "Beachte, dass die Stimmen für eine Offline-Abstimmung bei dem alten Antragsblock nicht automatisch in den neuen Antragsblock übernommen werden. Falls du immer noch eine Offline-Abstimmung möchtest, solltest du das im neuen Antragsblock noch einmal fordern!"
 #
 # File: inc/classes/Member.php, line: 287
 msgid "No key matching fingerprint and email address was found."
@@ -2681,3 +2563,4 @@ msgstr "Offline-Abstimmung durch Verantwortliche festgelegt"
 # File: votingmode_result.php, line: 26
 msgid "Offline voting has been selected by admins."
 msgstr "Offline-Abstimmung wurde durch die Verantwortlichen festgelegt."
+

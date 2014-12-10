@@ -667,7 +667,7 @@ class Proposal extends Relation {
 			$new_issue->area   = $old_issue->area;
 			$new_issue->period = $old_issue->period;
 			$new_issue->state  = $old_issue->state;
-			// If the old issue reached ballot voting, the new issue gets ballot voting unseen the number of ballot voting demanders.
+			// If the old issue reached offline voting, the new issue gets offline voting unseen the number of offline voting demanders.
 			$new_issue->votingmode_reached = $old_issue->votingmode_reached;
 			$new_issue->debate_started = $old_issue->debate_started;
 			$new_issue->create();

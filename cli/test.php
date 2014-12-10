@@ -310,7 +310,7 @@ function create_case($case, $stopcase) {
 			}
 
 			if (no_branch_skip($branch, $bcase) and $stopcase == ++$stop) {
-				$casetitle = "issue with $votingmode_demanders_count ballot voting demanders";
+				$casetitle = "issue with $votingmode_demanders_count offline voting demanders";
 				return;
 			}
 
@@ -422,7 +422,7 @@ function add_proponent(Proposal $proposal, $i) {
 
 
 /**
- * create a new member and let it support ballot voting for the supplied proposal
+ * create a new member and let it demand offline voting for the supplied proposal
  *
  * @param Proposal $proposal
  * @param string  $i

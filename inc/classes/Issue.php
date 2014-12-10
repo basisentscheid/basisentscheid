@@ -227,7 +227,7 @@ class Issue extends Relation {
 
 
 	/**
-	 * quorum for ballot voting
+	 * quorum for offline voting
 	 *
 	 * @return array
 	 */
@@ -237,7 +237,7 @@ class Issue extends Relation {
 
 
 	/**
-	 * number of required ballot voting demanders
+	 * number of required offline voting demanders
 	 *
 	 * @return integer
 	 */
@@ -249,7 +249,7 @@ class Issue extends Relation {
 
 
 	/**
-	 * look if the logged in member demands ballot voting
+	 * look if the logged in member demands offline voting
 	 *
 	 * @return boolean
 	 */
@@ -271,13 +271,13 @@ class Issue extends Relation {
 
 
 	/**
-	 * demand ballot voting
+	 * demand offline voting
 	 *
 	 * @return boolean
 	 */
 	function demand_votingmode() {
 		if (!$this->votingmode_determination()) {
-			warning("Demand for ballot voting can not be added, because the proposal is not in admission, admitted or debate phase!");
+			warning("Demand for offline voting can not be added, because the proposal is not in admission, admitted or debate phase!");
 			return false;
 		}
 		$token = $this->votingmode_token(true);
@@ -287,16 +287,16 @@ class Issue extends Relation {
 
 
 	/**
-	 * revoke demand for ballot voting
+	 * revoke demand for offline voting
 	 *
 	 * @return boolean
 	 */
 	function revoke_votingmode() {
 		if (!$this->votingmode_determination()) {
-			warning("Demand for ballot voting can not be removed, because the issue is not in admission or debate phase!");
+			warning("Demand for offline voting can not be removed, because the issue is not in admission or debate phase!");
 			return false;
 		}
-		// The token has already been created when ballot voting was demanded.
+		// The token has already been created when offline voting was demanded.
 		$token = $this->votingmode_token();
 		$this->votingmode_vote($token, false);
 		$this->update_votingmode_cache();
@@ -320,7 +320,7 @@ class Issue extends Relation {
 
 
 	/**
-	 * count ballot voting demanders and save the result
+	 * count offline voting demanders and save the result
 	 */
 	function update_votingmode_cache() {
 
@@ -355,7 +355,7 @@ class Issue extends Relation {
 
 
 	/**
-	 * get the token of the logged in member for demanding ballot voting
+	 * get the token of the logged in member for demanding offline voting
 	 *
 	 * @param boolean $create (optional) create a new token if it does not exist yet
 	 * @return string
@@ -396,7 +396,7 @@ class Issue extends Relation {
 					$body .= mb_wordwrap(_("Proposal")." ".$proposal->id.": ".$proposal->title)."\n"
 						.BASE_URL."proposal.php?id=".$proposal->id."\n\n";
 				}
-				$body .= _("You demand ballot voting").": ".($demand?_("Yes"):_("No"))."\n\n"
+				$body .= _("You demand offline voting").": ".($demand?_("Yes"):_("No"))."\n\n"
 					._("Your user name").": ".Login::$member->username."\n"
 					._("Your user ID").": ".Login::$member->id."\n"
 					._("Your voting mode token").": ".$token."\n"
@@ -935,41 +935,41 @@ class Issue extends Relation {
 				$entitled = Login::$member->entitled($this->area()->ngroup);
 				$votingmode_demanded = $this->votingmode_demanded_by_member();
 				if ($votingmode_demanded) {
-					echo _("You demand ballot voting.");
+					echo _("You demand offline voting.");
 				} elseif ($entitled) {
-					echo _("You can demand ballot voting.");
+					echo _("You can demand offline voting.");
 				} else {
 					echo _("You are not entitled in this group.");
 				}
 				?>">
-<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
+<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
 <?
 				if ($votingmode_demanded) { ?>&#10003;<? }
 				if ($selected_proposal and $entitled) {
 					form(URI::same());
 					if ($votingmode_demanded) {
-						echo _("You demand ballot voting.")?>
+						echo _("You demand offline voting.")?>
 <input type="hidden" name="action" value="revoke_votingmode">
 <input type="submit" value="<?=_("Revoke")?>">
 <?
 					} else {
 ?>
 <input type="hidden" name="action" value="demand_votingmode">
-<input type="submit" value="<?=_("Demand ballot voting")?>">
+<input type="submit" value="<?=_("Demand offline voting")?>">
 <?
 					}
 					form_end();
 				}
 			} else {
-				echo _("Members can demand ballot voting.");
+				echo _("Members can demand offline voting.");
 				?>">
-<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or ballot voting"))?> class="vmiddle">
+<img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
 <?
 			}
 		} elseif ($this->votingmode_offline()) {
-			?>" title="<?=_("ballot voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/ballot30.png" width="37" height="30" <?alt(_("ballot voting"))?> class="vmiddle"></a><?
+			?>" title="<?=_("offline voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
 		} elseif ($this->state!="admission") {
-			?>" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
+			?>" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
 		} else {
 			?>"><?
 		}
@@ -1238,7 +1238,7 @@ class Issue extends Relation {
 	public static function display_votingmode_votes($result, $token="") {
 ?>
 <table class="votes">
-<tr><th><?=_("Vote token")?></th><th><?=_("Voting time")?></th><th><?=_("Demands ballot voting")?></th></tr>
+<tr><th><?=_("Vote token")?></th><th><?=_("Voting time")?></th><th><?=_("Demands offline voting")?></th></tr>
 <?
 		// votes
 		$previous_token = null;

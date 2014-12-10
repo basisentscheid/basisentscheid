@@ -363,7 +363,7 @@ class Notification {
 				$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
 					.BASE_URL."proposal.php?id=".$proposal->id."\n";
 			}
-			$body .= _("Notice that if you demanded ballot voting for the old issue, this was not automatically transferred to the new issue. If you still want ballot voting, you should demand it again on the new issue!")."\n";
+			$body .= _("Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!")."\n";
 
 			break;
 		case "ballot_approved":
