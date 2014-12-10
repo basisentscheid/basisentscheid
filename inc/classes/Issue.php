@@ -103,7 +103,6 @@ class Issue extends Relation {
 				'voting'      => _("Voting"),
 				'counting'    => _("Counting"),
 				'finished'    => _("Finished"),
-				'cleared'     => _("Finished and cleared"),
 				'cancelled'   => _("Cancelled") // when all proposals are 'cancelled', 'revoked' or 'done'
 			);
 		return $states[$this->state];
