@@ -169,7 +169,7 @@ class Period extends Relation {
 			'agent'  => false
 		);
 		$keys = array("member", "period");
-		DB::insert_or_update("voters", $fields_values, $keys);
+		DB::insert_or_update("offlinevoters", $fields_values, $keys);
 	}
 
 
@@ -192,7 +192,7 @@ class Period extends Relation {
 	 */
 	public function postage() {
 		if ($this->postage) {
-			$sql = "SELECT COUNT(1) FROM voters
+			$sql = "SELECT COUNT(1) FROM offlinevoters
 				WHERE member=".intval(Login::$member->id)."
 					AND period=".intval($this->id)."
 					AND ballot IS NULL";
@@ -209,7 +209,7 @@ class Period extends Relation {
 			warning(_("You can not change your choice for postal voting any longer, because postage has already started."));
 			redirect();
 		}
-		DB::delete("voters", "member=".intval(Login::$member->id)." AND period=".intval($this->id));
+		DB::delete("offlinevoters", "member=".intval(Login::$member->id)." AND period=".intval($this->id));
 		$this->update_voters_cache();
 	}
 
@@ -223,10 +223,10 @@ class Period extends Relation {
 		$result = DB::query($sql);
 		while ( $row = DB::fetch_assoc($result) ) {
 
-			$sql = "SELECT COUNT(1) FROM voters WHERE ballot=".intval($row['id']);
+			$sql = "SELECT COUNT(1) FROM offlinevoters WHERE ballot=".intval($row['id']);
 			$count = DB::fetchfield($sql);
 
-			$sql = "UPDATE ballots SET voters=".intval($count)." WHERE id=".intval($row['id']);
+			$sql = "UPDATE ballots SET offlinevoters=".intval($count)." WHERE id=".intval($row['id']);
 			DB::query($sql);
 
 		}
@@ -271,8 +271,8 @@ class Period extends Relation {
 		// get all members, who are in the current period not assigned to a ballot yet
 		$sql = "SELECT members.* FROM members
 			JOIN members_ngroups ON members_ngroups.member = members.id AND members_ngroups.ngroup = ".intval($this->ngroup)."
-			LEFT JOIN voters ON members.id = voters.member AND voters.period = ".intval($this->id)."
-			WHERE voters.member IS NULL";
+			LEFT JOIN offlinevoters ON members.id = offlinevoters.member AND offlinevoters.period = ".intval($this->id)."
+			WHERE offlinevoters.member IS NULL";
 		$result = DB::query($sql);
 		while ( $member = DB::fetch_object($result, "Member") ) {
 

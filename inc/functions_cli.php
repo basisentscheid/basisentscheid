@@ -64,7 +64,7 @@ function cron($skip_if_locked=false) {
 				$notification = new Notification("ballot_approved");
 				$notification->period = $period;
 				$notification->ballot = $ballot;
-				$sql = "SELECT member FROM voters WHERE ballot = ".intval($ballot->id)." AND agent = TRUE";
+				$sql = "SELECT member FROM offlinevoters WHERE ballot = ".intval($ballot->id)." AND agent = TRUE";
 				$recipients = DB::fetchfieldarray($sql);
 				$notification->send($recipients);
 
@@ -74,7 +74,7 @@ function cron($skip_if_locked=false) {
 				$notification = new Notification("ballot_assigned");
 				$notification->period = $period;
 				$notification->ballot = $ballot;
-				$sql = "SELECT member FROM voters WHERE ballot = ".intval($ballot->id);
+				$sql = "SELECT member FROM offlinevoters WHERE ballot = ".intval($ballot->id);
 				$recipients = DB::fetchfieldarray($sql);
 				$notification->send($recipients);
 
@@ -311,7 +311,7 @@ function upload_voters($period, $include_ballot_voters=false) {
 
 	// postal voters
 	$sql = "SELECT invite FROM members
-		JOIN voters ON voters.member = members.id AND voters.ballot IS NULL AND voters.period = ".intval($period->id);
+		JOIN offlinevoters ON offlinevoters.member = members.id AND offlinevoters.ballot IS NULL AND offlinevoters.period = ".intval($period->id);
 	$data[0] = array(
 		'name'   => "postal voting",
 		'voters' => DB::fetchfieldarray($sql)
@@ -323,7 +323,7 @@ function upload_voters($period, $include_ballot_voters=false) {
 		$result_ballot = DB::query($sql_ballot);
 		while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
 			$sql = "SELECT invite FROM members
-				JOIN voters ON voters.member = members.id AND voters.ballot = ".intval($ballot->id);
+				JOIN offlinevoters ON offlinevoters.member = members.id AND offlinevoters.ballot = ".intval($ballot->id);
 			$data[$ballot->id] = array(
 				'name'    => $ballot->name,
 				'ngroup'  => $ballot->ngroup()->name,

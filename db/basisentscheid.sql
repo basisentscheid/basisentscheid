@@ -436,6 +436,25 @@ CREATE TABLE notify (
 
 
 --
+-- Name: offlinevoters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE offlinevoters (
+    period integer NOT NULL,
+    member integer NOT NULL,
+    ballot integer,
+    agent boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: COLUMN offlinevoters.ballot; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN offlinevoters.ballot IS 'NULL = postal voting';
+
+
+--
 -- Name: participants; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -629,25 +648,6 @@ CREATE TABLE vote_votes (
     vote text,
     votetime timestamp with time zone DEFAULT now() NOT NULL
 );
-
-
---
--- Name: voters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE voters (
-    period integer NOT NULL,
-    member integer NOT NULL,
-    ballot integer,
-    agent boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: COLUMN voters.ballot; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN voters.ballot IS 'NULL = postal voting';
 
 
 --
@@ -938,7 +938,7 @@ ALTER TABLE ONLY vote_tokens
 -- Name: voters_ballot_member_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY voters
+ALTER TABLE ONLY offlinevoters
     ADD CONSTRAINT voters_ballot_member_key UNIQUE (ballot, member);
 
 
@@ -946,7 +946,7 @@ ALTER TABLE ONLY voters
 -- Name: voters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY voters
+ALTER TABLE ONLY offlinevoters
     ADD CONSTRAINT voters_pkey PRIMARY KEY (period, member);
 
 
@@ -1138,7 +1138,7 @@ ALTER TABLE ONLY vote_votes
 -- Name: voters_ballot_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY voters
+ALTER TABLE ONLY offlinevoters
     ADD CONSTRAINT voters_ballot_fkey FOREIGN KEY (ballot) REFERENCES ballots(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
@@ -1146,7 +1146,7 @@ ALTER TABLE ONLY voters
 -- Name: voters_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY voters
+ALTER TABLE ONLY offlinevoters
     ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
@@ -1154,7 +1154,7 @@ ALTER TABLE ONLY voters
 -- Name: voters_period_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY voters
+ALTER TABLE ONLY offlinevoters
     ADD CONSTRAINT voters_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 

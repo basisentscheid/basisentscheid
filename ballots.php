@@ -23,7 +23,7 @@ if (!$period->ballot_voting) {
 }
 
 if (Login::$member) {
-	$sql = "SELECT * FROM voters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
+	$sql = "SELECT * FROM offlinevoters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
 	if ( $row_voters = DB::fetchassoc($sql) ) {
 		DB::to_bool($row_voters['agent']);
 	}

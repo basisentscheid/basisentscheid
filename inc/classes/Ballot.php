@@ -78,7 +78,7 @@ class Ballot extends Relation {
 			'agent'  => $agent
 		);
 		$keys = array("member", "period");
-		DB::insert_or_update("voters", $fields_values, $keys);
+		DB::insert_or_update("offlinevoters", $fields_values, $keys);
 	}
 
 
