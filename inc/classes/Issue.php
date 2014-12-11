@@ -942,7 +942,7 @@ class Issue extends Relation {
 					echo _("You are not entitled in this group.");
 				}
 				?>">
-<img src="img/votingtype20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
+<img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
 <?
 				if ($votingmode_demanded) { ?>&#10003;<? }
 				if ($selected_proposal and $entitled) {
