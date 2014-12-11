@@ -226,7 +226,7 @@ class Period extends Relation {
 			$sql = "SELECT COUNT(1) FROM offlinevoters WHERE ballot=".intval($row['id']);
 			$count = DB::fetchfield($sql);
 
-			$sql = "UPDATE ballots SET offlinevoters=".intval($count)." WHERE id=".intval($row['id']);
+			$sql = "UPDATE ballots SET voters=".intval($count)." WHERE id=".intval($row['id']);
 			DB::query($sql);
 
 		}
