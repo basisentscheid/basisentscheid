@@ -106,10 +106,10 @@ abstract class Timebar {
 					// show month name only if there is enough space
 					if ( date("t", $t) - date("j", $t) > 3 ) {
 						if ($show_year) {
-							echo date("F Y", $t);
+							echo strftime("%B %Y", $t);
 							$show_year = false; // show year only at the first month
 						} else {
-							echo date("F", $t);
+							echo strftime("%B", $t);
 						}
 					}
 					$month = date("n", $t);

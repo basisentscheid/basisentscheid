@@ -21,7 +21,10 @@ putenv("LANG=".LANG);
 putenv("LANGUAGE=".LANG);
 $locale = $languages[LANG];
 if ( setlocale(LC_MESSAGES, $locale) === false ) {
-	trigger_error("setlocale to ".$locale." failed", E_USER_WARNING);
+	trigger_error("setlocale LC_MESSAGES to ".$locale." failed", E_USER_WARNING);
+}
+if ( setlocale(LC_TIME, $locale) === false ) {
+	trigger_error("setlocale LC_TIME to ".$locale." failed", E_USER_WARNING);
 }
 
 if (DEBUG) {
