@@ -77,7 +77,7 @@ if (!empty($_GET['ngroup'])) {
 		redirect("proposals.php?ngroup=".$_SESSION['ngroup']);
 	default:
 		// remove ngroup parameter from URLs of ngroup-independent pages
-		redirect(URI::strip(array('ngroup')));
+		redirect(URI::strip(array('ngroup'), true));
 	}
 } elseif (!isset($_SESSION['ngroup'])) {
 	$_SESSION['ngroup'] = 0;

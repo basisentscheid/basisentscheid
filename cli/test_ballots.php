@@ -21,7 +21,6 @@ $date = dechex(time());
 $ngroup = new_ngroup("Test ballots group", 500);
 
 // create main member
-$password = crypt("test");
 $login = new Member;
 $login->invite = Login::generate_token(24);
 $login->entitled = true;

@@ -159,7 +159,7 @@ if ($action) {
 			break;
 		}
 		$argument->add($proposal);
-		redirect(URI::same()."#argument".$argument->id);
+		redirect(URI::same(true)."#argument".$argument->id);
 		break;
 
 	case "update_argument":
@@ -185,7 +185,7 @@ if ($action) {
 			break;
 		}
 		$argument->apply_changes();
-		redirect(URI::same()."#argument".$argument->id);
+		redirect(URI::same(true)."#argument".$argument->id);
 		break;
 
 	case "remove_argument":
@@ -199,7 +199,7 @@ if ($action) {
 		}
 		$argument->removed = ($action=="remove_argument");
 		$argument->update(array("removed"));
-		redirect(URI::same()."#argument".$argument->id);
+		redirect(URI::same(true)."#argument".$argument->id);
 		break;
 
 	case "set_rating":
@@ -219,7 +219,7 @@ if ($action) {
 			redirect();
 		}
 		if ( !$argument->set_rating(intval($_POST['rating'])) ) redirect();
-		redirect(URI::same()."#argument".$argument->id);
+		redirect(URI::same(true)."#argument".$argument->id);
 		break;
 
 	case "reset_rating":
@@ -235,7 +235,7 @@ if ($action) {
 			redirect();
 		}
 		if ( !$argument->delete_rating() ) redirect();
-		redirect(URI::same()."#argument".$argument->id);
+		redirect(URI::same(true)."#argument".$argument->id);
 		break;
 
 	default:
@@ -325,36 +325,7 @@ if ($is_proponent and $proposal->allowed_edit_reason_only()) {
 <div class="clearfix"></div>
 
 <?
-if ($proposal->state != "draft") {
-?>
-<div class="arguments">
-	<div class="arguments_side arguments_pro">
-<?
-	if (Login::$member and @$_GET['argument_parent']!="pro" and $proposal->allowed_add_arguments()) {
-?>
-		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
-<?
-	}
-?>
-		<h2><?=_("Pro")?></h2>
-		<? display_arguments("pro", "pro", 0); ?>
-	</div>
-	<div class="arguments_side arguments_contra">
-<?
-	if (Login::$member and @$_GET['argument_parent']!="contra" and $proposal->allowed_add_arguments()) {
-?>
-		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
-<?
-	}
-?>
-		<h2><?=_("Contra")?></h2>
-		<? display_arguments("contra", "contra", 0); ?>
-	</div>
-	<div class="clearfix"></div>
-</div>
-
-<?
-}
+if ($proposal->state != "draft") Arguments::display($proposal);
 
 // time bar
 if ($proposal->submitted or $proposal->revoke) {
@@ -591,236 +562,6 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		form_end();
 	}
 
-}
-
-
-/**
- * list the sub-arguments for one parent-argument
- *
- * @param string  $side   "pro" or "contra"
- * @param mixed   $parent ID of parent argument or "pro" or "contra"
- * @param integer $level
- */
-function display_arguments($side, $parent, $level) {
-	global $proposal;
-
-	$sql = "SELECT arguments.*";
-	if (Login::$member) {
-		$sql .= ", ratings.score
-			FROM arguments
-			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id);
-	} else {
-		$sql .= "
-			FROM arguments";
-	}
-	// intval($parent) gives parent=0 for "pro" and "contra"
-	$sql .= "	WHERE arguments.proposal=".intval($proposal->id)."
-			AND side=".DB::esc($side)."
-			AND parent=".intval($parent)."
-		ORDER BY removed, rating DESC, created";
-	$result = DB::query($sql);
-	$num_rows = DB::num_rows($result);
-	if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
-
-?>
-<ul>
-<?
-
-	$i = 0;
-	while ( $argument = DB::fetch_object($result, "Argument") ) {
-		$i++;
-
-		// open remaining arguments
-		if (
-			(!defined('ARGUMENTS_LIMIT_'.$level) or $i > constant('ARGUMENTS_LIMIT_'.$level)) and
-			(!isset($_GET['open']) or !is_array($_GET['open']) or !in_array($parent, $_GET['open']))
-		) {
-			if (isset($_GET['open']) and is_array($_GET['open'])) {
-				$open = $_GET['open'];
-			} else {
-				$open = array();
-			}
-			$open[] = $parent;
-			$open = array_unique($open);
-?>
-		<a href="<?=URI::append(array('open'=>$open))?>"><?
-			$remaining = $num_rows - $i + 1;
-			if ($remaining==1) {
-				echo _("show remaining argument");
-			} else {
-				printf(_("show remaining %d arguments"), $remaining);
-			}
-			?></a>
-<?
-			break; // break while loop
-		}
-
-		if (Login::$member) DB::to_bool($argument->positive);
-		$member = new Member($argument->member);
-?>
-	<li>
-<?
-
-		// author and form
-		if (
-			Login::$member and $member->id==Login::$member->id and
-			@$_GET['argument_edit']==$argument->id and
-			!$argument->removed
-		) {
-?>
-		<div class="author"><?=$member->link()?> <?=datetimeformat($argument->created)?></div>
-<?
-			if (strtotime($argument->created) > Argument::edit_limit()) {
-?>
-		<div class="time"><?printf(_("This argument can be updated until %s."), datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL))?></div>
-<?
-				form(URI::append(array('argument_edit'=>$argument->id)), 'class="argument"');
-?>
-<input id="argument<?=$argument->id?>" name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
-<textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(!empty($_POST['content'])?$_POST['content']:$argument->content)?></textarea><br>
-<input type="hidden" name="action" value="update_argument">
-<input type="hidden" name="id" value="<?=$argument->id?>">
-<input type="submit" value="<?=_("apply changes")?>">
-<?
-				form_end();
-				$display_content = false;
-			} else {
-?>
-		<div class="time"><?=_("This argument may not be updated any longer!")?></div>
-<?
-				$display_content = true;
-			}
-		} else {
-?>
-		<div class="author<?=$argument->removed?' removed':''?>"><?
-			if (
-				Login::$member and $member->id==Login::$member->id and
-				strtotime($argument->created) > Argument::edit_limit() and
-				!$argument->removed and
-				$proposal->allowed_add_arguments()
-			) {
-				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
-			}
-			echo $member->link()?> <?=datetimeformat($argument->created)?></div>
-<?
-			$display_content = true;
-		}
-
-		// title and content
-		if ($display_content) {
-			if ($argument->updated) {
-?>
-		<div class="author<?=$argument->removed?' removed':''?>"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
-<?
-			}
-			if ($argument->removed) {
-?>
-		<h3 id="argument<?=$argument->id?>" class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
-<?
-			} else {
-?>
-		<h3 id="argument<?=$argument->id?>"><?=h($argument->title)?></h3>
-		<p><?=content2html($argument->content)?></p>
-<?
-			}
-		}
-
-		// reply
-		if (
-			Login::$member and
-			@$_GET['argument_parent']!=$argument->id and
-			!$argument->removed and
-			$proposal->allowed_add_arguments()
-		) {
-?>
-		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
-<?
-		}
-
-		// rating and remove/restore
-		if ($argument->rating) {
-			?><span class="rating">+<?=$argument->rating?></span> <?
-		}
-		if (Login::$member) {
-			if (
-				// don't allow to rate ones own arguments
-				$argument->member!=Login::$member->id and
-				// don't allow to rate removed arguments
-				!$argument->removed and
-				$proposal->allowed_add_arguments()
-			) {
-				$uri = URI::same();
-				if ($argument->score) {
-					form($uri, 'class="button rating reset"');
-?>
-<input type="hidden" name="argument" value="<?=$argument->id?>">
-<input type="hidden" name="action" value="reset_rating">
-<input type="submit" value="0">
-<?
-					form_end();
-				}
-				for ($score=1; $score <= Argument::rating_score_max; $score++) {
-					form($uri, 'class="button rating'.($score <= $argument->score?' selected':'').'"');
-?>
-<input type="hidden" name="argument" value="<?=$argument->id?>">
-<input type="hidden" name="action" value="set_rating">
-<input type="hidden" name="rating" value="<?=$score?>">
-<input type="submit" value="+<?=$score?>">
-<?
-					form_end();
-				}
-
-			}
-		} elseif (Login::$admin) {
-			form(URI::same(), 'class="button"');
-?>
-<input type="hidden" name="id" value="<?=$argument->id?>">
-<?
-			if ($argument->removed) {
-?>
-<input type="hidden" name="action" value="restore_argument">
-<input type="submit" value="<?=_("restore")?>">
-<?
-			} else {
-?>
-<input type="hidden" name="action" value="remove_argument">
-<input type="submit" value="<?=_("remove")?>">
-<?
-			}
-			form_end();
-		}
-
-?>
-		<div class="clearfix"></div>
-<?
-		display_arguments($side, $argument->id, $level+1);
-?>
-	</li>
-<?
-	}
-
-	if (Login::$member and @$_GET['argument_parent']==$parent and $proposal->allowed_add_arguments()) {
-?>
-	<li>
-<?
-		form(URI::append(array('argument_parent'=>$parent)), 'class="argument"');
-?>
-<div id="form" class="time"><?=_("New argument")?></div>
-<input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(@$_POST['title'])?>"><br>
-<textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(@$_POST['content'])?></textarea><br>
-<input type="hidden" name="action" value="add_argument">
-<input type="hidden" name="parent" value="<?=$parent?>">
-<input type="submit" value="<?=_("save")?>">
-<?
-		form_end();
-?>
-	</li>
-<?
-	}
-
-?>
-</ul>
-<?
 }
 
 

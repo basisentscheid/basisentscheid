@@ -198,6 +198,7 @@ div.help {
 	background-color: #FFE;
 	padding: 2px 5px;
 	margin-bottom: 10px;
+	border-radius: 6px;
 }
 div.help p {
 	margin: 5px 0;
@@ -213,6 +214,7 @@ form.show_help {
 	padding: 2px 5px;
 	margin: 0 0 5px 3px;
 	float: right;
+	border-radius: 6px;
 }
 
 div.bargraph {
@@ -988,25 +990,44 @@ div.arguments_pro {
 div.arguments_contra {
 	float: right;
 }
-div.arguments_side ul li h3,
-div.arguments_side ul li p {
+div.arguments_side ul {
+	margin: 0;
+}
+div.arguments_side ul li {
+	margin: 3px 0;
+}
+div.arguments_side ul li div.argument {
+	border: 1px solid #EEE;
+	background-color: #FFF;
+}
+div.arguments_side ul li div.argument h3,
+div.arguments_side ul li div.argument p {
 	padding-left: 3px;
 	padding-right: 3px;
 	margin: 0;
 }
-div.arguments_side ul li h3 {
+div.arguments_side ul li div.argument h3 {
 	font-weight: bold;
 	background-color: #EEE;
-	margin-top: 1px;
 }
-div.arguments_side ul li h3.removed {
+div.arguments_side ul li div.argument h3.removed {
 	font-weight: normal;
 	font-style: italic;
+}
+div.arguments_side ul li div.argument h3 a,
+div.arguments_side ul li div.argument h3 a:link {
+	padding: 0;
+	text-decoration: none;
+	color: #000;
+	background-color: #EEE;
+	outline: none;
+}
+div.arguments_side ul li div.argument h3 a:hover {
+	color: #66C;
 }
 div.arguments_side ul li div.time {
 	padding-left: 3px;
 	background-color: #EEE;
-	color: #666	;
 }
 div.arguments_side ul li div.author {
 	float: right;
@@ -1016,13 +1037,14 @@ div.arguments_side ul li div.author {
 	padding-left: 3px;
 	background-color: #EEE;
 }
-div.arguments_side ul li .removed {
+div.arguments_side ul li div.argument .removed {
 	color: #999;
 }
-div.arguments_side ul li div.reply {
+div.arguments_side ul li div.argument div.reply {
 	float: right;
 	clear: right;
-	margin-bottom: 4px;
+	margin-bottom: 3px;
+	margin-right: 2px;
 }
 div.arguments_side h2 {
 	margin-top: 0;
@@ -1051,6 +1073,7 @@ div.arguments_side form.argument a {
 div.arguments_side span.rating {
 	color: #090;
 	font-weight: bold;
+	margin-left: 0.3em;
 }
 div.arguments_side form.rating input[type=submit] {
 	padding: 0;

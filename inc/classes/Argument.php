@@ -1,7 +1,9 @@
 <?
+
 /**
  * Argument
  *
+ * @property  score
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */
@@ -16,6 +18,7 @@ class Argument extends Relation {
 	public $proposal;
 	public $created;
 	public $removed;
+	public $updated;
 	public $rating;
 	public $title;
 	const title_length = 100;

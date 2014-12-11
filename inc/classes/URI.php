@@ -95,9 +95,11 @@ abstract class URI {
 	 *
 	 * On pages with one time parameters this method has to be used instead of URI::$uri.
 	 *
+	 * @param boolean $plain (optional) return a URI without html entities
 	 * @return string URI with html entities
 	 */
-	public static function same() {
+	public static function same($plain=false) {
+		if ($plain) return self::build(self::$query, true);
 		return self::$uri_query;
 	}
 

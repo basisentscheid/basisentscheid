@@ -21,7 +21,6 @@ $ngroup = new_ngroup("Test group", 500);
 $date = dechex(time());
 
 // create main member
-$password = crypt("test");
 create_member("t".$date."login");
 $login = Login::$member;
 
