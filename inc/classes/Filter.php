@@ -138,7 +138,7 @@ class Filter {
 <form action="<?=BN?>" method="get" class="filter">
 <?
 		// pass on all other parameters
-		URI::hidden(array('filter'=>null, 'search'=>null, 'page'=>null));
+		URI::hidden(['filter'=>null, 'search'=>null, 'page'=>null]);
 
 		// filter
 		if ($this->filters) {
@@ -157,7 +157,7 @@ class Filter {
 <?
 		}
 ?>
-<a href="<?=URI::strip(array('filter', 'search'))?>"><?=_("reset")?></a>
+<a href="<?=URI::strip(['filter', 'search'])?>"><?=_("reset")?></a>
 </form>
 <?
 	}

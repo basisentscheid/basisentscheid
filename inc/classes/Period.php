@@ -99,7 +99,7 @@ class Period extends Relation {
 			}
 
 			$issue->state = "voting";
-			$issue->update(array("state"), 'voting_started=now()');
+			$issue->update(["state"], 'voting_started=now()');
 
 		}
 

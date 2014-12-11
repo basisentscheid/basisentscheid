@@ -28,7 +28,7 @@ $login->create();
 $login->username = "t".$date."login";
 $login->password = $password;
 $login->mail = ERROR_MAIL;
-$login->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
+$login->update(['username', 'password', 'entitled', 'mail'], 'activated=now()');
 
 
 // go through all cases
@@ -126,7 +126,7 @@ function create_case($case, $stopcase) {
 	while ( $ballot = DB::fetch_object($result, "Ballot") ) {
 		if ($ballot->voters < 10) continue;
 		$ballot->approved = true;
-		$ballot->update(array("approved"));
+		$ballot->update(["approved"]);
 	}
 
 	if ($stopcase == ++$stop) return;
@@ -177,8 +177,8 @@ function add_participant(Period $period, $ballot, $case, $i) {
 	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
 	Login::$member->password = $password;
 	Login::$member->mail = ERROR_MAIL;
-	Login::$member->update(array('username', 'password', 'entitled', 'mail'), 'activated=now()');
-	Login::$member->update_ngroups(array(1));
+	Login::$member->update(['username', 'password', 'entitled', 'mail'], 'activated=now()');
+	Login::$member->update_ngroups([1]);
 	if ($ballot) {
 		if (is_object($ballot)) $period->select_ballot($ballot); else $period->select_postal();
 	}

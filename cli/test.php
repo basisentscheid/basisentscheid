@@ -58,12 +58,12 @@ function create_case_wrapper($case, $stopcase) {
 		echo " - ".$casetitle."\n";
 		if ($proposal) {
 			$proposal->title .= " - ".$casetitle;
-			$proposal->update(array('title'));
+			$proposal->update(['title']);
 		}
 		if ($proposal2) {
 			/** @var $proposal2 Proposal */
 			$proposal2->title .= " - ".$casetitle;
-			$proposal2->update(array('title'));
+			$proposal2->update(['title']);
 		}
 	}
 
@@ -285,7 +285,7 @@ function create_case($case, $stopcase) {
 			// assign issue to period
 			$issue->period = $period;
 			/** @var $issue Issue */
-			$issue->update(array("period"));
+			$issue->update(["period"]);
 
 			// assigned, but not yet started
 			cron();

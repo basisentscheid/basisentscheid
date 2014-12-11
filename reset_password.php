@@ -44,7 +44,7 @@ if ($action) {
 		if ( ! Login::check_password($password, $password2) ) break;
 
 		$member->password = crypt($password);
-		if ( ! $member->update(array('password'), 'password_reset_code=NULL, password_reset_code_expiry=NULL') ) break;
+		if ( ! $member->update(['password'], 'password_reset_code=NULL, password_reset_code_expiry=NULL') ) break;
 		success(_("Password has been reset successfully. You can log in with the new password now:"));
 
 		redirect("login.php");

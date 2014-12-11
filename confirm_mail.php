@@ -48,7 +48,7 @@ function action_confirm_mail($code) {
 		$member->mail_code        = null;
 		$member->mail_code_expiry = null;
 		$member->mail_lock_expiry = null;
-		$member->update(array('mail', 'mail_unconfirmed', 'mail_code', 'mail_code_expiry', 'mail_lock_expiry'));
+		$member->update(['mail', 'mail_unconfirmed', 'mail_code', 'mail_code_expiry', 'mail_lock_expiry']);
 		success(_("Your email address is confirmed now."));
 		redirect("index.php");
 	}

@@ -84,7 +84,7 @@ class Argument extends Relation {
 			warning(_("This argument may not be updated any longer."));
 			return false;
 		}
-		$this->update(array("title", "content"), "updated=now()");
+		$this->update(["title", "content"], "updated=now()");
 	}
 
 
@@ -131,7 +131,7 @@ class Argument extends Relation {
 		$sql = "SELECT SUM(score) FROM ratings WHERE argument=".intval($this->id);
 		$this->rating = intval( DB::fetchfield($sql) );
 
-		$this->update(array("rating"));
+		$this->update(["rating"]);
 
 	}
 

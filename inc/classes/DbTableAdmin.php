@@ -391,7 +391,7 @@ class DbTableAdmin {
 	 *
 	 */
 	protected function redirect_to_list() {
-		redirect(URI::strip(array("id"), true));
+		redirect(URI::strip(["id"], true));
 	}
 
 
@@ -840,7 +840,7 @@ class DbTableAdmin {
 				// edit
 				if ($this->enable_edit) {
 ?>
-			<a href="<?=URI::append(array('id'=>$object->id))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+			<a href="<?=URI::append(['id'=>$object->id])?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
 <?
 				}
 				// duplicate
@@ -1030,7 +1030,7 @@ function submit_delete_checked() {
 ?>
 <h2><?=$this->msg_strtr($this->msg_edit_record, $this->object)?></h2>
 <?
-			$form_action = URI::append(array('id'=>$this->object->id));
+			$form_action = URI::append(['id'=>$this->object->id]);
 		} else {
 			// add new record
 			if (!$this->object) {
@@ -1055,7 +1055,7 @@ function submit_delete_checked() {
 		}
 
 ?>
-<div class="buttons th"><span class="cancel"><a href="<?=URI::strip(array('id'))?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("save")?>"></span></div>
+<div class="buttons th"><span class="cancel"><a href="<?=URI::strip(['id'])?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("save")?>"></span></div>
 </fieldset>
 <input type="hidden" name="action" value="editsubmit">
 <?
@@ -1110,7 +1110,7 @@ function submit_delete_checked() {
 	 */
 	protected function display_add_record() {
 ?>
-<div class="add_record"><a href="<?=URI::append(array('id'=>0))?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=$this->msg_add_record?></a></div>
+<div class="add_record"><a href="<?=URI::append(['id'=>0])?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=$this->msg_add_record?></a></div>
 <?
 	}
 
@@ -1173,7 +1173,7 @@ function submit_delete_checked() {
 					$search_columns[] = $this->dbtable.".".$column[0];
 				}
 			}
-			if ( $where_filter = $this->filter->where(array("%%%order%%%"=>$this->order), $search_columns, $search_columns_integer) ) {
+			if ( $where_filter = $this->filter->where(["%%%order%%%"=>$this->order], $search_columns, $search_columns_integer) ) {
 				$where[] = $where_filter;
 			}
 		}

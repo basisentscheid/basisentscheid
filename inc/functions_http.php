@@ -329,7 +329,7 @@ function action_proposal_select_period() {
 	}
 
 	$issue->period = $period->id;
-	$issue->update(array("period"));
+	$issue->update(["period"]);
 
 	redirect();
 }

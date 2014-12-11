@@ -73,7 +73,7 @@ if ($action) {
 
 		Login::$member->username = $username;
 		Login::$member->password = crypt($password);
-		if ( ! Login::$member->update(array('username', 'password'), 'activated=now()') ) break;
+		if ( ! Login::$member->update(['username', 'password'], 'activated=now()') ) break;
 		success(_("Your account has been activated."));
 
 		Login::$member->set_mail($mail);

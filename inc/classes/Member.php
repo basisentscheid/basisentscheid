@@ -187,7 +187,7 @@ class Member extends Relation {
 			$sql = "SELECT id FROM members WHERE mail_code=".DB::esc($this->mail_code);
 		} while ( DB::numrows($sql) );
 		// The member has 7 days to confirm the email address.
-		$this->update(array('mail_unconfirmed', 'mail_code'), "mail_code_expiry = now() + interval '7 days'");
+		$this->update(['mail_unconfirmed', 'mail_code'], "mail_code_expiry = now() + interval '7 days'");
 		DB::transaction_commit();
 
 		$subject = _("Email confirmation request");

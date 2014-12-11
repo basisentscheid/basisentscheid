@@ -227,7 +227,7 @@ class Proposal extends Relation {
 			return false;
 		}
 		$this->state = "submitted";
-		$this->update(array('state'), "submitted=now()");
+		$this->update(['state'], "submitted=now()");
 
 		// check if the supporters are already enough
 		$this->read();
@@ -462,7 +462,7 @@ class Proposal extends Relation {
 			if ($this->proponents_count() < REQUIRED_PROPONENTS) return;
 		}
 		$this->revoke = null;
-		$this->update(array('revoke'));
+		$this->update(['revoke']);
 	}
 
 
@@ -544,10 +544,10 @@ class Proposal extends Relation {
 			// admit proposal
 			$this->quorum_reached = true;
 			$this->state = "admitted";
-			$this->update(array("supporters", "quorum_reached", "state"), "admitted=now()");
+			$this->update(["supporters", "quorum_reached", "state"], "admitted=now()");
 			$this->issue()->proposal_admitted($this);
 		} else {
-			$this->update(array("supporters"));
+			$this->update(["supporters"]);
 		}
 
 	}
@@ -564,12 +564,12 @@ class Proposal extends Relation {
 		$this->admission_decision = $text;
 		if ($this->state=="draft" or $this->state=="submitted") {
 			$this->state = "admitted";
-			$this->update(array("admission_decision", "state"), 'admitted=now()');
+			$this->update(["admission_decision", "state"], 'admitted=now()');
 			DB::transaction_commit();
 			$this->issue()->proposal_admitted($this);
 		} else {
 			// Setting or updating the description is always allowed.
-			$this->update(array("admission_decision"));
+			$this->update(["admission_decision"]);
 			DB::transaction_commit();
 		}
 	}
@@ -675,7 +675,7 @@ class Proposal extends Relation {
 
 		$this->issue = $new_issue->id;
 
-		if ( ! $this->update(array('issue')) ) {
+		if ( ! $this->update(['issue']) ) {
 			DB::transaction_rollback();
 			return;
 		}
@@ -717,7 +717,7 @@ class Proposal extends Relation {
 		// cancel proposal
 		$this->state = $state;
 		$this->revoke = null;
-		$this->update(array("state"), "cancelled=now()");
+		$this->update(["state"], "cancelled=now()");
 
 		$issue = $this->issue();
 

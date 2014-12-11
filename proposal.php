@@ -198,7 +198,7 @@ if ($action) {
 			redirect();
 		}
 		$argument->removed = ($action=="remove_argument");
-		$argument->update(array("removed"));
+		$argument->update(["removed"]);
 		redirect(URI::same(true)."#argument".$argument->id);
 		break;
 
@@ -467,7 +467,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		$allowed_edit_proponent = ( $proposal->allowed_change_proponents() and Login::$member->entitled($ngroup) );
 		if ($allowed_edit_proponent and !$is_any_proponent) {
 ?>
-<div class="add"><a href="<?=URI::append(array('become_proponent'=>1))?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
+<div class="add"><a href="<?=URI::append(['become_proponent'=>1])?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
 <?
 		}
 	}
@@ -500,7 +500,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 (<?=$proponent->identity()?>)
 <?
 				}
-				?> <a href="<?=URI::append(array('edit_proponent'=>1))?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a><a href="<?=URI::append(array('remove_proponent'=>1))?>" class="iconlink"><img src="img/delete.png" width="21" height="16" alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a><?
+				?> <a href="<?=URI::append(['edit_proponent'=>1])?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a><a href="<?=URI::append(['remove_proponent'=>1])?>" class="iconlink"><img src="img/delete.png" width="21" height="16" alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a><?
 			}
 		} elseif ($proponent->proponent_confirmed) {
 			echo content2html($proponent->proponent_name);
@@ -546,7 +546,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		$proposal->display_drafts($proponents);
 	} else {
 ?>
-<a href="<?=URI::append(array('show_drafts'=>1))?>"><?=_("Drafts")?></a>
+<a href="<?=URI::append(['show_drafts'=>1])?>"><?=_("Drafts")?></a>
 <?
 	}
 
@@ -653,13 +653,13 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 	<b><?=_("Admitted by decision")?>:</b>
 	<?=content2html($proposal->admission_decision)?>
 	&nbsp;
-	<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+	<a href="<?=URI::append(['edit_admission_decision'=>1])?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
 </div>
 <?
 		} else {
 ?>
 <div class="admission_decision">
-	<a href="<?=URI::append(array('edit_admission_decision'=>1))?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
+	<a href="<?=URI::append(['edit_admission_decision'=>1])?>#admission_decision"><?=_("Admit proposal due to a decision")?></a>
 </div>
 <?
 		}

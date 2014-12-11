@@ -81,7 +81,7 @@ function cron($skip_if_locked=false) {
 			}
 
 			$period->state = "ballot_assignment";
-			$period->update(array("state"));
+			$period->update(["state"]);
 
 			break;
 
@@ -92,7 +92,7 @@ function cron($skip_if_locked=false) {
 			// final upload of the complete postal and ballot voters
 			if ( upload_voters($period, true) ) {
 				$period->state = "ballot_preparation";
-				$period->update(array("state"));
+				$period->update(["state"]);
 			}
 
 			// ballot_preparation is the final state.
@@ -123,7 +123,7 @@ function cron($skip_if_locked=false) {
 					/*} else {
 						// revoke proposals without proponents
 						$proposal->state = "revoked";
-						$proposal->update(array("state"));
+						$proposal->update(["state"]);
 					}*/
 				}
 
@@ -145,7 +145,7 @@ function cron($skip_if_locked=false) {
 						if ($proposal->state=="revoked" or $proposal->state=="cancelled" or $proposal->state=="done") continue;
 						if ($proposal->state=="admitted") continue;
 						$proposal->issue = $new_issue->id;
-						$proposal->update(array("issue"));
+						$proposal->update(["issue"]);
 					}*/
 
 					// cancel proposals
@@ -159,7 +159,7 @@ function cron($skip_if_locked=false) {
 				}
 
 				$issue->state = "debate";
-				$issue->update(array("state"), 'debate_started=now()');
+				$issue->update(["state"], 'debate_started=now()');
 
 				$issues_start_debate[] = $issue;
 
@@ -177,7 +177,7 @@ function cron($skip_if_locked=false) {
 				while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 					// clear revoke date
 					$proposal->revoke = null;
-					$proposal->update(array('revoke'));
+					$proposal->update(['revoke']);
 					// don't revoke already cancelled/revoked/done proposals
 					if ( in_array($proposal->state, array("draft", "submitted", "admitted")) ) {
 						$proposal->cancel("revoked");
@@ -185,7 +185,7 @@ function cron($skip_if_locked=false) {
 				}
 
 				$issue->state = "preparation";
-				$issue->update(array("state"), 'preparation_started=now()');
+				$issue->update(["state"], 'preparation_started=now()');
 
 				break;
 
@@ -204,7 +204,7 @@ function cron($skip_if_locked=false) {
 				if (!$period->counting_now) break;
 
 				$issue->state = "counting";
-				$issue->update(array("state"), 'counting_started=now()');
+				$issue->update(["state"], 'counting_started=now()');
 
 				$issue->counting();
 				$issue->finish();
@@ -260,7 +260,7 @@ function cron($skip_if_locked=false) {
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		// clear revoke date
 		$proposal->revoke = null;
-		$proposal->update(array('revoke'));
+		$proposal->update(['revoke']);
 		if (
 			$proposal->proponents_count() < REQUIRED_PROPONENTS and
 			// don't revoke already cancelled/revoked/done proposals
@@ -291,7 +291,7 @@ function cron($skip_if_locked=false) {
 		$sql_delete = "DELETE FROM votingmode_tokens WHERE issue=".intval($issue->id);
 		DB::query($sql_delete);
 		$issue->clear = null;
-		$issue->update(array("clear"), "cleared=now()");
+		$issue->update(["clear"], "cleared=now()");
 	}
 
 	cron_unlock();

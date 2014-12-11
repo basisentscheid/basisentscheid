@@ -31,7 +31,7 @@ if ($action) {
 			}
 
 			$member->password_reset_code = Login::generate_token(24);
-			if ( ! $member->update(array('password_reset_code'), "password_reset_code_expiry = now() + interval '1 day'") ) {
+			if ( ! $member->update(['password_reset_code'], "password_reset_code_expiry = now() + interval '1 day'") ) {
 				warning(sprintf(_("The generated code could not be saved. Please try again or contact %s!"), MAIL_SUPPORT), true);
 				break;
 			}

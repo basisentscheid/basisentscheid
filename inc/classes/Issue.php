@@ -143,7 +143,7 @@ class Issue extends Relation {
 	 */
 	public function finish() {
 		$this->state = "finished";
-		$this->update(array("state"), "finished = now(), clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
+		$this->update(["state"], "finished = now(), clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
 	}
 
 
@@ -152,7 +152,7 @@ class Issue extends Relation {
 	 */
 	public function cancel() {
 		$this->state = "cancelled";
-		$this->update(array("state"), "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
+		$this->update(["state"], "clear = current_date + interval ".DB::esc(CLEAR_INTERVAL));
 	}
 
 
@@ -551,7 +551,7 @@ class Issue extends Relation {
 		foreach ( $proposals as $proposal ) {
 			/** @var $proposal Proposal */
 			$proposal->accepted = ( $proposal->yes > $proposal->no );
-			$proposal->update(array('yes', 'no', 'abstention', 'score', 'accepted'));
+			$proposal->update(['yes', 'no', 'abstention', 'score', 'accepted']);
 		}
 
 	}
@@ -574,7 +574,7 @@ class Issue extends Relation {
 				// admit proposal
 				$proposal->quorum_reached = true;
 				$proposal->state = "admitted";
-				$proposal->update(array("quorum_reached", "state"), "admitted=now()");
+				$proposal->update(["quorum_reached", "state"], "admitted=now()");
 				$admitted_proposals[] = $proposal;
 			}
 		}
@@ -599,7 +599,7 @@ class Issue extends Relation {
 			LIMIT 1";
 		$this->period = DB::fetchfield($sql);
 		if ($this->period) {
-			$this->update(array("period"));
+			$this->update(["period"]);
 		} else {
 			// TODO Error
 		}
@@ -1136,7 +1136,7 @@ class Issue extends Relation {
 		if (!$options) return false;
 
 		if (@$_GET['edit_period']==$this->id) {
-			form(URI::strip(array('edit_period'))."#issue".$this->id);
+			form(URI::strip(['edit_period'])."#issue".$this->id);
 			input_select("period", $options, $this->period);
 			?><br><?
 			input_hidden("issue", $this->id);
@@ -1149,7 +1149,7 @@ class Issue extends Relation {
 			if ($this->period) {
 				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 			}
-			?><a href="<?=URI::append(array('edit_period'=>$this->id))?>#issue<?=$this->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
+			?><a href="<?=URI::append(['edit_period'=>$this->id])?>#issue<?=$this->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}
 
 		return true;

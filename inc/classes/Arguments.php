@@ -32,7 +32,7 @@ abstract class Arguments {
 <?
 		if (Login::$member and @$_GET['argument_parent']!="pro" and self::$proposal->allowed_add_arguments()) {
 ?>
-		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"pro"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
+		<div class="add"><a href="<?=URI::append(['argument_parent'=>"pro"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
 		}
 ?>
@@ -43,7 +43,7 @@ abstract class Arguments {
 <?
 		if (Login::$member and @$_GET['argument_parent']!="contra" and self::$proposal->allowed_add_arguments()) {
 ?>
-		<div class="add"><a href="<?=URI::append(array('argument_parent'=>"contra"))?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
+		<div class="add"><a href="<?=URI::append(['argument_parent'=>"contra"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
 		}
 ?>
@@ -107,7 +107,7 @@ abstract class Arguments {
 					$open[] = $parent;
 					$open = array_unique($open);
 ?>
-<li><a href="<?=URI::append(array('open'=>$open, 'show'=>$show))?>#argument<?=$argument->id?>"><?
+<li><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>"><?
 					$remaining = $num_rows - $i + 1;
 					if (!intval($parent)) {
 						if ($remaining==1) {
@@ -139,7 +139,7 @@ abstract class Arguments {
 <li>
 	<div class="argument">
 <?
-			form(URI::append(array('argument_parent'=>$parent)), 'class="argument" id="form"');
+			form(URI::append(['argument_parent'=>$parent]), 'class="argument" id="form"');
 ?>
 <div class="time"><?=(intval($parent)?_("New reply"):_("New argument"))?>:</div>
 <input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(@$_POST['title'])?>"><br>
@@ -196,7 +196,7 @@ abstract class Arguments {
 ?>
 		<div class="time"><?printf(_("This argument can be updated until %s."), datetimeformat($argument->created." + ".ARGUMENT_EDIT_INTERVAL))?></div>
 <?
-				form(URI::append(array('argument_edit'=>$argument->id)), 'class="argument"');
+				form(URI::append(['argument_edit'=>$argument->id]), 'class="argument"');
 ?>
 <input id="argument<?=$argument->id?>" name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$argument->title)?>"><br>
 <textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(!empty($_POST['content'])?$_POST['content']:$argument->content)?></textarea><br>
@@ -221,7 +221,7 @@ abstract class Arguments {
 				!$argument->removed and
 				self::$proposal->allowed_add_arguments()
 			) {
-				?><a href="<?=URI::append(array('argument_edit'=>$argument->id))?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
+				?><a href="<?=URI::append(['argument_edit'=>$argument->id])?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
 			}
 			echo $member->link()?> <?=datetimeformat($argument->created)?></div>
 <?
@@ -248,7 +248,7 @@ abstract class Arguments {
 					$show[] = $argument->id;
 					$show = array_unique($show);
 ?>
-		<h3 id="argument<?=$argument->id?>"><a href="<?=URI::append(array('open'=>$open, 'show'=>$show))?>#argument<?=$argument->id?>" title="<?=_("show text and replys")?>"><?=h($argument->title)?></a></h3>
+		<h3 id="argument<?=$argument->id?>"><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>" title="<?=_("show text and replys")?>"><?=h($argument->title)?></a></h3>
 <?
 					$full_children = false;
 				} else {
@@ -289,7 +289,7 @@ abstract class Arguments {
 			self::$proposal->allowed_add_arguments()
 		) {
 ?>
-		<div class="reply"><a href="<?=URI::append(array('argument_parent'=>$argument->id))?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
+		<div class="reply"><a href="<?=URI::append(['argument_parent'=>$argument->id])?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
 <?
 		}
 

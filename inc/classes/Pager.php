@@ -136,7 +136,7 @@ class Pager {
 		$showpagebegin = max(1, $this->page - $pagelinksdist);
 		$showpageend = min($this->pagescount, $this->page + $pagelinksdist);
 
-		$linkpart = URI::linkpart(URI::strip(array('page', 'itemsperpage')));
+		$linkpart = URI::linkpart(URI::strip(['page', 'itemsperpage']));
 
 		if ( $this->linescount > 10 ) { // display the items-per-page switch only if it would change anything
 ?>

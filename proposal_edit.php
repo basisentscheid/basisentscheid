@@ -47,7 +47,7 @@ if (!empty($_GET['id'])) {
 	$ngroup_id = $ngroup->id;
 }
 
-Login::access(array("entitled", "admin"), $ngroup_id);
+Login::access(["entitled", "admin"], $ngroup_id);
 
 if ($action) {
 	switch ($action) {
