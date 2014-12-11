@@ -9,7 +9,7 @@
 
 require "inc/common.php";
 
-html_head("Willkommen auf der Testinstallation der Basisentscheid-Software!");
+html_head("Willkommen auf der Testinstallation der Basisentscheid-Software!", true);
 
 ?>
 
@@ -20,10 +20,6 @@ html_head("Willkommen auf der Testinstallation der Basisentscheid-Software!");
 <p>Wenn ihr Fehler findet, könnt ihr die in das <a href="https://praktikabler-basisentscheid.piratenpad.de/2">Pad <i>Bugs/Fehler</i></a> eintragen. Ihr müsst aber nicht unbedingt nach Fehlern suchen, es gibt sicherlich noch viele. Interessanter ist die Frage, ob alles so umgesetzt ist, wie wir es haben wollen. Welche Funktionen fehlen oder verhalten sich anders, als es vielleicht sinnvoller wäre? Wenn euch da etwas auffällt, könnt ihr das in das <a href="https://praktikabler-basisentscheid.piratenpad.de/1">Pad <i>Funktionalität</i></a> eintragen.</p>
 
 <hr>
-
-<?
-help();
-?>
 
 <div class="dates">
 	<h2><?=_("Upcoming dates")?></h2>

@@ -51,9 +51,7 @@ if (Login::$admin) {
 	$d->enable_delete_single = false;
 }
 
-html_head(_("Periods"));
-
-help();
+html_head(_("Periods"), true);
 
 $d->display();
 

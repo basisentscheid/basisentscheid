@@ -248,9 +248,9 @@ if ($action) {
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
 
-html_head(_("Proposal")." ".$proposal->id);
+html_head(_("Proposal")." ".$proposal->id, true);
 
-help();
+
 
 // messages
 if (isset($_GET['remove_proponent']) and $proposal->is_proponent(Login::$member, false)) {

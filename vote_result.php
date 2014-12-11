@@ -17,9 +17,7 @@ if ($issue->state != 'finished') {
 	error(_("This issue is not finished."));
 }
 
-html_head(_("Vote result"));
-
-help();
+html_head(_("Vote result"), true);
 
 ?>
 <table class="proposals">

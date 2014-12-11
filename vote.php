@@ -42,9 +42,7 @@ if ($action) {
 }
 
 
-html_head(_("Vote"));
-
-help();
+html_head(_("Vote"), true);
 
 ?>
 <p><?=sprintf(_("Voting goes until %s."), datetimeformat($issue->period()->counting))?></p>

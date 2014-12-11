@@ -38,6 +38,7 @@ hr {
 h1 {
 	font-size: 150%;
 	margin: 0 0 0.5em 0; padding-top: 0.8em; /* workaround for Firefox bug applying h1 margin-top to the page top */
+	float: left;
 }
 h2 {
 	font-size: 115%;
@@ -195,9 +196,10 @@ div.messages {
 }
 
 div.help {
+	clear: both;
 	background-color: #FFE;
 	padding: 2px 5px;
-	margin-bottom: 10px;
+	margin-bottom: 1em;
 	border-radius: 6px;
 }
 div.help p {
@@ -212,7 +214,7 @@ div.help form.hide_help {
 form.show_help {
 	background-color: #FFE;
 	padding: 2px 5px;
-	margin: 0 0 5px 3px;
+	margin: 1.4em 0 5px 3px;
 	float: right;
 	border-radius: 6px;
 }

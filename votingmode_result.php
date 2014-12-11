@@ -17,9 +17,7 @@ if (!$issue->votingmode_determination_finished()) {
 	error("Voting mode determination is not finished yet.");
 }
 
-html_head(_("Voting mode result"));
-
-help();
+html_head(_("Voting mode result"), true);
 
 if ($issue->votingmode_admin) {
 ?>

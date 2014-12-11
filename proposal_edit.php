@@ -136,12 +136,10 @@ if ($action) {
 if ($proposal->id) {
 	html_head(sprintf(_("Edit Proposal %d"), $proposal->id));
 } elseif ($issue) {
-	html_head(_("New alternative proposal"));
+	html_head(_("New alternative proposal"), true);
 } else {
-	html_head(_("New proposal"));
+	html_head(_("New proposal"), true);
 }
-
-help();
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 

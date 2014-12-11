@@ -85,12 +85,10 @@ if ($action) {
 
 
 if ($ballot->id) {
-	html_head(sprintf(_("Edit Ballot %d"), $ballot->id));
+	html_head(sprintf(_("Edit Ballot %d"), $ballot->id), true);
 } else {
-	html_head(_("New ballot"));
+	html_head(_("New ballot"), true);
 }
-
-help();
 
 form(URI::$uri, 'class="editform edit_ballot"');
 ?>

@@ -55,9 +55,7 @@ if ($action) {
 	}
 }
 
-html_head(_("Edit offline voting result"));
-
-help();
+html_head(_("Edit offline voting result"), true);
 
 // voting result form
 form(BN."?issue=".$issue->id, 'class="clear"');

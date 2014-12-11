@@ -85,9 +85,7 @@ if ($action) {
 }
 
 
-html_head( sprintf(_("Ballots for <a%s>voting period %d</a>"), ' href="periods.php?ngroup='.$ngroup.'&amp;hl='.$period->id.'"', $period->id) );
-
-help();
+html_head( sprintf(_("Ballots for <a%s>voting period %d</a>"), ' href="periods.php?ngroup='.$ngroup.'&amp;hl='.$period->id.'"', $period->id), true );
 
 $entitled = ( Login::$member and Login::$member->entitled($ngroup) );
 ?>

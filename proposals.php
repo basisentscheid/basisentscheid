@@ -24,9 +24,7 @@ if ($action) {
 }
 
 
-html_head(_("Proposals"));
-
-help();
+html_head(_("Proposals"), true);
 
 if (Login::$member and Login::$member->entitled($ngroup->id)) {
 ?>

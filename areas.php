@@ -33,9 +33,7 @@ if ($action) {
 }
 
 
-html_head(_("Subject areas"));
-
-help();
+html_head(_("Subject areas"), true);
 
 $entitled = ( Login::$member and Login::$member->entitled($ngroup->id) );
 

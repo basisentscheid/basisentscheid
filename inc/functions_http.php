@@ -53,8 +53,9 @@ function redirect($target="") {
  * head part of the page and not yet displayed output
  *
  * @param string  $title
+ * @param unknown $help  (optional)
  */
-function html_head($title) {
+function html_head($title, $help=false) {
 
 	$output = ob_get_clean();
 
@@ -197,7 +198,10 @@ function html_head($title) {
 </header>
 
 <h1><?=$title?></h1>
-
+<?
+	if ($help) help();
+?>
+<div class="clearfix"></div>
 <?
 
 	// not yet displayed output from previous page with redirect
