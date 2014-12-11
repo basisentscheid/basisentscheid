@@ -13,7 +13,7 @@ Die aktuelle Phase eines Antrags wird in der Spalte <b>Status</b> angezeigt.
 
 Wenn eine Abstimmung abgeschlossen ist, kommst du mit einem Klick auf die Spalte <b>Ergebnis</b> zu einer Liste aller abgegebenen Stimmen.
 
-Wenn das Abstimmungsverfahren für einen Antragsblock feststeht, kommst du mit einem Klick auf die Spalte <b>Abstimmungsverfahren</b> zu einer Liste aller dazu abgegebenen Stimmen.
+Wenn das Abstimmungsverfahren für ein Thema feststeht, kommst du mit einem Klick auf die Spalte <b>Abstimmungsverfahren</b> zu einer Liste aller dazu abgegebenen Stimmen.
 
 ===proposal.php
 
@@ -23,9 +23,9 @@ Der <b>Zeitstrahl</b> zeigt vergangene und zukünftige Ereignisse. Wenn du mit d
 
 Um zur Abstimmung zugelassen zu werden, benötigt ein Antrag <b>Unterstützer</b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Sobald ein Antrag das Quorum erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
 
-Solange ein Antragsblock noch nicht die Debatte erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
+Solange ein Thema noch nicht die Debatte erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
 
-Bis zur Abstimmungsvorbereitung kannst du eine <b>geheime Abstimmung</b> eines Antragsblocks fordern. Wenn bis dahin 5% der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Antragsblock die 5% erreicht hat, wird dies angezeigt.
+Bis zur Abstimmungsvorbereitung kannst du eine <b>geheime Abstimmung</b> eines Themas fordern. Wenn bis dahin 5% der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die 5% erreicht hat, wird dies angezeigt.
 
 ===proposal_edit.php
 
@@ -33,7 +33,7 @@ Der Titel und der Antragstext können bis zur Einreichung bearbeitet werden, die
 
 ===vote.php
 
-Hier kannst du über die Anträge eines Antragsblocks abstimmen. Bei jedem Antrag kannst du mit Ja oder Nein abgestimmen oder dich enthalten. Wenn der Antragsblock mehrere Anträge enthält, kannst du die Anträge zusätzlich mit Punkten bewerten. Falls bei der Auszählung mehr als ein Antrag mehr Ja- als Nein-Stimmen erhalten hat, gewinnt der Antrag mit den meisten Punkten. Die Stimme wird erst gespeichert, wenn du auf den Button "Stimme abgeben" klickst.
+Hier kannst du über die Anträge eines Themas abstimmen. Bei jedem Antrag kannst du mit Ja oder Nein abgestimmen oder dich enthalten. Wenn das Thema mehrere Anträge enthält, kannst du die Anträge zusätzlich mit Punkten bewerten. Falls bei der Auszählung mehr als ein Antrag mehr Ja- als Nein-Stimmen erhalten hat, gewinnt der Antrag mit den meisten Punkten. Die Stimme wird erst gespeichert, wenn du auf den Button "Stimme abgeben" klickst.
 
 Bis zum Ende der Abstimmung kannst du deine abgegebene Stimme beliebig oft korrigieren, indem du einfach noch einmal abstimmst. Die alte Stimme wird dann durchgestrichen angezeigt und bei der Auszählung nicht mehr mitgezählt.
 
@@ -43,7 +43,7 @@ Wenn du die Anträge oder die Argumente dazu noch einmal nachlesen willst, kanns
 
 Wenn du mit der Maus über die Balken in der Spalte <i>Ergebnis</i> fährst, wird das Ergebnis in Zahlen angezeigt.
 
-Unten ist eine Liste mit allen Abstimmungskennungen und allen abgegebenen Stimmen zu diesem Antragsblock. Wenn ein Mitglied keine Stimme abgegeben hat, steht nur die Abstimmungskennung in der Zeile. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert.
+Unten ist eine Liste mit allen Abstimmungskennungen und allen abgegebenen Stimmen zu diesem Thema. Wenn ein Mitglied keine Stimme abgegeben hat, steht nur die Abstimmungskennung in der Zeile. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert.
 
 Anhand dieser Liste kannst du folgendes überprüfen:
 
@@ -58,7 +58,7 @@ Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wi
 
 ===votingmode_result.php
 
-Unten ist eine Liste mit allen abgegebenen Stimmen zum Abstimmungsverfahren bei diesem Antragsblock. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert, sofern du eine abgegeben hast.
+Unten ist eine Liste mit allen abgegebenen Stimmen zum Abstimmungsverfahren bei diesem Thema. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert, sofern du eine abgegeben hast.
 
 Anhand dieser Liste kannst du folgendes überprüfen:
 
@@ -74,7 +74,7 @@ Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wi
 
 Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
 
-Bevor eine Abstimmungsperiode beginnt, ordnen die Verantwortlichen die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b>Debatte</b>. Bis zur <b>Abstimmungsvorbereitung</b> kann bei jedem Antrag eine Urnenabstimmung gefordert werden. Wenn bis dahin das Quorum zur Urnenabstimmung erreicht ist, bleibt der Antragsblock in dieser Phase bis die Verantwortlichen das Ergebnis eingegeben haben. Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag.
+Bevor eine Abstimmungsperiode beginnt, ordnen die Verantwortlichen die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b>Debatte</b>. Bis zur <b>Abstimmungsvorbereitung</b> kann bei jedem Antrag eine Urnenabstimmung gefordert werden. Wenn bis dahin das Quorum zur Urnenabstimmung erreicht ist, bleibt das Thema in dieser Phase bis die Verantwortlichen das Ergebnis eingegeben haben. Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag.
 
 Parallel zur Debatte, Abstimmungsvorbereitung und Online-Abstimmung findet die Vorbereitung der <b>Urnenabstimmung</b> statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Zum Zeitpunkt der <b>Urnenzuordnung</b> werden alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet. Bis zum Zeitpunkt der <b>Urnenvorbereitung</b> können die Teilnehmer noch eine andere Urne auswählen.
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-12-10 21:46+0200\n"
+"PO-Revision-Date: 2014-12-12 00:58+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -412,7 +412,7 @@ msgstr "Neuer Urnenantrag"
 #
 # File: proposals.php, line: 201
 msgid "Issues per page"
-msgstr "Antragsblöcke pro Seite"
+msgstr "Themen pro Seite"
 #
 # File: ballots.php, line: 165
 # File: proposal.php, line: 306
@@ -882,7 +882,7 @@ msgstr "Du bist kein Antragsteller dieses Antrags."
 #
 # File: proposal_edit.php, line: 105
 msgid "The supplied issue does not exist."
-msgstr "Der angegebene Antragsblock existiert nicht."
+msgstr "Das angegebene Thema existiert nicht."
 #
 # File: proposal_edit.php, line: 108
 msgid "In this phase it is not allowed to create an alternative proposal. Thus a new proposal has been created instead."
@@ -1345,7 +1345,7 @@ msgstr "Abgebrochen am %s weil zu lange nicht angenommen"
 # File: proposal.php, line: 387
 #, php-format
 msgid "Cancelled at %s because for other proposals of the same issue the debate was started."
-msgstr "Abgebrochen am %s, weil für andere Anträge des gleichen Antragsblocks die Debatte gestartet wurde"
+msgstr "Abgebrochen am %s, weil für andere Anträge des gleichen Themas die Debatte gestartet wurde"
 #
 # File: inc/classes/Member.php, line: 193
 msgid "Email confirmation request"
@@ -1411,7 +1411,7 @@ msgstr "Abstimmungsende"
 #
 # File: inc/classes/Proposal.php, line: 608
 msgid "create a new issue"
-msgstr "neuen Antragsblock anlegen"
+msgstr "neues Thema anlegen"
 #
 # File: inc/classes/Proposal.php, line: 644
 msgid "Moving this proposal is not allowed anymore."
@@ -1423,7 +1423,7 @@ msgstr "Die ausgewählte Option nicht nicht mehr verfügbar."
 #
 # File: inc/classes/Proposal.php, line: 661
 msgid "The issue does not exist."
-msgstr "Der Antragsblock existiert nicht."
+msgstr "Das Thema existiert nicht."
 #
 # File: inc/classes/Proposal.php, line: 1084
 msgid "compare versions"
@@ -1658,7 +1658,7 @@ msgstr "<a%s>Antrag %d</a>, Versionsunterschiede"
 #
 #, php-format
 msgid "Voting for issue %d could not be started, because the determined voting mode is not available in the current and all further voting periods!"
-msgstr "Die Abstimmung für Antragsblock %d konnte nicht gestartet werden, weil das ermittelte Abstimmungsverfahren in der aktuellen und allen zukünftigen Abstimmungsperioden nicht verfügbar ist!"
+msgstr "Die Abstimmung für Thema %d konnte nicht gestartet werden, weil das ermittelte Abstimmungsverfahren in der aktuellen und allen zukünftigen Abstimmungsperioden nicht verfügbar ist!"
 #
 # File: inc/functions_http.php, line: 97
 msgid "Logo"
@@ -1739,7 +1739,7 @@ msgstr "Antworten:"
 #
 # File: proposal.php, line: 447
 msgid "Move this proposal to issue"
-msgstr "Diesen Antrag verschieben in Antragsblock"
+msgstr "Diesen Antrag verschieben in Thema"
 #
 # File: proposal.php, line: 451
 msgid "move"
@@ -2431,26 +2431,26 @@ msgstr "Deine Stimme zum Abstimmungsverfahren konnte nicht gespeichert werden!"
 # File: inc/classes/Notification.php, line: 350
 #, php-format
 msgid "Proposal %d moved to a different issue"
-msgstr "Antrag %d in einen anderen Antragsblock verschoben"
+msgstr "Antrag %d in ein anderes Thema verschoben"
 #
 # File: inc/classes/Notification.php, line: 352
 #, php-format
 msgid "An administrator moved the following proposal from issue %d to issue %d:"
-msgstr "Ein Verantwortlicher hat den folgenden Antrag vom Antragsblock %d in den Antragsblock %d verschoben:"
+msgstr "Ein Verantwortlicher hat den folgenden Antrag vom Thema %d in das Thema %d verschoben:"
 #
 # File: inc/classes/Notification.php, line: 355
 #, php-format
 msgid "Proposals in the old issue %d:"
-msgstr "Anträge im alten Antragsblock %d:"
+msgstr "Anträge im alten Thema %d:"
 #
 # File: inc/classes/Notification.php, line: 361
 #, php-format
 msgid "Proposals in the new issue %d:"
-msgstr "Anträge im neuen Antragsblock %d:"
+msgstr "Anträge im neuen Thema %d:"
 #
 # File: inc/classes/Notification.php, line: 366
 msgid "Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!"
-msgstr "Beachte, dass die Stimmen für eine Offline-Abstimmung bei dem alten Antragsblock nicht automatisch in den neuen Antragsblock übernommen werden. Falls du immer noch eine Offline-Abstimmung möchtest, solltest du das im neuen Antragsblock noch einmal fordern!"
+msgstr "Beachte, dass die Stimmen für eine Offline-Abstimmung bei dem alten Thema nicht automatisch in das neue Thema übernommen werden. Falls du immer noch eine Offline-Abstimmung möchtest, solltest du das im neuen Thema noch einmal fordern!"
 #
 # File: inc/classes/Member.php, line: 287
 msgid "No key matching fingerprint and email address was found."
