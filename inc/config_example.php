@@ -73,7 +73,8 @@ define("VOTETIME_FORMAT",     "d.m.Y H:i:s");
 
 define("ARGUMENT_EDIT_INTERVAL", "1 hour");
 // how many arguments to show on each level
-define("ARGUMENTS_LIMIT_0", 5);
-define("ARGUMENTS_LIMIT_1", 2);
-define("ARGUMENTS_LIMIT_2", 1);
-define("ARGUMENTS_LIMIT_3", 1);
+define("ARGUMENTS_HEAD_0", 8);
+define("ARGUMENTS_FULL_0", 4);
+define("ARGUMENTS_HEAD_1", 4);
+define("ARGUMENTS_FULL_1", 2);
+define("ARGUMENTS_HEAD_2", 2);
