@@ -94,7 +94,18 @@ abstract class DB {
 
 
 	/**
-	 * like pg_query(), but with error management
+	 * query and ignore errors
+	 *
+	 * @param string  $sql
+	 * @return resource
+	 */
+	public static function query_ignore($sql) {
+		return @pg_query($sql);
+	}
+
+
+	/**
+	 * query with error management
 	 *
 	 * @param string  $sql
 	 * @return resource

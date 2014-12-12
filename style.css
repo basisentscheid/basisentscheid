@@ -992,16 +992,21 @@ div.arguments_pro {
 div.arguments_contra {
 	float: right;
 }
+div.arguments_side h2 {
+	margin-top: 0;
+}
 div.arguments_side ul {
 	margin: 0;
+	list-style-type: none;
+	padding-left: 20px;
+}
+div.arguments_side > ul {
+	padding-left: 0;
 }
 div.arguments_side ul li {
 	margin: 3px 0;
 }
-div.arguments_side ul li div.argument {
-	border: 1px solid #EEE;
-	background-color: #FFF;
-}
+
 div.arguments_side ul li div.argument h3,
 div.arguments_side ul li div.argument p {
 	padding-left: 3px;
@@ -1010,12 +1015,19 @@ div.arguments_side ul li div.argument p {
 }
 div.arguments_side ul li div.argument h3 {
 	font-weight: bold;
-	background-color: #EEE;
 }
 div.arguments_side ul li div.argument h3.removed {
 	font-weight: normal;
 	font-style: italic;
 }
+div.arguments_side ul li div.argument {
+	border: 1px solid #EEE;
+	background-color: #FFF;
+}
+div.arguments_side ul li div.argument h3 {
+	background-color: #EEE;
+}
+
 div.arguments_side ul li div.argument h3 a,
 div.arguments_side ul li div.argument h3 a:link {
 	padding: 0;
@@ -1027,11 +1039,11 @@ div.arguments_side ul li div.argument h3 a:link {
 div.arguments_side ul li div.argument h3 a:hover {
 	color: #66C;
 }
-div.arguments_side ul li div.time {
+div.arguments_side ul li div.argument div.time {
 	padding-left: 3px;
 	background-color: #EEE;
 }
-div.arguments_side ul li div.author {
+div.arguments_side ul li div.argument div.author {
 	float: right;
 	clear: right;
 	font-style: italic;
@@ -1039,6 +1051,29 @@ div.arguments_side ul li div.author {
 	padding-left: 3px;
 	background-color: #EEE;
 }
+
+div.arguments_side ul li div.argument.new {
+	border-color: #E6EFFF;
+}
+div.arguments_side ul li div.argument.new h3,
+div.arguments_side ul li div.argument.new h3 a,
+div.arguments_side ul li div.argument.new h3 a:link,
+div.arguments_side ul li div.argument.new div.time,
+div.arguments_side ul li div.argument.new div.author {
+	background-color: #E6EFFF;
+}
+
+div.arguments_side ul li div.argument.anchor {
+	border-color: #F8B;
+}
+div.arguments_side ul li div.argument.anchor h3,
+div.arguments_side ul li div.argument.anchor h3 a,
+div.arguments_side ul li div.argument.anchor h3 a:link,
+div.arguments_side ul li div.argument.anchor div.time,
+div.arguments_side ul li div.argument.anchor div.author {
+	background-color: #F8B;
+}
+
 div.arguments_side ul li div.argument .removed {
 	color: #999;
 }
@@ -1047,18 +1082,6 @@ div.arguments_side ul li div.argument div.reply {
 	clear: right;
 	margin-bottom: 3px;
 	margin-right: 2px;
-}
-div.arguments_side h2 {
-	margin-top: 0;
-}
-
-div.arguments_side ul {
-	list-style-type: none;
-	margin-left: 0;
-	padding-left: 20px;
-}
-div.arguments_side > ul {
-	padding-left: 0;
 }
 
 div.arguments_side form.argument input[type=text],

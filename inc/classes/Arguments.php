@@ -26,6 +26,7 @@ abstract class Arguments {
 
 		if (isset($_GET['open']) and is_array($_GET['open'])) self::$open = $_GET['open'];
 		if (isset($_GET['show']) and is_array($_GET['show'])) self::$show = $_GET['show'];
+
 ?>
 <div class="arguments">
 	<div class="arguments_side arguments_pro">
@@ -53,6 +54,14 @@ abstract class Arguments {
 	<div class="clearfix"></div>
 </div>
 
+<!-- highlight anchor -->
+<script type="text/javascript">
+if ( window.location.hash ) {
+	var hash = window.location.hash.substring(1);
+	document.getElementById(hash).className += " anchor";
+}
+</script>
+
 <?
 	}
 
@@ -69,9 +78,10 @@ abstract class Arguments {
 
 		$sql = "SELECT arguments.*";
 		if (Login::$member) {
-			$sql .= ", ratings.score
+			$sql .= ", ratings.score, seen.argument AS seen
 			FROM arguments
-			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id);
+			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id)."
+			LEFT JOIN seen    ON seen.argument    = arguments.id AND seen.member    = ".intval(Login::$member->id);
 		} else {
 			$sql .= "
 			FROM arguments";
@@ -176,7 +186,9 @@ abstract class Arguments {
 	private function display_argument(Argument $argument, $side, $position, $level, $full) {
 ?>
 <li>
-	<div class="argument">
+	<div class="argument<?
+		if (Login::$member and !$argument->seen) { ?> new<? }
+		?>" id="argument<?=$argument->id?>">
 <?
 		$author = new Member($argument->member);
 		if (
@@ -235,7 +247,7 @@ abstract class Arguments {
 			}
 			if ($argument->removed) {
 ?>
-		<h3 id="argument<?=$argument->id?>" class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
+		<h3 class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
 <?
 			} else {
 				// on show restart rules
@@ -254,9 +266,16 @@ abstract class Arguments {
 				) {
 					// display full text
 ?>
-		<h3 id="argument<?=$argument->id?>"><?=h($argument->title)?></h3>
+		<h3><?=h($argument->title)?></h3>
 <?
 					self::display_argument_content($argument);
+
+					// don't show the argument as new next time
+					if (Login::$member and !$argument->seen) {
+						// simulate INSERT IGNORE
+						DB::query_ignore("INSERT INTO seen (argument, member) VALUES (".intval($argument->id).", ".intval(Login::$member->id).")");
+					}
+
 				} else {
 					// display only head
 					$open = self::$open;
@@ -264,7 +283,7 @@ abstract class Arguments {
 					$show[] = $argument->id;
 					$show = array_unique($show);
 ?>
-		<h3 id="argument<?=$argument->id?>"><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>" title="<?=_("show text and replys")?>"><?=h($argument->title)?></a></h3>
+		<h3><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>" title="<?=_("show text and replys")?>"><?=h($argument->title)?></a></h3>
 <?
 					// display all children without full text
 					$full = false;

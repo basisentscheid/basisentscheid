@@ -581,6 +581,16 @@ CREATE TABLE ratings (
 
 
 --
+-- Name: seen; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE seen (
+    argument integer NOT NULL,
+    member integer NOT NULL
+);
+
+
+--
 -- Name: supporters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -895,6 +905,14 @@ ALTER TABLE ONLY ratings
 
 
 --
+-- Name: seen_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY seen
+    ADD CONSTRAINT seen_pkey PRIMARY KEY (argument, member);
+
+
+--
 -- Name: supporters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1108,6 +1126,22 @@ ALTER TABLE ONLY ratings
 
 ALTER TABLE ONLY ratings
     ADD CONSTRAINT ratings_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: seen_argument_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY seen
+    ADD CONSTRAINT seen_argument_fkey FOREIGN KEY (argument) REFERENCES arguments(id);
+
+
+--
+-- Name: seen_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY seen
+    ADD CONSTRAINT seen_member_fkey FOREIGN KEY (member) REFERENCES members(id);
 
 
 --
