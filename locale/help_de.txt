@@ -4,6 +4,8 @@ Es gibt zwei Möglichkeiten, zu den Inhalten der Gliederungen zu kommen: Man kan
 
 ===proposals.php
 
+Hier sind die Anträge in der oben ausgewählten Gliederung aufgelistet. Mehrere konkurrierende Anträge werden zu einem Thema zusammengefasst werden und stehen in der Liste enger beinander.
+
 Anträge durchlaufen folgende <b>Phasen</b>:
  * Entwurf: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn 5 Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
  * Zulassung: Der Antrag sammelt nun Unterstützer, um das Quorum zur Zulassung zu erreichen.
