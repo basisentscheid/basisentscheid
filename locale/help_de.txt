@@ -21,6 +21,8 @@ Wenn das Abstimmungsverfahren für ein Thema feststeht, kommst du mit einem Klic
 
 Rechts oben werden die <b>Antragsteller</b> des Antrags angezeigt. Jeder kann sich dort als weiterer Antragsteller bewerben. Die derzeitigen Antragsteller entscheiden über die Aufnahme neuer Antragsteller.
 
+Ab der Einreichung eines Antrags können <b>Pro- und Kontra-Argumente</b> sowie Antworten darauf eingegeben werden. Wenn die Beiträge etwas mehr werden, werden von den einigen nur die Titel angezeigt, weitere gar nicht mehr. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, gibt es einen Link, mit dem man diese anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt der angemeldete Benutzer noch nie angesehen hat. In <i>rot</i> wird der Beitrag hervorgehoben, auf den man gerade geklickt hat. Nachdem man einen neuen Beitrag erstellt hat, ist dieser noch für eine bestimmte Zeit bearbeitbar.
+
 Der <b>Zeitstrahl</b> zeigt vergangene und zukünftige Ereignisse. Wenn du mit der Maus über ein Ereignis fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
 
 Um zur Abstimmung zugelassen zu werden, benötigt ein Antrag <b>Unterstützer</b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Sobald ein Antrag das Quorum erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
