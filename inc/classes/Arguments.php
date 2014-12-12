@@ -18,6 +18,18 @@ abstract class Arguments {
 
 	/**
 	 *
+	 * @param Argument $argument
+	 */
+	public function redirect_append_show($argument) {
+		$show = self::$show;
+		$show[] = $argument->id;
+		$show = array_unique($show);
+		redirect(URI::append(['open'=>self::$open, 'show'=>$show], true)."#argument".$argument->id);
+	}
+
+
+	/**
+	 *
 	 * @param Proposal $proposal
 	 */
 	public function display(Proposal $proposal) {

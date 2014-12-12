@@ -110,14 +110,15 @@ abstract class URI {
 	 * Parameters with value null will be removed from the current URI.
 	 *
 	 * @param array   $params associative array
-	 * @return string         URI with html entities
+	 * @param boolean $plain  (optional) return a URI without html entities
+	 * @return string         URI
 	 */
-	public static function append(array $params) {
+	public static function append(array $params, $plain=false) {
 		$query_array = self::$query;
 		foreach ( $params as $key => $value ) {
 			$query_array[$key] = $value;
 		}
-		return self::build($query_array);
+		return self::build($query_array, $plain);
 	}
 
 

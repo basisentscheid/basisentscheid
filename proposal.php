@@ -159,7 +159,7 @@ if ($action) {
 			break;
 		}
 		$argument->add($proposal);
-		redirect(URI::same(true)."#argument".$argument->id);
+		Arguments::redirect_append_show($argument);
 		break;
 
 	case "update_argument":
@@ -185,7 +185,7 @@ if ($action) {
 			break;
 		}
 		$argument->apply_changes();
-		redirect(URI::same(true)."#argument".$argument->id);
+		Arguments::redirect_append_show($argument);
 		break;
 
 	case "remove_argument":
