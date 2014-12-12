@@ -270,7 +270,7 @@ class Proposal extends Relation {
 	 */
 	public function add_support($anonymous=false) {
 		if (!$this->allowed_change_supporters()) {
-			warning("Support for this proposal can not be added, because it is not in the admission phase!");
+			warning(_("Support for this proposal can not be added anymore."));
 			return false;
 		}
 		$fields_values = array(
@@ -295,11 +295,11 @@ class Proposal extends Relation {
 	 */
 	public function revoke_support() {
 		if (!$this->allowed_change_supporters()) {
-			warning("Support for this proposal can not be removed, because it is not in the admission phase!");
+			warning(_("Support for this proposal can no longer be removed."));
 			return false;
 		}
 		if ($this->is_proponent(Login::$member, false)) {
-			warning("You can not remove your support while you are proponent!");
+			warning(_("You can not remove your support while you are proponent."));
 			return false;
 		}
 		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
