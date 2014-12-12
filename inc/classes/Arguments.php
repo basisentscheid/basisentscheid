@@ -37,7 +37,7 @@ abstract class Arguments {
 		}
 ?>
 		<h2><?=_("Pro")?></h2>
-<? self::display_arguments("pro", "pro", 0); ?>
+<? self::display_arguments("pro", "pro"); ?>
 	</div>
 	<div class="arguments_side arguments_contra">
 <?
@@ -48,7 +48,7 @@ abstract class Arguments {
 		}
 ?>
 		<h2><?=_("Contra")?></h2>
-<? self::display_arguments("contra", "contra", 0); ?>
+<? self::display_arguments("contra", "contra"); ?>
 	</div>
 	<div class="clearfix"></div>
 </div>
@@ -62,10 +62,10 @@ abstract class Arguments {
 	 *
 	 * @param string  $side   "pro" or "contra"
 	 * @param mixed   $parent ID of parent argument or "pro" or "contra"
-	 * @param integer $level
-	 * @param boolean $full   (optional)
+	 * @param integer $level  (optional) folding level, top level is 0
+	 * @param boolean $full   (optional) allow showing full text
 	 */
-	private function display_arguments($side, $parent, $level, $full=true) {
+	private function display_arguments($side, $parent, $level=0, $full=true) {
 
 		$sql = "SELECT arguments.*";
 		if (Login::$member) {
@@ -77,10 +77,11 @@ abstract class Arguments {
 			FROM arguments";
 		}
 		// intval($parent) gives parent=0 for "pro" and "contra"
-		$sql .= "	WHERE arguments.proposal=".intval(self::$proposal->id)."
-			AND side=".DB::esc($side)."
-			AND parent=".intval($parent)."
-		ORDER BY removed, rating DESC, created";
+		$sql .= "
+			WHERE arguments.proposal=".intval(self::$proposal->id)."
+				AND side=".DB::esc($side)."
+				AND parent=".intval($parent)."
+			ORDER BY removed, rating DESC, created";
 		$result = DB::query($sql);
 		$num_rows = DB::num_rows($result);
 		if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
@@ -92,14 +93,14 @@ abstract class Arguments {
 <ul>
 <?
 
-		$i = 0;
+		$position = 1;
 		while ( $argument = DB::fetch_object($result, "Argument") ) {
 			/** @var Argument $argument */
-			$i++;
 
-			if ( in_array($parent, self::$open) ) {
-				//
-			} elseif ( !defined('ARGUMENTS_HEAD_'.$level) or $i > constant('ARGUMENTS_HEAD_'.$level) ) {
+			if (
+				!in_array($parent, self::$open) and
+				( !defined('ARGUMENTS_HEAD_'.$level) or $position > constant('ARGUMENTS_HEAD_'.$level) )
+			) {
 				// show links to remaining arguments only under fully shown arguments
 				if ($full) {
 					$open = self::$open;
@@ -108,7 +109,7 @@ abstract class Arguments {
 					$open = array_unique($open);
 ?>
 <li><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>"><?
-					$remaining = $num_rows - $i + 1;
+					$remaining = $num_rows - $position + 1;
 					if (!intval($parent)) {
 						if ($remaining==1) {
 							echo _("show remaining 1 argument");
@@ -117,10 +118,10 @@ abstract class Arguments {
 						}
 					} else {
 						if ($remaining==1) {
-							if ($i==1) echo _("show 1 reply");
+							if ($position==1) echo _("show 1 reply");
 							else echo _("show remaining 1 reply");
 						} else {
-							if ($i==1) printf(_("show %d replys"), $remaining);
+							if ($position==1) printf(_("show %d replys"), $remaining);
 							else printf(_("show remaining %d replys"), $remaining);
 						}
 					}
@@ -130,8 +131,10 @@ abstract class Arguments {
 				break; // break while loop
 			}
 
-			self::display_argument($argument, $side, $i, $level, $full);
+			// display one argument and its children
+			self::display_argument($argument, $side, $position, $level, $full);
 
+			$position++;
 		}
 
 		if (Login::$member and @$_GET['argument_parent']==$parent and self::$proposal->allowed_add_arguments()) {
@@ -166,31 +169,24 @@ abstract class Arguments {
 	 *
 	 * @param Argument $argument
 	 * @param string  $side     "pro" or "contra"
-	 * @param integer $i
-	 * @param integer $level
-	 * @param boolean $full
+	 * @param integer $position position on this level, first argument has position 1
+	 * @param integer $level    folding level, top level is 0
+	 * @param boolean $full     allow showing full text
 	 */
-	private function display_argument(Argument $argument, $side, $i, $level, $full) {
-
-		// on open restart rules
-		if ( in_array($argument->id, self::$show) ) {
-			$level = 0;
-			$full = true;
-		}
-
+	private function display_argument(Argument $argument, $side, $position, $level, $full) {
 ?>
 <li>
 	<div class="argument">
 <?
-		// author and form
-		$member = new Member($argument->member);
+		$author = new Member($argument->member);
 		if (
-			Login::$member and $member->id==Login::$member->id and
+			Login::$member and $author->id==Login::$member->id and
 			@$_GET['argument_edit']==$argument->id and
 			!$argument->removed
 		) {
+			// edit existing argument
 ?>
-		<div class="author"><?=$member->link()?> <?=datetimeformat($argument->created)?></div>
+		<div class="author"><?=$author->link()?> <?=datetimeformat($argument->created)?></div>
 <?
 			if (strtotime($argument->created) > Argument::edit_limit()) {
 ?>
@@ -215,21 +211,22 @@ abstract class Arguments {
 		} else {
 ?>
 		<div class="author<?=$argument->removed?' removed':''?>"><?
+			// edit link
 			if (
-				Login::$member and $member->id==Login::$member->id and
+				Login::$member and $author->id==Login::$member->id and
 				strtotime($argument->created) > Argument::edit_limit() and
 				!$argument->removed and
 				self::$proposal->allowed_add_arguments()
 			) {
 				?><a href="<?=URI::append(['argument_edit'=>$argument->id])?>#argument<?=$argument->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
 			}
-			echo $member->link()?> <?=datetimeformat($argument->created)?></div>
+			// author and time
+			echo $author->link()?> <?=datetimeformat($argument->created)?></div>
 <?
 			$display_content = true;
 		}
 
 		// title and content
-		$full_children = $full;
 		if ($display_content) {
 			if ($argument->updated) {
 ?>
@@ -241,8 +238,27 @@ abstract class Arguments {
 		<h3 id="argument<?=$argument->id?>" class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
 <?
 			} else {
-				// hide content
-				if ( !defined('ARGUMENTS_FULL_'.$level) or $i > constant('ARGUMENTS_FULL_'.$level) or !$full ) {
+				// on show restart rules
+				if ( in_array($argument->id, self::$show) ) {
+					$level = 0;
+					$full = true;
+					$show = true;
+				} else {
+					$show = false;
+				}
+				if (
+					// show because title was clicked
+					$show or
+					// show because of position
+					( defined('ARGUMENTS_FULL_'.$level) and $position <= constant('ARGUMENTS_FULL_'.$level) and $full )
+				) {
+					// display full text
+?>
+		<h3 id="argument<?=$argument->id?>"><?=h($argument->title)?></h3>
+<?
+					self::display_argument_content($argument);
+				} else {
+					// display only head
 					$open = self::$open;
 					$show = self::$show;
 					$show[] = $argument->id;
@@ -250,12 +266,8 @@ abstract class Arguments {
 ?>
 		<h3 id="argument<?=$argument->id?>"><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>" title="<?=_("show text and replys")?>"><?=h($argument->title)?></a></h3>
 <?
-					$full_children = false;
-				} else {
-?>
-		<h3 id="argument<?=$argument->id?>"><?=h($argument->title)?></h3>
-<?
-					self::display_argument_content($argument);
+					// display all children without full text
+					$full = false;
 				}
 			}
 		}
@@ -264,7 +276,8 @@ abstract class Arguments {
 		<div class="clearfix"></div>
 	</div>
 <?
-		self::display_arguments($side, $argument->id, $level+1, $full_children);
+		// display children
+		self::display_arguments($side, $argument->id, $level+1, $full);
 ?>
 </li>
 <?
