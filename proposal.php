@@ -12,6 +12,7 @@ require "inc/common.php";
 URI::strip_one_time_params(array(
 		'argument_parent',
 		'argument_edit',
+		'openhl',
 		'edit_admission_decision',
 		'show_drafts',
 		'edit_proponent',

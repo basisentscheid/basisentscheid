@@ -1007,6 +1007,11 @@ div.arguments_side ul li {
 	margin: 3px 0;
 }
 
+div.arguments_side ul li.anchor,
+div.arguments_side ul div#openhl {
+	border: 1px dashed #F00;
+}
+
 div.arguments_side ul li div.argument h3,
 div.arguments_side ul li div.argument p {
 	padding-left: 3px;
@@ -1072,17 +1077,6 @@ div.arguments_side ul li div.argument.new_children h3 a:link,
 div.arguments_side ul li div.argument.new_children div.time,
 div.arguments_side ul li div.argument.new_children div.author {
 	background: transparent;
-}
-
-div.arguments_side ul li div.argument.anchor {
-	border-color: #F8B;
-}
-div.arguments_side ul li div.argument.anchor h3,
-div.arguments_side ul li div.argument.anchor h3 a,
-div.arguments_side ul li div.argument.anchor h3 a:link,
-div.arguments_side ul li div.argument.anchor div.time,
-div.arguments_side ul li div.argument.anchor div.author {
-	background-color: #F8B;
 }
 
 div.arguments_side ul li div.argument .removed {

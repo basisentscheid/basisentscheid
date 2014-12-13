@@ -10,10 +10,20 @@
 abstract class Arguments {
 
 	/** @var Proposal $proposal */
-	public static $proposal;
+	private static $proposal;
 
-	public static $open = array();
-	public static $show = array();
+	private static $open = array();
+	private static $show = array();
+	private static $argument_parent;
+
+
+	/**
+	 *
+	 */
+	public function __static() {
+		if (isset($_GET['open']) and is_array($_GET['open'])) self::$open = $_GET['open'];
+		if (isset($_GET['show']) and is_array($_GET['show'])) self::$show = $_GET['show'];
+	}
 
 
 	/**
@@ -36,14 +46,13 @@ abstract class Arguments {
 
 		self::$proposal = $proposal;
 
-		if (isset($_GET['open']) and is_array($_GET['open'])) self::$open = $_GET['open'];
-		if (isset($_GET['show']) and is_array($_GET['show'])) self::$show = $_GET['show'];
+		self::$argument_parent = isset($_GET['argument_parent']) ? $_GET['argument_parent'] : 0;
 
 ?>
 <div class="arguments">
 	<div class="arguments_side arguments_pro">
 <?
-		if (Login::$member and @$_GET['argument_parent']!="pro" and self::$proposal->allowed_add_arguments()) {
+		if (Login::$member and self::$proposal->allowed_add_arguments()) {
 ?>
 		<div class="add"><a href="<?=URI::append(['argument_parent'=>"pro"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
@@ -54,7 +63,7 @@ abstract class Arguments {
 	</div>
 	<div class="arguments_side arguments_contra">
 <?
-		if (Login::$member and @$_GET['argument_parent']!="contra" and self::$proposal->allowed_add_arguments()) {
+		if (Login::$member and self::$proposal->allowed_add_arguments()) {
 ?>
 		<div class="add"><a href="<?=URI::append(['argument_parent'=>"contra"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
@@ -65,16 +74,20 @@ abstract class Arguments {
 	</div>
 	<div class="clearfix"></div>
 </div>
+<?
 
-<!-- highlight anchor -->
+		// highlight anchor
+		if ( empty($_GET['openhl']) ) {
+?>
 <script type="text/javascript">
 if ( window.location.hash ) {
 	var hash = window.location.hash.substring(1);
 	document.getElementById(hash).className += " anchor";
 }
 </script>
-
 <?
+		}
+
 	}
 
 
@@ -106,7 +119,7 @@ if ( window.location.hash ) {
 			ORDER BY removed, rating DESC, created";
 		$result = DB::query($sql);
 		$num_rows = DB::num_rows($result);
-		if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
+		if (!$num_rows and self::$argument_parent!=$parent) return;
 
 ?>
 <ul>
@@ -115,14 +128,15 @@ if ( window.location.hash ) {
 		$position = 1;
 		$remaining = 0;
 		$new       = 0;
-		$first_remaining_argument_id = 0;
+		$highlight_started = false;
+		$arguments_head = defined('ARGUMENTS_HEAD_'.$level) ? constant('ARGUMENTS_HEAD_'.$level) : 0;
 		while ( $argument = DB::fetch_object($result, "Argument") ) {
 			/** @var Argument $argument */
+			$limit_reached = $position > $arguments_head;
 			if (
 				!in_array($parent, self::$open) and
-				( !defined('ARGUMENTS_HEAD_'.$level) or $position > constant('ARGUMENTS_HEAD_'.$level) )
+				$limit_reached
 			) {
-				if (!$first_remaining_argument_id) $first_remaining_argument_id = $argument->id;
 				if (!Login::$member) {
 					$remaining = $num_rows - $position + 1;
 					break; // break while loop
@@ -130,10 +144,26 @@ if ( window.location.hash ) {
 				$remaining++;
 				if (!$argument->seen) $new++;
 			} else {
+				if (
+					$limit_reached and
+					isset($_GET['openhl']) and $_GET['openhl']==$parent and
+					!$highlight_started
+				) {
+?>
+<div id="openhl">
+<?
+					$highlight_started = true;
+				}
 				// display one argument and its children
 				self::display_argument($argument, $side, $position, $level, $full);
 			}
 			$position++;
+		}
+
+		if ($highlight_started) {
+?>
+</div>
+<?
 		}
 
 		// links to remaining arguments only under fully shown arguments
@@ -143,8 +173,8 @@ if ( window.location.hash ) {
 			$open[] = $parent;
 			$open = array_unique($open);
 ?>
-<li><a href="<?=URI::append(['open'=>$open, 'show'=>$show])
-			?>#argument<?=$first_remaining_argument_id?>"><?
+<li><a href="<?=URI::append(['open'=>$open, 'show'=>$show, 'openhl'=>$parent])
+			?>#openhl"><?
 			if (!intval($parent)) {
 				if ($remaining==1) {
 					if ($new) echo _("show remaining 1 new argument");
@@ -176,16 +206,20 @@ if ( window.location.hash ) {
 <?
 		}
 
-		if (Login::$member and @$_GET['argument_parent']==$parent and self::$proposal->allowed_add_arguments()) {
+		if (
+			Login::$member and
+			isset($_GET['argument_parent']) and $_GET['argument_parent']==$parent and
+			self::$proposal->allowed_add_arguments()
+		) {
 ?>
-<li>
+<li id="form" class="anchor">
 	<div class="argument">
 <?
-			form(URI::append(['argument_parent'=>$parent]), 'class="argument" id="form"');
+			form(URI::append(['argument_parent'=>$parent]), 'class="argument"');
 ?>
 <div class="time"><?=(intval($parent)?_("New reply"):_("New argument"))?>:</div>
-<input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(@$_POST['title'])?>"><br>
-<textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(@$_POST['content'])?></textarea><br>
+<input name="title" type="text" maxlength="<?=Argument::title_length?>" value="<?=h(isset($_POST['title'])?$_POST['title']:"")?>"><br>
+<textarea name="content" rows="5" maxlength="<?=Argument::content_length?>"><?=h(isset($_POST['content'])?$_POST['content']:"")?></textarea><br>
 <input type="hidden" name="action" value="add_argument">
 <input type="hidden" name="parent" value="<?=$parent?>">
 <input type="submit" value="<?=_("save")?>">
@@ -214,7 +248,7 @@ if ( window.location.hash ) {
 	 */
 	private function display_argument(Argument $argument, $side, $position, $level, $full) {
 ?>
-<li>
+<li id="argument<?=$argument->id?>">
 	<div class="argument<?
 		if (Login::$member) {
 			if (!$argument->seen) {
@@ -226,12 +260,12 @@ if ( window.location.hash ) {
 				?> new_children<?
 			}
 		}
-		?>" id="argument<?=$argument->id?>">
+		?>">
 <?
 		$author = new Member($argument->member);
 		if (
 			Login::$member and $author->id==Login::$member->id and
-			@$_GET['argument_edit']==$argument->id and
+			isset($_GET['argument_edit']) and $_GET['argument_edit']==$argument->id and
 			!$argument->removed
 		) {
 			// edit existing argument
@@ -357,7 +391,7 @@ if ( window.location.hash ) {
 		// reply
 		if (
 			Login::$member and
-			@$_GET['argument_parent']!=$argument->id and
+			self::$argument_parent!=$argument->id and
 			!$argument->removed and
 			self::$proposal->allowed_add_arguments()
 		) {
@@ -449,3 +483,6 @@ if ( window.location.hash ) {
 
 
 }
+
+
+Arguments::__static();
