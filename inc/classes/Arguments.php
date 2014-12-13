@@ -108,55 +108,72 @@ if ( window.location.hash ) {
 		$num_rows = DB::num_rows($result);
 		if (!$num_rows and @$_GET['argument_parent']!=$parent) return;
 
-		// don't even show the <ul>
-		if ( !defined('ARGUMENTS_HEAD_'.$level) or !constant('ARGUMENTS_HEAD_'.$level) ) return;
-
 ?>
 <ul>
 <?
 
 		$position = 1;
+		$remaining = 0;
+		$new       = 0;
+		$first_remaining_argument_id = 0;
 		while ( $argument = DB::fetch_object($result, "Argument") ) {
 			/** @var Argument $argument */
-
 			if (
 				!in_array($parent, self::$open) and
 				( !defined('ARGUMENTS_HEAD_'.$level) or $position > constant('ARGUMENTS_HEAD_'.$level) )
 			) {
-				// show links to remaining arguments only under fully shown arguments
-				if ($full) {
-					$open = self::$open;
-					$show = self::$show;
-					$open[] = $parent;
-					$open = array_unique($open);
-?>
-<li><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>"><?
+				if (!$first_remaining_argument_id) $first_remaining_argument_id = $argument->id;
+				if (!Login::$member) {
 					$remaining = $num_rows - $position + 1;
-					if (!intval($parent)) {
-						if ($remaining==1) {
-							echo _("show remaining 1 argument");
-						} else {
-							printf(_("show remaining %d arguments"), $remaining);
-						}
-					} else {
-						if ($remaining==1) {
-							if ($position==1) echo _("show 1 reply");
-							else echo _("show remaining 1 reply");
-						} else {
-							if ($position==1) printf(_("show %d replys"), $remaining);
-							else printf(_("show remaining %d replys"), $remaining);
-						}
-					}
-					?></a></li>
-<?
+					break; // break while loop
 				}
-				break; // break while loop
+				$remaining++;
+				if (!$argument->seen) $new++;
+			} else {
+				// display one argument and its children
+				self::display_argument($argument, $side, $position, $level, $full);
 			}
-
-			// display one argument and its children
-			self::display_argument($argument, $side, $position, $level, $full);
-
 			$position++;
+		}
+
+		// links to remaining arguments only under fully shown arguments
+		if ($remaining and $full) {
+			$open = self::$open;
+			$show = self::$show;
+			$open[] = $parent;
+			$open = array_unique($open);
+?>
+<li><a href="<?=URI::append(['open'=>$open, 'show'=>$show])
+			?>#argument<?=$first_remaining_argument_id?>"><?
+			if (!intval($parent)) {
+				if ($remaining==1) {
+					if ($new) echo _("show remaining 1 new argument");
+					else echo _("show remaining 1 argument");
+				} else {
+					if ($new) printf(_("show remaining %d arguments, %d of them new"), $remaining, $new);
+					else printf(_("show remaining %d arguments"), $remaining);
+				}
+			} else {
+				if ($remaining==1) {
+					if ($position==1) {
+						if ($new) echo _("show 1 new reply");
+						else echo _("show 1 reply");
+					} else {
+						if ($new) echo _("show remaining 1 new reply");
+						else echo _("show remaining 1 reply");
+					}
+				} else {
+					if ($position==1) {
+						if ($new) printf(_("show %d replys, %d of them new"), $remaining, $new);
+						else printf(_("show %d replys"), $remaining);
+					} else {
+						if ($new) printf(_("show remaining %d replys, %d of them new"), $remaining, $new);
+						else printf(_("show remaining %d replys"), $remaining);
+					}
+				}
+			}
+			?></a></li>
+<?
 		}
 
 		if (Login::$member and @$_GET['argument_parent']==$parent and self::$proposal->allowed_add_arguments()) {
@@ -199,7 +216,16 @@ if ( window.location.hash ) {
 ?>
 <li>
 	<div class="argument<?
-		if (Login::$member and !$argument->seen) { ?> new<? }
+		if (Login::$member) {
+			if (!$argument->seen) {
+				?> new<?
+			} elseif (
+				!( defined('ARGUMENTS_HEAD_'.($level+1)) and constant('ARGUMENTS_HEAD_'.($level+1)) ) and
+				self::has_new_children($side, $argument->id)
+			) {
+				?> new_children<?
+			}
+		}
 		?>" id="argument<?=$argument->id?>">
 <?
 		$author = new Member($argument->member);
@@ -252,11 +278,6 @@ if ( window.location.hash ) {
 
 		// title and content
 		if ($display_content) {
-			if ($argument->updated) {
-?>
-		<div class="author<?=$argument->removed?' removed':''?>"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
-<?
-			}
 			if ($argument->removed) {
 ?>
 		<h3 class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
@@ -277,6 +298,11 @@ if ( window.location.hash ) {
 					( defined('ARGUMENTS_FULL_'.$level) and $position <= constant('ARGUMENTS_FULL_'.$level) and $full )
 				) {
 					// display full text
+					if ($argument->updated) {
+?>
+		<div class="author"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
+<?
+					}
 ?>
 		<h3><?=h($argument->title)?></h3>
 <?
@@ -308,7 +334,10 @@ if ( window.location.hash ) {
 	</div>
 <?
 		// display children
-		self::display_arguments($side, $argument->id, $level+1, $full);
+		$level++;
+		if ( defined('ARGUMENTS_HEAD_'.$level) and constant('ARGUMENTS_HEAD_'.$level) ) {
+			self::display_arguments($side, $argument->id, $level, $full);
+		}
 ?>
 </li>
 <?
@@ -390,6 +419,32 @@ if ( window.location.hash ) {
 			form_end();
 		}
 
+	}
+
+
+	/**
+	 * check if an argument has at least one new child
+	 *
+	 * @param string  $side
+	 * @param integer $parent
+	 * @return boolean
+	 */
+	private function has_new_children($side, $parent) {
+		$sql = "SELECT id, seen.argument AS seen
+			FROM arguments
+			LEFT JOIN seen ON seen.argument = arguments.id AND seen.member = ".intval(Login::$member->id)."
+			WHERE arguments.proposal=".intval(self::$proposal->id)."
+				AND side=".DB::esc($side)."
+				AND parent=".intval($parent);
+		$result = DB::query($sql);
+		$children = array();
+		while ( $row = DB::fetch_row($result) ) {
+			if ( !$row[1] ) return true;
+			$children[] = $row[0];
+		}
+		foreach ($children as $child) {
+			if ( self::has_new_children($side, $child) ) return true;
+		}
 	}
 
 

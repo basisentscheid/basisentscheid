@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-12-12 22:42+0200\n"
+"PO-Revision-Date: 2014-12-13 22:00+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -419,7 +419,7 @@ msgstr "Themen pro Seite"
 # File: proposal.php, line: 317
 # File: proposal.php, line: 503
 # File: proposal.php, line: 656
-# File: inc/classes/Arguments.php, line: 245
+# File: inc/classes/Arguments.php, line: 271
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 843
 # File: inc/classes/Issue.php, line: 1152
@@ -456,7 +456,7 @@ msgstr "Kontra"
 msgid "Reply"
 msgstr "antworten"
 #
-# File: inc/classes/Arguments.php, line: 174
+# File: inc/classes/Arguments.php, line: 191
 # File: inc/classes/DbTableAdmin.php, line: 1058
 msgid "save"
 msgstr "speichern"
@@ -530,7 +530,7 @@ msgstr "duplizieren"
 #
 # File: proposal.php, line: 491
 # File: proposal.php, line: 637
-# File: inc/classes/Arguments.php, line: 225
+# File: inc/classes/Arguments.php, line: 251
 # File: inc/classes/DbTableAdmin.php, line: 907
 msgid "apply changes"
 msgstr "Änderungen übernehmen"
@@ -770,20 +770,20 @@ msgstr "Passwort (2x)"
 msgid "Admins"
 msgstr "Verantwortliche"
 #
-# File: inc/classes/Arguments.php, line: 217
+# File: inc/classes/Arguments.php, line: 243
 #, php-format
 msgid "This argument can be updated until %s."
 msgstr "Dieses Argument kann bis %s bearbeitet werden."
 #
-# File: inc/classes/Arguments.php, line: 231
+# File: inc/classes/Arguments.php, line: 257
 msgid "This argument may not be updated any longer!"
 msgstr "Dieses Argument kann nicht mehr bearbeitet werden!"
 #
-# File: inc/classes/Arguments.php, line: 257
+# File: inc/classes/Arguments.php, line: 303
 msgid "updated"
 msgstr "bearbeitet"
 #
-# File: inc/classes/Arguments.php, line: 169
+# File: inc/classes/Arguments.php, line: 186
 msgid "New argument"
 msgstr "Neues Argument"
 #
@@ -811,27 +811,27 @@ msgstr "als Verantwortlicher anmelden"
 msgid "Login as local member"
 msgstr "als lokales Mitglied anmelden"
 #
-# File: inc/classes/Arguments.php, line: 262
+# File: inc/classes/Arguments.php, line: 283
 msgid "argument removed by admin"
 msgstr "Argument entfernt durch Verantwortliche"
 #
-# File: inc/classes/Arguments.php, line: 382
+# File: inc/classes/Arguments.php, line: 411
 msgid "restore"
 msgstr "zurücksetzen"
 #
-# File: inc/classes/Arguments.php, line: 387
+# File: inc/classes/Arguments.php, line: 416
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 570
+# File: inc/functions_http.php, line: 569
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 527
+# File: inc/functions_http.php, line: 526
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
-# File: inc/classes/Arguments.php, line: 139
+# File: inc/classes/Arguments.php, line: 154
 #, php-format
 msgid "show remaining %d arguments"
 msgstr "weitere %d Argumente zeigen"
@@ -1004,7 +1004,7 @@ msgstr "Offline-Abstimmung"
 msgid "online voting"
 msgstr "Online-Abstimmung"
 #
-# File: inc/classes/Arguments.php, line: 336
+# File: inc/classes/Arguments.php, line: 365
 msgid "reply"
 msgstr "antworten"
 #
@@ -2560,33 +2560,33 @@ msgstr "Offline-Abstimmung durch Verantwortliche festgelegt"
 msgid "Offline voting has been selected by admins."
 msgstr "Offline-Abstimmung wurde durch die Verantwortlichen festgelegt."
 #
-# File: inc/classes/Arguments.php, line: 137
+# File: inc/classes/Arguments.php, line: 151
 msgid "show remaining 1 argument"
 msgstr "ein weiteres Argument zeigen"
 #
-# File: inc/classes/Arguments.php, line: 143
+# File: inc/classes/Arguments.php, line: 160
 msgid "show 1 reply"
 msgstr "eine Antwort zeigen"
 #
-# File: inc/classes/Arguments.php, line: 144
+# File: inc/classes/Arguments.php, line: 163
 msgid "show remaining 1 reply"
 msgstr "eine weitere Antwort zeigen"
 #
-# File: inc/classes/Arguments.php, line: 146
+# File: inc/classes/Arguments.php, line: 168
 #, php-format
 msgid "show %d replys"
 msgstr "%d Antworten zeigen"
 #
-# File: inc/classes/Arguments.php, line: 147
+# File: inc/classes/Arguments.php, line: 171
 #, php-format
 msgid "show remaining %d replys"
 msgstr "%d weitere Antworten zeigen"
 #
-# File: inc/classes/Arguments.php, line: 298
+# File: inc/classes/Arguments.php, line: 324
 msgid "show text and replys"
 msgstr "Text und Antworten zeigen"
 #
-# File: inc/classes/Arguments.php, line: 169
+# File: inc/classes/Arguments.php, line: 186
 msgid "New reply"
 msgstr "Neue Antwort"
 #
@@ -2601,3 +2601,30 @@ msgstr "Dieser Antrag kann nicht mehr unterstützt werden."
 # File: inc/classes/Proposal.php, line: 298
 msgid "Support for this proposal can no longer be removed."
 msgstr "Unterstützung für diesen Antrag kann nicht mehr zurückgezogen werden."
+#
+# File: inc/classes/Arguments.php, line: 150
+msgid "show remaining 1 new argument"
+msgstr "ein weiteres neues Argument zeigen"
+#
+# File: inc/classes/Arguments.php, line: 153
+#, php-format
+msgid "show remaining %d arguments, %d of them new"
+msgstr "%d weitere Argumente zeigen, %d davon neu"
+#
+# File: inc/classes/Arguments.php, line: 159
+msgid "show 1 new reply"
+msgstr "eine neue Antwort zeigen"
+#
+# File: inc/classes/Arguments.php, line: 162
+msgid "show remaining 1 new reply"
+msgstr "eine weitere neue Antwort zeigen"
+#
+# File: inc/classes/Arguments.php, line: 167
+#, php-format
+msgid "show %d replys, %d of them new"
+msgstr "%d Antworten zeigen, %d davon neu"
+#
+# File: inc/classes/Arguments.php, line: 170
+#, php-format
+msgid "show remaining %d replys, %d of them new"
+msgstr "%d weitere Antworten zeigen, %d davon neu"

@@ -1021,11 +1021,11 @@ div.arguments_side ul li div.argument h3.removed {
 	font-style: italic;
 }
 div.arguments_side ul li div.argument {
-	border: 1px solid #EEE;
+	border: 1px solid #E6E6E6;
 	background-color: #FFF;
 }
 div.arguments_side ul li div.argument h3 {
-	background-color: #EEE;
+	background-color: #EAEAEA;
 }
 
 div.arguments_side ul li div.argument h3 a,
@@ -1033,7 +1033,7 @@ div.arguments_side ul li div.argument h3 a:link {
 	padding: 0;
 	text-decoration: none;
 	color: #000;
-	background-color: #EEE;
+	background-color: #EAEAEA;
 	outline: none;
 }
 div.arguments_side ul li div.argument h3 a:hover {
@@ -1041,7 +1041,7 @@ div.arguments_side ul li div.argument h3 a:hover {
 }
 div.arguments_side ul li div.argument div.time {
 	padding-left: 3px;
-	background-color: #EEE;
+	background-color: #EAEAEA;
 }
 div.arguments_side ul li div.argument div.author {
 	float: right;
@@ -1049,18 +1049,29 @@ div.arguments_side ul li div.argument div.author {
 	font-style: italic;
 	padding-right: 3px;
 	padding-left: 3px;
-	background-color: #EEE;
+	background-color: #EAEAEA;
 }
 
 div.arguments_side ul li div.argument.new {
-	border-color: #E6EFFF;
+	border-color: #D9E7FF;
 }
 div.arguments_side ul li div.argument.new h3,
 div.arguments_side ul li div.argument.new h3 a,
 div.arguments_side ul li div.argument.new h3 a:link,
 div.arguments_side ul li div.argument.new div.time,
 div.arguments_side ul li div.argument.new div.author {
-	background-color: #E6EFFF;
+	background-color: #D9E7FF;
+}
+
+div.arguments_side ul li div.argument.new_children h3 {
+	background-image: linear-gradient(135deg, #D9E7FF 25%, transparent 25%, transparent 50%, #D9E7FF 50%, #D9E7FF 75%, transparent 75%, transparent);
+	background-size: 25px 25px;
+}
+div.arguments_side ul li div.argument.new_children h3 a,
+div.arguments_side ul li div.argument.new_children h3 a:link,
+div.arguments_side ul li div.argument.new_children div.time,
+div.arguments_side ul li div.argument.new_children div.author {
+	background: transparent;
 }
 
 div.arguments_side ul li div.argument.anchor {
