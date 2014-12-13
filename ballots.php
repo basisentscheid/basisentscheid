@@ -105,7 +105,7 @@ if ($show_select and $entitled and $period->state=="ballot_application") {
 }
 
 if (Login::$admin) {
-	form(URI::$uri);
+	form("");
 }
 
 $colspan = 7;
@@ -165,7 +165,7 @@ if (!$pager->linescount) {
 					?>&#10003; <?=_("You selected this ballot for voting.");
 				}
 				if ($period->state!="ballot_preparation") {
-					form(URI::$uri, 'class="button"');
+					form("", 'class="button"');
 ?>
 <input type="hidden" name="action" value="unselect">
 <input type="submit" value="<?=_("remove selection")?>">
@@ -178,7 +178,7 @@ if (!$pager->linescount) {
 					($period->state=="ballot_assignment" and $ballot->approved)
 				)
 			) {
-				form(URI::$uri, 'class="button"');
+				form("", 'class="button"');
 ?>
 <input type="hidden" name="ballot" value="<?=$ballot->id?>">
 <input type="hidden" name="action" value="select">
@@ -238,7 +238,7 @@ if ($entitled) {
 			if ($period->postage()) {
 				?> <?=_("The sending of the letters has already started, so you can not change your choice any longer.");
 			} else {
-				form(URI::$uri, 'class="button"');
+				form("", 'class="button"');
 ?>
 <input type="hidden" name="action" value="unselect">
 <input type="submit" value="<?=_("remove selection")?>">
@@ -255,7 +255,7 @@ if ($entitled) {
 <div class="postal">
 <?
 		if ($show_select) {
-			form(URI::$uri, 'class="button"');
+			form("", 'class="button"');
 ?>
 <input type="hidden" name="action" value="select_postal">
 <input type="submit" value="<?=_("select postal voting")?>">

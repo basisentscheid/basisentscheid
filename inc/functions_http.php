@@ -259,7 +259,7 @@ function html_user() {
 				'<span class="admin">'.Login::$admin->username.'</span>'
 			);
 		}
-		form(URI::$uri, 'class="button" style="margin-left: 10px"');
+		form("", 'class="button" style="margin-left: 10px"');
 ?>
 <input type="hidden" name="action" value="logout">
 <input type="submit" value="<?=_("Logout")?>">
@@ -269,7 +269,7 @@ function html_user() {
 		// login as member via ID server
 		form("login.php", 'class="button"');
 ?>
-<input type="hidden" name="origin" value="<?=URI::$uri?>">
+<input type="hidden" name="origin" value="<?=URI::same()?>">
 <input type="submit" value="<?=_("login")?>">
 <?
 		form_end();
@@ -342,11 +342,10 @@ function action_proposal_select_period() {
 /**
  * POST form open tag with CSRF token
  *
- * @param string  $url
+ * @param string  $url        (optional) leave empty to stay on same URI, set to BN to remove parameters
  * @param string  $attributes (optional)
  */
 function form($url="", $attributes="") {
-	if ($url=="") $url = BN;
 ?>
 <form action="<?=$url?>" method="POST"<?
 	if ($attributes) { ?> <?=$attributes; }

@@ -39,7 +39,7 @@ if ($action) {
 
 html_head(_("Create new member"));
 
-form();
+form(BN);
 input_hidden("action", "create");
 $sql = "SELECT * FROM ngroups";
 $result = DB::query($sql);

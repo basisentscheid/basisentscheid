@@ -693,7 +693,7 @@ class DbTableAdmin {
 		}
 
 		if ($button_js) {
-			form(URI::$uri, 'name="dbtableadmin_jsform"');
+			form("", 'name="dbtableadmin_jsform"');
 ?>
 	<input type="hidden" name="action" value="">
 	<input type="hidden" name="id" value="">
@@ -704,7 +704,7 @@ class DbTableAdmin {
 			$this->display_list_javascript($button_js);
 		}
 		if ($show_form) {
-			form(URI::$uri, 'name="dbtableadmin_listform" id="dbtableadmin_listform"');
+			form("", 'name="dbtableadmin_listform" id="dbtableadmin_listform"');
 		}
 
 ?>
@@ -1039,7 +1039,7 @@ function submit_delete_checked() {
 ?>
 <h2><?=$this->msg_add_record?></h2>
 <?
-			$form_action = URI::$uri;
+			$form_action = "";
 		}
 
 		$this->display_edit_form_top($form_action);

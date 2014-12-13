@@ -59,7 +59,7 @@ if ($action) {
 
 html_head(_("Reset password"));
 
-form();
+form(BN);
 input_hidden("action", "set_password");
 ?>
 <fieldset class="member">

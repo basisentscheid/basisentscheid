@@ -90,7 +90,7 @@ if ($ballot->id) {
 	html_head(_("New ballot"), true);
 }
 
-form(URI::$uri, 'class="editform edit_ballot"');
+form("", 'class="editform edit_ballot"');
 ?>
 <fieldset>
 <div class="input <?=stripes()?>" style="width:100%"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" value="<?=h($ballot->name)?>"></span></div>

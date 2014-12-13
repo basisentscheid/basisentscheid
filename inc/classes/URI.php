@@ -2,6 +2,8 @@
 /**
  * URI handling
  *
+ * This assumes, that no URL-rewriting is done!
+ *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */
@@ -9,15 +11,10 @@
 
 abstract class URI {
 
-	// current relative URI without html entities
-	public static $uri_plain;
-	// current relative URI with html entities
-	public static $uri;
-
 	// query array without empty values and one time parameters
 	private static $query = array();
 	// uri built from $query
-	private static $uri_query;
+	private static $uri;
 
 
 	/**
@@ -25,14 +22,11 @@ abstract class URI {
 	 */
 	public static function __static() {
 
-		self::$uri_plain = basename($_SERVER['REQUEST_URI']);
-		self::$uri = h(self::$uri_plain);
-
 		// strip empty parameters ("0" is not empty)
 		self::$query = $_GET;
 		self::strip_empty(self::$query);
 
-		self::$uri_query = self::build(self::$query);
+		self::$uri = self::build(self::$query);
 
 	}
 
@@ -69,7 +63,7 @@ abstract class URI {
 		}
 		// if all elements are unset, the array behaves not as an array anymore
 		if (!count(self::$query)) self::$query = array();
-		self::$uri_query = self::build(self::$query);
+		self::$uri = self::build(self::$query);
 	}
 
 
@@ -100,7 +94,7 @@ abstract class URI {
 	 */
 	public static function same($plain=false) {
 		if ($plain) return self::build(self::$query, true);
-		return self::$uri_query;
+		return self::$uri;
 	}
 
 
