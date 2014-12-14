@@ -834,7 +834,7 @@ msgstr "Hilfe ausblenden"
 # File: inc/classes/Arguments.php, line: 154
 #, php-format
 msgid "show remaining %d arguments"
-msgstr "weitere %d Argumente zeigen"
+msgstr "verbleibende %d Argumente zeigen"
 #
 # File: proposals.php, line: 59
 msgid "Open"
@@ -2562,7 +2562,7 @@ msgstr "Offline-Abstimmung wurde durch die Verantwortlichen festgelegt."
 #
 # File: inc/classes/Arguments.php, line: 151
 msgid "show remaining 1 argument"
-msgstr "ein weiteres Argument zeigen"
+msgstr "ein verbleibendes Argument zeigen"
 #
 # File: inc/classes/Arguments.php, line: 160
 msgid "show 1 reply"
@@ -2570,7 +2570,7 @@ msgstr "eine Antwort zeigen"
 #
 # File: inc/classes/Arguments.php, line: 163
 msgid "show remaining 1 reply"
-msgstr "eine weitere Antwort zeigen"
+msgstr "eine verbleibende Antwort zeigen"
 #
 # File: inc/classes/Arguments.php, line: 168
 #, php-format
@@ -2580,7 +2580,7 @@ msgstr "%d Antworten zeigen"
 # File: inc/classes/Arguments.php, line: 171
 #, php-format
 msgid "show remaining %d replys"
-msgstr "%d weitere Antworten zeigen"
+msgstr "%d verbleibende Antworten zeigen"
 #
 # File: inc/classes/Arguments.php, line: 324
 msgid "show text and replys"
@@ -2604,12 +2604,12 @@ msgstr "Unterstützung für diesen Antrag kann nicht mehr zurückgezogen werden.
 #
 # File: inc/classes/Arguments.php, line: 150
 msgid "show remaining 1 new argument"
-msgstr "ein weiteres neues Argument zeigen"
+msgstr "ein verbleibendes neues Argument zeigen"
 #
 # File: inc/classes/Arguments.php, line: 153
 #, php-format
 msgid "show remaining %d arguments, %d of them new"
-msgstr "%d weitere Argumente zeigen, %d davon neu"
+msgstr "%d verbleibende Argumente zeigen, %d davon neu"
 #
 # File: inc/classes/Arguments.php, line: 159
 msgid "show 1 new reply"
@@ -2617,7 +2617,7 @@ msgstr "eine neue Antwort zeigen"
 #
 # File: inc/classes/Arguments.php, line: 162
 msgid "show remaining 1 new reply"
-msgstr "eine weitere neue Antwort zeigen"
+msgstr "eine verbleibende neue Antwort zeigen"
 #
 # File: inc/classes/Arguments.php, line: 167
 #, php-format
@@ -2627,4 +2627,4 @@ msgstr "%d Antworten zeigen, %d davon neu"
 # File: inc/classes/Arguments.php, line: 170
 #, php-format
 msgid "show remaining %d replys, %d of them new"
-msgstr "%d weitere Antworten zeigen, %d davon neu"
+msgstr "%d verbleibende Antworten zeigen, %d davon neu"
