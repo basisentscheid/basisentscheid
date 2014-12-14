@@ -39,6 +39,18 @@ class Arguments {
 
 
 	/**
+	 * read configuration
+	 *
+	 * @param integer $level folding level, top level is 0
+	 * @return integer
+	 */
+	private static function arguments_head($level) {
+		if ( defined('ARGUMENTS_HEAD_'.$level) ) return constant('ARGUMENTS_HEAD_'.$level);
+		return 0;
+	}
+
+
+	/**
 	 *
 	 * @param Argument $argument
 	 */
@@ -143,7 +155,7 @@ if ( window.location.hash ) {
 		$remaining = 0;
 		$new       = 0;
 		$highlight_started = false;
-		$arguments_head = defined('ARGUMENTS_HEAD_'.$level) ? constant('ARGUMENTS_HEAD_'.$level) : 0;
+		$arguments_head = self::arguments_head($level);
 		while ( $argument = DB::fetch_object($result, "Argument") ) {
 			/** @var Argument $argument */
 			$limit_reached = $position > $arguments_head;
@@ -260,6 +272,16 @@ if ( window.location.hash ) {
 	 * @param boolean $full     allow showing full text
 	 */
 	private function display_argument(Argument $argument, $position, $level, $full) {
+
+		// on show restart rules
+		if ( in_array($argument->id, self::$show) ) {
+			$level = 0;
+			$full = true;
+			$show = true;
+		} else {
+			$show = false;
+		}
+
 ?>
 <li id="argument<?=$argument->id?>">
 	<div class="argument<?
@@ -267,7 +289,7 @@ if ( window.location.hash ) {
 			if (!$argument->seen) {
 				?> new<?
 			} elseif (
-				!( defined('ARGUMENTS_HEAD_'.($level+1)) and constant('ARGUMENTS_HEAD_'.($level+1)) ) and
+				!self::arguments_head($level+1) and
 				$this->has_new_children($argument->id)
 			) {
 				?> new_children<?
@@ -329,50 +351,40 @@ if ( window.location.hash ) {
 ?>
 		<h3 class="removed">&mdash; <?=_("argument removed by admin")?> &mdash;</h3>
 <?
-			} else {
-				// on show restart rules
-				if ( in_array($argument->id, self::$show) ) {
-					$level = 0;
-					$full = true;
-					$show = true;
-				} else {
-					$show = false;
-				}
-				if (
-					// show because title was clicked
-					$show or
-					// show because of position
-					( defined('ARGUMENTS_FULL_'.$level) and $position <= constant('ARGUMENTS_FULL_'.$level) and $full )
-				) {
-					// display full text
-					if ($argument->updated) {
+			} elseif (
+				// show because title was clicked
+				$show or
+				// show because of position
+				( defined('ARGUMENTS_FULL_'.$level) and $position <= constant('ARGUMENTS_FULL_'.$level) and $full )
+			) {
+				// display full text
+				if ($argument->updated) {
 ?>
 		<div class="author"><?=_("updated")?> <?=datetimeformat($argument->updated)?></div>
 <?
-					}
+				}
 ?>
 		<h3><?=h($argument->title)?></h3>
 <?
-					$this->display_argument_content($argument);
+				$this->display_argument_content($argument);
 
-					// don't show the argument as new next time
-					if (Login::$member and !$argument->seen) {
-						// simulate INSERT IGNORE
-						DB::query_ignore("INSERT INTO seen (argument, member) VALUES (".intval($argument->id).", ".intval(Login::$member->id).")");
-					}
+				// don't show the argument as new next time
+				if (Login::$member and !$argument->seen) {
+					// simulate INSERT IGNORE
+					DB::query_ignore("INSERT INTO seen (argument, member) VALUES (".intval($argument->id).", ".intval(Login::$member->id).")");
+				}
 
-				} else {
-					// display only head
-					$open = self::$open;
-					$show = self::$show;
-					$show[] = $argument->id;
-					$show = array_unique($show);
+			} else {
+				// display only head
+				$open = self::$open;
+				$show = self::$show;
+				$show[] = $argument->id;
+				$show = array_unique($show);
 ?>
 		<h3><a href="<?=URI::append(['open'=>$open, 'show'=>$show])?>#argument<?=$argument->id?>" title="<?=_("show text and replys")?>"><?=h($argument->title)?></a></h3>
 <?
-					// display all children without full text
-					$full = false;
-				}
+				// display all children without full text
+				$full = false;
 			}
 		}
 
@@ -382,9 +394,7 @@ if ( window.location.hash ) {
 <?
 		// display children
 		$level++;
-		if ( defined('ARGUMENTS_HEAD_'.$level) and constant('ARGUMENTS_HEAD_'.$level) ) {
-			$this->display_arguments($argument->id, $level, $full);
-		}
+		if ( self::arguments_head($level) ) $this->display_arguments($argument->id, $level, $full);
 ?>
 </li>
 <?
