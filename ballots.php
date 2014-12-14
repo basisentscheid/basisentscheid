@@ -23,7 +23,7 @@ if (!$period->ballot_voting) {
 }
 
 if (Login::$member) {
-	$sql = "SELECT * FROM offlinevoters WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
+	$sql = "SELECT * FROM offlinevoter WHERE member=".intval(Login::$member->id)." AND period=".intval($period->id);
 	if ( $row_voters = DB::fetchassoc($sql) ) {
 		DB::to_bool($row_voters['agent']);
 	}
@@ -128,7 +128,7 @@ $colspan = 7;
 
 $pager = new Pager;
 
-$sql = "SELECT * FROM ballots	WHERE period=".DB::esc($period->id)." ORDER BY ballots.id";
+$sql = "SELECT * FROM ballot WHERE period=".DB::esc($period->id)." ORDER BY id";
 $result = DB::query($sql);
 $pager->seek($result);
 if (!$pager->linescount) {

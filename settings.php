@@ -166,8 +166,8 @@ form(BN);
 		<label><?=_("Groups")?></label>
 		<span class="input"><?
 
-$sql = "SELECT name FROM members_ngroups
-	JOIN ngroups ON ngroups.id = members_ngroups.ngroup
+$sql = "SELECT name FROM member_ngroup
+	JOIN ngroup ON ngroup.id = member_ngroup.ngroup
 	WHERE member=".intval(Login::$member->id);
 echo join(", ", DB::fetchfieldarray($sql));
 

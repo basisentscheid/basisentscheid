@@ -12,7 +12,6 @@ require "inc/common.php";
 Login::access("admin");
 
 $d = new DbTableAdmin("Ngroup");
-$d->dbtable = "ngroups";
 $d->columns = array(
 	array("id", _("ID"), "right", "", false, 'type'=>"integer"),
 	array("parent", "parent", "right", "", false, 'type'=>"integer"),

@@ -155,7 +155,7 @@ abstract class Login {
 			warning(_("The user name must not begin with the character '#'!"));
 			return false;
 		}
-		$sql = "SELECT COUNT(1) FROM members WHERE username=".DB::esc($username);
+		$sql = "SELECT COUNT(1) FROM member WHERE username=".DB::esc($username);
 		if ( DB::fetchfield($sql) ) {
 			warning(_("This user name is already used by someone else. Please try a different one!"));
 			return false;

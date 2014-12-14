@@ -30,7 +30,7 @@ function cron($skip_if_locked=false) {
 		ballot_assignment  <= now() AS ballot_assignment_now,
 		ballot_preparation <= now() AS ballot_preparation_now,
 		counting           <= now() AS counting_now
-	FROM periods";
+	FROM period";
 	// TODO: exclude closed
 	$result_period = DB::query($sql_period);
 	while ( $period = DB::fetch_object($result_period, "Period") ) {
@@ -55,7 +55,7 @@ function cron($skip_if_locked=false) {
 
 			$period->assign_members_to_ballots();
 
-			$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($period->id);
+			$sql_ballot = "SELECT * FROM ballot WHERE period=".intval($period->id);
 			$result_ballot = DB::query($sql_ballot);
 			while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
 
@@ -64,7 +64,7 @@ function cron($skip_if_locked=false) {
 				$notification = new Notification("ballot_approved");
 				$notification->period = $period;
 				$notification->ballot = $ballot;
-				$sql = "SELECT member FROM offlinevoters WHERE ballot = ".intval($ballot->id)." AND agent = TRUE";
+				$sql = "SELECT member FROM offlinevoter WHERE ballot = ".intval($ballot->id)." AND agent = TRUE";
 				$recipients = DB::fetchfieldarray($sql);
 				$notification->send($recipients);
 
@@ -74,7 +74,7 @@ function cron($skip_if_locked=false) {
 				$notification = new Notification("ballot_assigned");
 				$notification->period = $period;
 				$notification->ballot = $ballot;
-				$sql = "SELECT member FROM offlinevoters WHERE ballot = ".intval($ballot->id);
+				$sql = "SELECT member FROM offlinevoter WHERE ballot = ".intval($ballot->id);
 				$recipients = DB::fetchfieldarray($sql);
 				$notification->send($recipients);
 
@@ -100,7 +100,7 @@ function cron($skip_if_locked=false) {
 
 
 		// proposals and issues
-		$sql_issue = "SELECT * FROM issues
+		$sql_issue = "SELECT * FROM issue
 			WHERE period=".intval($period->id)."
 			AND state NOT IN ('finished', 'cancelled')";
 		$result_issue = DB::query($sql_issue);
@@ -170,7 +170,7 @@ function cron($skip_if_locked=false) {
 				if (!$period->preparation_now) break;
 
 				// revoke proposals, which were scheduled for revokation (and still have less than required proponents)
-				$sql = "SELECT * FROM proposals
+				$sql = "SELECT * FROM proposal
 					WHERE issue=".intval($issue->id)."
 						AND revoke IS NOT NULL";
 				$result = DB::query($sql);
@@ -212,7 +212,7 @@ function cron($skip_if_locked=false) {
 				$issues_finished_voting[] = $issue;
 
 				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
-				$sql = "SELECT counting FROM periods
+				$sql = "SELECT counting FROM period
 					WHERE ngroup=".intval($period->ngroup)."
 						AND counting <= now()
 					ORDER BY counting DESC
@@ -221,8 +221,8 @@ function cron($skip_if_locked=false) {
 				DB::fetch_assoc($result); // skip the current counting
 				if ( $last_counting = DB::fetch_assoc($result) ) {
 					// area participation
-					$sql = "DELETE FROM participants
-						WHERE area IN (SELECT id FROM areas WHERE ngroup=".intval($period->ngroup).")
+					$sql = "DELETE FROM participant
+						WHERE area IN (SELECT id FROM area WHERE ngroup=".intval($period->ngroup).")
 							AND activated < ".DB::esc($last_counting['counting']);
 					DB::query($sql);
 				}
@@ -255,7 +255,7 @@ function cron($skip_if_locked=false) {
 	}
 
 	// revoke due proposals, which have have less than required proponents
-	$sql = "SELECT * FROM proposals WHERE revoke < now()";
+	$sql = "SELECT * FROM proposal WHERE revoke < now()";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		// clear revoke date
@@ -273,7 +273,7 @@ function cron($skip_if_locked=false) {
 	// cancel proposals, which have not been admitted within 6 months
 	// https://basisentscheid.piratenpad.de/entscheidsordnung
 	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
-	$sql = "SELECT * FROM proposals
+	$sql = "SELECT * FROM proposal
 		WHERE state='submitted'
 			AND submitted < now() - interval ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL);
 	$result = DB::query($sql);
@@ -282,13 +282,13 @@ function cron($skip_if_locked=false) {
 	}
 
 	// clear issues
-	$sql = "SELECT * FROM issues WHERE clear <= now()";
+	$sql = "SELECT * FROM issue WHERE clear <= now()";
 	$result = DB::query($sql);
 	while ( $issue = DB::fetch_object($result, "Issue") ) {
 		// delete raw voting data
-		$sql_delete = "DELETE FROM vote_tokens WHERE issue=".intval($issue->id);
+		$sql_delete = "DELETE FROM vote_token WHERE issue=".intval($issue->id);
 		DB::query($sql_delete);
-		$sql_delete = "DELETE FROM votingmode_tokens WHERE issue=".intval($issue->id);
+		$sql_delete = "DELETE FROM votingmode_token WHERE issue=".intval($issue->id);
 		DB::query($sql_delete);
 		$issue->clear = null;
 		$issue->update(["clear"], "cleared=now()");
@@ -310,8 +310,8 @@ function upload_voters($period, $include_ballot_voters=false) {
 	$data = array();
 
 	// postal voters
-	$sql = "SELECT invite FROM members
-		JOIN offlinevoters ON offlinevoters.member = members.id AND offlinevoters.ballot IS NULL AND offlinevoters.period = ".intval($period->id);
+	$sql = "SELECT invite FROM member
+		JOIN offlinevoter ON offlinevoter.member = member.id AND offlinevoter.ballot IS NULL AND offlinevoter.period = ".intval($period->id);
 	$data[0] = array(
 		'name'   => "postal voting",
 		'voters' => DB::fetchfieldarray($sql)
@@ -319,11 +319,11 @@ function upload_voters($period, $include_ballot_voters=false) {
 
 	// ballot voters
 	if ($include_ballot_voters) {
-		$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($period->id)." AND approved=TRUE";
+		$sql_ballot = "SELECT * FROM ballot WHERE period=".intval($period->id)." AND approved=TRUE";
 		$result_ballot = DB::query($sql_ballot);
 		while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
-			$sql = "SELECT invite FROM members
-				JOIN offlinevoters ON offlinevoters.member = members.id AND offlinevoters.ballot = ".intval($ballot->id);
+			$sql = "SELECT invite FROM member
+				JOIN offlinevoter ON offlinevoter.member = member.id AND offlinevoter.ballot = ".intval($ballot->id);
 			$data[$ballot->id] = array(
 				'name'    => $ballot->name,
 				'ngroup'  => $ballot->ngroup()->name,

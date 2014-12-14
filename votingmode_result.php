@@ -43,8 +43,8 @@ if ($issue->votingmode_admin) {
 <?
 	} else {
 		// display list of votes
-		$sql = "SELECT token, demand, votetime FROM votingmode_tokens
- 		LEFT JOIN votingmode_votes USING (token)
+		$sql = "SELECT token, demand, votetime FROM votingmode_token
+ 		LEFT JOIN votingmode_vote USING (token)
  		WHERE issue=".intval($issue->id)."
  		ORDER BY token ASC, votetime DESC";
 		$result = DB::query($sql);

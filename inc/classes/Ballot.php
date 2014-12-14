@@ -35,7 +35,7 @@ class Ballot extends Relation {
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
-		DB::insert("ballots", $fields_values, $this->id);
+		DB::insert("ballot", $fields_values, $this->id);
 
 		$this->period()->select_ballot($this);
 
@@ -78,7 +78,7 @@ class Ballot extends Relation {
 			'agent'  => $agent
 		);
 		$keys = array("member", "period");
-		DB::insert_or_update("offlinevoters", $fields_values, $keys);
+		DB::insert_or_update("offlinevoter", $fields_values, $keys);
 	}
 
 

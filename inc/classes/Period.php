@@ -74,8 +74,8 @@ class Period extends Relation {
 	public function start_voting(array $issues) {
 
 		// entitled members of the ngroup
-		$sql = "SELECT members.* FROM members
-			JOIN members_ngroups ON members.id = members_ngroups.member AND members_ngroups.ngroup=".intval($this->ngroup)."
+		$sql = "SELECT member.* FROM member
+			JOIN member_ngroup ON member.id = member_ngroup.member AND member_ngroup.ngroup=".intval($this->ngroup)."
 			WHERE entitled=TRUE";
 		$members = DB::fetchobjectarray($sql, "Member");
 
@@ -89,9 +89,9 @@ class Period extends Relation {
 				DB::transaction_start();
 				do {
 					$token = Login::generate_token(8);
-					$sql = "SELECT token FROM vote_tokens WHERE token=".DB::esc($token);
+					$sql = "SELECT token FROM vote_token WHERE token=".DB::esc($token);
 				} while ( DB::numrows($sql) );
-				$sql = "INSERT INTO vote_tokens (member, issue, token) VALUES (".intval($member->id).", ".intval($issue->id).", ".DB::esc($token).")";
+				$sql = "INSERT INTO vote_token (member, issue, token) VALUES (".intval($member->id).", ".intval($issue->id).", ".DB::esc($token).")";
 				DB::query($sql);
 				DB::transaction_commit();
 				$personal_tokens[$member->id][$issue->id] = $token;
@@ -169,7 +169,7 @@ class Period extends Relation {
 			'agent'  => false
 		);
 		$keys = array("member", "period");
-		DB::insert_or_update("offlinevoters", $fields_values, $keys);
+		DB::insert_or_update("offlinevoter", $fields_values, $keys);
 	}
 
 
@@ -192,7 +192,7 @@ class Period extends Relation {
 	 */
 	public function postage() {
 		if ($this->postage) {
-			$sql = "SELECT COUNT(1) FROM offlinevoters
+			$sql = "SELECT COUNT(1) FROM offlinevoter
 				WHERE member=".intval(Login::$member->id)."
 					AND period=".intval($this->id)."
 					AND ballot IS NULL";
@@ -209,7 +209,7 @@ class Period extends Relation {
 			warning(_("You can not change your choice for postal voting any longer, because postage has already started."));
 			redirect();
 		}
-		DB::delete("offlinevoters", "member=".intval(Login::$member->id)." AND period=".intval($this->id));
+		DB::delete("offlinevoter", "member=".intval(Login::$member->id)." AND period=".intval($this->id));
 		$this->update_voters_cache();
 	}
 
@@ -219,14 +219,14 @@ class Period extends Relation {
 	 */
 	private function update_voters_cache() {
 
-		$sql = "SELECT id FROM ballots WHERE period=".intval($this->id);
+		$sql = "SELECT id FROM ballot WHERE period=".intval($this->id);
 		$result = DB::query($sql);
 		while ( $row = DB::fetch_assoc($result) ) {
 
-			$sql = "SELECT COUNT(1) FROM offlinevoters WHERE ballot=".intval($row['id']);
+			$sql = "SELECT COUNT(1) FROM offlinevoter WHERE ballot=".intval($row['id']);
 			$count = DB::fetchfield($sql);
 
-			$sql = "UPDATE ballots SET voters=".intval($count)." WHERE id=".intval($row['id']);
+			$sql = "UPDATE ballot SET voters=".intval($count)." WHERE id=".intval($row['id']);
 			DB::query($sql);
 
 		}
@@ -240,7 +240,7 @@ class Period extends Relation {
 	public function save_approved_ballots() {
 		foreach ( $_POST['approved_id'] as $key => $ballot_id ) {
 			$value = !empty($_POST['approved'][$key]);
-			$sql = "UPDATE ballots SET approved=".DB::bool_to_sql($value)." WHERE id=".intval($ballot_id);
+			$sql = "UPDATE ballot SET approved=".DB::bool_to_sql($value)." WHERE id=".intval($ballot_id);
 			DB::query($sql);
 		}
 	}
@@ -252,7 +252,7 @@ class Period extends Relation {
 	public function assign_members_to_ballots() {
 
 		// get all approved ballots
-		$sql_ballot = "SELECT * FROM ballots WHERE period=".intval($this->id)." AND approved=TRUE";
+		$sql_ballot = "SELECT * FROM ballot WHERE period=".intval($this->id)." AND approved=TRUE";
 		$result_ballot = DB::query($sql_ballot);
 		$ballots = array();
 		while ( $ballot = DB::fetch_object($result_ballot, "Ballot") ) {
@@ -263,16 +263,16 @@ class Period extends Relation {
 		if (!$ballots) return;
 
 		// get all ngroups within the ngroup of the period
-		$result = DB::query("SELECT * FROM ngroups");
+		$result = DB::query("SELECT * FROM ngroup");
 		$ngroups = array();
 		while ( $ngroup = DB::fetch_object($result, "Ngroup") ) $ngroups[$ngroup->id] = $ngroup;
 		$period_ngroups = Ngroup::parent_sort($ngroups, $ngroups[$this->ngroup]->parent);
 
 		// get all members, who are in the current period not assigned to a ballot yet
-		$sql = "SELECT members.* FROM members
-			JOIN members_ngroups ON members_ngroups.member = members.id AND members_ngroups.ngroup = ".intval($this->ngroup)."
-			LEFT JOIN offlinevoters ON members.id = offlinevoters.member AND offlinevoters.period = ".intval($this->id)."
-			WHERE offlinevoters.member IS NULL";
+		$sql = "SELECT member.* FROM member
+			JOIN member_ngroup ON member_ngroup.member = member.id AND member_ngroup.ngroup = ".intval($this->ngroup)."
+			LEFT JOIN offlinevoter ON member.id = offlinevoter.member AND offlinevoter.period = ".intval($this->id)."
+			WHERE offlinevoter.member IS NULL";
 		$result = DB::query($sql);
 		while ( $member = DB::fetch_object($result, "Member") ) {
 

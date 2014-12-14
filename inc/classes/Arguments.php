@@ -127,19 +127,19 @@ if ( window.location.hash ) {
 	 */
 	private function display_arguments($parent, $level=0, $full=true) {
 
-		$sql = "SELECT arguments.*";
+		$sql = "SELECT argument.*";
 		if (Login::$member) {
 			$sql .= ", ratings.score, seen.argument AS seen
-			FROM arguments
-			LEFT JOIN ratings ON ratings.argument = arguments.id AND ratings.member = ".intval(Login::$member->id)."
-			LEFT JOIN seen    ON seen.argument    = arguments.id AND seen.member    = ".intval(Login::$member->id);
+			FROM argument
+			LEFT JOIN ratings ON ratings.argument = argument.id AND ratings.member = ".intval(Login::$member->id)."
+			LEFT JOIN seen    ON seen.argument    = argument.id AND seen.member    = ".intval(Login::$member->id);
 		} else {
 			$sql .= "
-			FROM arguments";
+			FROM argument";
 		}
 		// intval($parent) gives parent=0 for "pro" and "contra"
 		$sql .= "
-			WHERE arguments.proposal=".intval(self::$proposal->id)."
+			WHERE argument.proposal=".intval(self::$proposal->id)."
 				AND side=".DB::esc($this->side)."
 				AND parent=".intval($parent)."
 			ORDER BY removed, rating DESC, created";
@@ -487,9 +487,9 @@ if ( window.location.hash ) {
 	 */
 	private function has_new_children($parent) {
 		$sql = "SELECT id, seen.argument AS seen
-			FROM arguments
-			LEFT JOIN seen ON seen.argument = arguments.id AND seen.member = ".intval(Login::$member->id)."
-			WHERE arguments.proposal=".intval(self::$proposal->id)."
+			FROM argument
+			LEFT JOIN seen ON seen.argument = argument.id AND seen.member = ".intval(Login::$member->id)."
+			WHERE argument.proposal=".intval(self::$proposal->id)."
 				AND side=".DB::esc($this->side)."
 				AND parent=".intval($parent);
 		$result = DB::query($sql);

@@ -9,7 +9,6 @@
 require "inc/common.php";
 
 $d = new DbTableAdmin_Test("Test_DbTableAdmin");
-$d->dbtable = "test_dbtableadmins";
 
 $options = array("Apfel", "Birne", "Banane", "Traube", "Kirsche");
 

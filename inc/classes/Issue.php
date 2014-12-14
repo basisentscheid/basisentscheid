@@ -69,7 +69,7 @@ class Issue extends Relation {
 			$fields_values[$field] = $this->$field;
 		}
 
-		return DB::update("issues", "id=".intval($this->id), $fields_values, $extra);
+		return DB::update("issue", "id=".intval($this->id), $fields_values, $extra);
 	}
 
 
@@ -80,7 +80,7 @@ class Issue extends Relation {
 	 * @return array
 	 */
 	public function proposals($open=false) {
-		$sql = "SELECT * FROM proposals WHERE issue=".intval($this->id);
+		$sql = "SELECT * FROM proposal WHERE issue=".intval($this->id);
 		if ($open) $sql .= " AND state IN ('draft', 'submitted', 'admitted')";
 		$result = DB::query($sql);
 		$proposals = array();
@@ -200,7 +200,7 @@ class Issue extends Relation {
 
 		if ($submitted!==null) return $submitted==true;
 		// look if there is at least one already submitted proposal
-		$sql = "SELECT COUNT(1) FROM proposals WHERE issue=".intval($this->id)." AND state!='draft'";
+		$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state!='draft'";
 		return DB::fetchfield($sql) > 0;
 	}
 
@@ -255,8 +255,8 @@ class Issue extends Relation {
 	 */
 	public function votingmode_demanded_by_member() {
 		$sql = "SELECT demand
- 			FROM votingmode_votes
-			JOIN votingmode_tokens USING (token)
+ 			FROM votingmode_vote
+			JOIN votingmode_token USING (token)
 			WHERE issue=".intval($this->id)." AND member=".intval(Login::$member->id)."
  			ORDER BY votetime DESC
  			LIMIT 1";
@@ -326,8 +326,8 @@ class Issue extends Relation {
 
 		// count demanding latest votes
 		$sql = "SELECT token, demand
- 			FROM votingmode_votes
-			JOIN votingmode_tokens USING (token)
+ 			FROM votingmode_vote
+			JOIN votingmode_token USING (token)
 			WHERE issue=".intval($this->id)."
  			ORDER BY token, votetime DESC";
 		$result = DB::query($sql);
@@ -345,9 +345,9 @@ class Issue extends Relation {
 		}
 
 		if ( $count >= $this->quorum_votingmode_required() ) {
-			$sql = "UPDATE issues SET votingmode_demanders=".intval($count).", votingmode_reached=TRUE WHERE id=".intval($this->id);
+			$sql = "UPDATE issue SET votingmode_demanders=".intval($count).", votingmode_reached=TRUE WHERE id=".intval($this->id);
 		} else {
-			$sql = "UPDATE issues SET votingmode_demanders=".intval($count)." WHERE id=".intval($this->id);
+			$sql = "UPDATE issue SET votingmode_demanders=".intval($count)." WHERE id=".intval($this->id);
 		}
 		DB::query($sql);
 
@@ -361,10 +361,10 @@ class Issue extends Relation {
 	 * @return string
 	 */
 	public function votingmode_token($create=false) {
-		$sql = "SELECT token FROM votingmode_tokens WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
+		$sql = "SELECT token FROM votingmode_token WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
 		$result = DB::query($sql);
 		if ( $row = DB::fetch_assoc($result) ) return $row['token'];
-		if ($create) return $this->create_unique_token("votingmode_tokens", Login::$member);
+		if ($create) return $this->create_unique_token("votingmode_token", Login::$member);
 	}
 
 
@@ -378,7 +378,7 @@ class Issue extends Relation {
 
 		DB::transaction_start();
 
-		$sql = "INSERT INTO votingmode_votes (token, demand) VALUES (".DB::esc($token).", ".DB::bool_to_sql($demand).") RETURNING votetime";
+		$sql = "INSERT INTO votingmode_vote (token, demand) VALUES (".DB::esc($token).", ".DB::bool_to_sql($demand).") RETURNING votetime";
 		if ( $result = DB::query($sql) ) {
 			list($votetime) = pg_fetch_row($result);
 
@@ -428,7 +428,7 @@ class Issue extends Relation {
 	 * @return string
 	 */
 	public function vote_token() {
-		$sql = "SELECT token FROM vote_tokens WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
+		$sql = "SELECT token FROM vote_token WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
 		return DB::fetchfield($sql);
 	}
 
@@ -454,7 +454,7 @@ class Issue extends Relation {
 
 		DB::transaction_start();
 
-		$sql = "INSERT INTO vote_votes (token, vote) VALUES (".DB::esc($token).", ".DB::esc(serialize($vote)).") RETURNING votetime";
+		$sql = "INSERT INTO vote_vote (token, vote) VALUES (".DB::esc($token).", ".DB::esc(serialize($vote)).") RETURNING votetime";
 		if ( $result = DB::query($sql) ) {
 			list($votetime) = pg_fetch_row($result);
 
@@ -515,8 +515,8 @@ class Issue extends Relation {
 			$proposal->score      = 0;
 		}
 
-		$sql = "SELECT token, vote FROM vote_votes
- 			JOIN vote_tokens USING (token)
+		$sql = "SELECT token, vote FROM vote_vote
+ 			JOIN vote_token USING (token)
 			WHERE issue=".intval($this->id)."
 			ORDER BY token, votetime DESC";
 		$result = DB::query($sql);
@@ -592,7 +592,7 @@ class Issue extends Relation {
 		if ($this->period) return;
 
 		// select the next period, which has not yet started
-		$sql = "SELECT id FROM periods
+		$sql = "SELECT id FROM period
 			WHERE ngroup=".intval($this->period()->ngroup)."
 				AND debate > now()
 			ORDER BY debate
@@ -673,10 +673,10 @@ class Issue extends Relation {
 	public function proposals_list($admitted=false) {
 
 		if (Login::$member) {
-			$sql = "SELECT proposals.*, supporters.member AS supported_by_member FROM proposals
-					LEFT JOIN supporters ON proposals.id = supporters.proposal AND supporters.member = ".intval(Login::$member->id);
+			$sql = "SELECT proposal.*, supporter.member AS supported_by_member FROM proposal
+					LEFT JOIN supporter ON proposal.id = supporter.proposal AND supporter.member = ".intval(Login::$member->id);
 		} else {
-			$sql = "SELECT * FROM proposals";
+			$sql = "SELECT * FROM proposal";
 		}
 		$sql .= " WHERE issue=".intval($this->id);
 		if ($admitted) $sql .= " AND state='admitted'";
@@ -880,8 +880,8 @@ class Issue extends Relation {
 			?><span title="<?=_("You can not vote on this issue, because you are are not entitled in the group.")?>"><?=_("Voting")?></span><?
 			return;
 		}
-		$sql = "SELECT vote_votes.token FROM vote_tokens
-			LEFT JOIN vote_votes USING (token)
+		$sql = "SELECT vote_vote.token FROM vote_token
+			LEFT JOIN vote_vote USING (token)
 			WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
 		$result = DB::query($sql);
 		if ( list($token) = DB::fetch_row($result) ) {
@@ -1085,7 +1085,7 @@ class Issue extends Relation {
 		switch ($this->state) {
 		case "admission":
 			// At least one proposal has to be admitted.
-			$sql = "SELECT COUNT(1) FROM proposals WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
+			$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
 			if ( !DB::fetchfield($sql) ) return false;
 		case "debate":
 		case "preparation":
@@ -1097,7 +1097,7 @@ class Issue extends Relation {
 			static $options_all = false;
 			static $options_admission = false;
 			if ($options_all===false) {
-				$sql_period = "SELECT *, debate > now() AS debate_not_started FROM periods
+				$sql_period = "SELECT *, debate > now() AS debate_not_started FROM period
 					WHERE ngroup=".intval($this->period()->ngroup)."
 						AND voting > now()
 					ORDER BY id";

@@ -63,7 +63,7 @@ function create_case($case, $stopcase) {
 	// create period
 	if ($stopcase == ++$stop) {
 		// period without ballot voting
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, ballot_voting, ngroup)
+		$sql = "INSERT INTO period (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, ballot_voting, ngroup)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -78,7 +78,7 @@ function create_case($case, $stopcase) {
 		return;
 	} else {
 		// period with ballot voting
-		$sql = "INSERT INTO periods (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, ballot_voting, ngroup, postage)
+		$sql = "INSERT INTO period (debate, preparation, voting, ballot_assignment, ballot_preparation, counting, ballot_voting, ngroup, postage)
 		VALUES (
 			now(),
 			now() + interval '1 week',
@@ -121,7 +121,7 @@ function create_case($case, $stopcase) {
 	if ($stopcase == ++$stop) return;
 
 	// approve ballots with 10 or more participants
-	$sql = "SELECT * FROM ballots WHERE period=".intval($period->id);
+	$sql = "SELECT * FROM ballot WHERE period=".intval($period->id);
 	$result = DB::query($sql);
 	while ( $ballot = DB::fetch_object($result, "Ballot") ) {
 		if ($ballot->voters < 10) continue;
@@ -193,7 +193,7 @@ function add_participant(Period $period, $ballot, $case, $i) {
  */
 function time_warp(Period $period, $interval="1 hour") {
 	$interval = "interval '".$interval."'";
-	$sql = "UPDATE periods SET
+	$sql = "UPDATE period SET
 			debate             = debate             - ".$interval.",
 			preparation        = preparation        - ".$interval.",
 			voting             = voting             - ".$interval.",

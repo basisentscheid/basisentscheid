@@ -40,7 +40,7 @@ html_foot();
  * @param string  $code
  */
 function action_confirm_mail($code) {
-	$sql = "SELECT * FROM members WHERE mail_code = ".DB::esc(trim($code))." AND mail_code_expiry > now()";
+	$sql = "SELECT * FROM member WHERE mail_code = ".DB::esc(trim($code))." AND mail_code_expiry > now()";
 	$result = DB::query($sql);
 	if ( $member = DB::fetch_object($result, "Member") ) {
 		$member->mail = $member->mail_unconfirmed;

@@ -85,7 +85,7 @@ class Proposal extends Relation {
 		foreach ( $fields as $field ) {
 			$fields_values[$field] = $this->$field;
 		}
-		DB::insert("proposals", $fields_values, $this->id);
+		DB::insert("proposal", $fields_values, $this->id);
 
 		$this->create_draft();
 
@@ -150,7 +150,7 @@ class Proposal extends Relation {
 	 */
 	function quorum_level() {
 
-		$sql = "SELECT * FROM proposals WHERE issue=".intval($this->issue)." AND quorum_reached=TRUE";
+		$sql = "SELECT * FROM proposal WHERE issue=".intval($this->issue)." AND quorum_reached=TRUE";
 		if ( DB::numrows($sql) ) {
 			return array(QUORUM_SUPPORT_ALTERNATIVE_NUM, QUORUM_SUPPORT_ALTERNATIVE_DEN);
 		} else {
@@ -185,7 +185,7 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function is_proponent(Member $member, $confirmed=true) {
-		$sql = "SELECT COUNT(1) FROM supporters
+		$sql = "SELECT COUNT(1) FROM supporter
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member->id)."
 				AND proponent IS NOT NULL";
@@ -201,7 +201,7 @@ class Proposal extends Relation {
 	 * @return integer
 	 */
 	public function proponents_count() {
-		$sql = "SELECT COUNT(1) FROM supporters
+		$sql = "SELECT COUNT(1) FROM supporter
 			WHERE proposal=".intval($this->id)."
 				AND proponent IS NOT NULL
 				AND proponent_confirmed=TRUE";
@@ -280,7 +280,7 @@ class Proposal extends Relation {
 		);
 		$keys = array('proposal', 'member');
 
-		DB::insert_or_update("supporters", $fields_values, $keys);
+		DB::insert_or_update("supporter", $fields_values, $keys);
 
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
@@ -302,7 +302,7 @@ class Proposal extends Relation {
 			warning(_("You can not remove your support while you are proponent."));
 			return false;
 		}
-		$sql = "DELETE FROM supporters WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
+		$sql = "DELETE FROM supporter WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
 		DB::query($sql);
 		$this->update_supporters_cache();
 	}
@@ -361,7 +361,7 @@ class Proposal extends Relation {
 			'proponent_confirmed' => $proponent_confirmed
 		);
 		$keys = array('proposal', 'member');
-		DB::insert_or_update("supporters", $fields_values, $keys);
+		DB::insert_or_update("supporter", $fields_values, $keys);
 		DB::transaction_commit();
 
 		if ($proponent_confirmed) {
@@ -405,7 +405,7 @@ class Proposal extends Relation {
 			$proponent = limitstr($proponent, self::proponent_length);
 			warning(sprintf(_("The input has been truncated to the maximum allowed length of %d characters!"), self::proponent_length));
 		}
-		$sql = "UPDATE supporters SET proponent=".DB::esc($proponent)."
+		$sql = "UPDATE supporter SET proponent=".DB::esc($proponent)."
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval(Login::$member->id)."
 				AND proponent IS NOT NULL";
@@ -432,7 +432,7 @@ class Proposal extends Relation {
 			DB::transaction_rollback();
 			return false;
 		}
-		$sql = "UPDATE supporters SET proponent_confirmed=TRUE
+		$sql = "UPDATE supporter SET proponent_confirmed=TRUE
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member->id)."
 				AND proponent IS NOT NULL";
@@ -483,7 +483,7 @@ class Proposal extends Relation {
 			DB::transaction_rollback();
 			return false;
 		}
-		$sql = "UPDATE supporters SET proponent=NULL, proponent_confirmed=FALSE
+		$sql = "UPDATE supporter SET proponent=NULL, proponent_confirmed=FALSE
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member->id);
 		DB::query($sql);
@@ -498,7 +498,7 @@ class Proposal extends Relation {
 		// set revoke date if we deleted the last proponent
 		if ($this->proponents_count()) return;
 		// We don't have to check if the to be removed proponent is confirmed, because otherways revoke would be already set anyway.
-		$sql = "UPDATE proposals SET revoke = now() + interval '1 week' WHERE id=".intval($this->id)." AND revoke IS NULL";
+		$sql = "UPDATE proposal SET revoke = now() + interval '1 week' WHERE id=".intval($this->id)." AND revoke IS NULL";
 		DB::query($sql);
 	}
 
@@ -510,7 +510,7 @@ class Proposal extends Relation {
 	 * @return string
 	 */
 	private function proponent_name($member_id) {
-		$sql = "SELECT proponent FROM supporters
+		$sql = "SELECT proponent FROM supporter
 			WHERE proposal=".intval($this->id)."
 				AND member=".intval($member_id);
 		return DB::fetchfield($sql);
@@ -523,7 +523,7 @@ class Proposal extends Relation {
 	 * @return array
 	 */
 	public function proponents() {
-		$sql = "SELECT member FROM supporters
+		$sql = "SELECT member FROM supporter
 		  WHERE proposal=".intval($this->id)."
 		    AND proponent_confirmed=TRUE";
 		return DB::fetchfieldarray($sql);
@@ -535,7 +535,7 @@ class Proposal extends Relation {
 	 */
 	private function update_supporters_cache() {
 
-		$sql = "SELECT COUNT(1) FROM supporters
+		$sql = "SELECT COUNT(1) FROM supporter
 			WHERE proposal=".intval($this->id)."
 				AND created > current_date - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
 		$this->supporters = DB::fetchfield($sql);
@@ -608,7 +608,7 @@ class Proposal extends Relation {
 			$options[0] = _("create a new issue");
 		}
 
-		$sql = "SELECT * FROM issues WHERE id != ".intval($this->issue)." AND period";
+		$sql = "SELECT * FROM issue WHERE id != ".intval($this->issue)." AND period";
 		if ($period = $this->issue()->period) $sql .= "=".intval($period); else $sql .= " IS NULL";
 		$sql .= " ORDER BY area, id DESC";
 		$result = DB::query($sql);
@@ -692,10 +692,10 @@ class Proposal extends Relation {
 		$notification->issue     = $new_issue;
 		$notification->proposal  = $this;
 		// votingmode voters of both issues
-		$sql = "SELECT DISTINCT member FROM votingmode_tokens WHERE issue=".intval($old_issue->id)." OR issue=".intval($new_issue->id);
+		$sql = "SELECT DISTINCT member FROM votingmode_token WHERE issue=".intval($old_issue->id)." OR issue=".intval($new_issue->id);
 		$recipients = DB::fetchfieldarray($sql);
 		// supporters and proponents of the proposal
-		$sql = "SELECT DISTINCT member FROM supporters WHERE proposal=".intval($this->id);
+		$sql = "SELECT DISTINCT member FROM supporter WHERE proposal=".intval($this->id);
 		$recipients = array_unique($recipients, DB::fetchfieldarray($sql));
 		$notification->send($recipients);
 
@@ -817,7 +817,7 @@ class Proposal extends Relation {
 		$proponents = array(); // list of proponents (also unconfirmed) as objects of class member
 		$is_supporter = false; // if the logged in member is supporter
 		$is_proponent = false; // if the logged in member is confirmed proponent
-		$sql = "SELECT member, anonymous, proponent, proponent_confirmed FROM supporters WHERE proposal=".intval($this->id);
+		$sql = "SELECT member, anonymous, proponent, proponent_confirmed FROM supporter WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
 		while ( $row = DB::fetch_assoc($result) ) {
 			DB::to_bool($row['proponent_confirmed']);
@@ -1009,7 +1009,7 @@ class Proposal extends Relation {
 ?>
 <h2><?=_("Drafts")?></h2>
 <?
-		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
+		$sql = "SELECT * FROM draft WHERE proposal=".intval($this->id)." ORDER BY created DESC";
 		$result = DB::query($sql);
 		$i = DB::num_rows($result);
 ?>
@@ -1097,7 +1097,7 @@ function draft_select(side, draft) {
 <h2><?=_("Drafts")?></h2>
 <table class="drafts">
 <?
-		$sql = "SELECT * FROM drafts WHERE proposal=".intval($this->id)." ORDER BY created DESC";
+		$sql = "SELECT * FROM draft WHERE proposal=".intval($this->id)." ORDER BY created DESC";
 		$result = DB::query($sql);
 		$i = DB::num_rows($result);
 		$j = 0;

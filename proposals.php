@@ -37,8 +37,8 @@ $search = trim(@$_GET['search']);
 
 // count issues in each state
 $sql = "SELECT state, count(*)
-	FROM issues
-	JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id)."
+	FROM issue
+	JOIN area ON area.id = issue.area AND area.ngroup = ".intval($ngroup->id)."
 	GROUP BY state";
 $result = DB::query($sql);
 $counts = array(
@@ -112,39 +112,39 @@ if ($filter) input_hidden("filter", $filter);
 
 $pager = new Pager(10);
 
-$sql = "SELECT issues.*
-	FROM issues
-	JOIN areas ON areas.id = issues.area AND areas.ngroup = ".intval($ngroup->id);
+$sql = "SELECT issue.*
+	FROM issue
+	JOIN area ON area.id = issue.area AND area.ngroup = ".intval($ngroup->id);
 $where = array();
-$order_by = " ORDER BY issues.id DESC";
+$order_by = " ORDER BY issue.id DESC";
 $show_results = false;
 
 switch (@$_GET['filter']) {
 case "admission":
-	$where[] = "issues.state='admission'";
+	$where[] = "issue.state='admission'";
 	break;
 case "debate":
-	$where[] = "issues.state='debate'";
-	$order_by = " ORDER BY issues.period DESC, issues.id DESC";
+	$where[] = "issue.state='debate'";
+	$order_by = " ORDER BY issue.period DESC, issue.id DESC";
 	break;
 case "voting":
-	$where[] = "(issues.state='voting' OR issues.state='preparation' OR issues.state='counting')";
-	$order_by = " ORDER BY issues.period DESC, issues.id DESC";
+	$where[] = "(issue.state='voting' OR issue.state='preparation' OR issue.state='counting')";
+	$order_by = " ORDER BY issue.period DESC, issue.id DESC";
 	break;
 case "closed":
-	$where[] = "(issues.state='finished' OR issues.state='cancelled')";
+	$where[] = "(issue.state='finished' OR issue.state='cancelled')";
 	$show_results = true;
 	break;
 default: // open
-	$where[] = "(issues.state!='finished' AND issues.state!='cancelled')";
+	$where[] = "(issue.state!='finished' AND issue.state!='cancelled')";
 }
 
 if ($search) {
 	$pattern = DB::esc("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
 	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
-	$sql .= " JOIN proposals ON proposals.issue = issues.id"
+	$sql .= " JOIN proposal ON proposal.issue = issue.id"
 		.DB::where_and($where)
-		." GROUP BY issues.id";
+		." GROUP BY issue.id";
 } else {
 	$sql .= DB::where_and($where);
 }

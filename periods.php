@@ -12,7 +12,6 @@ require "inc/common.php";
 $ngroup = Ngroup::get();
 
 $d = new DbTableAdmin_Period("Period");
-$d->dbtable = "periods";
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
 	array("debate",             _("Debate"),                 "period", "timestamp", "timestamp"), // 4 weeks before counting
@@ -30,8 +29,8 @@ $d->enable_filter = false;
 $d->global_where = array('ngroup' => $ngroup->id);
 
 $d->reference_check = array(
-	"SELECT id FROM issues  WHERE period=%d",
-	"SELECT id FROM ballots WHERE period=%d"
+	"SELECT id FROM issue  WHERE period=%d",
+	"SELECT id FROM ballot WHERE period=%d"
 );
 
 $d->msg_add_record          = _("New period");

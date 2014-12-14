@@ -127,10 +127,10 @@ function html_head($title, $help=false) {
 <?
 	$entitled = ( Login::$member and Login::$member->entitled );
 	if ($entitled) {
-		$sql = "SELECT ngroups.*, member FROM ngroups
-			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".intval(Login::$member->id);
+		$sql = "SELECT ngroup.*, member FROM ngroup
+			LEFT JOIN member_ngroup ON member_ngroup.ngroup = ngroup.id AND member_ngroup.member = ".intval(Login::$member->id);
 	} else {
-		$sql = "SELECT * FROM ngroups";
+		$sql = "SELECT * FROM ngroup";
 	}
 	$sql .= " ORDER BY name";
 	$result = DB::query($sql);

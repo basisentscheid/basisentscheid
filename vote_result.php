@@ -37,8 +37,8 @@ if ($issue->cleared) {
 <?
 } else {
 	// display list of votes
-	$sql = "SELECT token, vote, votetime FROM vote_tokens
- 		LEFT JOIN vote_votes USING (token)
+	$sql = "SELECT token, vote, votetime FROM vote_token
+ 		LEFT JOIN vote_vote USING (token)
  		WHERE issue=".intval($issue->id)."
  		ORDER BY token ASC, votetime DESC";
 	$result = DB::query($sql);

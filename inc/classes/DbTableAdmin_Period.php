@@ -234,7 +234,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 		}
 
 		if ($this->object->id and !$this->object->ballot_voting) {
-			$sql = "SELECT id FROM ballots WHERE period=".intval($this->object->id);
+			$sql = "SELECT id FROM ballot WHERE period=".intval($this->object->id);
 			$result = DB::query($sql);
 			if (DB::num_rows($result)) {
 				warning(_("Since there are already ballot applications you can not deactivate ballot voting!"));

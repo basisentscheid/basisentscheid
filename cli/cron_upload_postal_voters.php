@@ -20,7 +20,7 @@ define('DOCROOT', "../");
 require DOCROOT."inc/common_cli.php";
 
 // active between postage set and ballot preparation started
-$sql_period = "SELECT * FROM periods WHERE postage = TRUE AND state != 'ballot_preparation'";
+$sql_period = "SELECT * FROM period WHERE postage = TRUE AND state != 'ballot_preparation'";
 $result_period = DB::query($sql_period);
 while ( $period = DB::fetch_object($result_period, "Period") ) {
 	/** @var $period Period */

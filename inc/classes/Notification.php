@@ -119,7 +119,7 @@ class Notification {
 	 */
 	private function recipients($recipients) {
 
-		$sql = "SELECT DISTINCT mail FROM members ";
+		$sql = "SELECT DISTINCT mail FROM member ";
 
 		if (is_array($recipients)) {
 			if (!$recipients) return array();
@@ -127,17 +127,17 @@ class Notification {
 		} else {
 
 			$sql .= "
-				JOIN notify               ON          notify.member = members.id
-				LEFT JOIN members_ngroups ON members_ngroups.member = members.id
-				LEFT JOIN participants    ON    participants.member = members.id
-				LEFT JOIN supporters      ON      supporters.member = members.id
-				WHERE members.mail IS NOT NULL
+				JOIN notify             ON        notify.member = member.id
+				LEFT JOIN member_ngroup ON member_ngroup.member = member.id
+				LEFT JOIN participant   ON   participant.member = member.id
+				LEFT JOIN supporter     ON     supporter.member = member.id
+				WHERE member.mail IS NOT NULL
 					AND notify.".$this->type."=TRUE
 					AND ( notify.interest='all'";
 
 			if ($this->period) {
 				$sql .= "
-						OR (notify.interest='ngroups' AND members_ngroups.ngroup=".intval($this->period->id).")";
+						OR (notify.interest='ngroups' AND member_ngroup.ngroup=".intval($this->period->id).")";
 			}
 
 			$areas     = array();
@@ -163,14 +163,14 @@ class Notification {
 			if ($areas) {
 				$areas = join(",", array_unique($areas));
 				$sql .= "
-						OR (notify.interest='participant' AND participants.area IN (".$areas."))";
+						OR (notify.interest='participant' AND participant.area IN (".$areas."))";
 			}
 
 			if ($proposals) {
 				$proposals = join(",", $proposals);
 				$sql .= "
-						OR (notify.interest='supporter' AND supporters.proposal IN (".$proposals."))
-						OR (notify.interest='proponent' AND supporters.proposal IN (".$proposals.") AND supporters.proponent_confirmed=TRUE)";
+						OR (notify.interest='supporter' AND supporter.proposal IN (".$proposals."))
+						OR (notify.interest='proponent' AND supporter.proposal IN (".$proposals.") AND supporter.proponent_confirmed=TRUE)";
 			}
 
 			$sql .= ")";
@@ -179,7 +179,7 @@ class Notification {
 
 		// don't notify a member about his own actions
 		if (Login::$member) {
-			$sql .= " AND members.id != ".intval(Login::$member->id);
+			$sql .= " AND member.id != ".intval(Login::$member->id);
 		}
 
 		return DB::fetchfieldarray($sql);

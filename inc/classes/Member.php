@@ -45,7 +45,7 @@ class Member extends Relation {
 	public function create() {
 		$fields_values = array('invite' => $this->invite, 'entitled' => $this->entitled);
 		$extra = array('invite_expiry' => "now() + interval '1 month'");
-		return DB::insert("members", $fields_values, $this->id, $extra);
+		return DB::insert("member", $fields_values, $this->id, $extra);
 	}
 
 
@@ -58,7 +58,7 @@ class Member extends Relation {
 	public function entitled($ngroup) {
 		if (!$this->entitled) return false;
 		if ($this->ngroups===null) {
-			$sql = "SELECT ngroup FROM members_ngroups WHERE member=".intval($this->id);
+			$sql = "SELECT ngroup FROM member_ngroup WHERE member=".intval($this->id);
 			$this->ngroups = DB::fetchfieldarray($sql);
 		}
 		return in_array($ngroup, $this->ngroups);
@@ -74,7 +74,7 @@ class Member extends Relation {
 	public function lowest_ngroup(array $ngroups) {
 
 		// get member ngroups
-		$sql = "SELECT ngroup FROM members_ngroups WHERE member=".intval($this->id);
+		$sql = "SELECT ngroup FROM member_ngroup WHERE member=".intval($this->id);
 		$member_ngroups = DB::fetchfieldarray($sql);
 
 		// find lowest in member ngroups
@@ -184,7 +184,7 @@ class Member extends Relation {
 		DB::transaction_start();
 		do {
 			$this->mail_code = Login::generate_token(16);
-			$sql = "SELECT id FROM members WHERE mail_code=".DB::esc($this->mail_code);
+			$sql = "SELECT id FROM member WHERE mail_code=".DB::esc($this->mail_code);
 		} while ( DB::numrows($sql) );
 		// The member has 7 days to confirm the email address.
 		$this->update(['mail_unconfirmed', 'mail_code'], "mail_code_expiry = now() + interval '7 days'");
@@ -344,12 +344,12 @@ class Member extends Relation {
 
 		DB::transaction_start();
 
-		$sql = "SELECT ngroup FROM members_ngroups WHERE member=".intval($this->id);
+		$sql = "SELECT ngroup FROM members_ngroup WHERE member=".intval($this->id);
 		$existing_ngroups = DB::fetchfieldarray($sql);
 
 		$insert_ngroups = array_diff($ngroups, $existing_ngroups);
 		if ($insert_ngroups) {
-			$sql = "INSERT INTO members_ngroups (member, ngroup) VALUES ";
+			$sql = "INSERT INTO members_ngroup (member, ngroup) VALUES ";
 			resetfirst();
 			foreach ($insert_ngroups as $insert_ngroup) {
 				if (!first()) $sql .= ", ";
@@ -360,7 +360,7 @@ class Member extends Relation {
 
 		$delete_ngroups = array_diff($existing_ngroups, $ngroups);
 		if ($delete_ngroups) {
-			$sql = "DELETE FROM members_ngroups
+			$sql = "DELETE FROM member_ngroup
 				WHERE member=".intval($this->id)."
 					AND ngroup IN (".join(", ", array_map("intval", $delete_ngroups)).")";
 			DB::query($sql);

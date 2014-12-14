@@ -13,7 +13,6 @@ Login::access("admin");
 $ngroup = Ngroup::get();
 
 $d = new DbTableAdmin("Area");
-$d->dbtable = "areas";
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
 	array("name", _("Name"), 'size'=>30),
@@ -23,7 +22,7 @@ $d->enable_filter = false;
 
 $d->global_where = array('ngroup' => $ngroup->id);
 
-$d->reference_check = array("SELECT id FROM issues WHERE area=%d");
+$d->reference_check = array("SELECT id FROM issue WHERE area=%d");
 
 $d->msg_add_record              = _("New area");
 $d->msg_edit_record             = _("Edit area %id%");

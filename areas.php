@@ -49,14 +49,14 @@ $entitled = ( Login::$member and Login::$member->entitled($ngroup->id) );
 <?
 
 if ($entitled) {
-	$sql = "SELECT areas.*, participants.activated
-		FROM areas
-		LEFT JOIN participants ON areas.id = participants.area AND participants.member=".intval(Login::$member->id);
+	$sql = "SELECT area.*, participant.activated
+		FROM area
+		LEFT JOIN participant ON area.id = participant.area AND participant.member=".intval(Login::$member->id);
 } else {
-	$sql = "SELECT areas.*
-		FROM areas";
+	$sql = "SELECT area.*
+		FROM area";
 }
-$sql .= "	WHERE ngroup = ".intval($ngroup->id)." ORDER BY areas.name, areas.id";
+$sql .= "	WHERE ngroup = ".intval($ngroup->id)." ORDER BY area.name, area.id";
 $result = DB::query($sql);
 while ($row = DB::fetch_assoc($result)) {
 

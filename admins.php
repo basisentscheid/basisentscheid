@@ -11,7 +11,6 @@ require "inc/common.php";
 Login::access("admin");
 
 $d = new DbTableAdmin("Admin");
-$d->dbtable = "admins";
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
 	array("username", _("Username")),

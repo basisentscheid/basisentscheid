@@ -24,7 +24,7 @@ if ($action) {
 		// become member of ngroups
 		if (!empty($_POST['ngroups'])) {
 			foreach ( $_POST['ngroups'] as $ngroup ) {
-				DB::insert("members_ngroups", array('member'=>$member->id, 'ngroup'=>$ngroup));
+				DB::insert("member_ngroup", array('member'=>$member->id, 'ngroup'=>$ngroup));
 			}
 		}
 
@@ -41,7 +41,7 @@ html_head(_("Create new member"));
 
 form(BN);
 input_hidden("action", "create");
-$sql = "SELECT * FROM ngroups";
+$sql = "SELECT * FROM ngroup";
 $result = DB::query($sql);
 while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
 	input_checkbox("ngroups[]", $ngroup->id, true);

@@ -16,7 +16,7 @@ if (!empty($_REQUEST['code'])) {
 
 	$code = $_REQUEST['code'];
 
-	$sql = "SELECT * FROM members WHERE password_reset_code=".DB::esc($code)." AND password_reset_code_expiry > now()";
+	$sql = "SELECT * FROM member WHERE password_reset_code=".DB::esc($code)." AND password_reset_code_expiry > now()";
 	$result = DB::query($sql);
 	$member = DB::fetch_object($result, "Member");
 

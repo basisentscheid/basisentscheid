@@ -45,7 +45,7 @@ class Ngroup extends Relation {
 		}
 
 		// redirect to default ngroup
-		$default_ngroup = DB::fetchfield("SELECT id FROM ngroups WHERE active=TRUE ORDER BY id LIMIT 1");
+		$default_ngroup = DB::fetchfield("SELECT id FROM ngroup WHERE active=TRUE ORDER BY id LIMIT 1");
 		if (!$default_ngroup) error(_("No active groups found"));
 		redirect(BN."?ngroup=".$default_ngroup);
 	}
@@ -141,8 +141,8 @@ class Ngroup extends Relation {
 	 */
 	public static function options($parent) {
 		$options = array();
-		$sql = "SELECT ngroups.*, member FROM ngroups
-			LEFT JOIN members_ngroups ON members_ngroups.ngroup = ngroups.id AND members_ngroups.member = ".intval(Login::$member->id)."
+		$sql = "SELECT ngroup.*, member FROM ngroup
+			LEFT JOIN member_ngroup ON member_ngroup.ngroup = ngroup.id AND member_ngroup.member = ".intval(Login::$member->id)."
 			ORDER BY name";
 		$result = DB::query($sql);
 		$ngroups = array();
@@ -168,9 +168,9 @@ class Ngroup extends Relation {
 	 * @return integer
 	 */
 	public function proposals_count() {
-		$sql = "SELECT count(1) FROM proposals
-			JOIN issues ON proposals.issue = issues.id
- 			JOIN areas ON issues.area = areas.id
+		$sql = "SELECT count(1) FROM proposal
+			JOIN issue ON proposal.issue = issue.id
+ 			JOIN area ON issue.area = area.id
  			WHERE ngroup=".intval($this->id);
 		return DB::fetchfield($sql);
 	}
@@ -182,7 +182,7 @@ class Ngroup extends Relation {
 	 * @return integer
 	 */
 	public function periods_count() {
-		$sql = "SELECT count(1) FROM periods
+		$sql = "SELECT count(1) FROM period
  			WHERE ngroup=".intval($this->id);
 		return DB::fetchfield($sql);
 	}
@@ -195,12 +195,12 @@ class Ngroup extends Relation {
 	 */
 	public function not_yet_voted_issues_count() {
 		if (!Login::$member) return;
-		$sql = "SELECT count(1) FROM vote_tokens
-			JOIN issues ON issues.id = vote_tokens.issue AND issues.state = 'voting'
- 			JOIN areas ON issues.area = areas.id AND areas.ngroup = ".intval($this->id)."
- 			LEFT JOIN vote_votes USING (token)
-			WHERE vote_tokens.member = ".intval(Login::$member->id)."
-				AND vote_votes.vote IS NULL";
+		$sql = "SELECT count(1) FROM vote_token
+			JOIN issue ON issue.id = vote_token.issue AND issue.state = 'voting'
+ 			JOIN area ON issue.area = area.id AND area.ngroup = ".intval($this->id)."
+ 			LEFT JOIN vote_vote USING (token)
+			WHERE vote_token.member = ".intval(Login::$member->id)."
+				AND vote_vote.vote IS NULL";
 		return DB::fetchfield($sql);
 	}
 

@@ -12,7 +12,7 @@ require "inc/common.php";
 $invite = trim(@$_GET['invite']);
 
 if ($invite) {
-	$sql = "SELECT *, now() > invite_expiry AS invite_expired FROM members WHERE invite=".DB::esc($invite)." AND activated IS NULL";
+	$sql = "SELECT *, now() > invite_expiry AS invite_expired FROM member WHERE invite=".DB::esc($invite)." AND activated IS NULL";
 	$result = DB::query($sql);
 	$member = DB::fetch_object($result, "Member");
 	if ($member) {

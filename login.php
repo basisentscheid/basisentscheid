@@ -17,10 +17,10 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 	$username = trim($_POST['username']);
 	if (lefteq($username, "#")) {
 		$scope = "admin";
-		$sql = "SELECT id, password FROM admins WHERE username=".DB::esc(substr($username, 1));
+		$sql = "SELECT id, password FROM admin WHERE username=".DB::esc(substr($username, 1));
 	} else {
 		$scope = "member";
-		$sql = "SELECT id, password FROM members WHERE username=".DB::esc($username);
+		$sql = "SELECT id, password FROM member WHERE username=".DB::esc($username);
 	}
 	$result = DB::query($sql);
 	if ( $row = DB::fetch_assoc($result) ) {

@@ -29,21 +29,21 @@ html_head("Willkommen auf der Testinstallation der Basisentscheid-Software!", tr
 $dates = array();
 $info = array();
 
-$sql = "SELECT * FROM periods WHERE debate > now()";
+$sql = "SELECT * FROM period WHERE debate > now()";
 $result = DB::query($sql);
 while ( $period = DB::fetch_object($result, "Period") ) {
 	$dates[] = $period->debate;
 	$info[] = array("debate", $period);
 }
 
-$sql = "SELECT * FROM periods WHERE voting > now()";
+$sql = "SELECT * FROM period WHERE voting > now()";
 $result = DB::query($sql);
 while ( $period = DB::fetch_object($result, "Period") ) {
 	$dates[] = $period->voting;
 	$info[] = array("voting", $period);
 }
 
-$sql = "SELECT * FROM periods WHERE counting > now()";
+$sql = "SELECT * FROM period WHERE counting > now()";
 $result = DB::query($sql);
 while ( $period = DB::fetch_object($result, "Period") ) {
 	$dates[] = $period->counting;
@@ -95,12 +95,12 @@ if ($entitled) {
 <?
 }
 if ($entitled) {
-	$sql = "SELECT ngroups.*, members_ngroups.member
-		FROM ngroups
-		LEFT JOIN members_ngroups ON ngroups.id = members_ngroups.ngroup AND members_ngroups.member = ".intval(Login::$member->id);
+	$sql = "SELECT ngroup.*, member_ngroup.member
+		FROM ngroup
+		LEFT JOIN member_ngroup ON ngroup.id = member_ngroup.ngroup AND member_ngroup.member = ".intval(Login::$member->id);
 } else {
 	$sql = "SELECT *
-		FROM ngroups";
+		FROM ngroup";
 }
 $sql .= " ORDER BY name";
 $result = DB::query($sql);

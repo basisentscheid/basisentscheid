@@ -30,7 +30,7 @@ $area2->create();
 
 // period in finished state
 
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
+$sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting, ngroup)
 	VALUES (
 		now() - interval '4 weeks',
 		now() - interval '2 weeks',
@@ -57,7 +57,7 @@ cron();
 
 // period in voting state
 
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
+$sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting, ngroup)
 	VALUES (
 		now() - interval '2 weeks',
 		now() - interval '3 days',
@@ -99,7 +99,7 @@ for ( $i=6; $i<=25; $i++ ) {
 	$proposal10->add_support();
 }
 
-$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
+$sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting, ngroup)
 	VALUES (
 		now(),
 		now() + interval '2 weeks',
@@ -142,7 +142,7 @@ for ( $i=2; $i<=5; $i++ ) {
 }
 $proposal->submit();
 // time warp the proposal in the past
-DB::query("UPDATE proposals SET submitted = now() - interval '7 months' WHERE id=".intval($proposal->id));
+DB::query("UPDATE proposal SET submitted = now() - interval '7 months' WHERE id=".intval($proposal->id));
 $proposal->read();
 cron();
 

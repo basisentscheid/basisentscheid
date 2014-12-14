@@ -212,11 +212,11 @@ if ($action) {
 		}
 		$argument = new Argument($_POST['argument']);
 		if (!$argument->id) {
-			warning("This argument does not exist.");
+			warning(_("This argument does not exist."));
 			redirect();
 		}
 		if ($argument->member==Login::$member->id) {
-			warning("Rating your own arguments is not allowed.");
+			warning(_("Rating your own arguments is not allowed."));
 			redirect();
 		}
 		if ( !$argument->set_rating(intval($_POST['rating'])) ) redirect();

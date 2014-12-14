@@ -209,7 +209,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 	if ($issue) {
 		echo h($issue->area()->name);
 	} else {
-		$sql = "SELECT id, name FROM areas WHERE ngroup = ".intval($ngroup_id)." ORDER BY name";
+		$sql = "SELECT id, name FROM area WHERE ngroup = ".intval($ngroup_id)." ORDER BY name";
 		$result = DB::query($sql);
 		$options = array();
 		while ( $row = DB::fetch_assoc($result) ) {

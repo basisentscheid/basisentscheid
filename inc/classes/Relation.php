@@ -42,7 +42,7 @@ abstract class Relation {
 			trigger_error("Constructor called with array", E_USER_ERROR);
 		}
 
-		$this->table = strtolower(get_class($this))."s";
+		$this->table = strtolower(get_class($this));
 
 		if ($from_fetch_object) {
 			foreach ( $this->boolean_fields as $key ) DB::to_bool($this->$key);

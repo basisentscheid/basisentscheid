@@ -41,10 +41,10 @@ function random_votes(Issue $issue) {
 			);
 		}
 	}
-	$sql = "SELECT * FROM members
- 		JOIN members_ngroups ON members.id = members_ngroups.member
- 		JOIN vote_tokens ON vote_tokens.member = members.id AND vote_tokens.issue = ".intval($issue->id)."
-		WHERE members_ngroups.ngroup = ".$issue->area()->ngroup." AND members.entitled = TRUE
+	$sql = "SELECT * FROM member
+ 		JOIN member_ngroup ON member.id = member_ngroup.member
+ 		JOIN vote_token ON vote_token.member = member.id AND vote_token.issue = ".intval($issue->id)."
+		WHERE member_ngroup.ngroup = ".$issue->area()->ngroup." AND member.entitled = TRUE
 		LIMIT ".rand(10, 100);
 	$result = DB::query($sql);
 	while ( Login::$member = DB::fetch_object($result, "Member") ) {
@@ -72,7 +72,7 @@ function set_unique_username(Member $member, $username) {
 	$member->username = $username;
 	$suffix = 0;
 	do {
-		$sql = "SELECT count(1) FROM members WHERE username=".DB::esc($member->username);
+		$sql = "SELECT count(1) FROM member WHERE username=".DB::esc($member->username);
 		if ( $exists = DB::fetchfield($sql) ) {
 			$member->username = $username . ++$suffix;
 		}
@@ -113,7 +113,7 @@ function login($id) {
 	Login::$member->password = $password;
 	$update_fields = array('username', 'password', 'entitled');
 	Login::$member->update($update_fields, 'activated=now()');
-	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>$ngroup->id));
+	DB::insert("member_ngroup", array('member'=>Login::$member->id, 'ngroup'=>$ngroup->id));
 
 	$members[$id] = Login::$member;
 
@@ -129,7 +129,7 @@ function login($id) {
  */
 function new_ngroup($name, $minimum_population) {
 	$ngroup = new Ngroup;
-	$ngroup->id = DB::fetchfield("SELECT max(id) FROM ngroups") + 1;
+	$ngroup->id = DB::fetchfield("SELECT max(id) FROM ngroup") + 1;
 	$ngroup->name = $name." ".$ngroup->id;
 	$ngroup->active = true;
 	$ngroup->minimum_population = $minimum_population;

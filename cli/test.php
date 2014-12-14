@@ -269,7 +269,7 @@ function create_case($case, $stopcase) {
 		if ($proposal->state=="admitted" or $proposal2->state=="admitted") {
 
 			// create period
-			$sql = "INSERT INTO periods (debate, preparation, voting, counting, ballot_voting, ngroup)
+			$sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting, ngroup)
 			VALUES (
 				now() + interval '1 week',
 				now() + interval '2 weeks',
@@ -462,7 +462,7 @@ function create_member($username) {
 	//$update_fields[] = "mail";
 
 	Login::$member->update($update_fields, 'activated=now()');
-	DB::insert("members_ngroups", array('member'=>Login::$member->id, 'ngroup'=>$ngroup->id));
+	DB::insert("member_ngroup", array('member'=>Login::$member->id, 'ngroup'=>$ngroup->id));
 
 	// activate all notifications
 	foreach ( Notification::$default_settings as $interest => $types ) {
@@ -488,7 +488,7 @@ function time_warp(Issue $issue, $interval="1 hour") {
 	$interval = "interval '".$interval."'";
 
 	foreach ( array('submitted', 'admitted', 'cancelled', 'revoke') as $column ) {
-		$sql = "UPDATE proposals SET
+		$sql = "UPDATE proposal SET
 				$column = $column - $interval
 			WHERE issue=".intval($issue->id)."
 				AND $column IS NOT NULL";
@@ -496,14 +496,14 @@ function time_warp(Issue $issue, $interval="1 hour") {
 	}
 
 	foreach ( array('debate_started', 'preparation_started', 'voting_started', 'counting_started', 'clear', 'cleared') as $column ) {
-		$sql = "UPDATE issues SET
+		$sql = "UPDATE issue SET
 				$column = $column - $interval
 			WHERE id=".intval($issue->id)."
 				AND $column IS NOT NULL";
 		DB::query($sql);
 	}
 
-	$sql = "UPDATE periods SET
+	$sql = "UPDATE period SET
 			debate      = debate      - $interval,
 			preparation = preparation - $interval,
 			voting      = voting      - $interval,

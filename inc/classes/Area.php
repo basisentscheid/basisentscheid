@@ -34,10 +34,10 @@ class Area extends Relation {
 	 * activate area participation
 	 */
 	public function activate_participation() {
-		$sql = "UPDATE participants SET activated=current_date WHERE member=".intval(Login::$member->id)." AND area=".intval($this->id);
+		$sql = "UPDATE participant SET activated=current_date WHERE member=".intval(Login::$member->id)." AND area=".intval($this->id);
 		$result = DB::query($sql);
 		if ( !DB::affected_rows($result) ) {
-			$sql = "INSERT INTO participants (member, area) VALUES (".intval(Login::$member->id).", ".intval($this->id).")";
+			$sql = "INSERT INTO participant (member, area) VALUES (".intval(Login::$member->id).", ".intval($this->id).")";
 			DB::query($sql);
 		}
 		$this->update_participants_cache();
@@ -48,7 +48,7 @@ class Area extends Relation {
 	 * deactivate area participation
 	 */
 	public function deactivate_participation() {
-		$sql = "DELETE FROM participants WHERE member=".intval(Login::$member->id)." AND area=".intval($this->id);
+		$sql = "DELETE FROM participant WHERE member=".intval(Login::$member->id)." AND area=".intval($this->id);
 		DB::query($sql);
 		$this->update_participants_cache();
 	}
@@ -59,10 +59,10 @@ class Area extends Relation {
 	 */
 	function update_participants_cache() {
 
-		$sql = "SELECT COUNT(1) FROM participants WHERE area=".intval($this->id);
+		$sql = "SELECT COUNT(1) FROM participant WHERE area=".intval($this->id);
 		$count = DB::fetchfield($sql);
 
-		$sql = "UPDATE areas SET participants=".intval($count)." WHERE id=".intval($this->id);
+		$sql = "UPDATE area SET participants=".intval($count)." WHERE id=".intval($this->id);
 		DB::query($sql);
 
 	}

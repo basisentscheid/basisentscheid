@@ -86,10 +86,10 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: admins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: admin; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE admins (
+CREATE TABLE admin (
     id integer NOT NULL,
     username character varying(32) NOT NULL,
     password character varying(123) NOT NULL
@@ -97,10 +97,10 @@ CREATE TABLE admins (
 
 
 --
--- Name: admins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: admin_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE admins_id_seq
+CREATE SEQUENCE admin_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -109,17 +109,17 @@ CREATE SEQUENCE admins_id_seq
 
 
 --
--- Name: admins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: admin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE admins_id_seq OWNED BY admins.id;
+ALTER SEQUENCE admin_id_seq OWNED BY admin.id;
 
 
 --
--- Name: areas; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: area; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE areas (
+CREATE TABLE area (
     id integer NOT NULL,
     ngroup integer NOT NULL,
     name character varying(64) NOT NULL,
@@ -128,17 +128,17 @@ CREATE TABLE areas (
 
 
 --
--- Name: COLUMN areas.participants; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN area.participants; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN areas.participants IS 'cache';
+COMMENT ON COLUMN area.participants IS 'cache';
 
 
 --
--- Name: areas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: area_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE areas_id_seq
+CREATE SEQUENCE area_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -147,17 +147,17 @@ CREATE SEQUENCE areas_id_seq
 
 
 --
--- Name: areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: area_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE areas_id_seq OWNED BY areas.id;
+ALTER SEQUENCE area_id_seq OWNED BY area.id;
 
 
 --
--- Name: arguments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: argument; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE arguments (
+CREATE TABLE argument (
     id integer NOT NULL,
     proposal integer NOT NULL,
     parent integer,
@@ -173,10 +173,10 @@ CREATE TABLE arguments (
 
 
 --
--- Name: arguments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: argument_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE arguments_id_seq
+CREATE SEQUENCE argument_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -185,17 +185,17 @@ CREATE SEQUENCE arguments_id_seq
 
 
 --
--- Name: arguments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: argument_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE arguments_id_seq OWNED BY arguments.id;
+ALTER SEQUENCE argument_id_seq OWNED BY argument.id;
 
 
 --
--- Name: ballots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ballot; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE ballots (
+CREATE TABLE ballot (
     id integer NOT NULL,
     period integer NOT NULL,
     name text NOT NULL,
@@ -208,17 +208,17 @@ CREATE TABLE ballots (
 
 
 --
--- Name: COLUMN ballots.voters; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN ballot.voters; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN ballots.voters IS 'cache';
+COMMENT ON COLUMN ballot.voters IS 'cache';
 
 
 --
--- Name: ballots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: ballot_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE ballots_id_seq
+CREATE SEQUENCE ballot_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -227,10 +227,10 @@ CREATE SEQUENCE ballots_id_seq
 
 
 --
--- Name: ballots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: ballot_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE ballots_id_seq OWNED BY ballots.id;
+ALTER SEQUENCE ballot_id_seq OWNED BY ballot.id;
 
 
 --
@@ -243,10 +243,10 @@ CREATE TABLE cron_lock (
 
 
 --
--- Name: drafts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: draft; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE drafts (
+CREATE TABLE draft (
     id integer NOT NULL,
     proposal integer NOT NULL,
     title text NOT NULL,
@@ -258,17 +258,17 @@ CREATE TABLE drafts (
 
 
 --
--- Name: COLUMN drafts.author; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN draft.author; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN drafts.author IS 'NULL = admin';
+COMMENT ON COLUMN draft.author IS 'NULL = admin';
 
 
 --
--- Name: drafts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: draft_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE drafts_id_seq
+CREATE SEQUENCE draft_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -277,17 +277,17 @@ CREATE SEQUENCE drafts_id_seq
 
 
 --
--- Name: drafts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: draft_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE drafts_id_seq OWNED BY drafts.id;
+ALTER SEQUENCE draft_id_seq OWNED BY draft.id;
 
 
 --
--- Name: ngroups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ngroup; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE ngroups (
+CREATE TABLE ngroup (
     id integer NOT NULL,
     parent integer,
     name text NOT NULL,
@@ -297,10 +297,10 @@ CREATE TABLE ngroups (
 
 
 --
--- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: group_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE groups_id_seq
+CREATE SEQUENCE group_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -309,17 +309,17 @@ CREATE SEQUENCE groups_id_seq
 
 
 --
--- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE groups_id_seq OWNED BY ngroups.id;
+ALTER SEQUENCE group_id_seq OWNED BY ngroup.id;
 
 
 --
--- Name: issues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: issue; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE issues (
+CREATE TABLE issue (
     id integer NOT NULL,
     period integer,
     area integer NOT NULL,
@@ -338,10 +338,10 @@ CREATE TABLE issues (
 
 
 --
--- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: issue_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE issues_id_seq
+CREATE SEQUENCE issue_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -350,17 +350,17 @@ CREATE SEQUENCE issues_id_seq
 
 
 --
--- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: issue_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE issues_id_seq OWNED BY issues.id;
+ALTER SEQUENCE issue_id_seq OWNED BY issue.id;
 
 
 --
--- Name: members; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: member; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE members (
+CREATE TABLE member (
     id integer NOT NULL,
     invite character(24) NOT NULL,
     invite_expiry timestamp with time zone NOT NULL,
@@ -384,17 +384,17 @@ CREATE TABLE members (
 
 
 --
--- Name: COLUMN members.fingerprint; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN member.fingerprint; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN members.fingerprint IS 'PGP fingerprint for email encryption';
+COMMENT ON COLUMN member.fingerprint IS 'PGP fingerprint for email encryption';
 
 
 --
--- Name: members_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: member_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE members_id_seq
+CREATE SEQUENCE member_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -403,17 +403,17 @@ CREATE SEQUENCE members_id_seq
 
 
 --
--- Name: members_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: member_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE members_id_seq OWNED BY members.id;
+ALTER SEQUENCE member_id_seq OWNED BY member.id;
 
 
 --
--- Name: members_ngroups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: member_ngroup; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE members_ngroups (
+CREATE TABLE member_ngroup (
     member integer NOT NULL,
     ngroup integer NOT NULL
 );
@@ -436,10 +436,10 @@ CREATE TABLE notify (
 
 
 --
--- Name: offlinevoters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: offlinevoter; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE offlinevoters (
+CREATE TABLE offlinevoter (
     period integer NOT NULL,
     member integer NOT NULL,
     ballot integer,
@@ -448,17 +448,17 @@ CREATE TABLE offlinevoters (
 
 
 --
--- Name: COLUMN offlinevoters.ballot; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN offlinevoter.ballot; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN offlinevoters.ballot IS 'NULL = postal voting';
+COMMENT ON COLUMN offlinevoter.ballot IS 'NULL = postal voting';
 
 
 --
--- Name: participants; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: participant; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE participants (
+CREATE TABLE participant (
     member integer NOT NULL,
     area integer NOT NULL,
     activated date DEFAULT ('now'::text)::date NOT NULL
@@ -466,10 +466,10 @@ CREATE TABLE participants (
 
 
 --
--- Name: periods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: period; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE periods (
+CREATE TABLE period (
     id integer NOT NULL,
     ngroup integer NOT NULL,
     debate timestamp with time zone NOT NULL,
@@ -485,17 +485,17 @@ CREATE TABLE periods (
 
 
 --
--- Name: COLUMN periods.postage; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN period.postage; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN periods.postage IS 'postage for postal voting has started';
+COMMENT ON COLUMN period.postage IS 'postage for postal voting has started';
 
 
 --
--- Name: periods_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: period_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE periods_id_seq
+CREATE SEQUENCE period_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -504,17 +504,17 @@ CREATE SEQUENCE periods_id_seq
 
 
 --
--- Name: periods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: period_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE periods_id_seq OWNED BY periods.id;
+ALTER SEQUENCE period_id_seq OWNED BY period.id;
 
 
 --
--- Name: proposals; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: proposal; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE proposals (
+CREATE TABLE proposal (
     id integer NOT NULL,
     issue integer NOT NULL,
     title text NOT NULL,
@@ -537,24 +537,24 @@ CREATE TABLE proposals (
 
 
 --
--- Name: COLUMN proposals.supporters; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN proposal.supporters; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN proposals.supporters IS 'cache';
-
-
---
--- Name: COLUMN proposals.revoke; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN proposals.revoke IS 'date to revoke proposal if it has then not the required number of proponents';
+COMMENT ON COLUMN proposal.supporters IS 'cache';
 
 
 --
--- Name: proposals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: COLUMN proposal.revoke; Type: COMMENT; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE proposals_id_seq
+COMMENT ON COLUMN proposal.revoke IS 'date to revoke proposal if it has then not the required number of proponents';
+
+
+--
+-- Name: proposal_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE proposal_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -563,10 +563,10 @@ CREATE SEQUENCE proposals_id_seq
 
 
 --
--- Name: proposals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: proposal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
+ALTER SEQUENCE proposal_id_seq OWNED BY proposal.id;
 
 
 --
@@ -591,10 +591,10 @@ CREATE TABLE seen (
 
 
 --
--- Name: supporters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supporter; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE supporters (
+CREATE TABLE supporter (
     proposal integer NOT NULL,
     member integer NOT NULL,
     anonymous boolean DEFAULT false NOT NULL,
@@ -605,10 +605,10 @@ CREATE TABLE supporters (
 
 
 --
--- Name: test_dbtableadmins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: test_dbtableadmin; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE test_dbtableadmins (
+CREATE TABLE test_dbtableadmin (
     id integer NOT NULL,
     manualorder integer DEFAULT 0 NOT NULL,
     text text NOT NULL,
@@ -635,14 +635,14 @@ CREATE SEQUENCE test_dbtableadmin_id_seq
 -- Name: test_dbtableadmin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmins.id;
+ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmin.id;
 
 
 --
--- Name: vote_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: vote_token; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE vote_tokens (
+CREATE TABLE vote_token (
     member integer NOT NULL,
     issue integer NOT NULL,
     token character(8) NOT NULL
@@ -650,10 +650,10 @@ CREATE TABLE vote_tokens (
 
 
 --
--- Name: vote_votes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: vote_vote; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE vote_votes (
+CREATE TABLE vote_vote (
     token character(8) NOT NULL,
     vote text,
     votetime timestamp with time zone DEFAULT now() NOT NULL
@@ -661,10 +661,10 @@ CREATE TABLE vote_votes (
 
 
 --
--- Name: votingmode_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: votingmode_token; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE votingmode_tokens (
+CREATE TABLE votingmode_token (
     member integer NOT NULL,
     issue integer NOT NULL,
     token character(8) NOT NULL
@@ -672,10 +672,10 @@ CREATE TABLE votingmode_tokens (
 
 
 --
--- Name: votingmode_votes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: votingmode_vote; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE votingmode_votes (
+CREATE TABLE votingmode_vote (
     token character(8) NOT NULL,
     demand boolean NOT NULL,
     votetime timestamp with time zone DEFAULT now() NOT NULL
@@ -686,77 +686,77 @@ CREATE TABLE votingmode_votes (
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admins ALTER COLUMN id SET DEFAULT nextval('admins_id_seq'::regclass);
+ALTER TABLE ONLY admin ALTER COLUMN id SET DEFAULT nextval('admin_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY areas ALTER COLUMN id SET DEFAULT nextval('areas_id_seq'::regclass);
+ALTER TABLE ONLY area ALTER COLUMN id SET DEFAULT nextval('area_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY arguments ALTER COLUMN id SET DEFAULT nextval('arguments_id_seq'::regclass);
+ALTER TABLE ONLY argument ALTER COLUMN id SET DEFAULT nextval('argument_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ballots ALTER COLUMN id SET DEFAULT nextval('ballots_id_seq'::regclass);
+ALTER TABLE ONLY ballot ALTER COLUMN id SET DEFAULT nextval('ballot_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY drafts ALTER COLUMN id SET DEFAULT nextval('drafts_id_seq'::regclass);
+ALTER TABLE ONLY draft ALTER COLUMN id SET DEFAULT nextval('draft_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY issues ALTER COLUMN id SET DEFAULT nextval('issues_id_seq'::regclass);
+ALTER TABLE ONLY issue ALTER COLUMN id SET DEFAULT nextval('issue_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY members ALTER COLUMN id SET DEFAULT nextval('members_id_seq'::regclass);
+ALTER TABLE ONLY member ALTER COLUMN id SET DEFAULT nextval('member_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY periods ALTER COLUMN id SET DEFAULT nextval('periods_id_seq'::regclass);
+ALTER TABLE ONLY period ALTER COLUMN id SET DEFAULT nextval('period_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY proposals ALTER COLUMN id SET DEFAULT nextval('proposals_id_seq'::regclass);
+ALTER TABLE ONLY proposal ALTER COLUMN id SET DEFAULT nextval('proposal_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY test_dbtableadmins ALTER COLUMN id SET DEFAULT nextval('test_dbtableadmin_id_seq'::regclass);
+ALTER TABLE ONLY test_dbtableadmin ALTER COLUMN id SET DEFAULT nextval('test_dbtableadmin_id_seq'::regclass);
 
 
 --
 -- Name: admins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY admins
+ALTER TABLE ONLY admin
     ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
 
 
@@ -764,7 +764,7 @@ ALTER TABLE ONLY admins
 -- Name: admins_username_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY admins
+ALTER TABLE ONLY admin
     ADD CONSTRAINT admins_username_key UNIQUE (username);
 
 
@@ -772,7 +772,7 @@ ALTER TABLE ONLY admins
 -- Name: areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY areas
+ALTER TABLE ONLY area
     ADD CONSTRAINT areas_pkey PRIMARY KEY (id);
 
 
@@ -780,7 +780,7 @@ ALTER TABLE ONLY areas
 -- Name: arguments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY arguments
+ALTER TABLE ONLY argument
     ADD CONSTRAINT arguments_pkey PRIMARY KEY (id);
 
 
@@ -788,7 +788,7 @@ ALTER TABLE ONLY arguments
 -- Name: ballot_voting_demanders_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY votingmode_tokens
+ALTER TABLE ONLY votingmode_token
     ADD CONSTRAINT ballot_voting_demanders_token_key UNIQUE (token);
 
 
@@ -796,7 +796,7 @@ ALTER TABLE ONLY votingmode_tokens
 -- Name: ballots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY ballots
+ALTER TABLE ONLY ballot
     ADD CONSTRAINT ballots_pkey PRIMARY KEY (id);
 
 
@@ -804,7 +804,7 @@ ALTER TABLE ONLY ballots
 -- Name: drafts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY drafts
+ALTER TABLE ONLY draft
     ADD CONSTRAINT drafts_pkey PRIMARY KEY (id);
 
 
@@ -812,7 +812,7 @@ ALTER TABLE ONLY drafts
 -- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY ngroups
+ALTER TABLE ONLY ngroup
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
 
 
@@ -820,7 +820,7 @@ ALTER TABLE ONLY ngroups
 -- Name: issues_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY issues
+ALTER TABLE ONLY issue
     ADD CONSTRAINT issues_pkey PRIMARY KEY (id);
 
 
@@ -828,7 +828,7 @@ ALTER TABLE ONLY issues
 -- Name: members_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY members_ngroups
+ALTER TABLE ONLY member_ngroup
     ADD CONSTRAINT members_groups_pkey PRIMARY KEY (member, ngroup);
 
 
@@ -836,7 +836,7 @@ ALTER TABLE ONLY members_ngroups
 -- Name: members_invite_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY members
+ALTER TABLE ONLY member
     ADD CONSTRAINT members_invite_key UNIQUE (invite);
 
 
@@ -844,7 +844,7 @@ ALTER TABLE ONLY members
 -- Name: members_password_reset_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY members
+ALTER TABLE ONLY member
     ADD CONSTRAINT members_password_reset_code_key UNIQUE (password_reset_code);
 
 
@@ -852,7 +852,7 @@ ALTER TABLE ONLY members
 -- Name: members_username_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY members
+ALTER TABLE ONLY member
     ADD CONSTRAINT members_username_key UNIQUE (username);
 
 
@@ -868,7 +868,7 @@ ALTER TABLE ONLY notify
 -- Name: offline_demanders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY votingmode_tokens
+ALTER TABLE ONLY votingmode_token
     ADD CONSTRAINT offline_demanders_pkey PRIMARY KEY (member, issue);
 
 
@@ -876,7 +876,7 @@ ALTER TABLE ONLY votingmode_tokens
 -- Name: participants_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY participants
+ALTER TABLE ONLY participant
     ADD CONSTRAINT participants_pkey PRIMARY KEY (member, area);
 
 
@@ -884,7 +884,7 @@ ALTER TABLE ONLY participants
 -- Name: periods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY periods
+ALTER TABLE ONLY period
     ADD CONSTRAINT periods_pkey PRIMARY KEY (id);
 
 
@@ -892,7 +892,7 @@ ALTER TABLE ONLY periods
 -- Name: proposals_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY proposals
+ALTER TABLE ONLY proposal
     ADD CONSTRAINT proposals_pkey PRIMARY KEY (id);
 
 
@@ -916,7 +916,7 @@ ALTER TABLE ONLY seen
 -- Name: supporters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY supporters
+ALTER TABLE ONLY supporter
     ADD CONSTRAINT supporters_pkey PRIMARY KEY (proposal, member);
 
 
@@ -924,7 +924,7 @@ ALTER TABLE ONLY supporters
 -- Name: test_dbtableadmin_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY test_dbtableadmins
+ALTER TABLE ONLY test_dbtableadmin
     ADD CONSTRAINT test_dbtableadmin_pkey PRIMARY KEY (id);
 
 
@@ -932,7 +932,7 @@ ALTER TABLE ONLY test_dbtableadmins
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY members
+ALTER TABLE ONLY member
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
@@ -940,7 +940,7 @@ ALTER TABLE ONLY members
 -- Name: vote_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY vote_tokens
+ALTER TABLE ONLY vote_token
     ADD CONSTRAINT vote_tokens_pkey PRIMARY KEY (member, issue);
 
 
@@ -948,7 +948,7 @@ ALTER TABLE ONLY vote_tokens
 -- Name: vote_tokens_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY vote_tokens
+ALTER TABLE ONLY vote_token
     ADD CONSTRAINT vote_tokens_token_key UNIQUE (token);
 
 
@@ -956,7 +956,7 @@ ALTER TABLE ONLY vote_tokens
 -- Name: voters_ballot_member_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY offlinevoters
+ALTER TABLE ONLY offlinevoter
     ADD CONSTRAINT voters_ballot_member_key UNIQUE (ballot, member);
 
 
@@ -964,7 +964,7 @@ ALTER TABLE ONLY offlinevoters
 -- Name: voters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY offlinevoters
+ALTER TABLE ONLY offlinevoter
     ADD CONSTRAINT voters_pkey PRIMARY KEY (period, member);
 
 
@@ -972,88 +972,88 @@ ALTER TABLE ONLY offlinevoters
 -- Name: areas_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY areas
-    ADD CONSTRAINT areas_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY area
+    ADD CONSTRAINT areas_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroup(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: arguments_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY arguments
-    ADD CONSTRAINT arguments_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY argument
+    ADD CONSTRAINT arguments_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: arguments_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY arguments
-    ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY argument
+    ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposal(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: ballot_voting_demanders_votes_token_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY votingmode_votes
-    ADD CONSTRAINT ballot_voting_demanders_votes_token_fkey FOREIGN KEY (token) REFERENCES votingmode_tokens(token) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY votingmode_vote
+    ADD CONSTRAINT ballot_voting_demanders_votes_token_fkey FOREIGN KEY (token) REFERENCES votingmode_token(token) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: ballots_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ballots
-    ADD CONSTRAINT ballots_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY ballot
+    ADD CONSTRAINT ballots_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroup(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: ballots_period_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ballots
-    ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY ballot
+    ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES period(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: drafts_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY drafts
-    ADD CONSTRAINT drafts_author_fkey FOREIGN KEY (author) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY draft
+    ADD CONSTRAINT drafts_author_fkey FOREIGN KEY (author) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: drafts_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY drafts
-    ADD CONSTRAINT drafts_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY draft
+    ADD CONSTRAINT drafts_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposal(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: issues_area_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY issues
-    ADD CONSTRAINT issues_area_fkey FOREIGN KEY (area) REFERENCES areas(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY issue
+    ADD CONSTRAINT issues_area_fkey FOREIGN KEY (area) REFERENCES area(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: issues_period_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY issues
-    ADD CONSTRAINT issues_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY issue
+    ADD CONSTRAINT issues_period_fkey FOREIGN KEY (period) REFERENCES period(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: members_ngroups_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY members_ngroups
-    ADD CONSTRAINT members_ngroups_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY member_ngroup
+    ADD CONSTRAINT members_ngroups_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -1061,55 +1061,55 @@ ALTER TABLE ONLY members_ngroups
 --
 
 ALTER TABLE ONLY notify
-    ADD CONSTRAINT notify_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+    ADD CONSTRAINT notify_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: offlinedemanders_issue_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY votingmode_tokens
-    ADD CONSTRAINT offlinedemanders_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY votingmode_token
+    ADD CONSTRAINT offlinedemanders_issue_fkey FOREIGN KEY (issue) REFERENCES issue(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: offlinedemanders_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY votingmode_tokens
-    ADD CONSTRAINT offlinedemanders_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY votingmode_token
+    ADD CONSTRAINT offlinedemanders_user_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: participants_area_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY participants
-    ADD CONSTRAINT participants_area_fkey FOREIGN KEY (area) REFERENCES areas(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY participant
+    ADD CONSTRAINT participants_area_fkey FOREIGN KEY (area) REFERENCES area(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: participants_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY participants
-    ADD CONSTRAINT participants_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY participant
+    ADD CONSTRAINT participants_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: periods_ngroup_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY periods
-    ADD CONSTRAINT periods_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroups(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY period
+    ADD CONSTRAINT periods_ngroup_fkey FOREIGN KEY (ngroup) REFERENCES ngroup(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
 -- Name: proposals_issue_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY proposals
-    ADD CONSTRAINT proposals_issue_fkey FOREIGN KEY (issue) REFERENCES issues(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY proposal
+    ADD CONSTRAINT proposals_issue_fkey FOREIGN KEY (issue) REFERENCES issue(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -1117,7 +1117,7 @@ ALTER TABLE ONLY proposals
 --
 
 ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_argument_fkey FOREIGN KEY (argument) REFERENCES arguments(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+    ADD CONSTRAINT ratings_argument_fkey FOREIGN KEY (argument) REFERENCES argument(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -1125,7 +1125,7 @@ ALTER TABLE ONLY ratings
 --
 
 ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT ratings_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -1133,7 +1133,7 @@ ALTER TABLE ONLY ratings
 --
 
 ALTER TABLE ONLY seen
-    ADD CONSTRAINT seen_argument_fkey FOREIGN KEY (argument) REFERENCES arguments(id);
+    ADD CONSTRAINT seen_argument_fkey FOREIGN KEY (argument) REFERENCES argument(id);
 
 
 --
@@ -1141,55 +1141,55 @@ ALTER TABLE ONLY seen
 --
 
 ALTER TABLE ONLY seen
-    ADD CONSTRAINT seen_member_fkey FOREIGN KEY (member) REFERENCES members(id);
+    ADD CONSTRAINT seen_member_fkey FOREIGN KEY (member) REFERENCES member(id);
 
 
 --
 -- Name: supporters_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY supporters
-    ADD CONSTRAINT supporters_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposals(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY supporter
+    ADD CONSTRAINT supporters_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposal(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: supporters_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY supporters
-    ADD CONSTRAINT supporters_user_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY supporter
+    ADD CONSTRAINT supporters_user_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: vote_token_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vote_votes
-    ADD CONSTRAINT vote_token_fkey FOREIGN KEY (token) REFERENCES vote_tokens(token) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY vote_vote
+    ADD CONSTRAINT vote_token_fkey FOREIGN KEY (token) REFERENCES vote_token(token) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: voters_ballot_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY offlinevoters
-    ADD CONSTRAINT voters_ballot_fkey FOREIGN KEY (ballot) REFERENCES ballots(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY offlinevoter
+    ADD CONSTRAINT voters_ballot_fkey FOREIGN KEY (ballot) REFERENCES ballot(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: voters_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY offlinevoters
-    ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES members(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY offlinevoter
+    ADD CONSTRAINT voters_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: voters_period_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY offlinevoters
-    ADD CONSTRAINT voters_period_fkey FOREIGN KEY (period) REFERENCES periods(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY offlinevoter
+    ADD CONSTRAINT voters_period_fkey FOREIGN KEY (period) REFERENCES period(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --

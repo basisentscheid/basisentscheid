@@ -50,7 +50,7 @@ html_head(_("Vote"), true);
 
 list($proposals, $submitted) = $issue->proposals_list(true);
 
-$sql = "SELECT token, vote, votetime FROM vote_votes
+$sql = "SELECT token, vote, votetime FROM vote_vote
 	WHERE token=".DB::esc($token)."
 	ORDER BY votetime DESC";
 $result = DB::query($sql);
