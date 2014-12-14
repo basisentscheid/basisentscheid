@@ -7,22 +7,34 @@
  */
 
 
-abstract class Arguments {
+class Arguments {
 
 	/** @var Proposal $proposal */
 	private static $proposal;
 
 	private static $open = array();
 	private static $show = array();
-	private static $argument_parent;
+	private static $argument_parent = 0;
+
+	private $side;
 
 
 	/**
 	 *
+	 * @param string  $side "pro" or "contra"
 	 */
-	public function __static() {
+	public function __construct($side) {
+		$this->side = $side;
+	}
+
+
+	/**
+	 * class constructor
+	 */
+	public static function __static() {
 		if (isset($_GET['open']) and is_array($_GET['open'])) self::$open = $_GET['open'];
 		if (isset($_GET['show']) and is_array($_GET['show'])) self::$show = $_GET['show'];
+		if (isset($_GET['argument_parent'])) self::$argument_parent = $_GET['argument_parent'];
 	}
 
 
@@ -30,7 +42,7 @@ abstract class Arguments {
 	 *
 	 * @param Argument $argument
 	 */
-	public function redirect_append_show($argument) {
+	public static function redirect_append_show($argument) {
 		$show = self::$show;
 		$show[] = $argument->id;
 		$show = array_unique($show);
@@ -42,11 +54,8 @@ abstract class Arguments {
 	 *
 	 * @param Proposal $proposal
 	 */
-	public function display(Proposal $proposal) {
-
+	public static function display(Proposal $proposal) {
 		self::$proposal = $proposal;
-
-		self::$argument_parent = isset($_GET['argument_parent']) ? $_GET['argument_parent'] : 0;
 
 ?>
 <div class="arguments">
@@ -59,7 +68,10 @@ abstract class Arguments {
 		}
 ?>
 		<h2><?=_("Pro")?></h2>
-<? self::display_arguments("pro", "pro"); ?>
+<?
+		$arguments = new Arguments("pro");
+		$arguments->display_arguments("pro");
+?>
 	</div>
 	<div class="arguments_side arguments_contra">
 <?
@@ -70,7 +82,10 @@ abstract class Arguments {
 		}
 ?>
 		<h2><?=_("Contra")?></h2>
-<? self::display_arguments("contra", "contra"); ?>
+<?
+		$arguments = new Arguments("contra");
+		$arguments->display_arguments("contra");
+?>
 	</div>
 	<div class="clearfix"></div>
 </div>
@@ -94,12 +109,11 @@ if ( window.location.hash ) {
 	/**
 	 * list the sub-arguments for one parent-argument
 	 *
-	 * @param string  $side   "pro" or "contra"
 	 * @param mixed   $parent ID of parent argument or "pro" or "contra"
 	 * @param integer $level  (optional) folding level, top level is 0
 	 * @param boolean $full   (optional) allow showing full text
 	 */
-	private function display_arguments($side, $parent, $level=0, $full=true) {
+	private function display_arguments($parent, $level=0, $full=true) {
 
 		$sql = "SELECT arguments.*";
 		if (Login::$member) {
@@ -114,7 +128,7 @@ if ( window.location.hash ) {
 		// intval($parent) gives parent=0 for "pro" and "contra"
 		$sql .= "
 			WHERE arguments.proposal=".intval(self::$proposal->id)."
-				AND side=".DB::esc($side)."
+				AND side=".DB::esc($this->side)."
 				AND parent=".intval($parent)."
 			ORDER BY removed, rating DESC, created";
 		$result = DB::query($sql);
@@ -155,7 +169,7 @@ if ( window.location.hash ) {
 					$highlight_started = true;
 				}
 				// display one argument and its children
-				self::display_argument($argument, $side, $position, $level, $full);
+				$this->display_argument($argument, $position, $level, $full);
 			}
 			$position++;
 		}
@@ -241,12 +255,11 @@ if ( window.location.hash ) {
 	 * display the list item with one argument and its children
 	 *
 	 * @param Argument $argument
-	 * @param string  $side     "pro" or "contra"
 	 * @param integer $position position on this level, first argument has position 1
 	 * @param integer $level    folding level, top level is 0
 	 * @param boolean $full     allow showing full text
 	 */
-	private function display_argument(Argument $argument, $side, $position, $level, $full) {
+	private function display_argument(Argument $argument, $position, $level, $full) {
 ?>
 <li id="argument<?=$argument->id?>">
 	<div class="argument<?
@@ -255,7 +268,7 @@ if ( window.location.hash ) {
 				?> new<?
 			} elseif (
 				!( defined('ARGUMENTS_HEAD_'.($level+1)) and constant('ARGUMENTS_HEAD_'.($level+1)) ) and
-				self::has_new_children($side, $argument->id)
+				$this->has_new_children($argument->id)
 			) {
 				?> new_children<?
 			}
@@ -340,7 +353,7 @@ if ( window.location.hash ) {
 ?>
 		<h3><?=h($argument->title)?></h3>
 <?
-					self::display_argument_content($argument);
+					$this->display_argument_content($argument);
 
 					// don't show the argument as new next time
 					if (Login::$member and !$argument->seen) {
@@ -370,7 +383,7 @@ if ( window.location.hash ) {
 		// display children
 		$level++;
 		if ( defined('ARGUMENTS_HEAD_'.$level) and constant('ARGUMENTS_HEAD_'.$level) ) {
-			self::display_arguments($side, $argument->id, $level, $full);
+			$this->display_arguments($argument->id, $level, $full);
 		}
 ?>
 </li>
@@ -383,7 +396,7 @@ if ( window.location.hash ) {
 	 *
 	 * @param Argument $argument
 	 */
-	function display_argument_content(Argument $argument) {
+	private function display_argument_content(Argument $argument) {
 ?>
 		<p><?=content2html($argument->content)?></p>
 <?
@@ -459,16 +472,15 @@ if ( window.location.hash ) {
 	/**
 	 * check if an argument has at least one new child
 	 *
-	 * @param string  $side
 	 * @param integer $parent
 	 * @return boolean
 	 */
-	private function has_new_children($side, $parent) {
+	private function has_new_children($parent) {
 		$sql = "SELECT id, seen.argument AS seen
 			FROM arguments
 			LEFT JOIN seen ON seen.argument = arguments.id AND seen.member = ".intval(Login::$member->id)."
 			WHERE arguments.proposal=".intval(self::$proposal->id)."
-				AND side=".DB::esc($side)."
+				AND side=".DB::esc($this->side)."
 				AND parent=".intval($parent);
 		$result = DB::query($sql);
 		$children = array();
@@ -477,7 +489,7 @@ if ( window.location.hash ) {
 			$children[] = $row[0];
 		}
 		foreach ($children as $child) {
-			if ( self::has_new_children($side, $child) ) return true;
+			if ( $this->has_new_children($child) ) return true;
 		}
 	}
 
