@@ -156,7 +156,7 @@ form(BN);
 	</div>
 	<div class="input td0">
 		<label><?=_("Profile")?></label>
-		<span class="input"><textarea name="profile" cols="80" rows="5" maxlength="<?=Argument::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
+		<span class="input"><textarea name="profile" cols="80" rows="5" maxlength="<?=Comment::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
 	</div>
 	<div class="input td1">
 		<label><?=_("Entitled and verified")?></label>

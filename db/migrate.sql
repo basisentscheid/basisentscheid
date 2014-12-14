@@ -12,7 +12,7 @@ CREATE TABLE seen (
     member INT NOT NULL,
     PRIMARY KEY (argument, member)
 );
-ALTER TABLE seen ADD FOREIGN KEY (argument) REFERENCES argument (id);
+ALTER TABLE seen ADD FOREIGN KEY (comment) REFERENCES comment (id);
 ALTER TABLE seen ADD FOREIGN KEY (member) REFERENCES member (id);
 --
 ALTER TABLE admins RENAME TO admin;
@@ -44,6 +44,15 @@ ALTER SEQUENCE issues_id_seq RENAME TO issue_id_seq;
 ALTER SEQUENCE members_id_seq RENAME TO member_id_seq;
 ALTER SEQUENCE periods_id_seq RENAME TO period_id_seq;
 ALTER SEQUENCE proposals_id_seq RENAME TO proposal_id_seq;
+--
+ALTER TABLE argument RENAME TO comment;
+ALTER SEQUENCE argument_id_seq RENAME TO comment_id_seq;
+ALTER TABLE ratings RENAME COLUMN argument TO comment;
+ALTER TABLE seen RENAME COLUMN argument TO comment;
+ALTER TABLE comment RENAME COLUMN side TO rubric;
+ALTER TABLE ratings RENAME TO rating;
+--
+
 
 
 

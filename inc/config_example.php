@@ -71,10 +71,10 @@ define("DATETIME_FORMAT",     "j.n. G:i");
 define("TIME_FORMAT",              "G:i");
 define("VOTETIME_FORMAT",     "d.m.Y H:i:s");
 
-define("ARGUMENT_EDIT_INTERVAL", "1 hour");
-// how many arguments to show on each level
-define("ARGUMENTS_HEAD_0", 8);
-define("ARGUMENTS_FULL_0", 4);
-define("ARGUMENTS_HEAD_1", 4);
-define("ARGUMENTS_FULL_1", 2);
-define("ARGUMENTS_HEAD_2", 2);
+define("COMMENT_EDIT_INTERVAL", "1 hour");
+// how many comments to show on each level
+define("COMMENTS_HEAD_0", 8);
+define("COMMENTS_FULL_0", 4);
+define("COMMENTS_HEAD_1", 4);
+define("COMMENTS_FULL_1", 2);
+define("COMMENTS_HEAD_2", 2);

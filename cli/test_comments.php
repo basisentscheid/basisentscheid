@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?
 /**
- * generate arguments (in German)
+ * generate comments (in German)
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -17,7 +17,7 @@ require DOCROOT."inc/functions_test.php";
 
 mb_internal_encoding("UTF-8");
 
-$ngroup = new_ngroup("Argumente", 200);
+$ngroup = new_ngroup("Diskussion", 200);
 
 // create area
 $area = new Area;
@@ -37,7 +37,8 @@ for ( $i=2; $i<=5; $i++ ) {
 }
 $proposal->submit();
 
-$parents = array("pro", "contra");
+$rubrics = array("pro", "contra", "discussion");
+$parents = $rubrics;
 
 for ( $i = 1; $i <= 1000; $i++ ) {
 
@@ -45,26 +46,26 @@ for ( $i = 1; $i <= 1000; $i++ ) {
 
 	$parent_id = $parents[array_rand($parents)];
 
-	$argument = new Argument;
-	if ($parent_id=="pro" or $parent_id=="contra") {
-		$argument->parent = 0;
-		$argument->side = $parent_id;
+	$comment = new Comment;
+	if (in_array($parent_id, $rubrics)) {
+		$comment->parent = 0;
+		$comment->rubric = $parent_id;
 	} else {
-		$parent = new Argument($parent_id);
-		$argument->parent = $parent->id;
-		$argument->side = $parent->side;
+		$parent = new Comment($parent_id);
+		$comment->parent = $parent->id;
+		$comment->rubric = $parent->rubric;
 	}
-	$argument->proposal = $proposal->id;
-	$argument->member = Login::$member->id;
-	$argument->title = mb_substr($lorem_ipsum, 0, rand(1, 100));;
-	$argument->content = mb_substr($lorem_ipsum, 0, rand(1, 1000));
-	$argument->add($proposal);
+	$comment->proposal = $proposal->id;
+	$comment->member = Login::$member->id;
+	$comment->title = mb_substr($lorem_ipsum, 0, rand(1, 100));;
+	$comment->content = mb_substr($lorem_ipsum, 0, rand(1, 1000));
+	$comment->add($proposal);
 
-	$parents[] = $argument->id;
+	$parents[] = $comment->id;
 
 	for ( $j = 1; $j <= rand(0, 100); $j++ ) {
 		login(rand(0, 999));
-		$argument->set_rating(rand(0, 2));
+		$comment->set_rating(rand(0, 2));
 	}
 
 }

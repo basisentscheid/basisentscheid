@@ -10,8 +10,8 @@
 require "inc/common.php";
 
 URI::strip_one_time_params(array(
-		'argument_parent',
-		'argument_edit',
+		'parent',
+		'comment_edit',
 		'openhl',
 		'edit_admission_decision',
 		'show_drafts',
@@ -127,116 +127,117 @@ if ($action) {
 		redirect();
 		break;
 
-	case "add_argument":
+	case "add_comment":
 		Login::access_action("member");
 		action_required_parameters("title", "content", "parent");
-		if (!$proposal->allowed_add_arguments()) {
-			warning(_("Adding or rating arguments is not allowed in this phase."));
-			redirect();
-		}
-		$argument = new Argument;
-		if ($_POST['parent']=="pro" or $_POST['parent']=="contra") {
-			$argument->parent = 0;
-			$argument->side = $_POST['parent'];
+		$comment = new Comment;
+		if ( in_array($_POST['parent'], ["pro", "contra", "discussion"]) ) {
+			$comment->parent = 0;
+			$comment->rubric = $_POST['parent'];
 		} else {
-			$parent = new Argument($_POST['parent']);
+			$parent = new Comment($_POST['parent']);
 			if (!$parent->id) {
-				warning(_("Parent argument does not exist."));
+				warning(_("Parent comment does not exist."));
 				redirect();
 			}
-			$argument->parent = $parent->id;
-			$argument->side = $parent->side;
+			$comment->parent = $parent->id;
+			$comment->rubric = $parent->rubric;
 		}
-		$argument->proposal = $proposal->id;
-		$argument->member = Login::$member->id;
-		$argument->title = trim($_POST['title']);
-		if (!$argument->title) {
-			warning(_("The title of the argument must be not empty."));
+		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
+			warning(_("Adding or rating comments is not allowed in this phase."));
+			redirect();
+		}
+		$comment->proposal = $proposal->id;
+		$comment->member = Login::$member->id;
+		$comment->title = trim($_POST['title']);
+		if (!$comment->title) {
+			warning(_("The title of the comment must be not empty."));
 			break;
 		}
-		$argument->content = trim($_POST['content']);
-		if (!$argument->content) {
-			warning(_("The content of the argument must be not empty."));
+		$comment->content = trim($_POST['content']);
+		if (!$comment->content) {
+			warning(_("The content of the comment must be not empty."));
 			break;
 		}
-		$argument->add($proposal);
-		Arguments::redirect_append_show($argument);
+		$comment->add($proposal);
+		Comments::redirect_append_show($comment);
 		break;
 
-	case "update_argument":
+	case "update_comment":
 		Login::access_action("member");
 		action_required_parameters("title", "content", "id");
-		$argument = new Argument($_POST['id']);
-		if (!$argument->id) {
-			warning("This argument does not exist.");
+		$comment = new Comment($_POST['id']);
+		if (!$comment->id) {
+			warning(_("This comment does not exist."));
 			redirect();
 		}
-		if ($argument->member!=Login::$member->id) {
-			warning("You are not the author of the argument.");
+		if ($comment->member!=Login::$member->id) {
+			warning(_("You are not the author of the comment."));
 			redirect();
 		}
-		$argument->title = trim($_POST['title']);
-		if (!$argument->title) {
-			warning("The title of the argument must be not empty.");
+		$comment->title = trim($_POST['title']);
+		if (!$comment->title) {
+			warning(_("The title of the comment must be not empty."));
 			break;
 		}
-		$argument->content = trim($_POST['content']);
-		if (!$argument->content) {
-			warning("The content of the argument must be not empty.");
+		$comment->content = trim($_POST['content']);
+		if (!$comment->content) {
+			warning(_("The content of the comment must be not empty."));
 			break;
 		}
-		$argument->apply_changes();
-		Arguments::redirect_append_show($argument);
+		$comment->apply_changes();
+		Comments::redirect_append_show($comment);
 		break;
 
-	case "remove_argument":
-	case "restore_argument":
+	case "remove_comment":
+	case "restore_comment":
 		Login::access_action("admin");
 		action_required_parameters("id");
-		$argument = new Argument($_POST['id']);
-		if (!$argument->id) {
-			warning("This argument does not exist.");
+		$comment = new Comment($_POST['id']);
+		if (!$comment->id) {
+			warning(_("This comment does not exist."));
 			redirect();
 		}
-		$argument->removed = ($action=="remove_argument");
-		$argument->update(["removed"]);
-		redirect(URI::same(true)."#argument".$argument->id);
+		$comment->removed = ($action=="remove_comment");
+		$comment->update(["removed"]);
+		redirect(URI::same(true)."#comment".$comment->id);
 		break;
 
 	case "set_rating":
 		Login::access_action("member");
-		action_required_parameters("argument", "rating");
-		if (!$proposal->allowed_add_arguments()) {
-			warning(_("Adding or rating arguments is allowed in this phase."));
+		action_required_parameters("comment", "rating");
+		$comment = new Comment($_POST['comment']);
+		if (!$comment->id) {
+			warning(_("This comment does not exist."));
 			redirect();
 		}
-		$argument = new Argument($_POST['argument']);
-		if (!$argument->id) {
-			warning(_("This argument does not exist."));
+		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
+			warning(_("Adding or rating arguments is not allowed in this phase."));
 			redirect();
 		}
-		if ($argument->member==Login::$member->id) {
-			warning(_("Rating your own arguments is not allowed."));
+		if ($comment->member==Login::$member->id) {
+			warning(_("Rating your own comments is not allowed."));
 			redirect();
 		}
-		if ( !$argument->set_rating(intval($_POST['rating'])) ) redirect();
-		redirect(URI::same(true)."#argument".$argument->id);
+		if ( !$comment->set_rating(intval($_POST['rating'])) ) redirect();
+		redirect(URI::same(true)."#comment".$comment->id);
 		break;
 
 	case "reset_rating":
 		Login::access_action("member");
-		action_required_parameters("argument");
-		if (!$proposal->allowed_add_arguments()) {
-			warning(_("Adding or rating arguments is allowed in this phase."));
+		action_required_parameters("comment");
+
+		$comment = new Comment($_POST['comment']);
+		if (!$comment->id) {
+			warning(_("This comment does not exist."));
 			redirect();
 		}
-		$argument = new Argument($_POST['argument']);
-		if (!$argument->id) {
-			warning("This argument does not exist.");
+		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
+			warning(_("Adding or rating arguments is not allowed in this phase."));
 			redirect();
 		}
-		if ( !$argument->delete_rating() ) redirect();
-		redirect(URI::same(true)."#argument".$argument->id);
+		if ( !$comment->delete_rating() ) redirect();
+		redirect(URI::same(true)."#comment".$comment->id);
 		break;
 
 	default:
@@ -326,7 +327,7 @@ if ($is_proponent and $proposal->allowed_edit_reason_only()) {
 <div class="clearfix"></div>
 
 <?
-if ($proposal->state != "draft") Arguments::display($proposal);
+Comments::display($proposal);
 
 // time bar
 if ($proposal->submitted or $proposal->revoke) {

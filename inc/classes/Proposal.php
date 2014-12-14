@@ -781,11 +781,13 @@ class Proposal extends Relation {
 
 
 	/**
-	 * if it's allowed to add or rate arguments
+	 * if it's allowed to add or rate comments
 	 *
+	 * @param unknown $rubric
 	 * @return boolean
 	 */
-	public function allowed_add_arguments() {
+	public function allowed_add_comments($rubric) {
+		if ($rubric=="discussion") return true;
 		switch ($this->issue()->state) {
 		case "counting":
 		case "finished":

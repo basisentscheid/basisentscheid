@@ -21,7 +21,7 @@ class Notification {
 	public $proponent;
 	public $proponent_confirmed;
 	public $proponent_confirming;
-	public $argument;
+	public $comment;
 	public $ballot;
 
 	// vote tokens
@@ -267,18 +267,21 @@ class Notification {
 				.$this->proponent."\n";
 
 			break;
-		case "argument":
+		case "comment":
 
-			$subject = sprintf(_("New reply to your argument in proposal %d"), $this->proposal->id);
+			$subject = sprintf(_("New reply to your comment in proposal %d"), $this->proposal->id);
+
+			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
+			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
 
 			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
-				.sprintf(_("Member '%s' replied to your argument:"), Login::$member->username())."\n"
+				.$url."\n\n"
+				.sprintf(_("Member '%s' replied to your comment:"), Login::$member->username())."\n"
 				.$separator
-				.$this->argument->title."\n\n"
-				.$this->argument->content."\n"
+				.$this->comment->title."\n\n"
+				.$this->comment->content."\n"
 				.$separator
-				._("Reply:")." ".BASE_URL."proposal.php?id=".$this->proposal->id."&argument_parent=".$this->argument->id."#form";
+				._("Reply:")." ".$uri."&parent=".$this->comment->id."#form";
 
 			break;
 		case "admitted":

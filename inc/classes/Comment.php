@@ -1,7 +1,7 @@
 <?
 
 /**
- * Argument
+ * Comment
  *
  * @property  score
  * @author Magnus Rosenbaum <dev@cmr.cx>
@@ -9,11 +9,11 @@
  */
 
 
-class Argument extends Relation {
+class Comment extends Relation {
 
 	const rating_score_max = 2;
 
-	public $side;
+	public $rubric;
 	public $parent;
 	public $proposal;
 	public $created;
@@ -27,17 +27,17 @@ class Argument extends Relation {
 	public $member;
 
 	protected $boolean_fields = array("removed");
-	protected $create_fields = array("title", "content", "proposal", "parent", "side", "member");
+	protected $create_fields = array("title", "content", "proposal", "parent", "rubric", "member");
 
 
 	/**
-	 * arguments older than this may not be edited anymore
+	 * comments older than this may not be edited anymore
 	 *
 	 * @return integer
 	 */
 	static function edit_limit() {
 		static $edit_limit = false;
-		if ($edit_limit===false) $edit_limit = strtotime("- ".ARGUMENT_EDIT_INTERVAL);
+		if ($edit_limit===false) $edit_limit = strtotime("- ".COMMENT_EDIT_INTERVAL);
 		return $edit_limit;
 	}
 
@@ -58,17 +58,17 @@ class Argument extends Relation {
 		}
 		$this->create();
 
-		// notification to proponents and to authors of all parent arguments
+		// notification to proponents and to authors of all parent comments
 		$recipients = $proposal->proponents();
 		$parent = $this->parent;
-		while ( $parent > 0 ) { // "pro" and "contra" will be converted to 0
-			$argument = new Argument($parent);
-			$recipients[] = $argument->member;
-			$parent = $argument->parent;
+		while ( $parent > 0 ) { // "pro"/"contra"/"discussion" will be converted to 0
+			$comment = new Comment($parent);
+			$recipients[] = $comment->member;
+			$parent = $comment->parent;
 		}
-		$notification = new Notification("argument");
+		$notification = new Notification("comment");
 		$notification->proposal = $proposal;
-		$notification->argument = $this;
+		$notification->comment = $this;
 		$notification->send($recipients);
 
 	}
@@ -81,7 +81,7 @@ class Argument extends Relation {
 	 */
 	function apply_changes() {
 		if (strtotime($this->created) < self::edit_limit()) {
-			warning(_("This argument may not be updated any longer."));
+			warning(_("This comment may not be updated any longer."));
 			return false;
 		}
 		$this->update(["title", "content"], "updated=now()");
@@ -96,14 +96,14 @@ class Argument extends Relation {
 	 */
 	function set_rating($score) {
 		if ($this->removed) {
-			warning(_("The argument has been removed."));
+			warning(_("The comment has been removed."));
 			return false;
 		}
 		if ($score > self::rating_score_max) $score = self::rating_score_max;
 		if ($score < 1) $score = 1;
-		$fields_values = array('argument'=>$this->id, 'member'=>Login::$member->id, 'score'=>$score);
-		$keys = array("argument", "member");
-		DB::insert_or_update("ratings", $fields_values, $keys);
+		$fields_values = array('comment'=>$this->id, 'member'=>Login::$member->id, 'score'=>$score);
+		$keys = array("comment", "member");
+		DB::insert_or_update("rating", $fields_values, $keys);
 		$this->update_ratings_cache();
 	}
 
@@ -115,20 +115,20 @@ class Argument extends Relation {
 	 */
 	function delete_rating() {
 		if ($this->removed) {
-			warning(_("The argument has been removed."));
+			warning(_("The comment has been removed."));
 			return false;
 		}
-		DB::delete("ratings", "argument=".intval($this->id)." AND member=".intval(Login::$member->id));
+		DB::delete("rating", "comment=".intval($this->id)." AND member=".intval(Login::$member->id));
 		$this->update_ratings_cache();
 	}
 
 
 	/**
-	 * sum up all rating scores for an argument
+	 * sum up all rating scores for a comment
 	 */
 	private function update_ratings_cache() {
 
-		$sql = "SELECT SUM(score) FROM ratings WHERE argument=".intval($this->id);
+		$sql = "SELECT SUM(score) FROM rating WHERE comment=".intval($this->id);
 		$this->rating = intval( DB::fetchfield($sql) );
 
 		$this->update(["rating"]);

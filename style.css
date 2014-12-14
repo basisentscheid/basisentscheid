@@ -89,7 +89,7 @@ div.filter a:visited,
 div.add_record a:visited,
 table th a:visited,
 header a:link,
-div.arguments_side a:link {
+div.comments_rubric a:link {
 	color: #00A;
 }
 a:hover,
@@ -972,91 +972,92 @@ form.proposal input[type=submit] {
 }
 
 
-/* 5.2 arguments */
+/* 5.2 comments */
 
-div.arguments {
+div.comments {
 	margin: 10px 0;
 	padding: 0;
 }
-div.arguments_side {
+div.comments_rubric {
 	background-color: #FAFFFA;
-	width: 49%;
 	padding: 5px 10px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-div.arguments_pro {
+div.comments_rubric.arguments_pro {
+	width: 49%;
 	float: left;
 }
-div.arguments_contra {
+div.comments_rubric.arguments_contra {
+	width: 49%;
 	float: right;
 }
 
 @media screen and (max-width: 65em) {
-	div.arguments_side {
+	div.comments_rubric {
 		width: auto;
 		float: none;
 	}
 }
 
-div.arguments_side h2 {
+div.comments_rubric h2 {
 	margin-top: 0;
 }
-div.arguments_side ul {
+div.comments_rubric ul {
 	margin: 0;
 	list-style-type: none;
 	padding-left: 20px;
 }
-div.arguments_side > ul {
+div.comments_rubric > ul {
 	padding-left: 0;
 }
-div.arguments_side ul li {
+div.comments_rubric ul li {
 	margin: 3px 0;
 }
 
-div.arguments_side ul li.anchor,
-div.arguments_side ul div#openhl {
+div.comments_rubric ul li.anchor,
+div.comments_rubric ul div#openhl {
 	border: 1px dashed #F00;
 }
 
-div.arguments_side ul li div.argument h3,
-div.arguments_side ul li div.argument p {
+div.comments_rubric ul li div.comment h3,
+div.comments_rubric ul li div.comment p {
 	padding-left: 3px;
 	padding-right: 3px;
 	margin: 0;
 }
-div.arguments_side ul li div.argument h3 {
+div.comments_rubric ul li div.comment h3 {
 	font-weight: bold;
 }
-div.arguments_side ul li div.argument h3.removed {
+div.comments_rubric ul li div.comment h3.removed {
 	font-weight: normal;
 	font-style: italic;
 }
-div.arguments_side ul li div.argument {
+div.comments_rubric ul li div.comment {
 	border: 1px solid #E6E6E6;
 	background-color: #FFF;
 }
-div.arguments_side ul li div.argument h3 {
+div.comments_rubric ul li div.comment h3 {
 	background-color: #EAEAEA;
 }
 
-div.arguments_side ul li div.argument h3 a,
-div.arguments_side ul li div.argument h3 a:link {
+div.comments_rubric ul li div.comment h3 a,
+div.comments_rubric ul li div.comment h3 a:link {
 	padding: 0;
 	text-decoration: none;
 	color: #000;
 	background-color: #EAEAEA;
 	outline: none;
 }
-div.arguments_side ul li div.argument h3 a:hover {
+div.comments_rubric ul li div.comment h3 a:hover {
 	color: #66C;
 }
-div.arguments_side ul li div.argument div.time {
+div.comments_rubric ul li div.comment div.time {
 	padding-left: 3px;
 	background-color: #EAEAEA;
 }
-div.arguments_side ul li div.argument div.author {
+div.comments_rubric ul li div.comment div.author {
 	float: right;
 	clear: right;
 	font-style: italic;
@@ -1065,64 +1066,64 @@ div.arguments_side ul li div.argument div.author {
 	background-color: #EAEAEA;
 }
 
-div.arguments_side ul li div.argument.new {
+div.comments_rubric ul li div.comment.new {
 	border-color: #D9E7FF;
 }
-div.arguments_side ul li div.argument.new h3,
-div.arguments_side ul li div.argument.new h3 a,
-div.arguments_side ul li div.argument.new h3 a:link,
-div.arguments_side ul li div.argument.new div.time,
-div.arguments_side ul li div.argument.new div.author {
+div.comments_rubric ul li div.comment.new h3,
+div.comments_rubric ul li div.comment.new h3 a,
+div.comments_rubric ul li div.comment.new h3 a:link,
+div.comments_rubric ul li div.comment.new div.time,
+div.comments_rubric ul li div.comment.new div.author {
 	background-color: #D9E7FF;
 }
 
-div.arguments_side ul li div.argument.new_children h3 {
+div.comments_rubric ul li div.comment.new_children h3 {
 	background-image: linear-gradient(135deg, #D9E7FF 25%, transparent 25%, transparent 50%, #D9E7FF 50%, #D9E7FF 75%, transparent 75%, transparent);
 	background-size: 25px 25px;
 }
-div.arguments_side ul li div.argument.new_children h3 a,
-div.arguments_side ul li div.argument.new_children h3 a:link,
-div.arguments_side ul li div.argument.new_children div.time,
-div.arguments_side ul li div.argument.new_children div.author {
+div.comments_rubric ul li div.comment.new_children h3 a,
+div.comments_rubric ul li div.comment.new_children h3 a:link,
+div.comments_rubric ul li div.comment.new_children div.time,
+div.comments_rubric ul li div.comment.new_children div.author {
 	background: transparent;
 }
 
-div.arguments_side ul li div.argument .removed {
+div.comments_rubric ul li div.comment .removed {
 	color: #999;
 }
-div.arguments_side ul li div.argument div.reply {
+div.comments_rubric ul li div.comment div.reply {
 	float: right;
 	clear: right;
 	margin-bottom: 3px;
 	margin-right: 2px;
 }
 
-div.arguments_side form.argument input[type=text],
-div.arguments_side form.argument textarea {
+div.comments_rubric form.comment input[type=text],
+div.comments_rubric form.comment textarea {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-div.arguments_side form.argument a {
+div.comments_rubric form.comment a {
 	padding: 0;
 }
 
-div.arguments_side span.rating {
+div.comments_rubric span.rating {
 	color: #090;
 	font-weight: bold;
 	margin-left: 0.3em;
 }
-div.arguments_side form.rating input[type=submit] {
+div.comments_rubric form.rating input[type=submit] {
 	padding: 0;
 	background-color: #FFF;
 }
-div.arguments_side form.rating.selected input[type=submit] {
+div.comments_rubric form.rating.selected input[type=submit] {
 	color: #FFF;
 	background-color: #090;
 	font-weight: bold;
 }
-div.arguments_side form.rating.reset input[type=submit] {
+div.comments_rubric form.rating.reset input[type=submit] {
 	background-color: #EEE;
 }
 

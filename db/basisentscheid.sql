@@ -12,16 +12,6 @@ SET client_min_messages = warning;
 SET search_path = public, pg_catalog;
 
 --
--- Name: argument_side; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE argument_side AS ENUM (
-    'pro',
-    'contra'
-);
-
-
---
 -- Name: issue_state; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -79,6 +69,17 @@ CREATE TYPE proposal_state AS ENUM (
 --
 
 COMMENT ON TYPE proposal_state IS 'order is used for display';
+
+
+--
+-- Name: rubric; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE rubric AS ENUM (
+    'pro',
+    'contra',
+    'discussion'
+);
 
 
 SET default_tablespace = '';
@@ -154,44 +155,6 @@ ALTER SEQUENCE area_id_seq OWNED BY area.id;
 
 
 --
--- Name: argument; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE argument (
-    id integer NOT NULL,
-    proposal integer NOT NULL,
-    parent integer,
-    side argument_side NOT NULL,
-    title text NOT NULL,
-    content text NOT NULL,
-    rating integer DEFAULT 0 NOT NULL,
-    member integer NOT NULL,
-    created timestamp with time zone DEFAULT now() NOT NULL,
-    updated timestamp with time zone,
-    removed boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: argument_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE argument_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: argument_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE argument_id_seq OWNED BY argument.id;
-
-
---
 -- Name: ballot; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -231,6 +194,44 @@ CREATE SEQUENCE ballot_id_seq
 --
 
 ALTER SEQUENCE ballot_id_seq OWNED BY ballot.id;
+
+
+--
+-- Name: comment; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comment (
+    id integer NOT NULL,
+    proposal integer NOT NULL,
+    parent integer,
+    rubric rubric NOT NULL,
+    title text NOT NULL,
+    content text NOT NULL,
+    rating integer DEFAULT 0 NOT NULL,
+    member integer NOT NULL,
+    created timestamp with time zone DEFAULT now() NOT NULL,
+    updated timestamp with time zone,
+    removed boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: comment_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comment_id_seq OWNED BY comment.id;
 
 
 --
@@ -570,11 +571,11 @@ ALTER SEQUENCE proposal_id_seq OWNED BY proposal.id;
 
 
 --
--- Name: ratings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: rating; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE ratings (
-    argument integer NOT NULL,
+CREATE TABLE rating (
+    comment integer NOT NULL,
     member integer NOT NULL,
     score integer DEFAULT 0 NOT NULL
 );
@@ -585,7 +586,7 @@ CREATE TABLE ratings (
 --
 
 CREATE TABLE seen (
-    argument integer NOT NULL,
+    comment integer NOT NULL,
     member integer NOT NULL
 );
 
@@ -700,14 +701,14 @@ ALTER TABLE ONLY area ALTER COLUMN id SET DEFAULT nextval('area_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY argument ALTER COLUMN id SET DEFAULT nextval('argument_id_seq'::regclass);
+ALTER TABLE ONLY ballot ALTER COLUMN id SET DEFAULT nextval('ballot_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ballot ALTER COLUMN id SET DEFAULT nextval('ballot_id_seq'::regclass);
+ALTER TABLE ONLY comment ALTER COLUMN id SET DEFAULT nextval('comment_id_seq'::regclass);
 
 
 --
@@ -777,14 +778,6 @@ ALTER TABLE ONLY area
 
 
 --
--- Name: arguments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY argument
-    ADD CONSTRAINT arguments_pkey PRIMARY KEY (id);
-
-
---
 -- Name: ballot_voting_demanders_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -798,6 +791,14 @@ ALTER TABLE ONLY votingmode_token
 
 ALTER TABLE ONLY ballot
     ADD CONSTRAINT ballots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -900,8 +901,8 @@ ALTER TABLE ONLY proposal
 -- Name: ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_pkey PRIMARY KEY (argument, member);
+ALTER TABLE ONLY rating
+    ADD CONSTRAINT ratings_pkey PRIMARY KEY (comment, member);
 
 
 --
@@ -909,7 +910,7 @@ ALTER TABLE ONLY ratings
 --
 
 ALTER TABLE ONLY seen
-    ADD CONSTRAINT seen_pkey PRIMARY KEY (argument, member);
+    ADD CONSTRAINT seen_pkey PRIMARY KEY (comment, member);
 
 
 --
@@ -977,22 +978,6 @@ ALTER TABLE ONLY area
 
 
 --
--- Name: arguments_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY argument
-    ADD CONSTRAINT arguments_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: arguments_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY argument
-    ADD CONSTRAINT arguments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposal(id) ON UPDATE RESTRICT ON DELETE CASCADE;
-
-
---
 -- Name: ballot_voting_demanders_votes_token_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1014,6 +999,22 @@ ALTER TABLE ONLY ballot
 
 ALTER TABLE ONLY ballot
     ADD CONSTRAINT ballots_period_fkey FOREIGN KEY (period) REFERENCES period(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: comments_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT comments_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: comments_proposal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT comments_proposal_fkey FOREIGN KEY (proposal) REFERENCES proposal(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -1113,27 +1114,27 @@ ALTER TABLE ONLY proposal
 
 
 --
--- Name: ratings_argument_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ratings_comment_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_argument_fkey FOREIGN KEY (argument) REFERENCES argument(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY rating
+    ADD CONSTRAINT ratings_comment_fkey FOREIGN KEY (comment) REFERENCES comment(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- Name: ratings_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings
+ALTER TABLE ONLY rating
     ADD CONSTRAINT ratings_member_fkey FOREIGN KEY (member) REFERENCES member(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
--- Name: seen_argument_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seen_comment_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY seen
-    ADD CONSTRAINT seen_argument_fkey FOREIGN KEY (argument) REFERENCES argument(id);
+    ADD CONSTRAINT seen_comment_fkey FOREIGN KEY (comment) REFERENCES comment(id);
 
 
 --
