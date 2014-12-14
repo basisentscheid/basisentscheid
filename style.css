@@ -992,6 +992,14 @@ div.arguments_pro {
 div.arguments_contra {
 	float: right;
 }
+
+@media screen and (max-width: 65em) {
+	div.arguments_side {
+		width: auto;
+		float: none;
+	}
+}
+
 div.arguments_side h2 {
 	margin-top: 0;
 }
