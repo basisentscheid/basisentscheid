@@ -92,19 +92,25 @@ class Comments {
 <div class="comments" id="comments">
 <?
 
+		help("comments");
+
 		$discussion = ($proposal->state == "draft" or !empty($_GET['discussion']));
 		if ($proposal->state != "draft") {
 ?>
-<div class="filter">
-<a href="<?=URI::append(['discussion'=>1, 'open'=>null, 'show'=>null])?>#comments"<?
+	<div class="filter">
+		<a href="<?=URI::append(['discussion'=>1, 'open'=>null, 'show'=>null])?>#comments"<?
 			if ($discussion) { ?> class="active"<? }
 			?>><?=_("Discussion")?></a>
-<a href="<?=URI::append(['discussion'=>null, 'open'=>null, 'show'=>null])?>#comments"<?
+		<a href="<?=URI::append(['discussion'=>null, 'open'=>null, 'show'=>null])?>#comments"<?
 			if (!$discussion) { ?> class="active"<? }
 			?>><?=_("Arguments")?></a>
-</div>
+	</div>
 <?
 		}
+
+?>
+	<div class="clearfix"></div>
+<?
 
 		if ($discussion) {
 ?>

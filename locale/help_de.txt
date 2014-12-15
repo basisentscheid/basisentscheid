@@ -21,15 +21,17 @@ Wenn das Abstimmungsverfahren für ein Thema feststeht, kommst du mit einem Klic
 
 Rechts oben werden die <b>Antragsteller</b> des Antrags angezeigt. Jeder kann sich dort als weiterer Antragsteller bewerben. Die derzeitigen Antragsteller entscheiden über die Aufnahme neuer Antragsteller.
 
-Die <b>Diskussion</b> ist ab dem ersten Entwurf eines Antrags immer verfügbar. Die Beiträge können bewertet werden und werden dann nach der Bewertung sortiert. Wenn die Beiträge etwas mehr werden, werden von den schlechter bewerteten nur noch die Titel angezeigt, weitere gar nicht mehr. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, erscheint ein Link, mit dem man diese anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt der angemeldete Benutzer noch nie angesehen hat. <i>Blau gestreift</i> sind Beiträge, auf die es momentan nicht sichbare neue Antworten gibt. <i>Rot umrandet</i> werden Beiträge, die man gerade aufgeklappt, bewertet oder bearbeitet hat. Nachdem man einen neuen Beitrag erstellt hat, ist dieser noch für eine bestimmte Zeit bearbeitbar. Ab der Einreichung eines Antrags können dann in der gleichen Art auch <b>Pro- und Kontra-Argumente</b> sowie Antworten darauf eingegeben werden.
-
-Der <b>Zeitstrahl</b> zeigt vergangene und zukünftige Ereignisse. Wenn du mit der Maus über ein Ereignis fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
+Bei eingereichten Anträgen zeigt der <b>Zeitstrahl</b> vergangene und zukünftige Ereignisse. Wenn du mit der Maus über ein Ereignis fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
 
 Um zur Abstimmung zugelassen zu werden, benötigt ein Antrag <b>Unterstützer</b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Sobald ein Antrag das Quorum erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
 
 Solange ein Thema noch nicht die Debatte erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
 
 Bis zur Abstimmungsvorbereitung kannst du eine <b>geheime Abstimmung</b> eines Themas fordern. Wenn bis dahin 5% der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die 5% erreicht hat, wird dies angezeigt.
+
+===proposal.php#comments
+
+Die <b>Diskussion</b> ist ab dem ersten Entwurf eines Antrags immer verfügbar. Die Beiträge können bewertet werden und werden dann nach der Bewertung sortiert. Wenn die Beiträge etwas mehr werden, werden von den schlechter bewerteten nur noch die Titel angezeigt, weitere gar nicht mehr. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, erscheint ein Link, mit dem man diese anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt der angemeldete Benutzer noch nie angesehen hat. <i>Blau gestreift</i> sind Beiträge, auf die es momentan nicht sichbare neue Antworten gibt. <i>Rot umrandet</i> werden Beiträge, die man gerade aufgeklappt, bewertet oder bearbeitet hat. Nachdem man einen neuen Beitrag erstellt hat, ist dieser noch für eine bestimmte Zeit bearbeitbar. Ab der Einreichung eines Antrags können dann in der gleichen Art auch <b>Pro- und Kontra-Argumente</b> sowie Antworten darauf eingegeben werden.
 
 ===proposal_edit.php
 

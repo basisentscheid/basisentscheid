@@ -505,13 +505,22 @@ function stripes($change=false, $suffix="") {
  * default for not logged in sessions: hide all help
  *
  * This function should not be used on pages with forms, because users will lose their already filled in data if they click on the help buttons.
+ *
+ * @param string  $anchor (optional) for additional help messages on the same page
  */
-function help() {
+function help($anchor="") {
+	if ($anchor) {
+		$hash_anchor = "#".$anchor;
+		$identifier = BN.$hash_anchor;
+	} else {
+		$hash_anchor = "";
+		$identifier = BN;
+	}
 	if (Login::$member) {
-		$show = !in_array(BN, Login::$member->hide_help());
+		$show = !in_array($identifier, Login::$member->hide_help());
 	} else {
 		if ( isset($_SESSION['show_help']) ) {
-			$show = in_array(BN, $_SESSION['show_help']);
+			$show = in_array($identifier, $_SESSION['show_help']);
 		} else {
 			$show = false;
 		}
@@ -520,7 +529,12 @@ function help() {
 ?>
 <div class="help">
 <?
-		form(URI::same(), 'class="hide_help"');
+		form(URI::same().$hash_anchor, 'class="hide_help"');
+		if ($anchor) {
+?>
+<input type="hidden" name="anchor" value="<?=$anchor?>">
+<?
+		}
 ?>
 <input type="hidden" name="action" value="hide_help">
 <input type="submit" value="<?=_("hide help")?>">
@@ -555,7 +569,7 @@ function help() {
 <p><?=$line?></p>
 <?
 				}
-			} elseif ($line == "===".BN) {
+			} elseif ($line == "===".$identifier) {
 				$display = true;
 			}
 		}
@@ -563,7 +577,12 @@ function help() {
 </div>
 <?
 	} else {
-		form(URI::same(), 'class="show_help"');
+		form(URI::same().$hash_anchor, 'class="show_help'.($anchor?'':' h1').'"');
+		if ($anchor) {
+?>
+<input type="hidden" name="anchor" value="<?=$anchor?>">
+<?
+		}
 ?>
 <input type="hidden" name="action" value="show_help">
 <input type="submit" value="<?=_("show help")?>">
@@ -577,14 +596,19 @@ function help() {
  * hide help on a page
  */
 function hide_help() {
+	if ( !empty($_POST['anchor']) and preg_match("/^[a-z]+$/", $_POST['anchor']) ) {
+		$identifier = BN."#".$_POST['anchor'];
+	} else {
+		$identifier = BN;
+	}
 	if (Login::$member) {
 		$hide = Login::$member->hide_help();
-		if (!in_array(BN, $hide)) {
-			$hide[] = BN;
+		if (!in_array($identifier, $hide)) {
+			$hide[] = $identifier;
 			Login::$member->update_help($hide);
 		}
 	} else {
-		if (!empty($_SESSION['show_help'])) array_remove_value($_SESSION['show_help'], BN);
+		if (!empty($_SESSION['show_help'])) array_remove_value($_SESSION['show_help'], $identifier);
 	}
 }
 
@@ -593,15 +617,20 @@ function hide_help() {
  * show help on a page
  */
 function show_help() {
+	if ( !empty($_POST['anchor']) and preg_match("/^[a-z]+$/", $_POST['anchor']) ) {
+		$identifier = BN."#".$_POST['anchor'];
+	} else {
+		$identifier = BN;
+	}
 	if (Login::$member) {
 		$hide = Login::$member->hide_help();
-		array_remove_value($hide, BN);
+		array_remove_value($hide, $identifier);
 		Login::$member->update_help($hide);
 	} else {
 		if (empty($_SESSION['show_help'])) {
-			$_SESSION['show_help'] = array(BN);
+			$_SESSION['show_help'] = array($identifier);
 		} elseif (!in_array(BN, $_SESSION['show_help'])) {
-			$_SESSION['show_help'][] = BN;
+			$_SESSION['show_help'][] = $identifier;
 		}
 	}
 }
