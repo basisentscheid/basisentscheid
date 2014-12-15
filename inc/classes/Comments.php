@@ -12,19 +12,38 @@ class Comments {
 	/** @var Proposal $proposal */
 	private static $proposal;
 
+	// GET parameters
+	// show remaining comments
 	private static $open = array();
+	// show text and children
 	private static $show = array();
+	// reply to this comment
 	private static $parent = 0;
 
+	// comments and parents to open
+	private static $open_ids = null;
+
+	// "pro"/"contra"/"discussion"
 	private $rubric;
 
 
 	/**
 	 *
-	 * @param string  $rubric "pro" or "contra"
+	 * @param string  $rubric "pro"/"contra"/"discussion"
 	 */
 	public function __construct($rubric) {
 		$this->rubric = $rubric;
+
+		// We do this here and not in __static(), because we need it only on display, not on action.
+		if ( is_null(self::$open_ids) ) {
+			self::$open_ids = self::$show;
+			foreach ( self::$show as $comment_id ) {
+				$comment = new Comment($comment_id);
+				self::$open_ids = array_merge(self::$open_ids, $comment->parents());
+			}
+			self::$open_ids = array_unique(self::$open_ids);
+		}
+
 	}
 
 
@@ -175,15 +194,23 @@ if ( window.location.hash ) {
 			$sql .= "
 			FROM comment";
 		}
-		// intval($parent) gives parent=0 for "pro" and "contra"
+		// intval($parent) gives parent=0 for "pro"/"contra"/"discussion"
 		$sql .= "
-			WHERE comment.proposal=".intval(self::$proposal->id)."
+			WHERE proposal=".intval(self::$proposal->id)."
 				AND rubric=".DB::esc($this->rubric)."
 				AND parent=".intval($parent)."
 			ORDER BY removed, rating DESC, created";
 		$result = DB::query($sql);
-		$num_rows = DB::num_rows($result);
-		if (!$num_rows and self::$parent!=$parent) return;
+
+		$comments = array();
+		$open_ids = array();
+		while ( $comment = DB::fetch_object($result, "Comment") ) {
+			/** @var Comment $comment */
+			$comments[] = $comment;
+			if (in_array($comment->id, self::$open_ids)) $open_ids[] = $comment->id;
+		}
+
+		if (!$comments and self::$parent!=$parent) return;
 
 ?>
 <ul>
@@ -194,20 +221,18 @@ if ( window.location.hash ) {
 		$new       = 0;
 		$highlight_started = false;
 		$comments_head = self::comments_head($level);
-		while ( $comment = DB::fetch_object($result, "Comment") ) {
-			/** @var Comment $comment */
+		$open = in_array($parent, self::$open);
+		foreach ( $comments as $comment ) {
 			$limit_reached = $position > $comments_head;
 			if (
-				!in_array($parent, self::$open) and
-				$limit_reached
+				$limit_reached and
+				!$open and
+				!$open_ids // display comments until all to be open have been displayed
 			) {
-				if (!Login::$member) {
-					$remaining = $num_rows - $position + 1;
-					break; // break while loop
-				}
 				$remaining++;
-				if (!$comment->seen) $new++;
+				if (Login::$member and !$comment->seen) $new++;
 			} else {
+				// highlight
 				if (
 					$limit_reached and
 					isset($_GET['openhl']) and $_GET['openhl']==$parent and
@@ -220,6 +245,7 @@ if ( window.location.hash ) {
 				}
 				// display one comment and its children
 				$this->display_comment($comment, $position, $level, $full);
+				array_remove_value($open_ids, $comment->id);
 			}
 			$position++;
 		}
@@ -446,7 +472,10 @@ if ( window.location.hash ) {
 <?
 		// display children
 		$level++;
-		if ( self::comments_head($level) ) $this->display_comments($comment->id, $level, $full);
+		if (
+			self::comments_head($level) or
+			in_array($comment->id, self::$open_ids)
+		) $this->display_comments($comment->id, $level, $full);
 ?>
 </li>
 <?

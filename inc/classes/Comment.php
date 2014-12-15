@@ -31,6 +31,22 @@ class Comment extends Relation {
 
 
 	/**
+	 * get a list of all parent comments
+	 *
+	 * Starts with the rubric as the top level and ends with the parent of this comment.
+	 *
+	 * @return array
+	 */
+	public function parents() {
+		if (!$this->parent) return array($this->rubric);
+		$parent = new Comment($this->parent);
+		$parents = $parent->parents();
+		$parents[] = $this->parent;
+		return $parents;
+	}
+
+
+	/**
 	 * comments older than this may not be edited anymore
 	 *
 	 * @return integer
@@ -40,6 +56,9 @@ class Comment extends Relation {
 		if ($edit_limit===false) $edit_limit = strtotime("- ".COMMENT_EDIT_INTERVAL);
 		return $edit_limit;
 	}
+
+
+	// action
 
 
 	/**

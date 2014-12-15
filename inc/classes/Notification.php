@@ -273,9 +273,10 @@ class Notification {
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
+			$uri .= "&show[]=".$this->comment->id;
 
 			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.$url."\n\n"
+				.$uri."\n\n"
 				.sprintf(_("Member '%s' replied to your comment:"), Login::$member->username())."\n"
 				.$separator
 				.$this->comment->title."\n\n"
