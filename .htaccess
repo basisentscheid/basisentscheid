@@ -21,6 +21,14 @@ php_flag  display_errors on
 php_value log_errors on
 php_value error_log var/log/phperrors.log
 
+# Session
+php_flag  session.use_cookies on
+php_flag  session.use_only_cookies on
+php_value session.name BASISENTSCHEID_SESSION
+# If you want to separate the sessions from other php projects on the same host, you can set the path here:
+#php_value session.save_path <path>/var/sessions
+#php_value session.gc_maxlifetime 86400
+
 # Data Handling
 php_value arg_separator.output "&"
 php_value arg_separator.input "&"
@@ -29,10 +37,4 @@ php_value request_order "GP"
 php_value enable_post_data_reading on
 php_value always_populate_raw_post_data off
 
-# File uploads
-#php_flag file_uploads on
-#php_value post_max_size 8M
-#php_value memory_limit 64M
-#php_value max_execution_time 600
-#php_value max_input_time 60
 

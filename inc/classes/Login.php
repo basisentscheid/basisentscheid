@@ -29,11 +29,6 @@ abstract class Login {
 	 */
 	public static function init() {
 
-		session_save_path(DOCROOT."var/sessions");
-		session_name("BASISENTSCHEIDSESSION");
-		//ini_set("session.gc_maxlifetime", 86400);
-		ini_set("session.use_cookies", "on");
-		ini_set("session.use_only_cookies", "on");
 		session_start();
 
 		if (!isset($_SESSION['csrf'])) $_SESSION['csrf'] = self::generate_token(32);
