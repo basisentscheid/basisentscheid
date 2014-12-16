@@ -989,11 +989,11 @@ div.comments_rubric {
 	box-sizing: border-box;
 }
 div.comments_rubric.arguments_pro {
-	width: 49%;
+	width: 49.5%;
 	float: left;
 }
 div.comments_rubric.arguments_contra {
-	width: 49%;
+	width: 49.5%;
 	float: right;
 }
 
