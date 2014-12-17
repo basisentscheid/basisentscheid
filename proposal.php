@@ -128,7 +128,10 @@ if ($action) {
 		break;
 
 	case "add_comment":
-		Login::access_action("member");
+		if ( !Login::access_allowed("comment") ) {
+			warning(_("You don't have permissions write comments."));
+			redirect();
+		}
 		action_required_parameters("title", "content", "parent");
 		$comment = new Comment;
 		if ( in_array($_POST['parent'], ["pro", "contra", "discussion"]) ) {
@@ -148,7 +151,6 @@ if ($action) {
 			redirect();
 		}
 		$comment->proposal = $proposal->id;
-		$comment->member = Login::$member->id;
 		$comment->title = trim($_POST['title']);
 		if (!$comment->title) {
 			warning(_("The title of the comment must be not empty."));
@@ -162,17 +164,15 @@ if ($action) {
 		$comment->add($proposal);
 		Comments::redirect_append_show($comment);
 		break;
-
 	case "update_comment":
-		Login::access_action("member");
+		if ( !Login::access_allowed("comment") ) {
+			warning(_("You don't have permissions write comments."));
+			redirect();
+		}
 		action_required_parameters("title", "content", "id");
 		$comment = new Comment($_POST['id']);
 		if (!$comment->id) {
 			warning(_("This comment does not exist."));
-			redirect();
-		}
-		if ($comment->member!=Login::$member->id) {
-			warning(_("You are not the author of the comment."));
 			redirect();
 		}
 		$comment->title = trim($_POST['title']);
@@ -189,6 +189,43 @@ if ($action) {
 		Comments::redirect_append_show($comment);
 		break;
 
+	case "set_rating":
+		if ( !Login::access_allowed("rate") ) {
+			warning(_("You don't have permissions to rate comments."));
+			redirect();
+		}
+		action_required_parameters("comment", "rating");
+		$comment = new Comment($_POST['comment']);
+		if (!$comment->id) {
+			warning(_("This comment does not exist."));
+			redirect();
+		}
+		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
+			warning(_("Adding or rating arguments is not allowed in this phase."));
+			redirect();
+		}
+		if ( !$comment->set_rating(intval($_POST['rating'])) ) redirect();
+		redirect(URI::same(true)."#comment".$comment->id);
+		break;
+	case "reset_rating":
+		if ( !Login::access_allowed("rate") ) {
+			warning(_("You don't have permissions to rate comments."));
+			redirect();
+		}
+		action_required_parameters("comment");
+		$comment = new Comment($_POST['comment']);
+		if (!$comment->id) {
+			warning(_("This comment does not exist."));
+			redirect();
+		}
+		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
+			warning(_("Adding or rating arguments is not allowed in this phase."));
+			redirect();
+		}
+		if ( !$comment->delete_rating() ) redirect();
+		redirect(URI::same(true)."#comment".$comment->id);
+		break;
+
 	case "remove_comment":
 	case "restore_comment":
 		Login::access_action("admin");
@@ -200,43 +237,6 @@ if ($action) {
 		}
 		$comment->removed = ($action=="remove_comment");
 		$comment->update(["removed"]);
-		redirect(URI::same(true)."#comment".$comment->id);
-		break;
-
-	case "set_rating":
-		Login::access_action("member");
-		action_required_parameters("comment", "rating");
-		$comment = new Comment($_POST['comment']);
-		if (!$comment->id) {
-			warning(_("This comment does not exist."));
-			redirect();
-		}
-		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
-			warning(_("Adding or rating arguments is not allowed in this phase."));
-			redirect();
-		}
-		if ($comment->member==Login::$member->id) {
-			warning(_("Rating your own comments is not allowed."));
-			redirect();
-		}
-		if ( !$comment->set_rating(intval($_POST['rating'])) ) redirect();
-		redirect(URI::same(true)."#comment".$comment->id);
-		break;
-
-	case "reset_rating":
-		Login::access_action("member");
-		action_required_parameters("comment");
-
-		$comment = new Comment($_POST['comment']);
-		if (!$comment->id) {
-			warning(_("This comment does not exist."));
-			redirect();
-		}
-		if ( !$proposal->allowed_add_comments($comment->rubric) ) {
-			warning(_("Adding or rating arguments is not allowed in this phase."));
-			redirect();
-		}
-		if ( !$comment->delete_rating() ) redirect();
 		redirect(URI::same(true)."#comment".$comment->id);
 		break;
 

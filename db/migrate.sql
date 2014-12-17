@@ -57,5 +57,12 @@ ALTER TABLE member RENAME COLUMN public_id TO realname;
 ALTER TABLE member RENAME COLUMN entitled TO eligible;
 --
 ALTER TABLE member ADD verified BOOL DEFAULT false NOT NULL;
+--
+ALTER TABLE comment ADD session TEXT DEFAULT '' NOT NULL;
+ALTER TABLE comment ALTER COLUMN member DROP NOT NULL;
+ALTER TABLE rating ADD session TEXT DEFAULT '' NOT NULL;
+ALTER TABLE rating DROP CONSTRAINT ratings_pkey;
+ALTER TABLE rating ALTER COLUMN member DROP NOT NULL;
+
 
 

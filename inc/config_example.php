@@ -80,3 +80,8 @@ define("COMMENTS_FULL_0", 4);
 define("COMMENTS_HEAD_1", 4);
 define("COMMENTS_FULL_1", 2);
 define("COMMENTS_HEAD_2", 2);
+
+// member status required for certain operations
+// see Login::access_allowed() for possible values
+define("ACCESS_COMMENT", 4); // write a comment or reply to one
+define("ACCESS_RATE",    4); // rate comments

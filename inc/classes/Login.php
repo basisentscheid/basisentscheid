@@ -112,6 +112,28 @@ abstract class Login {
 
 
 	/**
+	 * check if the current user is allowed to do the specified operation
+	 *
+	 * @param string  $operation one of "comment", "rate", "submit"
+	 * @return boolean
+	 */
+	public static function access_allowed($operation) {
+		switch ( constant("ACCESS_".strtoupper($operation)) ) {
+		case 4: // all
+			return true;
+		case 2: // member
+			return (bool) Login::$member;
+		case 1: // eligible
+			return Login::$member and Login::$member->eligible;
+		case 0: // verified
+			return Login::$member and Login::$member->eligible and Login::$member->verified;
+		default:
+			trigger_error("Unknown access level", E_USER_ERROR);
+		}
+	}
+
+
+	/**
 	 * generate random token
 	 *
 	 * @param integer $length

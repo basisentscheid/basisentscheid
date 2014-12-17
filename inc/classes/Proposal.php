@@ -783,7 +783,7 @@ class Proposal extends Relation {
 	/**
 	 * if it's allowed to add or rate comments
 	 *
-	 * @param unknown $rubric
+	 * @param string  $rubric
 	 * @return boolean
 	 */
 	public function allowed_add_comments($rubric) {

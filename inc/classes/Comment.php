@@ -13,6 +13,10 @@ class Comment extends Relation {
 
 	const rating_score_max = 2;
 
+	const title_length = 100;
+	const content_length = 2000;
+
+	// database table
 	public $rubric;
 	public $parent;
 	public $proposal;
@@ -21,13 +25,14 @@ class Comment extends Relation {
 	public $updated;
 	public $rating;
 	public $title;
-	const title_length = 100;
 	public $content;
-	const content_length = 2000;
 	public $member;
+	public $session = "";
+
+	public $score;
 
 	protected $boolean_fields = array("removed");
-	protected $create_fields = array("title", "content", "proposal", "parent", "rubric", "member");
+	protected $create_fields = array("title", "content", "proposal", "parent", "rubric", "member", "session");
 
 
 	/**
@@ -58,6 +63,16 @@ class Comment extends Relation {
 	}
 
 
+	/**
+	 * check if the current user is the author of this comment
+	 *
+	 * @return bool
+	 */
+	public function is_author() {
+		return ( Login::$member and $this->member==Login::$member->id ) or ( $this->session and $this->session==session_id() );
+	}
+
+
 	// action
 
 
@@ -67,6 +82,7 @@ class Comment extends Relation {
 	 * @param Proposal $proposal
 	 */
 	function add(Proposal $proposal) {
+
 		if (mb_strlen($this->title) > self::title_length) {
 			$this->title = limitstr($this->title, self::title_length);
 			warning(sprintf(_("The title has been truncated to the maximum allowed length of %d characters!"), self::title_length));
@@ -75,6 +91,9 @@ class Comment extends Relation {
 			$this->content = limitstr($this->content, self::content_length);
 			warning(sprintf(_("The content has been truncated to the maximum allowed length of %d characters!"), self::content_length));
 		}
+
+		if (Login::$member) $this->member = Login::$member->id;
+		$this->session = session_id();
 		$this->create();
 
 		// notification to proponents and to authors of all parent comments
@@ -103,7 +122,17 @@ class Comment extends Relation {
 			warning(_("This comment may not be updated any longer."));
 			return false;
 		}
-		$this->update(["title", "content"], "updated=now()");
+		if (!$this->is_author()) {
+			warning(_("You are not the author of the comment."));
+			return false;
+		}
+		if (Login::$member) {
+			// if a member wrote a comment without login then logges in and edits the comment, set the author subsequently
+			$this->member = Login::$member->id;
+			// update the session if it changes
+			$this->session = session_id();
+		}
+		$this->update(["title", "content", "member", "session"], "updated=now()");
 	}
 
 
@@ -118,10 +147,21 @@ class Comment extends Relation {
 			warning(_("The comment has been removed."));
 			return false;
 		}
-		if ($score > self::rating_score_max) $score = self::rating_score_max;
-		if ($score < 1) $score = 1;
-		$fields_values = array('comment'=>$this->id, 'member'=>Login::$member->id, 'score'=>$score);
-		$keys = array("comment", "member");
+		if ($this->is_author()) {
+			warning(_("Rating your own comments is not allowed."));
+			return false;
+		}
+		$fields_values = array(
+			'comment' => $this->id,
+			'score'   => min(max($score, 1), self::rating_score_max),
+			'session' => session_id()
+		);
+		if (Login::$member) {
+			$fields_values['member'] = Login::$member->id;
+			$keys = array("comment", "member");
+		} else {
+			$keys = array("comment", "session");
+		}
 		DB::insert_or_update("rating", $fields_values, $keys);
 		$this->update_ratings_cache();
 	}
@@ -137,7 +177,18 @@ class Comment extends Relation {
 			warning(_("The comment has been removed."));
 			return false;
 		}
-		DB::delete("rating", "comment=".intval($this->id)." AND member=".intval(Login::$member->id));
+		$where = "comment=".intval($this->id);
+		if (Login::$member) {
+			$where .= " AND member=".intval(Login::$member->id);
+		} else {
+			$session = session_id();
+			if (!$session) {
+				trigger_error("Empty session id", E_USER_WARNING);
+				return false;
+			}
+			$where .= " AND session=".DB::esc($session);
+		}
+		DB::delete("rating", $where);
 		$this->update_ratings_cache();
 	}
 

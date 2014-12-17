@@ -116,7 +116,7 @@ class Comments {
 ?>
 	<div class="comments_rubric">
 <?
-			if (Login::$member and self::$proposal->allowed_add_comments("discussion")) {
+			if (Login::access_allowed("comment") and self::$proposal->allowed_add_comments("discussion")) {
 ?>
 		<div class="add"><a href="<?=URI::append(['discussion'=>1, 'parent'=>"discussion"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new comment")?></a></div>
 <?
@@ -133,7 +133,7 @@ class Comments {
 ?>
 	<div class="comments_rubric arguments_pro">
 <?
-			if (Login::$member and self::$proposal->allowed_add_comments("pro")) {
+			if (Login::access_allowed("comment") and self::$proposal->allowed_add_comments("pro")) {
 ?>
 		<div class="add"><a href="<?=URI::append(['parent'=>"pro"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
@@ -147,7 +147,7 @@ class Comments {
 	</div>
 	<div class="comments_rubric arguments_contra">
 <?
-			if (Login::$member and self::$proposal->allowed_add_comments("contra")) {
+			if (Login::access_allowed("comment") and self::$proposal->allowed_add_comments("contra")) {
 ?>
 		<div class="add"><a href="<?=URI::append(['parent'=>"contra"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
@@ -190,15 +190,16 @@ if ( window.location.hash ) {
 	 */
 	private function display_comments($parent, $level=0, $full=true) {
 
-		$sql = "SELECT comment.*";
+		$sql = "SELECT comment.*, rating.score";
 		if (Login::$member) {
-			$sql .= ", rating.score, seen.comment AS seen
+			$sql .= ", seen.comment AS seen
 			FROM comment
 			LEFT JOIN rating ON rating.comment = comment.id AND rating.member = ".intval(Login::$member->id)."
 			LEFT JOIN seen   ON seen.comment   = comment.id AND seen.member   = ".intval(Login::$member->id);
 		} else {
 			$sql .= "
-			FROM comment";
+			FROM comment
+			LEFT JOIN rating ON rating.comment = comment.id AND rating.session = ".DB::esc(session_id());
 		}
 		// intval($parent) gives parent=0 for "pro"/"contra"/"discussion"
 		$sql .= "
@@ -313,8 +314,8 @@ if ( window.location.hash ) {
 		}
 
 		if (
-			Login::$member and
 			isset($_GET['parent']) and $_GET['parent']==$parent and
+			Login::access_allowed("comment") and
 			self::$proposal->allowed_add_comments($this->rubric)
 		) {
 ?>
@@ -381,15 +382,20 @@ if ( window.location.hash ) {
 		}
 		?>">
 <?
-		$author = new Member($comment->member);
+		if ($comment->member) {
+			$author = new Member($comment->member);
+			$author_link = $author->link();
+		} else {
+			$author_link = "";
+		}
 		if (
-			Login::$member and $author->id==Login::$member->id and
+			$comment->is_author() and
 			isset($_GET['comment_edit']) and $_GET['comment_edit']==$comment->id and
 			!$comment->removed
 		) {
 			// edit existing comment
 ?>
-		<div class="author"><?=$author->link()?> <?=datetimeformat($comment->created)?></div>
+		<div class="author"><?=$author_link?> <?=datetimeformat($comment->created)?></div>
 <?
 			if (strtotime($comment->created) > Comment::edit_limit()) {
 ?>
@@ -416,15 +422,16 @@ if ( window.location.hash ) {
 		<div class="author<?=$comment->removed?' removed':''?>"><?
 			// edit link
 			if (
-				Login::$member and $author->id==Login::$member->id and
+				$comment->is_author() and
 				strtotime($comment->created) > Comment::edit_limit() and
 				!$comment->removed and
+				Login::access_allowed("comment") and
 				self::$proposal->allowed_add_comments($this->rubric)
 			) {
 				?><a href="<?=URI::append(['comment_edit'=>$comment->id])?>#comment<?=$comment->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a> <?
 			}
 			// author and time
-			echo $author->link()?> <?=datetimeformat($comment->created)?></div>
+			echo $author_link?> <?=datetimeformat($comment->created)?></div>
 <?
 			$display_content = true;
 		}
@@ -500,10 +507,10 @@ if ( window.location.hash ) {
 
 		// reply
 		if (
-			Login::$member and
+			Login::access_allowed("comment") and
+			self::$proposal->allowed_add_comments($this->rubric) and
 			self::$parent!=$comment->id and
-			!$comment->removed and
-			self::$proposal->allowed_add_comments($this->rubric)
+			!$comment->removed
 		) {
 ?>
 		<div class="reply"><a href="<?=URI::append(['parent'=>$comment->id])?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
@@ -514,37 +521,7 @@ if ( window.location.hash ) {
 		if ($comment->rating) {
 			?><span class="rating">+<?=$comment->rating?></span> <?
 		}
-		if (Login::$member) {
-			if (
-				// don't allow to rate ones own comments
-				$comment->member!=Login::$member->id and
-				// don't allow to rate removed comments
-				!$comment->removed and
-				self::$proposal->allowed_add_comments($this->rubric)
-			) {
-				$uri = URI::same()."#comment".$comment->id;
-				if ($comment->score) {
-					form($uri, 'class="button rating reset"');
-?>
-<input type="hidden" name="comment" value="<?=$comment->id?>">
-<input type="hidden" name="action" value="reset_rating">
-<input type="submit" value="0">
-<?
-					form_end();
-				}
-				for ($score=1; $score <= Comment::rating_score_max; $score++) {
-					form($uri, 'class="button rating'.($score <= $comment->score?' selected':'').'"');
-?>
-<input type="hidden" name="comment" value="<?=$comment->id?>">
-<input type="hidden" name="action" value="set_rating">
-<input type="hidden" name="rating" value="<?=$score?>">
-<input type="submit" value="+<?=$score?>">
-<?
-					form_end();
-				}
-
-			}
-		} elseif (Login::$admin) {
+		if (Login::$admin) {
 			form(URI::same(), 'class="button"');
 ?>
 <input type="hidden" name="id" value="<?=$comment->id?>">
@@ -561,6 +538,34 @@ if ( window.location.hash ) {
 <?
 			}
 			form_end();
+		} elseif (
+			Login::access_allowed("rate") and
+			self::$proposal->allowed_add_comments($this->rubric) and
+			// don't allow to rate ones own comments
+			!$comment->is_author() and
+			// don't allow to rate removed comments
+			!$comment->removed
+		) {
+			$uri = URI::same()."#comment".$comment->id;
+			if ($comment->score) {
+				form($uri, 'class="button rating reset"');
+?>
+<input type="hidden" name="comment" value="<?=$comment->id?>">
+<input type="hidden" name="action" value="reset_rating">
+<input type="submit" value="0">
+<?
+				form_end();
+			}
+			for ($score=1; $score <= Comment::rating_score_max; $score++) {
+				form($uri, 'class="button rating'.($score <= $comment->score?' selected':'').'"');
+?>
+<input type="hidden" name="comment" value="<?=$comment->id?>">
+<input type="hidden" name="action" value="set_rating">
+<input type="hidden" name="rating" value="<?=$score?>">
+<input type="submit" value="+<?=$score?>">
+<?
+				form_end();
+			}
 		}
 
 	}

@@ -208,10 +208,11 @@ CREATE TABLE comment (
     title text NOT NULL,
     content text NOT NULL,
     rating integer DEFAULT 0 NOT NULL,
-    member integer NOT NULL,
+    member integer,
     created timestamp with time zone DEFAULT now() NOT NULL,
     updated timestamp with time zone,
-    removed boolean DEFAULT false NOT NULL
+    removed boolean DEFAULT false NOT NULL,
+    session text DEFAULT ''::text NOT NULL
 );
 
 
@@ -577,8 +578,9 @@ ALTER SEQUENCE proposal_id_seq OWNED BY proposal.id;
 
 CREATE TABLE rating (
     comment integer NOT NULL,
-    member integer NOT NULL,
-    score integer DEFAULT 0 NOT NULL
+    member integer,
+    score integer DEFAULT 0 NOT NULL,
+    session text DEFAULT ''::text NOT NULL
 );
 
 
@@ -896,14 +898,6 @@ ALTER TABLE ONLY period
 
 ALTER TABLE ONLY proposal
     ADD CONSTRAINT proposals_pkey PRIMARY KEY (id);
-
-
---
--- Name: ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY rating
-    ADD CONSTRAINT ratings_pkey PRIMARY KEY (comment, member);
 
 
 --
