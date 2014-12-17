@@ -139,19 +139,21 @@ function html_head($title, $help=false) {
 	}
 	$ngroups = Ngroup::parent_sort_active($ngroups);
 	// own ngroups
-	foreach ($ngroups as $ngroup) {
-		if (!$ngroup->member) continue;
-		// use the first ngroup as default
-		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
+	if (Login::$member) {
+		foreach ($ngroups as $ngroup) {
+			if (!$ngroup->member) continue;
+			// use the first ngroup as default
+			if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
 							<option value="<?=$ngroup->id?>"<?
-		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-		?>><?=$ngroup->name?> &#8710;</option>
+			if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
+			?>><?=$ngroup->name?> &#8710;</option>
 <?
+		}
 	}
 	// other ngroups
 	foreach ($ngroups as $ngroup) {
-		if ($ngroup->member) continue;
+		if (Login::$member and $ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
