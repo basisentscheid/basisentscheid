@@ -129,7 +129,7 @@ if ($action) {
 
 	case "add_comment":
 		if ( !Login::access_allowed("comment") ) {
-			warning(_("You don't have permissions write comments."));
+			warning(_("You don't have permissions to write comments."));
 			redirect();
 		}
 		action_required_parameters("title", "content", "parent");
@@ -166,7 +166,7 @@ if ($action) {
 		break;
 	case "update_comment":
 		if ( !Login::access_allowed("comment") ) {
-			warning(_("You don't have permissions write comments."));
+			warning(_("You don't have permissions to write comments."));
 			redirect();
 		}
 		action_required_parameters("title", "content", "id");
