@@ -1164,6 +1164,7 @@ h2.postal {
 	margin-top: 0;
 }
 
+
 /* 5.4 login */
 
 form.login {
@@ -1210,11 +1211,7 @@ form.login input[type=submit] {
 }
 
 
-/* 5.5 member */
-
-table.notify th.type {
-	width: 14%;
-}
+/* 5.5 settings */
 
 span.problem {
 	color: #C00;
@@ -1224,7 +1221,23 @@ span.fine {
 }
 
 
-/* 5.6 vote result */
+/* 5.6 settings notifications */
+
+table.notify th.type {
+	width: 14%;
+}
+table.notify tr td.space {
+	height: 5px;
+}
+table.notify tfoot tr td {
+	padding: 1px 5px;
+}
+table.notify tfoot tr td.left {
+	background-color: transparent;
+}
+
+
+/* 5.7 vote result */
 
 table.votes td {
 	font-family: monospace;
@@ -1242,7 +1255,7 @@ table.votes tr.self td.tdc {
 }
 
 
-/* 5.7 periods */
+/* 5.8 periods */
 
 th.period,
 td.period {
