@@ -112,12 +112,7 @@ form(BN);
 	<div class="input <?=stripes()?>">
 		<label><?=_("Groups")?></label>
 		<span class="input"><?
-
-$sql = "SELECT name FROM member_ngroup
-	JOIN ngroup ON ngroup.id = member_ngroup.ngroup
-	WHERE member=".intval(Login::$member->id);
-echo join(", ", DB::fetchfieldarray($sql));
-
+Login::$member->display_ngroups();
 ?></span>
 	</div>
 	<div class="input <?=stripes()?>">

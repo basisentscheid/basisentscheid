@@ -341,6 +341,17 @@ class Member extends Relation {
 
 
 	/**
+	 * display list of groups
+	 */
+	public function display_ngroups() {
+		$sql = "SELECT name FROM member_ngroup
+			JOIN ngroup ON ngroup.id = member_ngroup.ngroup
+			WHERE member=".intval($this->id);
+		echo join(", ", DB::fetchfieldarray($sql));
+	}
+
+
+	/**
 	 * update member's ngroups
 	 *
 	 * @param array   $ngroups array of integers
@@ -373,6 +384,24 @@ class Member extends Relation {
 
 		DB::transaction_commit();
 
+	}
+
+
+	/**
+	 * display a timestamp
+	 *
+	 * @param string  $content
+	 */
+	public function dbtableadmin_print_timestamp($content) {
+		echo datetimeformat($content);
+	}
+
+
+	/**
+	 * display the list of groups
+	 */
+	public function dbtableadmin_print_ngroups() {
+		$this->display_ngroups();
 	}
 
 
