@@ -371,7 +371,7 @@ CREATE TABLE member (
     password character varying(123),
     password_reset_code character(24),
     password_reset_code_expiry timestamp with time zone,
-    public_id text DEFAULT ''::text NOT NULL,
+    realname text DEFAULT ''::text NOT NULL,
     profile text DEFAULT ''::text NOT NULL,
     entitled boolean DEFAULT false NOT NULL,
     mail text,

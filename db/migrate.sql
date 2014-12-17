@@ -52,7 +52,8 @@ ALTER TABLE seen RENAME COLUMN argument TO comment;
 ALTER TABLE comment RENAME COLUMN side TO rubric;
 ALTER TABLE ratings RENAME TO rating;
 --
-
+ALTER TABLE member RENAME COLUMN public_id TO realname;
+--
 
 
 

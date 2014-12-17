@@ -115,18 +115,18 @@ html_head(_("Member settings"), true);
 form(BN);
 ?>
 <fieldset class="member">
-	<div class="input td0">
+	<div class="input <?=stripes()?>">
 		<label for="username"><?=_("Username")?></label>
 		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32"></span>
 	</div>
-	<div class="input td1">
+	<div class="input <?=stripes()?>">
 		<label for="password"><?=_("Change password")?></label>
 		<span class="input">
 			<?=_("To change the password, enter the new password twice:")?><br>
 			<input type="password" name="password" size="25"> <input type="password" name="password2" size="25">
 		</span>
 	</div>
-	<div class="input td0">
+	<div class="input <?=stripes()?>">
 		<label for="mail"><?=_("Email address for notifications")?></label>
 		<span class="input">
 			<p><?=_("confirmed")?>: <?=h(Login::$member->mail)?></p>
@@ -137,7 +137,7 @@ form(BN);
 		</span>
 	</div>
 <? if (GNUPG_SIGN_KEY) { ?>
-	<div class="input td1">
+	<div class="input <?=stripes()?>">
 		<label><?=_("PGP Public Key Fingerprint")?></label>
 		<span class="input"><input type="text" name="fingerprint" value="<?=h(Login::$member->fingerprint)?>" size="50" maxlength="<?=Member::fingerprint_length?>">
 <?
@@ -145,24 +145,26 @@ form(BN);
 ?>
 		</span>
 	</div>
-	<div class="input td0">
+	<div class="input <?=stripes()?>">
 		<label><?=_("PGP Public Key import")?></label>
 		<span class="input"><textarea name="key" cols="80" rows="5"></textarea></span>
 	</div>
 <? } ?>
-	<div class="input td1">
-		<label><?=_("Real name (optional)")?></label>
-		<span class="input"><?=h(Login::$member->public_id)?></span>
-	</div>
-	<div class="input td0">
+	<div class="input <?=stripes()?>">
 		<label><?=_("Profile")?></label>
 		<span class="input"><textarea name="profile" cols="80" rows="5" maxlength="<?=Comment::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
 	</div>
-	<div class="input td1">
+<? if (Login::$member->realname) { ?>
+	<div class="input <?=stripes()?>">
+		<label><?=_("Real name")?></label>
+		<span class="input"><?=h(Login::$member->realname)?></span>
+	</div>
+<? } ?>
+	<div class="input <?=stripes()?>">
 		<label><?=_("Entitled and verified")?></label>
 		<span class="input"><? display_checked(Login::$member->entitled) ?></span>
 	</div>
-	<div class="input td0">
+	<div class="input <?=stripes()?>">
 		<label><?=_("Groups")?></label>
 		<span class="input"><?
 

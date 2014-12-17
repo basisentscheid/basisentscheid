@@ -18,8 +18,8 @@ class Member extends Relation {
 	public $activated;
 	public $username;
 	public $password;
-	public $public_id = "";
-	public $profile   = "";
+	public $realname = "";
+	public $profile  = "";
 	const profile_length = 2000;
 	public $entitled;
 	public $mail;
@@ -105,7 +105,7 @@ class Member extends Relation {
 	 * @return string
 	 */
 	public function identity() {
-		if ($this->public_id) return _("Real name").": ".$this->public_id;
+		if ($this->realname) return _("Real name").": ".$this->realname;
 		return _("User name").": ".$this->username;
 	}
 
