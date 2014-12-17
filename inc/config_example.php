@@ -8,16 +8,21 @@
  */
 
 
-// --- Options for development and testing ---
-// display system informations in the HTML code of every page and disable gettext caching
-define("DEBUG", false);
-// log in as any user with this password (string, set to false to disable)
-define("MASTER_PASSWORD", false);
+// Enter your database name, user and password here.
+// See http://php.net/manual/en/function.pg-connect.php for details.
+define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
 
 // first part of html title
 define("TITLE", "Basisentscheid");
 // with trailing slash
 define("BASE_URL", "http://example.com/basisentscheid/portal/");
+
+// This email address will be shown in some error messages to contact the support.
+define("MAIL_SUPPORT", "example@example.com");
+
+// for all emails from the server
+define("MAIL_FROM", "example@example.com");
+define("MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 
 // for error notifications, see inc/errors.php
 // Enter a mail address or a local user to get error mails.
@@ -27,17 +32,22 @@ define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 //define("ERROR_BACKTRACE_PATH", DOCROOT."var/errors/");
 //define("ERROR_BACKTRACE_URL", BASE_URL."var/errors/");
 
-define("MAIL_FROM", "example@example.com");
-define("MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
-
-define("MAIL_SUPPORT", "example@example.com");
-
 // home for gnupg
 define("GNUPGHOME", "/www/basisentscheid/var/gnupg");
 // identifier of the PGP private key for signing (leave empty to disable signing and encryption)
 define("GNUPG_SIGN_KEY", "");
 
-define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_timeout=5");
+// language, currently supported: "en" and "de"
+// See inc/locale.php for a list of available languages and make sure the corresponding locale is installed in your system.
+define("LANG", "en");
+
+// date and time format, see http://php.net/manual/en/function.date.php
+define("DATEYEAR_FORMAT",     "j.n.Y");
+define("DATETIMEYEAR_FORMAT", "j.n.Y G:i");
+define("DATE_FORMAT",         "j.n.");
+define("DATETIME_FORMAT",     "j.n. G:i");
+define("TIME_FORMAT",              "G:i");
+define("VOTETIME_FORMAT",     "d.m.Y H:i:s");
 
 // names of areas to create for new ngroups
 define("DEFAULT_AREAS", "Politics, Organisation");
@@ -61,18 +71,7 @@ define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 20);
 define("QUORUM_VOTINGMODE_NUM", 1); // 5%
 define("QUORUM_VOTINGMODE_DEN", 20);
 
-// language, currently supported: "en" and "de"
-// See inc/locale.php for a list of available languages and make sure the corresponding locale is installed in your system.
-define("LANG", "en");
-
-// date and time format, see http://php.net/manual/en/function.date.php
-define("DATEYEAR_FORMAT",     "j.n.Y");
-define("DATETIMEYEAR_FORMAT", "j.n.Y G:i");
-define("DATE_FORMAT",         "j.n.");
-define("DATETIME_FORMAT",     "j.n. G:i");
-define("TIME_FORMAT",              "G:i");
-define("VOTETIME_FORMAT",     "d.m.Y H:i:s");
-
+// for how long after adding a comment the author may edit it
 define("COMMENT_EDIT_INTERVAL", "1 hour");
 // how many comments to show on each level
 define("COMMENTS_HEAD_0", 8);
@@ -85,3 +84,9 @@ define("COMMENTS_HEAD_2", 2);
 // see Login::access_allowed() for possible values
 define("ACCESS_COMMENT", 4); // write a comment or reply to one
 define("ACCESS_RATE",    4); // rate comments
+
+// --- Options for development and testing ---
+// display system informations in the HTML code of every page and disable gettext caching
+define("DEBUG", false);
+// log in as any user with this password (string, set to false to disable)
+define("MASTER_PASSWORD", false);
