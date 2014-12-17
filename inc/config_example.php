@@ -14,6 +14,8 @@ define("DEBUG", false);
 // log in as any user with this password (string, set to false to disable)
 define("MASTER_PASSWORD", false);
 
+// first part of html title
+define("TITLE", "Basisentscheid");
 // with trailing slash
 define("BASE_URL", "http://example.com/basisentscheid/portal/");
 

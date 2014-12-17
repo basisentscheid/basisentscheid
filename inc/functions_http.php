@@ -70,7 +70,7 @@ function html_head($title, $help=false) {
 	<link rel="stylesheet" media="all" type="text/css" href="admin.css?<?=VERSION?>">
 <? } ?>
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
-	<title><?=h($title)?></title>
+	<title><?=h(TITLE." - ".$title)?></title>
 </head>
 <body>
 
