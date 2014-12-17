@@ -876,8 +876,8 @@ class Issue extends Relation {
 			echo _("Voting");
 			return;
 		}
-		if ( !Login::$member->entitled($this->area()->ngroup) ) {
-			?><span title="<?=_("You can not vote on this issue, because you are are not entitled in the group.")?>"><?=_("Voting")?></span><?
+		if ( !Login::$member->eligible($this->area()->ngroup) ) {
+			?><span title="<?=_("You can not vote on this issue, because you are are not eligible in the group.")?>"><?=_("Voting")?></span><?
 			return;
 		}
 		$sql = "SELECT vote_vote.token FROM vote_token
@@ -890,7 +890,7 @@ class Issue extends Relation {
 				?><span title="<?=_("You have voted on this issue.")?>">&#10003;</span><?
 			}
 		} else {
-			?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
+			?><span title="<?=_("You can not vote in this voting period, because you were not yet eligible when the voting started.")?>"><?=_("Voting")?></span><?
 		}
 	}
 
@@ -932,20 +932,20 @@ class Issue extends Relation {
 		if ($this->votingmode_determination($submitted)) {
 			?>" title="<?
 			if (Login::$member) {
-				$entitled = Login::$member->entitled($this->area()->ngroup);
+				$eligible = Login::$member->eligible($this->area()->ngroup);
 				$votingmode_demanded = $this->votingmode_demanded_by_member();
 				if ($votingmode_demanded) {
 					echo _("You demand offline voting.");
-				} elseif ($entitled) {
+				} elseif ($eligible) {
 					echo _("You can demand offline voting.");
 				} else {
-					echo _("You are not entitled in this group.");
+					echo _("You are not eligible in this group.");
 				}
 				?>">
 <img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
 <?
 				if ($votingmode_demanded) { ?>&#10003;<? }
-				if ($selected_proposal and $entitled) {
+				if ($selected_proposal and $eligible) {
 					form(URI::same());
 					if ($votingmode_demanded) {
 						echo _("You demand offline voting.")?>

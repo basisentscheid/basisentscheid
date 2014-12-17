@@ -1444,7 +1444,7 @@ msgstr "Gliederungen"
 #
 # File: index.php, line: 93
 # File: inc/classes/Ngroup.php, line: 154
-msgid "entitled"
+msgid "eligible"
 msgstr "stimmberechtigt"
 #
 # File: login.php, line: 48
@@ -2023,7 +2023,7 @@ msgstr "Das Thema ist nicht in der Abstimmungsphase."
 #
 # File: vote.php, line: 27
 # File: inc/classes/Issue.php, line: 893
-msgid "You can not vote in this voting period, because you were not yet entitled when the voting started."
+msgid "You can not vote in this voting period, because you were not yet eligible when the voting started."
 msgstr "Du kannst in dieser Abstimmungsperiode nicht abstimmen, weil du noch nicht stimmberechtigt warst als die Abstimmung begann."
 #
 # File: vote.php, line: 45
@@ -2169,7 +2169,7 @@ msgid "Your user ID"
 msgstr "Deine Benutzer-ID"
 #
 # File: inc/classes/Issue.php, line: 880
-msgid "You can not vote on this issue, because you are are not entitled in the group."
+msgid "You can not vote on this issue, because you are are not eligible in the group."
 msgstr "Du kannst zu diesem Thema nicht abstimmen, weil du in der Gliederung nicht stimmberechtigt bist."
 #
 # File: inc/classes/Issue.php, line: 890
@@ -2394,7 +2394,7 @@ msgid "Voting mode"
 msgstr "Abstimmungsverfahren"
 #
 # File: inc/classes/Issue.php, line: 942
-msgid "You are not entitled in this group."
+msgid "You are not eligible in this group."
 msgstr "Du bis in dieser Gliederung nicht stimmberechtigt."
 #
 # File: inc/classes/Issue.php, line: 1241

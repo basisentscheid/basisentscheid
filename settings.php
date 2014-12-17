@@ -161,8 +161,8 @@ form(BN);
 	</div>
 <? } ?>
 	<div class="input <?=stripes()?>">
-		<label><?=_("Entitled and verified")?></label>
-		<span class="input"><? display_checked(Login::$member->entitled) ?></span>
+		<label><?=_("Eligible and verified")?></label>
+		<span class="input"><? display_checked(Login::$member->eligible) ?></span>
 	</div>
 	<div class="input <?=stripes()?>">
 		<label><?=_("Groups")?></label>

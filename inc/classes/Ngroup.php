@@ -148,12 +148,12 @@ class Ngroup extends Relation {
 		$ngroups = array();
 		while ( $ngroup = DB::fetch_object($result, "Ngroup") ) $ngroups[] = $ngroup;
 		$ngroups = Ngroup::parent_sort($ngroups, $parent);
-		// entitled ngroups
+		// eligible ngroups
 		foreach ($ngroups as $ngroup) {
 			if (!$ngroup->member) continue;
-			$options[$ngroup->id] = $ngroup->name." ("._("entitled").")";
+			$options[$ngroup->id] = $ngroup->name." ("._("eligible").")";
 		}
-		// not entitled ngroups
+		// not eligible ngroups
 		foreach ($ngroups as $ngroup) {
 			if ($ngroup->member) continue;
 			$options[$ngroup->id] = $ngroup->name;

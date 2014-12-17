@@ -54,6 +54,7 @@ ALTER TABLE ratings RENAME TO rating;
 --
 ALTER TABLE member RENAME COLUMN public_id TO realname;
 --
+ALTER TABLE member RENAME COLUMN entitled TO eligible;
 
 
 

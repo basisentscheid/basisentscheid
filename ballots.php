@@ -32,7 +32,7 @@ if (Login::$member) {
 if ($action) {
 	switch ($action) {
 	case "select":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		action_required_parameters('ballot');
 		$ballot = new Ballot($_POST['ballot']);
 		if (!$ballot->id) {
@@ -51,7 +51,7 @@ if ($action) {
 		redirect();
 		break;
 	case "select_postal":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		if ($period->state=="ballot_preparation") {
 			warning(_("In ballot preparation phase it is not allowed anymore to select postal voting."));
 			redirect();
@@ -60,7 +60,7 @@ if ($action) {
 		redirect();
 		break;
 	case "unselect":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		if ($period->state=="ballot_preparation") {
 			warning(_("In ballot preparation phase it is not allowed anymore to change the ballot choice."));
 			redirect();
@@ -87,7 +87,7 @@ if ($action) {
 
 html_head( sprintf(_("Ballots for <a%s>voting period %d</a>"), ' href="periods.php?ngroup='.$ngroup.'&amp;hl='.$period->id.'"', $period->id), true );
 
-$entitled = ( Login::$member and Login::$member->entitled($ngroup) );
+$eligible = ( Login::$member and Login::$member->eligible($ngroup) );
 ?>
 
 <p><?=$period->ballot_phase_info()?></p>
@@ -96,9 +96,9 @@ $entitled = ( Login::$member and Login::$member->entitled($ngroup) );
 <?
 
 // don't show select buttons if the member is agent for some ballot
-$show_select = ( $entitled and (!$row_voters or !$row_voters['agent']) and !$period->postage() );
+$show_select = ( $eligible and (!$row_voters or !$row_voters['agent']) and !$period->postage() );
 
-if ($show_select and $entitled and $period->state=="ballot_application") {
+if ($show_select and $eligible and $period->state=="ballot_application") {
 ?>
 <div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Apply to operate a ballot")?></a></div>
 <?
@@ -119,7 +119,7 @@ $colspan = 7;
 		<th><?=_("Opening hours")?></th>
 		<th><?=_("Agents")?></th>
 		<th><?=_("Voters")?></th>
-<? if ($entitled) { $colspan++; ?>
+<? if ($eligible) { $colspan++; ?>
 		<th><?=_("My ballot")?></th>
 <? } ?>
 		<th><?=_("Approved")?></th>
@@ -154,7 +154,7 @@ if (!$pager->linescount) {
 		<td><?=h($ballot->agents)?></td>
 		<td class="center"><?=$ballot->voters?></td>
 <?
-		if ($entitled) {
+		if ($eligible) {
 ?>
 		<td>
 <?
@@ -228,7 +228,7 @@ $pager->display();
 
 
 // postal voting
-if ($entitled) {
+if ($eligible) {
 	if ($row_voters and $row_voters['ballot']===null) {
 ?>
 <h2 class="postal"><?=_("Postal voting")?></h2>

@@ -85,16 +85,16 @@ foreach ( $dates as $index => $time ) {
 <h2 id="ngroups"><?=_("Groups")?></h2>
 <table>
 <?
-$entitled = ( Login::$member and Login::$member->entitled );
-if ($entitled) {
+$eligible = ( Login::$member and Login::$member->eligible );
+if ($eligible) {
 ?>
 	<tr>
 		<th colspan="4"></th>
-		<th><?=_("entitled")?></th>
+		<th><?=_("eligible")?></th>
 	</tr>
 <?
 }
-if ($entitled) {
+if ($eligible) {
 	$sql = "SELECT ngroup.*, member_ngroup.member
 		FROM ngroup
 		LEFT JOIN member_ngroup ON ngroup.id = member_ngroup.ngroup AND member_ngroup.member = ".intval(Login::$member->id);
@@ -128,7 +128,7 @@ foreach ($ngroups as $ngroup) {
 		<td></td>
 <?
 	}
-	if ($entitled) {
+	if ($eligible) {
 ?>
 		<td class="center"><?
 		if ($ngroup->member and $ngroup->active) {

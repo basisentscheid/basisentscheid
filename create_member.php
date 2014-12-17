@@ -18,7 +18,7 @@ if ($action) {
 
 		$member = new Member;
 		$member->invite = Login::generate_token(24);
-		$member->entitled = true;
+		$member->eligible = true;
 		$member->create();
 
 		// become member of ngroups

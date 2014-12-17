@@ -21,7 +21,7 @@ class Member extends Relation {
 	public $realname = "";
 	public $profile  = "";
 	const profile_length = 2000;
-	public $entitled;
+	public $eligible;
 	public $mail;
 	public $mail_unconfirmed;
 	public $mail_code;
@@ -31,7 +31,7 @@ class Member extends Relation {
 	const fingerprint_length = 100;
 	public $hide_help;
 
-	protected $boolean_fields = array("entitled");
+	protected $boolean_fields = array("eligible");
 	protected $update_fields = array("username");
 
 	private $ngroups;
@@ -43,7 +43,7 @@ class Member extends Relation {
 	 * @return boolean
 	 */
 	public function create() {
-		$fields_values = array('invite' => $this->invite, 'entitled' => $this->entitled);
+		$fields_values = array('invite' => $this->invite, 'eligible' => $this->eligible);
 		$extra = array('invite_expiry' => "now() + interval '1 month'");
 		return DB::insert("member", $fields_values, $this->id, $extra);
 	}
@@ -55,8 +55,8 @@ class Member extends Relation {
 	 * @param integer $ngroup
 	 * @return boolean
 	 */
-	public function entitled($ngroup) {
-		if (!$this->entitled) return false;
+	public function eligible($ngroup) {
+		if (!$this->eligible) return false;
 		if ($this->ngroups===null) {
 			$sql = "SELECT ngroup FROM member_ngroup WHERE member=".intval($this->id);
 			$this->ngroups = DB::fetchfieldarray($sql);

@@ -373,7 +373,7 @@ CREATE TABLE member (
     password_reset_code_expiry timestamp with time zone,
     realname text DEFAULT ''::text NOT NULL,
     profile text DEFAULT ''::text NOT NULL,
-    entitled boolean DEFAULT false NOT NULL,
+    eligible boolean DEFAULT false NOT NULL,
     mail text,
     mail_unconfirmed text,
     mail_code character(16),

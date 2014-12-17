@@ -34,7 +34,7 @@ if ($action) {
 	switch ($action) {
 
 	case "submit_proposal":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
 			redirect();
@@ -44,19 +44,19 @@ if ($action) {
 		break;
 
 	case "apply_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		action_required_parameters('proponent');
 		$proposal->update_proponent(trim($_POST['proponent']));
 		redirect();
 		break;
 	case "become_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		action_required_parameters('proponent');
 		$proposal->add_proponent(trim($_POST['proponent']));
 		redirect();
 		break;
 	case "confirm_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		action_required_parameters('member');
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
@@ -71,33 +71,33 @@ if ($action) {
 		redirect();
 		break;
 	case "confirm_remove_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		$proposal->remove_proponent(Login::$member);
 		redirect();
 		break;
 
 	case "add_support":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		$proposal->add_support();
 		redirect();
 		break;
 	case "add_support_anonym":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		$proposal->add_support(true);
 		redirect();
 		break;
 	case "revoke_support":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		$proposal->revoke_support();
 		redirect();
 		break;
 	case "demand_votingmode":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		$issue->demand_votingmode();
 		redirect();
 		break;
 	case "revoke_votingmode":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("eligible", $ngroup);
 		$issue->revoke_votingmode();
 		redirect();
 		break;
@@ -410,7 +410,7 @@ display_quorum($proposal, $supporters, $is_supporter);
 <div class="issue">
 <?
 if (Login::$member) {
-	if (Login::$member->entitled($ngroup) and $issue->allowed_add_alternative_proposal()) {
+	if (Login::$member->eligible($ngroup) and $issue->allowed_add_alternative_proposal()) {
 ?>
 <div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
@@ -466,7 +466,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 				break;
 			}
 		}
-		$allowed_edit_proponent = ( $proposal->allowed_change_proponents() and Login::$member->entitled($ngroup) );
+		$allowed_edit_proponent = ( $proposal->allowed_change_proponents() and Login::$member->eligible($ngroup) );
 		if ($allowed_edit_proponent and !$is_any_proponent) {
 ?>
 <div class="add"><a href="<?=URI::append(['become_proponent'=>1])?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
@@ -589,7 +589,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 	if (Login::$member or Login::$admin) {
 ?>
 <?=join(", ", $supporters);
-		if (Login::$member and Login::$member->entitled($ngroup) and $proposal->allowed_change_supporters()) {
+		if (Login::$member and Login::$member->eligible($ngroup) and $proposal->allowed_change_supporters()) {
 ?>
 <br class="clear">
 <?

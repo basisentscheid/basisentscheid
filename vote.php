@@ -20,11 +20,11 @@ if ($issue->state == 'finished') {
 }
 
 $ngroup = $issue->area()->ngroup();
-Login::access("entitled", $ngroup->id);
+Login::access("eligible", $ngroup->id);
 
 $token = $issue->vote_token();
 if (!$token) {
-	error(_("You can not vote in this voting period, because you were not yet entitled when the voting started."));
+	error(_("You can not vote in this voting period, because you were not yet eligible when the voting started."));
 }
 
 if ($action) {

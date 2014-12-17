@@ -44,7 +44,7 @@ function random_votes(Issue $issue) {
 	$sql = "SELECT * FROM member
  		JOIN member_ngroup ON member.id = member_ngroup.member
  		JOIN vote_token ON vote_token.member = member.id AND vote_token.issue = ".intval($issue->id)."
-		WHERE member_ngroup.ngroup = ".$issue->area()->ngroup." AND member.entitled = TRUE
+		WHERE member_ngroup.ngroup = ".$issue->area()->ngroup." AND member.eligible = TRUE
 		LIMIT ".rand(10, 100);
 	$result = DB::query($sql);
 	while ( Login::$member = DB::fetch_object($result, "Member") ) {
@@ -107,11 +107,11 @@ function login($id) {
 
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
-	Login::$member->entitled = true;
+	Login::$member->eligible = true;
 	Login::$member->create();
 	set_unique_username(Login::$member, $names[$id]);
 	Login::$member->password = $password;
-	$update_fields = array('username', 'password', 'entitled');
+	$update_fields = array('username', 'password', 'eligible');
 	Login::$member->update($update_fields, 'activated=now()');
 	DB::insert("member_ngroup", array('member'=>Login::$member->id, 'ngroup'=>$ngroup->id));
 

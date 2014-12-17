@@ -23,12 +23,12 @@ $ngroup = new_ngroup("Test ballots group", 500);
 // create main member
 $login = new Member;
 $login->invite = Login::generate_token(24);
-$login->entitled = true;
+$login->eligible = true;
 $login->create();
 $login->username = "t".$date."login";
 $login->password = $password;
 $login->mail = ERROR_MAIL;
-$login->update(['username', 'password', 'entitled', 'mail'], 'activated=now()');
+$login->update(['username', 'password', 'eligible', 'mail'], 'activated=now()');
 
 
 // go through all cases
@@ -172,12 +172,12 @@ function add_participant(Period $period, $ballot, $case, $i) {
 
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
-	Login::$member->entitled = true;
+	Login::$member->eligible = true;
 	Login::$member->create();
 	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
 	Login::$member->password = $password;
 	Login::$member->mail = ERROR_MAIL;
-	Login::$member->update(['username', 'password', 'entitled', 'mail'], 'activated=now()');
+	Login::$member->update(['username', 'password', 'eligible', 'mail'], 'activated=now()');
 	Login::$member->update_ngroups([1]);
 	if ($ballot) {
 		if (is_object($ballot)) $period->select_ballot($ballot); else $period->select_postal();

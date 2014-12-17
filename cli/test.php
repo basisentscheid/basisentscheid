@@ -451,11 +451,11 @@ function create_member($username) {
 
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
-	Login::$member->entitled = true;
+	Login::$member->eligible = true;
 	Login::$member->create();
 	Login::$member->username = $username;
 	Login::$member->password = $password;
-	$update_fields = array('username', 'password', 'entitled');
+	$update_fields = array('username', 'password', 'eligible');
 
 	// Enable this only in local development environment, because it will lead to extremely many notification mails!
 	//Login::$member->mail = ERROR_MAIL;

@@ -125,8 +125,8 @@ function html_head($title, $help=false) {
 	?>">
 						<select name="ngroup" onchange="this.form.submit()">
 <?
-	$entitled = ( Login::$member and Login::$member->entitled );
-	if ($entitled) {
+	$eligible = ( Login::$member and Login::$member->eligible );
+	if ($eligible) {
 		$sql = "SELECT ngroup.*, member FROM ngroup
 			LEFT JOIN member_ngroup ON member_ngroup.ngroup = ngroup.id AND member_ngroup.member = ".intval(Login::$member->id);
 	} else {
@@ -139,9 +139,9 @@ function html_head($title, $help=false) {
 		$ngroups[] = $ngroup;
 	}
 	$ngroups = Ngroup::parent_sort_active($ngroups);
-	// entitled ngroups
+	// eligible ngroups
 	foreach ($ngroups as $ngroup) {
-		if (!$entitled or !$ngroup->member) continue;
+		if (!$eligible or !$ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
@@ -150,9 +150,9 @@ function html_head($title, $help=false) {
 		?>><?=$ngroup->name?> &#10003;</option>
 <?
 	}
-	// not entitled ngroups
+	// not eligible ngroups
 	foreach ($ngroups as $ngroup) {
-		if ($entitled and $ngroup->member) continue;
+		if ($eligible and $ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
