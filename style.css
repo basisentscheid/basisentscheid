@@ -447,6 +447,10 @@ div.filter form {
 	display: inline;
 	margin-left: 20px;
 }
+div.filter.nav {
+	margin-top: 0.5em;
+	margin-bottom: 1.5em;
+}
 
 img.online_small {
 	margin: 0 3px 0 3px;

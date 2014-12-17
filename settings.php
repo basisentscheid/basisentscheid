@@ -1,5 +1,6 @@
 <?
 /**
+ * member settings
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -15,15 +16,6 @@ if ($action) {
 	case "save":
 		action_required_parameters('username', 'password', 'password2', 'mail', 'profile');
 		if (GNUPG_SIGN_KEY) action_required_parameters('fingerprint', 'key');
-
-		// save notification settings
-		foreach ( Notification::$default_settings as $interest => $types ) {
-			$fields_values = array('member'=>Login::$member->id, 'interest'=>$interest);
-			foreach ( $types as $type => $value ) {
-				$fields_values[$type] = !empty($_POST['notify'][$interest][$type]);
-			}
-			DB::insert_or_update("notify", $fields_values, array('member', 'interest'));
-		}
 
 		$save_fields = array();
 		$success_msgs = array();
@@ -110,11 +102,38 @@ if ($action) {
 }
 
 
-html_head(_("Member settings"), true);
+html_head(_("Member settings"));
+
+display_nav_settings();
 
 form(BN);
 ?>
 <fieldset class="member">
+	<div class="input <?=stripes()?>">
+		<label><?=_("Groups")?></label>
+		<span class="input"><?
+
+$sql = "SELECT name FROM member_ngroup
+	JOIN ngroup ON ngroup.id = member_ngroup.ngroup
+	WHERE member=".intval(Login::$member->id);
+echo join(", ", DB::fetchfieldarray($sql));
+
+?></span>
+	</div>
+	<div class="input <?=stripes()?>">
+		<label><?=_("Eligible")?></label>
+		<span class="input"><? display_checked(Login::$member->eligible) ?></span>
+	</div>
+	<div class="input <?=stripes()?>">
+		<label><?=_("Verified")?></label>
+		<span class="input"><? display_checked(Login::$member->verified) ?></span>
+	</div>
+<? if (Login::$member->realname) { ?>
+	<div class="input <?=stripes()?>">
+		<label><?=_("Real name")?></label>
+		<span class="input"><?=h(Login::$member->realname)?></span>
+	</div>
+<? } ?>
 	<div class="input <?=stripes()?>">
 		<label for="username"><?=_("Username")?></label>
 		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32"></span>
@@ -154,70 +173,11 @@ form(BN);
 		<label><?=_("Profile")?></label>
 		<span class="input"><textarea name="profile" cols="80" rows="5" maxlength="<?=Comment::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
 	</div>
-<? if (Login::$member->realname) { ?>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Real name")?></label>
-		<span class="input"><?=h(Login::$member->realname)?></span>
-	</div>
-<? } ?>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Eligible")?></label>
-		<span class="input"><? display_checked(Login::$member->eligible) ?></span>
-	</div>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Verified")?></label>
-		<span class="input"><? display_checked(Login::$member->verified) ?></span>
-	</div>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Groups")?></label>
-		<span class="input"><?
-
-$sql = "SELECT name FROM member_ngroup
-	JOIN ngroup ON ngroup.id = member_ngroup.ngroup
-	WHERE member=".intval(Login::$member->id);
-echo join(", ", DB::fetchfieldarray($sql));
-
-?></span>
+	<div class="button th">
+		<input type="hidden" name="action" value="save">
+		<input type="submit" value="<?=_("Save")?>">
 	</div>
 </fieldset>
-
-<h2><?=_("Email notifications")?></h2>
-<table class="notify">
-	<tr>
-		<td></td>
-<?
-$types = Notification::types();
-foreach ($types as $type => $type_title) {
-?>
-		<th class="type"><?=$type_title?></th>
-<?
-}
-?>
-	</tr>
-<?
-$notify = Login::$member->notification_settings();
-foreach (Notification::interests() as $interest => $interest_title) {
-?>
-	<tr class="<?=stripes()?>">
-		<td class="right"><?=$interest_title?></td>
-<?
-	foreach ($types as $type => $type_title) {
-?>
-		<td class="center"><input type="checkbox" name="notify[<?=$interest?>][<?=$type?>]" value="1"<?
-		if ($notify[$interest][$type]) { ?> checked<? }
-		?>></td>
-<?
-	}
-?>
-	</tr>
-<?
-}
-?>
-</table>
-
-<br>
-<input type="hidden" name="action" value="save">
-<input type="submit" value="<?=_("Save")?>">
 <?
 form_end();
 

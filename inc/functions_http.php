@@ -198,7 +198,7 @@ function html_head($title, $help=false) {
 
 <h1><?=$title?></h1>
 <?
-	if ($help) help();
+	if ($help) help("", true);
 ?>
 <div class="clearfix"></div>
 <?
@@ -292,6 +292,24 @@ function html_user() {
 <?
 		form_end();
 	}
+}
+
+
+/**
+ * navigation for member settings
+ */
+function display_nav_settings() {
+?>
+<div class="filter nav">
+	<a href="settings.php"<?
+	if (BN=="settings.php") { ?> class="active"<? }
+	?>><?=_("Account")?></a>
+	<a href="settings_notifications.php"<?
+	if (BN=="settings_notifications.php") { ?> class="active"<? }
+	?>><?=_("Email notifications")?></a>
+</div>
+<?
+	help();
 }
 
 
@@ -525,8 +543,9 @@ function stripes($change=false, $suffix="") {
  * This function should not be used on pages with forms, because users will lose their already filled in data if they click on the help buttons.
  *
  * @param string  $anchor (optional) for additional help messages on the same page
+ * @param boolean $h1     (optional)
  */
-function help($anchor="") {
+function help($anchor="", $h1=false) {
 	if ($anchor) {
 		$hash_anchor = "#".$anchor;
 		$identifier = BN.$hash_anchor;
@@ -595,7 +614,7 @@ function help($anchor="") {
 </div>
 <?
 	} else {
-		form(URI::same().$hash_anchor, 'class="show_help'.($anchor?'':' h1').'"');
+		form(URI::same().$hash_anchor, 'class="show_help'.($h1?' h1':'').'"');
 		if ($anchor) {
 ?>
 <input type="hidden" name="anchor" value="<?=$anchor?>">
