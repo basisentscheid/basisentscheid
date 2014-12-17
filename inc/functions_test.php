@@ -108,6 +108,7 @@ function login($id) {
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
 	Login::$member->eligible = true;
+	Login::$member->verified = true;
 	Login::$member->create();
 	set_unique_username(Login::$member, $names[$id]);
 	Login::$member->password = $password;

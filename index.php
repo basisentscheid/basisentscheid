@@ -85,16 +85,13 @@ foreach ( $dates as $index => $time ) {
 <h2 id="ngroups"><?=_("Groups")?></h2>
 <table>
 <?
-$eligible = ( Login::$member and Login::$member->eligible );
-if ($eligible) {
+if (Login::$member) {
 ?>
 	<tr>
 		<th colspan="4"></th>
-		<th><?=_("eligible")?></th>
+		<th><?=_("Member")?></th>
 	</tr>
 <?
-}
-if ($eligible) {
 	$sql = "SELECT ngroup.*, member_ngroup.member
 		FROM ngroup
 		LEFT JOIN member_ngroup ON ngroup.id = member_ngroup.ngroup AND member_ngroup.member = ".intval(Login::$member->id);
@@ -128,12 +125,12 @@ foreach ($ngroups as $ngroup) {
 		<td></td>
 <?
 	}
-	if ($eligible) {
+	if (Login::$member) {
 ?>
-		<td class="center"><?
-		if ($ngroup->member and $ngroup->active) {
-			?>&#10003;<?
-			if ( $nyvic = $ngroup->not_yet_voted_issues_count() ) {
+		<td class="member"><?
+		if ($ngroup->member) {
+			?><span title="<?=_("You are member of this group.")?>">&#8710;</span><?
+			if ( Login::$member->eligible and Login::$member->verified and $nyvic = $ngroup->not_yet_voted_issues_count() ) {
 				?> <a href="proposals.php?ngroup=<?=$ngroup->id?>&filter=voting"><?=Ngroup::not_yet_voted($nyvic)?></a><?
 			}
 		}

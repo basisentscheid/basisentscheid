@@ -73,7 +73,7 @@ class Notification {
 			'submitted'    => _("submitted"),
 			'admitted'     => _("admitted"),
 			'debate'       => _("debate"),
-			// voting start notifications are sent to all eligible members of the group
+			// voting start notifications are sent to all entitled members of the group
 			// vote receipts are sent individually
 			'finished'     => _("finished")
 		);

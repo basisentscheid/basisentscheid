@@ -22,6 +22,10 @@ div.proposal_info ul {
 	/* narrow font */
 	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
+div.ngroups td.member {
+	/* wide font */
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+}
 
 /* for compatibility with older browsers */
 header, footer, nav {
@@ -532,6 +536,13 @@ a#home {
 }
 #user a.user {
 	font-weight: bold;
+}
+#user span.status {
+	font-weight: bold;
+	color: #CCC;
+}
+#user span.status.yes {
+	color: #0A0;
 }
 
 footer {

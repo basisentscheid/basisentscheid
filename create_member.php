@@ -19,6 +19,7 @@ if ($action) {
 		$member = new Member;
 		$member->invite = Login::generate_token(24);
 		$member->eligible = true;
+		$member->verified = true;
 		$member->create();
 
 		// become member of ngroups

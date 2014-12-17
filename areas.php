@@ -35,20 +35,20 @@ if ($action) {
 
 html_head(_("Subject areas"), true);
 
-$eligible = ( Login::$member and Login::$member->eligible($ngroup->id) );
+$entitled = ( Login::$member and Login::$member->entitled($ngroup->id) );
 
 ?>
 <table>
 	<tr>
 		<th><?=_("Name")?></th>
 		<th><?=_("Participants")?></th>
-<? if ($eligible) { ?>
+<? if ($entitled) { ?>
 		<th><?=_("Participation")?></th>
 <? } ?>
 	</tr>
 <?
 
-if ($eligible) {
+if ($entitled) {
 	$sql = "SELECT area.*, participant.activated
 		FROM area
 		LEFT JOIN participant ON area.id = participant.area AND participant.member=".intval(Login::$member->id);
@@ -64,7 +64,7 @@ while ($row = DB::fetch_assoc($result)) {
 	<tr class="<?=stripes()?>">
 		<td><?=$row['name']?></td>
 		<td class="center"><?=$row['participants']?></td>
-<? if ($eligible) { ?>
+<? if ($entitled) { ?>
 		<td>
 <?
 		if ($row['activated']) {

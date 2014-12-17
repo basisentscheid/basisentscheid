@@ -24,6 +24,7 @@ $ngroup = new_ngroup("Test ballots group", 500);
 $login = new Member;
 $login->invite = Login::generate_token(24);
 $login->eligible = true;
+$login->verified = true;
 $login->create();
 $login->username = "t".$date."login";
 $login->password = $password;
@@ -173,6 +174,7 @@ function add_participant(Period $period, $ballot, $case, $i) {
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
 	Login::$member->eligible = true;
+	Login::$member->verified = true;
 	Login::$member->create();
 	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
 	Login::$member->password = $password;

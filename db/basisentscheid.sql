@@ -380,7 +380,8 @@ CREATE TABLE member (
     mail_code_expiry timestamp with time zone,
     mail_lock_expiry timestamp with time zone,
     fingerprint text DEFAULT ''::text NOT NULL,
-    hide_help text DEFAULT ''::text NOT NULL
+    hide_help text DEFAULT ''::text NOT NULL,
+    verified boolean DEFAULT false NOT NULL
 );
 
 

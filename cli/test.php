@@ -452,6 +452,7 @@ function create_member($username) {
 	Login::$member = new Member;
 	Login::$member->invite = Login::generate_token(24);
 	Login::$member->eligible = true;
+	Login::$member->verified = true;
 	Login::$member->create();
 	Login::$member->username = $username;
 	Login::$member->password = $password;

@@ -125,8 +125,7 @@ function html_head($title, $help=false) {
 	?>">
 						<select name="ngroup" onchange="this.form.submit()">
 <?
-	$eligible = ( Login::$member and Login::$member->eligible );
-	if ($eligible) {
+	if (Login::$member) {
 		$sql = "SELECT ngroup.*, member FROM ngroup
 			LEFT JOIN member_ngroup ON member_ngroup.ngroup = ngroup.id AND member_ngroup.member = ".intval(Login::$member->id);
 	} else {
@@ -139,20 +138,20 @@ function html_head($title, $help=false) {
 		$ngroups[] = $ngroup;
 	}
 	$ngroups = Ngroup::parent_sort_active($ngroups);
-	// eligible ngroups
+	// own ngroups
 	foreach ($ngroups as $ngroup) {
-		if (!$eligible or !$ngroup->member) continue;
+		if (!$ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
 							<option value="<?=$ngroup->id?>"<?
 		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-		?>><?=$ngroup->name?> &#10003;</option>
+		?>><?=$ngroup->name?> &#8710;</option>
 <?
 	}
-	// not eligible ngroups
+	// other ngroups
 	foreach ($ngroups as $ngroup) {
-		if ($eligible and $ngroup->member) continue;
+		if ($ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
@@ -253,6 +252,25 @@ function html_user() {
 				_("logged in as %s"),
 				'<a href="settings.php" class="user">'.Login::$member->username().'</a>'
 			);
+			?>&nbsp;<?
+			if (Login::$member->eligible) {
+?>
+<span class="status yes" title="<?=_("You are eligible.")?>">S</span>
+<?
+			} else {
+?>
+<span class="status" title="<?=_("You are not eligible.")?>">S</span>
+<?
+			}
+			if (Login::$member->verified) {
+?>
+<span class="status yes" title="<?=_("You are verified.")?>">V</span>
+<?
+			} else {
+?>
+<span class="status" title="<?=_("You are not verified.")?>">V</span>
+<?
+			}
 		} else {
 			printf(
 				_("logged in as admin %s"),

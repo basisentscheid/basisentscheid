@@ -73,10 +73,10 @@ class Period extends Relation {
 	 */
 	public function start_voting(array $issues) {
 
-		// eligible members of the ngroup
+		// entitled members of the ngroup
 		$sql = "SELECT member.* FROM member
 			JOIN member_ngroup ON member.id = member_ngroup.member AND member_ngroup.ngroup=".intval($this->ngroup)."
-			WHERE eligible=TRUE";
+			WHERE eligible=TRUE AND verified=TRUE";
 		$members = DB::fetchobjectarray($sql, "Member");
 
 		$personal_tokens = array();

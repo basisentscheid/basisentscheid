@@ -161,8 +161,12 @@ form(BN);
 	</div>
 <? } ?>
 	<div class="input <?=stripes()?>">
-		<label><?=_("Eligible and verified")?></label>
+		<label><?=_("Eligible")?></label>
 		<span class="input"><? display_checked(Login::$member->eligible) ?></span>
+	</div>
+	<div class="input <?=stripes()?>">
+		<label><?=_("Verified")?></label>
+		<span class="input"><? display_checked(Login::$member->verified) ?></span>
 	</div>
 	<div class="input <?=stripes()?>">
 		<label><?=_("Groups")?></label>
