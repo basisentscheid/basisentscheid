@@ -85,6 +85,7 @@ class Period extends Relation {
 			/** @var $issue Issue */
 
 			// generate vote tokens
+			$all_tokens[$issue->id] = array();
 			foreach ( $members as $member ) {
 				DB::transaction_start();
 				do {
