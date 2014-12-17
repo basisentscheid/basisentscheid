@@ -9,6 +9,7 @@
 
 class Admin extends Relation {
 
+	// database table
 	public $username;
 	public $password;
 

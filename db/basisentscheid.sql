@@ -209,10 +209,10 @@ CREATE TABLE comment (
     content text NOT NULL,
     rating integer DEFAULT 0 NOT NULL,
     member integer,
+    session text DEFAULT ''::text NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
     updated timestamp with time zone,
-    removed boolean DEFAULT false NOT NULL,
-    session text DEFAULT ''::text NOT NULL
+    removed boolean DEFAULT false NOT NULL
 );
 
 
@@ -368,21 +368,21 @@ CREATE TABLE member (
     invite_expiry timestamp with time zone NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
     activated timestamp with time zone,
+    eligible boolean DEFAULT false NOT NULL,
+    verified boolean DEFAULT false NOT NULL,
+    realname text DEFAULT ''::text NOT NULL,
     username character varying(32),
     password character varying(123),
     password_reset_code character(24),
     password_reset_code_expiry timestamp with time zone,
-    realname text DEFAULT ''::text NOT NULL,
-    profile text DEFAULT ''::text NOT NULL,
-    eligible boolean DEFAULT false NOT NULL,
     mail text,
     mail_unconfirmed text,
     mail_code character(16),
     mail_code_expiry timestamp with time zone,
     mail_lock_expiry timestamp with time zone,
     fingerprint text DEFAULT ''::text NOT NULL,
-    hide_help text DEFAULT ''::text NOT NULL,
-    verified boolean DEFAULT false NOT NULL
+    profile text DEFAULT ''::text NOT NULL,
+    hide_help text DEFAULT ''::text NOT NULL
 );
 
 

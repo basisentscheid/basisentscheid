@@ -9,6 +9,7 @@
 
 class Draft extends Relation {
 
+	// database table
 	public $title;
 	public $content;
 	public $reason;

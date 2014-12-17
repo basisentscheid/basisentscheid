@@ -9,6 +9,7 @@
 
 class Issue extends Relation {
 
+	// database table
 	public $period;
 	public $area;
 	public $votingmode_demanders;

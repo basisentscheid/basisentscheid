@@ -9,6 +9,7 @@
 
 class Period extends Relation {
 
+	// database table
 	public $ngroup;
 	public $debate;
 	public $preparation;

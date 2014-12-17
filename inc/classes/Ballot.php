@@ -9,6 +9,7 @@
 
 class Ballot extends Relation {
 
+	// database table
 	public $period;
 	public $name;
 	public $ngroup;

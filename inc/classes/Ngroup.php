@@ -10,6 +10,7 @@
 
 class Ngroup extends Relation {
 
+	// database table
 	public $parent;
 	public $name;
 	public $active;

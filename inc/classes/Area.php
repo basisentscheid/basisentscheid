@@ -10,6 +10,7 @@
 
 class Area extends Relation {
 
+	// database table
 	public $name;
 	public $participants;
 	public $ngroup;

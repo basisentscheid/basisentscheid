@@ -12,7 +12,6 @@
 class Comment extends Relation {
 
 	const rating_score_max = 2;
-
 	const title_length = 100;
 	const content_length = 2000;
 

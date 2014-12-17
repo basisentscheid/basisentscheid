@@ -12,24 +12,26 @@
 
 class Member extends Relation {
 
+	const profile_length = 2000;
+	const fingerprint_length = 100;
+
+	// database table
 	public $invite;
 	public $invite_expiry;
 	public $created;
 	public $activated;
-	public $username;
-	public $password;
-	public $realname = "";
-	public $profile  = "";
-	const profile_length = 2000;
 	public $eligible;
 	public $verified;
+	public $realname = "";
+	public $username;
+	public $password;
 	public $mail;
 	public $mail_unconfirmed;
 	public $mail_code;
 	public $mail_code_expiry;
 	public $mail_lock_expiry;
 	public $fingerprint;
-	const fingerprint_length = 100;
+	public $profile  = "";
 	public $hide_help;
 
 	protected $boolean_fields = array("eligible", "verified");

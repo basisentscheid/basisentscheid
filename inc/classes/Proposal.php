@@ -12,13 +12,14 @@
 class Proposal extends Relation {
 
 	const proponent_length = 100;
-
-	public $title;
 	const title_length = 300;
-	public $content;
 	const content_length = 100000;
-	public $reason;
 	const reason_length = 100000;
+
+	// database table
+	public $title;
+	public $content;
+	public $reason;
 	public $issue;
 	public $state = "draft";
 	public $supporters;
