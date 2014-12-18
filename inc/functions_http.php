@@ -55,7 +55,7 @@ function redirect($target="") {
  * head part of the page and not yet displayed output
  *
  * @param string  $title
- * @param unknown $help  (optional)
+ * @param boolean $help  (optional) display a help block next to <h1>
  */
 function html_head($title, $help=false) {
 

@@ -44,9 +44,9 @@ if ($issue->votingmode_admin) {
 	} else {
 		// display list of votes
 		$sql = "SELECT token, demand, votetime FROM votingmode_token
- 		LEFT JOIN votingmode_vote USING (token)
- 		WHERE issue=".intval($issue->id)."
- 		ORDER BY token ASC, votetime DESC";
+			LEFT JOIN votingmode_vote USING (token)
+			WHERE issue=".intval($issue->id)."
+			ORDER BY token ASC, votetime DESC";
 		$result = DB::query($sql);
 		if (Login::$member) $token = $issue->votingmode_token(); else $token = null;
 		Issue::display_votingmode_votes($result, $token);
