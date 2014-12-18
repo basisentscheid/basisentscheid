@@ -44,6 +44,8 @@ function redirect($target="") {
 		$_SESSION['output'] = ob_get_clean();
 	}
 
+	session_write_close(); // release session lock
+
 	header("Location: ".$target);
 	exit;
 }
@@ -215,6 +217,8 @@ function html_head($title, $help=false) {
 		}
 		unset($_SESSION['output']);
 	}
+
+	session_write_close(); // release session lock
 
 	// output from before the html head
 	if ($output) {

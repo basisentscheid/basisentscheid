@@ -52,9 +52,9 @@ define("BN", basename($_SERVER['PHP_SELF']));
 // buffer output until it either gets displayed on this page or gets written to the session at a redirect
 ob_start();
 
-Login::init();
-
 require DOCROOT."inc/locale.php";
+
+Login::init(); // start session
 
 /*
  * The ngroup can be selected by the GET parameter or by other parameters selecting a period, area, issue or proposal
