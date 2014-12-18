@@ -115,14 +115,6 @@ form(BN);
 Login::$member->display_ngroups();
 ?></span>
 	</div>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Eligible")?></label>
-		<span class="input"><? display_checked(Login::$member->eligible) ?></span>
-	</div>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Verified")?></label>
-		<span class="input"><? display_checked(Login::$member->verified) ?></span>
-	</div>
 <? if (Login::$member->realname) { ?>
 	<div class="input <?=stripes()?>">
 		<label><?=_("Real name")?></label>

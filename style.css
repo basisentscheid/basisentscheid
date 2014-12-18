@@ -534,19 +534,15 @@ a#home {
 	padding: 0;
 }
 
-#user {
+div#user {
 	padding: 8px 10px 7px 10px;
 	float: right;
 }
-#user a.user {
+div#user a.user {
 	font-weight: bold;
 }
-#user span.status {
-	font-weight: bold;
-	color: #CCC;
-}
-#user span.status.yes {
-	color: #0A0;
+div#user img {
+	vertical-align: middle;
 }
 
 footer {

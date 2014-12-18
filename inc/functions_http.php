@@ -261,20 +261,20 @@ function html_user() {
 			?>&nbsp;<?
 			if (Login::$member->eligible) {
 ?>
-<span class="status yes" title="<?=_("You are eligible.")?>">S</span>
+<img src="img/eligible.png" width="11" height="16" alt="<?=_("eligible")?>" title="<?=_("You are eligible.")?>">
 <?
 			} else {
 ?>
-<span class="status" title="<?=_("You are not eligible.")?>">S</span>
+<img src="img/not_eligible.png" width="11" height="16" alt="<?=_("not eligible")?>" title="<?=_("You are not eligible.")?>">
 <?
 			}
 			if (Login::$member->verified) {
 ?>
-<span class="status yes" title="<?=_("You are verified.")?>">V</span>
+<img src="img/verified.png" width="16" height="12" alt="<?=_("verified")?>" title="<?=_("You are verified.")?>">
 <?
 			} else {
 ?>
-<span class="status" title="<?=_("You are not verified.")?>">V</span>
+<img src="img/not_verified.png" width="16" height="12" alt="<?=_("not verified")?>" title="<?=_("You are not verified.")?>">
 <?
 			}
 		} else {
