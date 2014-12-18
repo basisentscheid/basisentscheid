@@ -688,13 +688,26 @@ fieldset.member div.input span.input p {
 	margin-top: 0.1em;
 	margin-bottom: 0.3em;
 }
-
 fieldset.member div.button {
 	margin-top: 5px;
 }
 fieldset.member div.button input[type=submit] {
 	margin-left: 212px;
 	margin-left: 21.2rem;
+}
+@media screen and (max-width: 70em) {
+	fieldset.member div.input label {
+		width: 100px;
+		width: 10rem;
+	}
+	fieldset.member div.button input[type=submit] {
+		margin-left: 112px;
+		margin-left: 11.2rem;
+	}
+	fieldset.member div.input textarea {
+		width: 370px;
+		width: 37rem;
+	}
 }
 
 
@@ -738,6 +751,13 @@ div.proposal_info {
 	margin-bottom: 5px;
 	width: 210px;
 	width: 21rem;
+}
+@media screen and (max-width: 65em) {
+	div.proposal_info {
+		float: none;
+		width: auto;
+		margin-left: 0;
+	}
 }
 div.proposal_info ul {
 	background-color: #FFF;
@@ -1007,14 +1027,13 @@ div.comments_rubric.arguments_contra {
 	width: 49.5%;
 	float: right;
 }
-
 @media screen and (max-width: 65em) {
-	div.comments_rubric {
+	div.comments_rubric.arguments_pro,
+	div.comments_rubric.arguments_contra {
 		width: auto;
 		float: none;
 	}
 }
-
 div.comments_rubric h2 {
 	margin-top: 0;
 }
