@@ -85,6 +85,10 @@ define("COMMENTS_HEAD_2", 2);
 define("ACCESS_COMMENT", 4); // write a comment or reply to one
 define("ACCESS_RATE",    4); // rate comments
 
+// message of the day (string, comment out to disable)
+// will be displayed once for each session and always on the home page
+//define("MOTD", "");
+
 // --- Options for development and testing ---
 // display system informations in the HTML code of every page and disable gettext caching
 define("DEBUG", false);

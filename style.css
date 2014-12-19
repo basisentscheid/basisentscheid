@@ -199,6 +199,18 @@ div.messages {
 	margin: 0.4em 0;
 }
 
+div.motd {
+	background-color: #ffe0d7;
+	padding: 2px 5px;
+	margin-bottom: 1em;
+	border-radius: 6px;
+}
+div.motd p,
+div.motd h2,
+div.motd h3 {
+	margin: 0.5em 0;
+}
+
 div.help {
 	clear: both;
 	background-color: #FFE;

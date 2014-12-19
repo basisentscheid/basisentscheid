@@ -217,6 +217,14 @@ function html_head($title, $help=false) {
 <div class="clearfix"></div>
 <?
 
+	// show MOTD once for each session and always on the home page
+	if ( defined("MOTD") and (empty($_SESSION['motd_seen']) or BN=="index.php") ) {
+?>
+<div class="motd"><?=MOTD?></div>
+<?
+		$_SESSION['motd_seen'] = true;
+	}
+
 	// not yet displayed output from previous page with redirect
 	if (isset($_SESSION['output'])) {
 		if ($_SESSION['output']) {
