@@ -223,6 +223,7 @@ msgid "Done otherwise"
 msgstr "anderweitig erledigt"
 #
 # File: periods.php, line: 18
+# File: inc/classes/Issue.php, line: 105
 # File: inc/classes/Notification.php, line: 325
 msgid "Voting preparation"
 msgstr "Abstimmungs&shy;vorbereitung"
@@ -1604,7 +1605,6 @@ msgstr ""
 #
 # File: proposal.php, line: 375
 # File: proposal.php, line: 378
-# File: inc/classes/Issue.php, line: 105
 msgid "Preparation"
 msgstr "Vorbereitung"
 #
