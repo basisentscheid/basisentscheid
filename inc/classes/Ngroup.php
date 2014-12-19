@@ -16,6 +16,8 @@ class Ngroup extends Relation {
 	public $active;
 	public $minimum_population;
 
+	public $member;
+
 	protected $boolean_fields = array("active");
 
 
@@ -160,6 +162,18 @@ class Ngroup extends Relation {
 			$options[$ngroup->id] = $ngroup->name;
 		}
 		return $options;
+	}
+
+
+	/**
+	 * display the group name with indenting and black or white diamond
+	 *
+	 * @param boolean $own
+	 */
+	public function display_list_name($own) {
+		echo str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $this->depth);
+		if ($own) { ?>&#9670; <? } else { ?>&#9671; <? }
+		echo $this->name;
 	}
 
 

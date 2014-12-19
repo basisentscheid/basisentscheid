@@ -86,12 +86,6 @@ foreach ( $dates as $index => $time ) {
 <table>
 <?
 if (Login::$member) {
-?>
-	<tr>
-		<th colspan="4"></th>
-		<th><?=_("Member")?></th>
-	</tr>
-<?
 	$sql = "SELECT ngroup.*, member_ngroup.member
 		FROM ngroup
 		LEFT JOIN member_ngroup ON ngroup.id = member_ngroup.ngroup AND member_ngroup.member = ".intval(Login::$member->id);
@@ -107,34 +101,39 @@ while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
 }
 list($ngroups) = Ngroup::parent_sort_active_tree($ngroups);
 foreach ($ngroups as $ngroup) {
+	/** @var Ngroup $ngroup */
+	if (Login::$member and $ngroup->member) {
+?>
+	<tr class="<?=stripes()?> own" title="<?=_("You are member of this group.")?>">
+<?
+		$own = true;
+	} else {
 ?>
 	<tr class="<?=stripes()?>">
 <?
+		$own = false;
+	}
 	if ($ngroup->active) {
 ?>
-		<td><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
-		<td><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("Proposals")?> (<?=$ngroup->proposals_count()?>)</a></td>
+		<td class="name"><?
+		$ngroup->display_list_name($own);
+		?></td>
+		<td class="proposals"><a href="proposals.php?ngroup=<?=$ngroup->id?>"><?=_("Proposals")?> (<?=$ngroup->proposals_count()?>)</a><?
+		if ( $own and Login::$member->eligible and Login::$member->verified and $nyvic = $ngroup->not_yet_voted_issues_count() ) {
+			?> <a href="proposals.php?ngroup=<?=$ngroup->id?>&filter=voting"><?=Ngroup::not_yet_voted($nyvic)?></a><?
+		}
+		?></td>
 		<td><a href="periods.php?ngroup=<?=$ngroup->id?>"><?=_("Periods")?> (<?=$ngroup->periods_count()?>)</a></td>
 		<td><a href="areas.php?ngroup=<?=$ngroup->id?>"><?=_("Areas")?></a></td>
 <?
 	} else {
 ?>
-		<td class="inactive"><?=str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $ngroup->depth).$ngroup->name?></td>
-		<td></td>
-		<td></td>
-		<td></td>
-<?
-	}
-	if (Login::$member) {
-?>
-		<td class="member"><?
-		if ($ngroup->member) {
-			?><span title="<?=_("You are member of this group.")?>">&#8710;</span><?
-			if ( Login::$member->eligible and Login::$member->verified and $nyvic = $ngroup->not_yet_voted_issues_count() ) {
-				?> <a href="proposals.php?ngroup=<?=$ngroup->id?>&filter=voting"><?=Ngroup::not_yet_voted($nyvic)?></a><?
-			}
-		}
+		<td class="name inactive" title="<?=_("This group does not participate.")?>"><?
+		$ngroup->display_list_name($own);
 		?></td>
+		<td></td>
+		<td></td>
+		<td></td>
 <?
 	}
 ?>

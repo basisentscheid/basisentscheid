@@ -142,29 +142,39 @@ function html_head($title, $help=false) {
 	$ngroups = Ngroup::parent_sort_active($ngroups);
 	// own ngroups
 	if (Login::$member) {
+?>
+							<optgroup label="<?=_("own groups")?>">
+<?
 		foreach ($ngroups as $ngroup) {
 			if (!$ngroup->member) continue;
 			// use the first ngroup as default
 			if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
-							<option value="<?=$ngroup->id?>"<?
+								<option value="<?=$ngroup->id?>"<?
 			if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-			?>><?=$ngroup->name?> &#8710;</option>
+			?>>&#9670; <?=$ngroup->name?></option>
 <?
 		}
+?>
+							</optgroup>
+<?
 	}
 	// other ngroups
+?>
+							<optgroup label="<?=Login::$member?_("other groups"):_("groups")?>">
+<?
 	foreach ($ngroups as $ngroup) {
 		if (Login::$member and $ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
-							<option value="<?=$ngroup->id?>"<?
+								<option value="<?=$ngroup->id?>"<?
 		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-		?>><?=$ngroup->name?></option>
+		?>>&#9671; <?=$ngroup->name?></option>
 <?
 	}
 ?>
+							</optgroup>
 						</select>
 <?
 	// add the hidden fields after the drop down menu to have ngroup always in the first place of the GET parameters

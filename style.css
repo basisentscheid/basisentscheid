@@ -405,7 +405,6 @@ span.stateinfo {
 
 option.selected {
 	background-color: #DDD;
-	font-style: italic;
 }
 
 form.button {
@@ -730,6 +729,13 @@ div.dates h2 {
 }
 div.ngroups td.inactive {
 	color: #999;
+}
+div.ngroups td.name {
+	padding-left: 0.5em;
+}
+div.ngroups tr.own td.name,
+div.ngroups tr.own td.proposals {
+	font-weight: bold;
 }
 
 
