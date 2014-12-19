@@ -100,7 +100,7 @@ class Issue extends Relation {
 	public function state_name() {
 		static $states;
 		if (!$states) $states = array(
-				'admission'   => _("Admission"), // Usually proposal states are shown instead.
+				'entry'       => _("Entry"), // Usually proposal states are shown instead.
 				'debate'      => _("Debate"),
 				'preparation' => _("Preparation"),
 				'voting'      => _("Voting"),
@@ -223,7 +223,7 @@ class Issue extends Relation {
 	 * @return boolean
 	 */
 	public function votingmode_determination_admin() {
-		if ($this->state=="debate" or $this->state=="admission") return true;
+		if ($this->state=="entry" or $this->state=="debate") return true;
 	}
 
 
@@ -278,7 +278,7 @@ class Issue extends Relation {
 	 */
 	function demand_votingmode() {
 		if (!$this->votingmode_determination()) {
-			warning("Demand for offline voting can not be added, because the proposal is not in admission, admitted or debate phase!");
+			warning("Demand for offline voting can not be added, because the proposal is not in entry or debate phase!");
 			return false;
 		}
 		$token = $this->votingmode_token(true);
@@ -294,7 +294,7 @@ class Issue extends Relation {
 	 */
 	function revoke_votingmode() {
 		if (!$this->votingmode_determination()) {
-			warning("Demand for offline voting can not be removed, because the issue is not in admission or debate phase!");
+			warning("Demand for offline voting can not be removed, because the issue is not in entry or debate phase!");
 			return false;
 		}
 		// The token has already been created when offline voting was demanded.
@@ -312,7 +312,7 @@ class Issue extends Relation {
 	 */
 	function save_votingmode_admin($value) {
 		if (!$this->votingmode_determination_admin()) {
-			warning("Voting mode can not be set anymore, because the issue is not in admission or debate phase!");
+			warning("Voting mode can not be set anymore, because the issue is not in entry or debate phase!");
 			return false;
 		}
 		$this->votingmode_admin = $value;
@@ -817,7 +817,7 @@ class Issue extends Relation {
 	 * @param integer $num_rows
 	 */
 	private function display_column_state(Proposal $proposal, array $proposals, $first, &$first_admitted, $num_rows) {
-		if ($this->state=="admission" or $this->state=="cancelled") {
+		if ($this->state=="entry" or $this->state=="cancelled") {
 			// individual proposal states
 			if ($proposal->state=="admitted") {
 				if ($first_admitted) {
@@ -969,7 +969,7 @@ class Issue extends Relation {
 			}
 		} elseif ($this->votingmode_offline()) {
 			?>" title="<?=_("offline voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
-		} elseif ($this->state!="admission") {
+		} elseif ($this->state!="entry") {
 			?>" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
 		} else {
 			?>"><?
@@ -1063,8 +1063,7 @@ class Issue extends Relation {
 	 * @return boolean
 	 */
 	public function allowed_add_alternative_proposal() {
-		if ($this->state=="admission") return true;
-		return false;
+		return (bool) $this->state=="entry";
 	}
 
 
@@ -1084,7 +1083,7 @@ class Issue extends Relation {
 
 		// find out if the state may be changed
 		switch ($this->state) {
-		case "admission":
+		case "entry":
 			// At least one proposal has to be admitted.
 			$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
 			if ( !DB::fetchfield($sql) ) return false;
@@ -1114,7 +1113,7 @@ class Issue extends Relation {
 				}
 			}
 
-			if ($this->state=="admission") {
+			if ($this->state=="entry") {
 				return $options_admission;
 			} else {
 				return $options_all;

@@ -249,7 +249,7 @@ class Proposal extends Relation {
 	 */
 	public function allowed_change_supporters() {
 		switch ($this->issue()->state) {
-		case "admission":
+		case "entry":
 		case "debate":
 		case "preparation":
 			switch ($this->state) {
@@ -316,7 +316,7 @@ class Proposal extends Relation {
 	 */
 	public function allowed_change_proponents() {
 		switch ($this->issue()->state) {
-		case "admission":
+		case "entry":
 		case "debate":
 			switch ($this->state) {
 			case "draft":
@@ -583,7 +583,7 @@ class Proposal extends Relation {
 	 */
 	public function allowed_move_to_issue() {
 		switch ($this->issue()->state) {
-		case "admission":
+		case "entry":
 		case "debate":
 			switch ($this->state) {
 			case "draft":
@@ -710,7 +710,7 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function cancel($state="cancelled") {
-		if (!in_array($this->issue()->state, array("admission", "debate"))) {
+		if (!in_array($this->issue()->state, array("entry", "debate"))) {
 			warning(_("In the current phase the proposal can not be revoked anymore."));
 			return false;
 		}
@@ -745,14 +745,14 @@ class Proposal extends Relation {
 	public function allowed_edit_content() {
 		if (Login::$admin) {
 			switch ($this->issue()->state) {
-			case "admission":
+			case "entry":
 			case "debate":
 			case "preparation":
 				return true;
 			}
 		} else {
 			switch ($this->issue()->state) {
-			case "admission":
+			case "entry":
 				switch ($this->state) {
 				case "draft":
 					return true;
@@ -769,7 +769,7 @@ class Proposal extends Relation {
 	 */
 	public function allowed_edit_reason_only() {
 		switch ($this->issue()->state) {
-		case "admission":
+		case "entry":
 		case "debate":
 			switch ($this->state) {
 			case "submitted":

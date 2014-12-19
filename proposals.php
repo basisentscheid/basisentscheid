@@ -42,7 +42,7 @@ $sql = "SELECT state, count(*)
 	GROUP BY state";
 $result = DB::query($sql);
 $counts = array(
-	'admission'   => 0,
+	'entry'       => 0,
 	'debate'      => 0,
 	'preparation' => 0,
 	'voting'      => 0,
@@ -57,11 +57,11 @@ $nyvic = $ngroup->not_yet_voted_issues_count();
 $filters = array(
 	'' => array(
 		_("Open"),
-		_("issues in admission, debate and voting phases")
+		_("issues in entry, debate and voting phases")
 	),
-	'admission' => array(
-		_("Admission")." (".$counts['admission'].")",
-		$counts['admission']==1 ? _("1 issue in admission phase") : sprintf(_("%d issues in admission phase"), $counts['admission'])
+	'entry' => array(
+		_("Entry")." (".$counts['entry'].")",
+		$counts['entry']==1 ? _("1 issue in entry phase") : sprintf(_("%d issues in entry phase"), $counts['entry'])
 	),
 	'debate' => array(
 		_("Debate")." (".$counts['debate'].")",
@@ -120,8 +120,8 @@ $order_by = " ORDER BY issue.id DESC";
 $show_results = false;
 
 switch (@$_GET['filter']) {
-case "admission":
-	$where[] = "issue.state='admission'";
+case "entry":
+	$where[] = "issue.state='entry'";
 	break;
 case "debate":
 	$where[] = "issue.state='debate'";

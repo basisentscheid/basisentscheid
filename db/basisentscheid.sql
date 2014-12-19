@@ -16,7 +16,7 @@ SET search_path = public, pg_catalog;
 --
 
 CREATE TYPE issue_state AS ENUM (
-    'admission',
+    'entry',
     'debate',
     'preparation',
     'voting',
@@ -335,7 +335,7 @@ CREATE TABLE issue (
     finished timestamp with time zone,
     clear date,
     cleared timestamp with time zone,
-    state issue_state DEFAULT 'admission'::issue_state NOT NULL
+    state issue_state DEFAULT 'entry'::issue_state NOT NULL
 );
 
 

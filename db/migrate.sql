@@ -1,12 +1,12 @@
 -- SQL statements to upgrade an existing database
 -- add new lines at the bottom
+-- leave one blank line between migration steps
 
---
 ALTER TABLE period DROP online_voting;
 ALTER TABLE issue ADD finished TIMESTAMPTZ DEFAULT NULL NULL;
---
+
 ALTER TABLE issue ADD votingmode_admin BOOLEAN DEFAULT FALSE  NOT NULL;
---
+
 CREATE TABLE seen (
     argument INT NOT NULL,
     member INT NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE seen (
 );
 ALTER TABLE seen ADD FOREIGN KEY (comment) REFERENCES comment (id);
 ALTER TABLE seen ADD FOREIGN KEY (member) REFERENCES member (id);
---
+
 ALTER TABLE admins RENAME TO admin;
 ALTER TABLE members RENAME TO member;
 ALTER TABLE ngroups RENAME TO ngroup;
@@ -44,25 +44,30 @@ ALTER SEQUENCE issues_id_seq RENAME TO issue_id_seq;
 ALTER SEQUENCE members_id_seq RENAME TO member_id_seq;
 ALTER SEQUENCE periods_id_seq RENAME TO period_id_seq;
 ALTER SEQUENCE proposals_id_seq RENAME TO proposal_id_seq;
---
+
 ALTER TABLE argument RENAME TO comment;
 ALTER SEQUENCE argument_id_seq RENAME TO comment_id_seq;
 ALTER TABLE ratings RENAME COLUMN argument TO comment;
 ALTER TABLE seen RENAME COLUMN argument TO comment;
 ALTER TABLE comment RENAME COLUMN side TO rubric;
 ALTER TABLE ratings RENAME TO rating;
---
+
 ALTER TABLE member RENAME COLUMN public_id TO realname;
---
+
 ALTER TABLE member RENAME COLUMN entitled TO eligible;
---
+
 ALTER TABLE member ADD verified BOOL DEFAULT false NOT NULL;
---
+
 ALTER TABLE comment ADD session TEXT DEFAULT '' NOT NULL;
 ALTER TABLE comment ALTER COLUMN member DROP NOT NULL;
 ALTER TABLE rating ADD session TEXT DEFAULT '' NOT NULL;
 ALTER TABLE rating DROP CONSTRAINT ratings_pkey;
 ALTER TABLE rating ALTER COLUMN member DROP NOT NULL;
+
+ALTER TYPE issue_state ADD VALUE 'entry' AFTER 'admission';
+UPDATE issue SET state='entry' WHERE state='admission';
+ALTER TABLE issue ALTER COLUMN state SET DEFAULT 'entry';
+
 
 
 

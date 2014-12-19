@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-12-19 12:11+0200\n"
+"PO-Revision-Date: 2014-12-19 14:28+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -76,7 +76,7 @@ msgstr "Titel"
 # File: inc/classes/Issue.php, line: 474
 # File: inc/classes/Issue.php, line: 622
 # File: inc/classes/Issue.php, line: 736
-# File: inc/classes/Issue.php, line: 1182
+# File: inc/classes/Issue.php, line: 1181
 # File: inc/classes/Notification.php, line: 241
 # File: inc/classes/Notification.php, line: 252
 # File: inc/classes/Notification.php, line: 264
@@ -323,8 +323,8 @@ msgstr "Alle"
 #
 # File: proposals.php, line: 63
 # File: inc/classes/Issue.php, line: 103
-msgid "Admission"
-msgstr "Zulassung"
+msgid "Entry"
+msgstr "Eingang"
 #
 # File: proposals.php, line: 78
 msgid "Closed"
@@ -423,7 +423,7 @@ msgstr "Themen pro Seite"
 # File: inc/classes/Comments.php, line: 431
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 843
-# File: inc/classes/Issue.php, line: 1153
+# File: inc/classes/Issue.php, line: 1152
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -583,7 +583,7 @@ msgid "will be cleared on %s"
 msgstr "wird bereinigt am %s"
 #
 # File: inc/classes/Issue.php, line: 988
-# File: inc/classes/Issue.php, line: 1146
+# File: inc/classes/Issue.php, line: 1145
 msgid "apply"
 msgstr "übernehmen"
 #
@@ -946,7 +946,7 @@ msgstr "Antrag auf Grund eines Beschlusses zulassen"
 msgid "admit proposal"
 msgstr "Antrag zulassen"
 #
-# File: inc/classes/Issue.php, line: 1153
+# File: inc/classes/Issue.php, line: 1152
 msgid "select voting period"
 msgstr "Abstimmungsperiode auswählen"
 #
@@ -1848,15 +1848,15 @@ msgstr "Die Rohdaten wurden am %s gelöscht."
 #
 # File: inc/classes/Issue.php, line: 476
 # File: inc/classes/Issue.php, line: 626
-# File: inc/classes/Issue.php, line: 1175
-# File: inc/classes/Issue.php, line: 1187
+# File: inc/classes/Issue.php, line: 1174
+# File: inc/classes/Issue.php, line: 1186
 msgid "Acceptance"
 msgstr "Zustimmung"
 #
 # File: inc/classes/Issue.php, line: 477
 # File: inc/classes/Issue.php, line: 630
 # File: inc/classes/Issue.php, line: 648
-# File: inc/classes/Issue.php, line: 1187
+# File: inc/classes/Issue.php, line: 1186
 # File: inc/classes/Notification.php, line: 344
 msgid "Score"
 msgstr "Bewertung"
@@ -2053,9 +2053,9 @@ msgstr "Deine Abstimmungskennung"
 #
 # File: inc/classes/Issue.php, line: 404
 # File: inc/classes/Issue.php, line: 483
-# File: inc/classes/Issue.php, line: 1175
-# File: inc/classes/Issue.php, line: 1180
-# File: inc/classes/Issue.php, line: 1242
+# File: inc/classes/Issue.php, line: 1174
+# File: inc/classes/Issue.php, line: 1179
+# File: inc/classes/Issue.php, line: 1241
 msgid "Voting time"
 msgstr "Abstimmungszeitpunkt"
 #
@@ -2308,9 +2308,9 @@ msgstr "Deine abgegebenen Stimmen zu diesem Thema:"
 msgid "This email should be encrypted, but no available key matching your fingerprint was found! Please check your settings:"
 msgstr "Diese E-Mail sollte eigentlich verschlüsselt werden, aber es wurde kein verwendbarer Schlüssel zu deinem Fingerabdruck gefunden! Bitte überprüfe deine Einstellungen:"
 #
-# File: inc/classes/Issue.php, line: 1175
-# File: inc/classes/Issue.php, line: 1180
-# File: inc/classes/Issue.php, line: 1242
+# File: inc/classes/Issue.php, line: 1174
+# File: inc/classes/Issue.php, line: 1179
+# File: inc/classes/Issue.php, line: 1241
 msgid "Vote token"
 msgstr "Abstimmungskennung"
 #
@@ -2391,7 +2391,7 @@ msgstr "Abstimmungsverfahren"
 msgid "You are not eligible in this group."
 msgstr "Du bis in dieser Gliederung nicht stimmberechtigt."
 #
-# File: inc/classes/Issue.php, line: 1242
+# File: inc/classes/Issue.php, line: 1241
 msgid "Demands offline voting"
 msgstr "Fordert eine Offline-Abstimmung"
 #
@@ -2471,13 +2471,13 @@ msgid "not voted on %d"
 msgstr "nicht abgestimmt %d"
 #
 # File: proposals.php, line: 60
-msgid "issues in admission, debate and voting phases"
-msgstr "Themen in Zulassung, Debatte und Abstimmung"
+msgid "issues in entry, debate and voting phases"
+msgstr "Themen in Eingang, Debatte und Abstimmung"
 #
 # File: proposals.php, line: 64
 #, php-format
-msgid "%d issues in admission phase"
-msgstr "%d Themen in der Zulassungsphase"
+msgid "%d issues in entry phase"
+msgstr "%d Themen in der Eingangsphase"
 #
 # File: proposals.php, line: 68
 #, php-format
@@ -2495,8 +2495,8 @@ msgid "%d issues are finished, %d issues are cancelled"
 msgstr "%d Themen sind abgeschlossen, %d sind abgebrochen"
 #
 # File: proposals.php, line: 64
-msgid "1 issue in admission phase"
-msgstr "1 Thema in der Zulassungsphase"
+msgid "1 issue in entry phase"
+msgstr "1 Thema in der Eingangsphase"
 #
 # File: proposals.php, line: 68
 msgid "1 issue in debate phase"

@@ -109,7 +109,7 @@ function cron($skip_if_locked=false) {
 			switch ($issue->state) {
 
 				// debate
-			case "admission":
+			case "entry":
 				if (!$period->debate_now) break;
 
 				$all_proposals_revoked = true;
