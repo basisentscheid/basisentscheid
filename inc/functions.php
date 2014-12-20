@@ -290,15 +290,16 @@ function timeformat($time) {
 
 
 /**
- * convert a fraction to a percent value
+ * prepare a fraction for display
  *
  * @param array   $numden
  * @return string
  */
-function numden2percent(array $numden) {
+function numden(array $numden) {
 	list($num, $den) = $numden;
 	if (!$den) return 0;
-	return round(100 * $num / $den)."%";
+	if ($den==100) return $num."%";
+	return $num."/".$den;
 }
 
 

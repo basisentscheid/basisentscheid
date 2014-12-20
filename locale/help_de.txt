@@ -7,8 +7,8 @@ Es gibt zwei Möglichkeiten, zu den Inhalten der Gliederungen zu kommen: Man kan
 Hier sind die Anträge in der oben ausgewählten Gliederung aufgelistet. Mehrere konkurrierende Anträge werden zu einem Thema zusammengefasst und stehen in der Liste enger beieinander.
 
 Anträge durchlaufen folgende <b>Phasen</b>:
- * Entwurf: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn 5 Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
- * Zulassung: Der Antrag sammelt nun Unterstützer, um das Quorum zur Zulassung zu erreichen.
+ * Entwurf: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn REQUIRED_PROPONENTS Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
+ * eingereicht: Der Antrag sammelt nun Unterstützer, um das Quorum zur Zulassung zu erreichen.
  * zugelassen: Der Antrag hat das Zulassungsquorum erreicht und wartet darauf, von den Verantwortlichen einer Abstimmungsperiode zugeordnet zu werden, in der dann die weiteren Phasen ablaufen.
 
 Die aktuelle Phase eines Antrags wird in der Spalte <b>Status</b> angezeigt.
@@ -27,7 +27,7 @@ Um zur Abstimmung zugelassen zu werden, benötigt ein Antrag <b>Unterstützer</b
 
 Solange ein Thema noch nicht die Debatte erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
 
-Bis zur Abstimmungsvorbereitung kannst du eine <b>geheime Abstimmung</b> eines Themas fordern. Wenn bis dahin 5% der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die 5% erreicht hat, wird dies angezeigt.
+Bis zur Abstimmungsvorbereitung kannst du eine <b>geheime Abstimmung</b> eines Themas fordern. Wenn bis dahin QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
 
 ===proposal.php#comments
 

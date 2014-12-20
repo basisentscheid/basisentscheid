@@ -872,7 +872,7 @@ class Proposal extends Relation {
 			$this->supporters,
 			$population,
 			$required,
-			numden2percent($this->quorum_level())
+			numden($this->quorum_level())
 		);
 
 		$min_width = 120;

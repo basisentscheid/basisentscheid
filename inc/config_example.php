@@ -64,14 +64,14 @@ define("CLEAR_INTERVAL", '1 week');
 // time of day when ballots close (Opening time is individual for each ballot.)
 define("BALLOT_CLOSE_TIME", "18:00");
 // quorum for the first proposal
-define("QUORUM_SUPPORT_NUM", 1); // 10%
-define("QUORUM_SUPPORT_DEN", 10);
+define("QUORUM_SUPPORT_NUM", 10); // 10%
+define("QUORUM_SUPPORT_DEN", 100);
 // quorum for the alternative proposals
-define("QUORUM_SUPPORT_ALTERNATIVE_NUM", 1); // 5%
-define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 20);
+define("QUORUM_SUPPORT_ALTERNATIVE_NUM", 5); // 5%
+define("QUORUM_SUPPORT_ALTERNATIVE_DEN", 100);
 // quorum for offline voting
-define("QUORUM_VOTINGMODE_NUM", 1); // 5%
-define("QUORUM_VOTINGMODE_DEN", 20);
+define("QUORUM_VOTINGMODE_NUM", 5); // 5%
+define("QUORUM_VOTINGMODE_DEN", 100);
 
 // for how long after adding a comment the author may edit it
 define("COMMENT_EDIT_INTERVAL", "1 hour");
