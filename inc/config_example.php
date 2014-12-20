@@ -14,6 +14,8 @@ define("DATABASE_CONNECT", "user=basisentscheid dbname=basisentscheid connect_ti
 
 // first part of html title
 define("TITLE", "Basisentscheid");
+// head line on the home page
+define("HOME_H1", "Basisentscheid example heading");
 // with trailing slash
 define("BASE_URL", "http://example.com/basisentscheid/portal/");
 
