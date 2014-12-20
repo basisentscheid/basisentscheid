@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2014-12-20 13:32+0200\n"
+"PO-Revision-Date: 2014-12-20 17:52+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -49,9 +49,9 @@ msgstr "Benutzername"
 msgid "Save"
 msgstr "Speichern"
 #
-# File: index.php, line: 148
+# File: index.php, line: 130
 # File: periods.php, line: 53
-# File: inc/functions_http.php, line: 187
+# File: inc/functions_http.php, line: 189
 msgid "Periods"
 msgstr "Abstimmungsperioden"
 #
@@ -118,9 +118,9 @@ msgstr "Antragstext"
 msgid "Reason"
 msgstr "Begründung"
 #
-# File: index.php, line: 143
+# File: index.php, line: 125
 # File: proposals.php, line: 27
-# File: inc/functions_http.php, line: 186
+# File: inc/functions_http.php, line: 188
 msgid "Proposals"
 msgstr "Anträge"
 #
@@ -128,13 +128,13 @@ msgstr "Anträge"
 msgid "Add proposal"
 msgstr "Antrag hinzufügen"
 #
-# File: index.php, line: 149
-# File: inc/functions_http.php, line: 189
+# File: index.php, line: 131
 # File: inc/functions_http.php, line: 191
+# File: inc/functions_http.php, line: 193
 msgid "Areas"
 msgstr "Themenbereiche"
 #
-# File: inc/functions_http.php, line: 307
+# File: inc/functions_http.php, line: 309
 msgid "Logout"
 msgstr "abmelden"
 #
@@ -595,7 +595,7 @@ msgid "Debate starts at %s"
 msgstr "Debatte startet am %s"
 #
 # File: about.php, line: 12
-# File: inc/functions_http.php, line: 346
+# File: inc/functions_http.php, line: 348
 msgid "About"
 msgstr "Impressum"
 #
@@ -768,7 +768,7 @@ msgid "Password (2x)"
 msgstr "Passwort (2x)"
 #
 # File: admins.php, line: 31
-# File: inc/functions_http.php, line: 201
+# File: inc/functions_http.php, line: 203
 msgid "Admins"
 msgstr "Verantwortliche"
 #
@@ -797,12 +797,12 @@ msgstr "%d von momentan für Offline-Abstimmung erforderlichen %d (%s von %d)"
 msgid "%d of currently required %d (%s of %d) for admission"
 msgstr "%d von momentan zur Zulassung erforderlichen %d (%s von %d)"
 #
-# File: inc/functions_http.php, line: 276
+# File: inc/functions_http.php, line: 278
 #, php-format
 msgid "logged in as %s"
 msgstr "angemeldet als %s"
 #
-# File: inc/functions_http.php, line: 300
+# File: inc/functions_http.php, line: 302
 #, php-format
 msgid "logged in as admin %s"
 msgstr "angemeldet als Verantwortlicher %s"
@@ -825,11 +825,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 649
+# File: inc/functions_http.php, line: 657
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 601
+# File: inc/functions_http.php, line: 603
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -855,7 +855,7 @@ msgid "You support this proposal anonymously."
 msgstr "Du unterstützt diesen Antrag anonym."
 #
 # File: admin_members.php, line: 60
-# File: inc/functions_http.php, line: 200
+# File: inc/functions_http.php, line: 202
 msgid "Members"
 msgstr "Mitglieder"
 #
@@ -986,8 +986,8 @@ msgstr "Unbekannte Aktion"
 msgid "The ballot could not be created!"
 msgstr "Die Urne konnte nicht angelegt werden!"
 #
-# File: inc/classes/Login.php, line: 96
-# File: inc/classes/Login.php, line: 99
+# File: inc/classes/Login.php, line: 103
+# File: inc/classes/Login.php, line: 106
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 #
@@ -1297,22 +1297,22 @@ msgstr "Antrag %d, Versionsunterschiede"
 msgid "Upcoming dates"
 msgstr "Die nächsten Termine"
 #
-# File: index.php, line: 87
+# File: index.php, line: 78
 #, php-format
 msgid "debate in period %d starts"
 msgstr "Debatte in Periode %d startet"
 #
-# File: index.php, line: 90
+# File: index.php, line: 81
 #, php-format
 msgid "voting in period %d starts"
 msgstr "Abstimmung in Periode %d startet"
 #
-# File: index.php, line: 93
+# File: index.php, line: 84
 #, php-format
 msgid "voting in period %d closes"
 msgstr "Abstimmung in Periode %d endet"
 #
-# File: inc/classes/Login.php, line: 223
+# File: inc/classes/Login.php, line: 230
 msgid "This email address is not valid!"
 msgstr "Diese E-Mail-Adresse ist ungültig!"
 #
@@ -1441,19 +1441,19 @@ msgstr "Nr."
 #
 # File: admin_members.php, line: 26
 # File: admin_ngroups.php, line: 29
-# File: index.php, line: 107
+# File: index.php, line: 97
 # File: settings.php, line: 113
-# File: inc/functions_http.php, line: 202
+# File: inc/functions_http.php, line: 204
 msgid "Groups"
 msgstr "Gliederungen"
 #
 # File: admin_members.php, line: 38
-# File: inc/functions_http.php, line: 282
+# File: inc/functions_http.php, line: 284
 msgid "eligible"
 msgstr "stimmberechtigt"
 #
 # File: login.php, line: 48
-# File: inc/functions_http.php, line: 315
+# File: inc/functions_http.php, line: 317
 msgid "login"
 msgstr "anmelden"
 #
@@ -2075,35 +2075,35 @@ msgstr "Deine Stimme wurde gespeichert, aber der Beleg konnte nicht verschickt w
 msgid "Your vote could not be saved!"
 msgstr "Deine Stimme konnte nicht gespeichert werden!"
 #
-# File: inc/classes/Login.php, line: 159
+# File: inc/classes/Login.php, line: 166
 msgid "Please enter a user name!"
 msgstr "Bitte gib einen Benutzernamen ein!"
 #
-# File: inc/classes/Login.php, line: 164
+# File: inc/classes/Login.php, line: 171
 msgid "The user name must have at least 3 characters!"
 msgstr "Der Benutzername muss mindestens 3 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 168
+# File: inc/classes/Login.php, line: 175
 msgid "The user name must have not more than 32 characters!"
 msgstr "Der Benutzername darf nicht mehr als 32 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 177
+# File: inc/classes/Login.php, line: 184
 msgid "This user name is already used by someone else. Please try a different one!"
 msgstr "Dieser Benutzername wird bereits von jemand anderem verwendet. Bitte versuche es mit einem anderen!"
 #
-# File: inc/classes/Login.php, line: 193
+# File: inc/classes/Login.php, line: 200
 msgid "Please enter a password!"
 msgstr "Bitte gib ein Passwort ein!"
 #
-# File: inc/classes/Login.php, line: 198
+# File: inc/classes/Login.php, line: 205
 msgid "The two password fields do not match!"
 msgstr "Die beiden Passwörter stimmen nicht überein!"
 #
-# File: inc/classes/Login.php, line: 203
+# File: inc/classes/Login.php, line: 210
 msgid "The password name must have at least 8 characters!"
 msgstr "Das Passwort muss mindestens acht Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 219
+# File: inc/classes/Login.php, line: 226
 msgid "Please enter an email address!"
 msgstr "Bitte gib eine E-Mail-Adresse ein!"
 #
@@ -2304,7 +2304,7 @@ msgstr "öffentlichen PGP-Schlüssel hochladen"
 msgid "Your submitted votes on this issue:"
 msgstr "Deine abgegebenen Stimmen zu diesem Thema:"
 #
-# File: inc/functions.php, line: 409
+# File: inc/functions.php, line: 410
 msgid "This email should be encrypted, but no available key matching your fingerprint was found! Please check your settings:"
 msgstr "Diese E-Mail sollte eigentlich verschlüsselt werden, aber es wurde kein verwendbarer Schlüssel zu deinem Fingerabdruck gefunden! Bitte überprüfe deine Einstellungen:"
 #
@@ -2363,7 +2363,7 @@ msgstr "Anträge, die ich unterstütze"
 msgid "proposals where I'm proponent"
 msgstr "Anträge, bei denen ich Antragsteller bin"
 #
-# File: inc/functions_http.php, line: 333
+# File: inc/functions_http.php, line: 335
 msgid "Email notifications"
 msgstr "E-Mail-Benachrichtigungen"
 #
@@ -2386,7 +2386,7 @@ msgstr "Du kannst deine Wahl auch wieder ändern:"
 #
 # File: inc/classes/Issue.php, line: 659
 msgid "Voting mode"
-msgstr "Abstimmungsverfahren"
+msgstr "Verfahren"
 #
 msgid "You are not eligible in this group."
 msgstr "Du bis in dieser Gliederung nicht stimmberechtigt."
@@ -2459,11 +2459,11 @@ msgstr "minimale Grundgesamtheit"
 # File: inc/classes/Ngroup.php, line: 231
 #, php-format
 msgid "You have not yet voted on %d issues."
-msgstr "Du hast über %d Themen noch nicht abgestimmt."
+msgstr "Du hast bei %d Themen noch nicht abgestimmt."
 #
 # File: inc/classes/Ngroup.php, line: 230
 msgid "You have not yet voted on 1 issue."
-msgstr "Du hast über 1 Thema noch nicht abgestimmt."
+msgstr "Du hast bei einem Thema noch nicht abgestimmt."
 #
 # File: proposals.php, line: 72
 #, php-format
@@ -2535,7 +2535,7 @@ msgstr "Ergebnis eingeben"
 msgid "edit result"
 msgstr "Ergebnis bearbeiten"
 #
-# File: inc/classes/Login.php, line: 172
+# File: inc/classes/Login.php, line: 179
 msgid "The user name must not begin with the character '#'!"
 msgstr "Der Benutzername darf nicht mit dem Zeichen '#' beginnen!"
 #
@@ -2727,22 +2727,23 @@ msgid "elegible"
 msgstr "stimmberechtigt"
 #
 # File: admin_members.php, line: 39
-# File: inc/functions_http.php, line: 286
+# File: inc/functions_http.php, line: 288
 msgid "not eligible"
 msgstr "nicht stimmberechtigt"
 #
 # File: admin_members.php, line: 42
 # File: admin_members.php, line: 43
-# File: inc/functions_http.php, line: 291
+# File: inc/functions_http.php, line: 293
 msgid "verified"
 msgstr "verifiziert"
 #
 # File: admin_members.php, line: 44
-# File: inc/functions_http.php, line: 295
+# File: inc/functions_http.php, line: 297
 msgid "not verified"
 msgstr "nicht verifiziert"
 #
-# File: index.php, line: 129
+# File: index.php, line: 65
+# File: index.php, line: 111
 msgid "You are member of this group."
 msgstr "Du bist Mitglied dieser Gliederung."
 #
@@ -2755,23 +2756,23 @@ msgstr "Du hast nicht die Berechtigung, Beiträge zu bewerten."
 msgid "The email notification settings have been saved."
 msgstr "Die E-Mail-Benachrichtigungs-Einstellungen wurden übernommen."
 #
-# File: inc/functions_http.php, line: 282
+# File: inc/functions_http.php, line: 284
 msgid "You are eligible."
 msgstr "Du bist stimmberechtigt."
 #
-# File: inc/functions_http.php, line: 286
+# File: inc/functions_http.php, line: 288
 msgid "You are not eligible."
 msgstr "Du bist nicht stimmberechtigt."
 #
-# File: inc/functions_http.php, line: 291
+# File: inc/functions_http.php, line: 293
 msgid "You are verified."
 msgstr "Du bist verifiziert."
 #
-# File: inc/functions_http.php, line: 295
+# File: inc/functions_http.php, line: 297
 msgid "You are not verified."
 msgstr "Du bist nicht verifiziert."
 #
-# File: inc/functions_http.php, line: 330
+# File: inc/functions_http.php, line: 332
 msgid "Account"
 msgstr "Mitgliedskonto"
 #
@@ -2793,7 +2794,7 @@ msgstr "Du bist nicht in dieser Gliederung nicht stimmberechtigt."
 msgid "You don't have permissions to write comments."
 msgstr "Du hast nicht die Berechtigung, Beiträge zu schreiben."
 #
-# File: index.php, line: 153
+# File: index.php, line: 135
 msgid "This group does not participate."
 msgstr "Diese Gliederung nimmt nicht teil."
 #
@@ -2801,11 +2802,11 @@ msgstr "Diese Gliederung nimmt nicht teil."
 msgid "own groups"
 msgstr "eigene Gliederungen"
 #
-# File: inc/functions_http.php, line: 164
+# File: inc/functions_http.php, line: 166
 msgid "other groups"
 msgstr "übrige Gliederungen"
 #
-# File: inc/functions_http.php, line: 164
+# File: inc/functions_http.php, line: 166
 msgid "groups"
 msgstr "Gliederungen"
 #
