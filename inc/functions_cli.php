@@ -254,7 +254,20 @@ function cron($skip_if_locked=false) {
 
 	}
 
-	// revoke due proposals, which have have less than required proponents
+	// actually only daily tasks
+	revoke_not_enough_proponents();
+	cancel_not_admitted();
+	clear_issues();
+	update_activity();
+
+	cron_unlock();
+}
+
+
+/**
+ * revoke due proposals, which have have less than required proponents
+ */
+function revoke_not_enough_proponents() {
 	$sql = "SELECT * FROM proposal WHERE revoke < now()";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
@@ -269,10 +282,13 @@ function cron($skip_if_locked=false) {
 			$proposal->cancel("revoked");
 		}
 	}
+}
 
-	// cancel proposals, which have not been admitted within 6 months
-	// https://basisentscheid.piratenpad.de/entscheidsordnung
-	// "Ein Antrag verfällt, sobald er auf dem Parteitag behandelt wurde oder wenn er innerhalb von sechs Monaten das notwendige Quorum zur Zulassung zur Abstimmung nicht erreicht hat."
+
+/**
+ * cancel proposals, which have not been admitted within the specified period
+ */
+function cancel_not_admitted() {
 	$sql = "SELECT * FROM proposal
 		WHERE state='submitted'
 			AND submitted < now() - interval ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL);
@@ -280,8 +296,13 @@ function cron($skip_if_locked=false) {
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		$proposal->cancel();
 	}
+}
 
-	// clear issues
+
+/**
+ * clear issues
+ */
+function clear_issues() {
 	$sql = "SELECT * FROM issue WHERE clear <= now()";
 	$result = DB::query($sql);
 	while ( $issue = DB::fetch_object($result, "Issue") ) {
@@ -293,8 +314,22 @@ function cron($skip_if_locked=false) {
 		$issue->clear = null;
 		$issue->update(["clear"], "cleared=now()");
 	}
+}
 
-	cron_unlock();
+
+/**
+ * count recent comments
+ */
+function update_activity() {
+	$sql = "SELECT * FROM proposal WHERE activity!=0 OR state IN ('draft', 'submitted', 'admitted')";
+	$result = DB::query($sql);
+	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		$sql = "SELECT COUNT(created) + COUNT(created > now() - interval '3 day') + COUNT(created > now() - interval '1 day') FROM comment
+		WHERE proposal=".intval($proposal->id)." AND created > now() - interval '7 day'";
+		$activity = DB::fetchfield($sql);
+		$sql = "UPDATE proposal SET activity=".intval($activity)." WHERE id=".intval($proposal->id);
+		DB::query($sql);
+	}
 }
 
 
@@ -335,7 +370,7 @@ function upload_voters($period, $include_ballot_voters=false) {
 		}
 	}
 
-	// For now we don't use the data.
+	// TODO: For now we don't use the data.
 
 }
 

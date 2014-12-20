@@ -706,7 +706,7 @@ class Issue extends Relation {
 	 * @param integer $selected_proposal (optional)
 	 * @param array   $vote              (optional)
 	 */
-	function display_proposals(array $proposals, $submitted=false, $period_rowspan=0, $show_results=false, $selected_proposal=0, array $vote=array()) {
+	function display_proposals(array $proposals, $submitted, $period_rowspan, $show_results=false, $selected_proposal=0, array $vote=array()) {
 
 		$first = true;
 		$first_admitted = true;
@@ -733,7 +733,11 @@ class Issue extends Relation {
 				?> done<?
 				break;
 			}
-			?>" onClick="location.href='<?=$link?>'"><?=_("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
+			?>" onClick="location.href='<?=$link?>'"><?
+			if ($proposal->activity >= ACTIVITY_THRESHOLD) {
+				?><span class="activity" style="opacity:<?=min($proposal->activity / ACTIVITY_DIVISOR, 1)?>" title="<?=_("Recent activity")?>">&#10239;</span><?
+			}
+			echo _("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
 			if (BN=="vote.php") {
 				$this->display_column_vote($proposal, $vote, $num_rows);
@@ -912,9 +916,15 @@ class Issue extends Relation {
 			?></td>
 <?
 		} elseif ($period_rowspan) {
+			if ($this->period) {
 ?>
 		<td rowspan="<?=$period_rowspan?>" class="center"><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a></td>
 <?
+			} else {
+?>
+		<td rowspan="<?=$period_rowspan?>"></td>
+<?
+			}
 		}
 	}
 

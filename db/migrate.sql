@@ -68,6 +68,7 @@ ALTER TYPE issue_state ADD VALUE 'entry' AFTER 'admission';
 UPDATE issue SET state='entry' WHERE state='admission';
 ALTER TABLE issue ALTER COLUMN state SET DEFAULT 'entry';
 
+ALTER TABLE proposal ADD activity INT DEFAULT 0 NOT NULL;
 
 
 

@@ -80,6 +80,11 @@ define("COMMENTS_HEAD_1", 4);
 define("COMMENTS_FULL_1", 2);
 define("COMMENTS_HEAD_2", 2);
 
+// activity value from which the activity icon should be displayed
+define("ACTIVITY_THRESHOLD", 3);
+// divisor for opacity, should be greater than the threshold
+define("ACTIVITY_DIVISOR", 100);
+
 // member status required for certain operations
 // see Login::access_allowed() for possible values
 define("ACCESS_COMMENT", 4); // write a comment or reply to one

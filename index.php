@@ -12,6 +12,36 @@ require "inc/common.php";
 html_head(TITLE, true);
 
 ?>
+<h2><?=_("Recently interesting issues")?></h2>
+<table class="proposals">
+<?
+Issue::display_proposals_th();
+$sql = "SELECT issue.* FROM issue
+	JOIN proposal ON proposal.issue = issue.id";
+if (Login::$member) {
+	// show issues in the groups of the logged in member first
+	$sql .= "
+	JOIN area ON area.id = issue.area
+	GROUP BY issue.id, area.ngroup
+	ORDER BY area.ngroup IN (SELECT ngroup FROM member_ngroup WHERE member=".intval(Login::$member->id).") DESC,";
+} else {
+	$sql .= "
+	GROUP BY issue.id
+	ORDER BY";
+}
+$sql .= " SUM(proposal.activity) DESC, MIN(proposal.admitted), MIN(proposal.submitted), RANDOM()
+	LIMIT 3";
+$result = DB::query($sql);
+while ( $issue = DB::fetch_object($result, "Issue") ) {
+	/** @var $issue Issue */
+	list($proposals, $submitted) = $issue->proposals_list();
+?>
+	<tr><td colspan="6" class="issue_separator"></td></tr>
+<?
+	$issue->display_proposals($proposals, $submitted, count($proposals));
+}
+?>
+</table>
 
 <div class="dates">
 	<h2><?=_("Upcoming dates")?></h2>

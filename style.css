@@ -729,15 +729,10 @@ fieldset.member div.button input[type=submit] {
 
 div.dates {
 	float: left;
-	margin: 0 20px 15px 0;
+	margin-right: 20px;
 }
 div.ngroups {
 	float: left;
-	margin: 0 0 15px 0;
-}
-div.ngroups h2,
-div.dates h2 {
-	margin-top: 0;
 }
 div.ngroups td.inactive {
 	color: #999;
@@ -995,6 +990,10 @@ table.proposals td.result {
 
 table.proposals td.vote {
 	padding-right: 8px;
+}
+
+table.proposals span.activity {
+	float: right;
 }
 
 form.proposal h2,
