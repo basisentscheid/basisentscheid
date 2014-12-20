@@ -23,6 +23,13 @@ abstract class Login {
 	 */
 	public static $admin  = false;
 
+	/**
+	 * group ids of the logged in member
+	 *
+	 * @var array
+	 */
+	public static $ngroups = array();
+
 
 	/**
 	 * to be called on every page

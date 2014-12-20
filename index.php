@@ -18,12 +18,12 @@ html_head(TITLE, true);
 Issue::display_proposals_th();
 $sql = "SELECT issue.* FROM issue
 	JOIN proposal ON proposal.issue = issue.id";
-if (Login::$member) {
+if (Login::$ngroups) {
 	// show issues in the groups of the logged in member first
 	$sql .= "
 	JOIN area ON area.id = issue.area
 	GROUP BY issue.id, area.ngroup
-	ORDER BY area.ngroup IN (SELECT ngroup FROM member_ngroup WHERE member=".intval(Login::$member->id).") DESC,";
+	ORDER BY area.ngroup IN (".join(", ", Login::$ngroups).") DESC,";
 } else {
 	$sql .= "
 	GROUP BY issue.id
@@ -47,38 +47,29 @@ while ( $issue = DB::fetch_object($result, "Issue") ) {
 	<h2><?=_("Upcoming dates")?></h2>
 	<table>
 <?
-
 $dates = array();
 $info = array();
-
-$sql = "SELECT * FROM period WHERE debate > now()";
-$result = DB::query($sql);
-while ( $period = DB::fetch_object($result, "Period") ) {
-	$dates[] = $period->debate;
-	$info[] = array("debate", $period);
+foreach ( ["debate", "voting", "counting"] as $field ) {
+	$result = DB::query("SELECT * FROM period WHERE $field > now()");
+	while ( $period = DB::fetch_object($result, "Period") ) {
+		$dates[] = $period->$field;
+		$info[] = array($field, $period);
+	}
 }
-
-$sql = "SELECT * FROM period WHERE voting > now()";
-$result = DB::query($sql);
-while ( $period = DB::fetch_object($result, "Period") ) {
-	$dates[] = $period->voting;
-	$info[] = array("voting", $period);
-}
-
-$sql = "SELECT * FROM period WHERE counting > now()";
-$result = DB::query($sql);
-while ( $period = DB::fetch_object($result, "Period") ) {
-	$dates[] = $period->counting;
-	$info[] = array("counting", $period);
-}
-
 asort($dates);
-
 $line = 1;
 foreach ( $dates as $index => $time ) {
 	list($field, $period) = $info[$index];
+	if ( in_array($period->ngroup, Login::$ngroups) ) {
+?>
+			<tr class="<?=stripes()?> own" title="<?=_("You are member of this group.")?>">
+<?
+	} else {
 ?>
 			<tr class="<?=stripes()?>">
+<?
+	}
+?>
 				<td><?=datetimeformat_smart($time)?></td>
 				<td><?=$period->ngroup()->name?></td>
 				<td><?
@@ -98,7 +89,6 @@ foreach ( $dates as $index => $time ) {
 <?
 	if (++$line > 10) break;
 }
-
 ?>
 	</table>
 </div>
@@ -107,15 +97,7 @@ foreach ( $dates as $index => $time ) {
 <h2 id="ngroups"><?=_("Groups")?></h2>
 <table>
 <?
-if (Login::$member) {
-	$sql = "SELECT ngroup.*, member_ngroup.member
-		FROM ngroup
-		LEFT JOIN member_ngroup ON ngroup.id = member_ngroup.ngroup AND member_ngroup.member = ".intval(Login::$member->id);
-} else {
-	$sql = "SELECT *
-		FROM ngroup";
-}
-$sql .= " ORDER BY name";
+$sql = "SELECT * FROM ngroup ORDER BY name";
 $result = DB::query($sql);
 $ngroups = array();
 while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
@@ -124,7 +106,7 @@ while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
 list($ngroups) = Ngroup::parent_sort_active_tree($ngroups);
 foreach ($ngroups as $ngroup) {
 	/** @var Ngroup $ngroup */
-	if (Login::$member and $ngroup->member) {
+	if ( in_array($ngroup->id, Login::$ngroups) ) {
 ?>
 	<tr class="<?=stripes()?> own" title="<?=_("You are member of this group.")?>">
 <?

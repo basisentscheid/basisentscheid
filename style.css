@@ -740,6 +740,7 @@ div.ngroups td.inactive {
 div.ngroups td.name {
 	padding-left: 0.5em;
 }
+div.dates   tr.own,
 div.ngroups tr.own td.name,
 div.ngroups tr.own td.proposals {
 	font-weight: bold;

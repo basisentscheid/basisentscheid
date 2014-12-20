@@ -147,6 +147,8 @@ function html_head($title, $help=false) {
 <?
 		foreach ($ngroups as $ngroup) {
 			if (!$ngroup->member) continue;
+			// save groups list of the logged in member
+			Login::$ngroups[] = $ngroup->id;
 			// use the first ngroup as default
 			if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
 ?>
