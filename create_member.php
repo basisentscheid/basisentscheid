@@ -11,6 +11,7 @@
 
 require "inc/common.php";
 
+Login::logout();
 
 if ($action) {
 	switch ($action) {
