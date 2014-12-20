@@ -9,7 +9,7 @@
 
 require "inc/common.php";
 
-html_head(TITLE, true);
+html_head(HOME_H1, true);
 
 ?>
 <h2><?=_("Recently interesting issues")?></h2>

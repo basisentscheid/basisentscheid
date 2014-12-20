@@ -212,7 +212,7 @@ function html_head($title, $help=false) {
 	</div>
 </header>
 
-<h1><?=HOME_H1?></h1>
+<h1><?=$title?></h1>
 <?
 	if ($help) help("", true);
 ?>
