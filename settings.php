@@ -72,10 +72,16 @@ if ($action) {
 		if (GNUPG_SIGN_KEY and $_POST['key']) {
 			$gnupg = new_gnupg();
 			$import = $gnupg->import($_POST['key']);
-			//var_dump($return);
-			if ($import['imported'] + $import['unchanged'] > 1) {
+			if (DEBUG) {
+?>
+<!--
+<?=h(var_dump($import))?>
+-->
+<?
+			}
+			if ($import['imported'] + $import['unchanged'] + $import['newuserids'] + $import['newsubkeys'] > 1) {
 				notice(sprintf(_("Multiple keys were uploaded at once. %d keys have been imported and %d keys are unchanged."), $import['imported'], $import['unchanged']));
-			} elseif ($import['imported']) {
+			} elseif ($import['imported'] or $import['newuserids'] or $import['newuserids'] or $import['newsubkeys']) {
 				if ($import['fingerprint'] != Login::$member->fingerprint()) {
 					notice(_("The key has been imported, but does not match the fingerprint."));
 				} else {
