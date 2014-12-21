@@ -119,7 +119,7 @@ Eine Änderung des <b>Benutzernamens</b> ist jederzeit möglich, sofern der neue
 
 Bei der Registrierung wird eine E-Mail mit einem Bestätigungscode an die eingegebene <b>E-Mail-Adresse</b> geschickt. Erst wenn auf den Link in dieser E-Mail geklickt wurde, gilt die E-Mail-Adresse als bestätigt und wird verwendet. Falls diese E-Mail nicht angekommen sein sollte, kann man sich mit dem entsprechenden Button die "Bestätigungs-E-Mail nocheinmal senden". Man kann auch eine andere E-Mail-Adresse angeben und sich an diese die Bestätigungsmail schicken lassen. Die E-Mail-Adresse wird nur für Benachrichtigungsmails verwendet und nie irgendjemand anderem angezeigt.
 
-Um E-Mail-Benachrichtigungen mit vertraulichen Daten in verschlüsselter Form zu bekommen, gibt es die Möglichkeit, einen <b>öffentlichen PGP-Schlüssel</b> hochzuladen. Dieser ist im ACSII-Armor-Format in das Textfeld zu kopieren. In einem weiteren Feld ist der Fingerabdruck diesen Schlüssels anzugeben. Der Schlüssel muss außerdem die angegebene E-Mail-Adresse enthalten.
+Um E-Mail-Benachrichtigungen mit vertraulichen Daten in verschlüsselter Form zu bekommen, gibt es die Möglichkeit, einen <b>öffentlichen PGP-Schlüssel</b> hochzuladen. Dieser ist im ACSII-Armor-Format in das Textfeld zu kopieren. In einem weiteren Feld ist der Fingerabdruck dieses Schlüssels anzugeben. Der Schlüssel muss außerdem die angegebene E-Mail-Adresse enthalten.
 
 Das <b>Profil</b> wird anderen Benutzern angezeigt, wenn sie auf den Benutzernamen klicken. Hier können beispielsweise Kontaktinformationen angegeben werden.
 
