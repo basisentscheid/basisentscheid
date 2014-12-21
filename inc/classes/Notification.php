@@ -229,7 +229,8 @@ class Notification {
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
-			$uri .= "&show[]=".$this->comment->id;
+			// URLencode the [] to make mail clients recognize the whole link
+			$uri .= "&show%5B%5D=".$this->comment->id;
 
 			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.$uri."\n\n"
@@ -247,7 +248,8 @@ class Notification {
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
-			$uri .= "&show[]=".$this->comment->id;
+			// URLencode the [] to make mail clients recognize the whole link
+			$uri .= "&show%5B%5D=".$this->comment->id;
 
 			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.$uri."\n\n"
