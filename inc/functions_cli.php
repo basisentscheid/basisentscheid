@@ -275,7 +275,8 @@ function revoke_not_enough_proponents() {
 		$proposal->revoke = null;
 		$proposal->update(['revoke']);
 		if (
-			$proposal->proponents_count() < REQUIRED_PROPONENTS and
+			// Drafts need just 1 proponent, submitted proposals need the count required for submission.
+			$proposal->proponents_count() < ($proposal->state=="draft" ? 1 : REQUIRED_PROPONENTS) and
 			// don't revoke already cancelled/revoked/done proposals
 			in_array($proposal->state, array("draft", "submitted", "admitted"))
 		) {
