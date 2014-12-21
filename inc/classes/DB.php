@@ -25,7 +25,10 @@ abstract class DB {
 	 * class constructor
 	 */
 	public static function __static() {
-		pg_connect(DATABASE_CONNECT);
+		// don't continue if the database is not reachable
+		if ( pg_connect(DATABASE_CONNECT) === false ) {
+			error(_("Sorry, but the connection to the database failed. Please try again in a few minutes."));
+		}
 	}
 
 
