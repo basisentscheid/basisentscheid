@@ -72,4 +72,25 @@ ALTER TABLE proposal ADD activity INT DEFAULT 0 NOT NULL;
 
 ALTER TABLE notify ADD comment BOOL DEFAULT false NOT NULL;
 
+ALTER TABLE proposal ADD CONSTRAINT "proposal_state" CHECK (
+    ( state = 'draft'     AND submitted ISNULL  AND admitted ISNULL  AND cancelled ISNULL ) OR
+    ( state = 'submitted' AND submitted NOTNULL AND admitted ISNULL  AND cancelled ISNULL ) OR
+    ( state = 'admitted'  AND submitted NOTNULL AND admitted NOTNULL AND cancelled ISNULL ) OR
+    ( state = 'done'      AND                                            cancelled NOTNULL ) OR
+    ( state = 'revoked'   AND                                            cancelled NOTNULL ) OR
+    ( state = 'cancelled' AND                                            cancelled NOTNULL )
+);
+ALTER TABLE issue ADD CONSTRAINT "issue_state" CHECK (
+    ( state = 'entry'       AND debate_started ISNULL  AND preparation_started ISNULL  AND voting_started ISNULL  AND counting_started ISNULL  AND finished ISNULL  ) OR
+    ( state = 'debate'      AND debate_started NOTNULL AND preparation_started ISNULL  AND voting_started ISNULL  AND counting_started ISNULL  AND finished ISNULL  ) OR
+    ( state = 'preparation' AND debate_started NOTNULL AND preparation_started NOTNULL AND voting_started ISNULL  AND counting_started ISNULL  AND finished ISNULL  ) OR
+    ( state = 'voting'      AND debate_started NOTNULL AND preparation_started NOTNULL AND voting_started NOTNULL AND counting_started ISNULL  AND finished ISNULL  ) OR
+    ( state = 'counting'    AND debate_started NOTNULL AND preparation_started NOTNULL AND voting_started NOTNULL AND counting_started NOTNULL AND finished ISNULL  ) OR
+    ( state = 'finished'    AND debate_started NOTNULL AND preparation_started NOTNULL                                                         AND finished NOTNULL ) OR
+      state = 'cancelled'
+);
+ALTER TABLE issue ADD CONSTRAINT "clear" CHECK (
+    (state IN ('entry', 'debate', 'preparation', 'voting', 'counting') AND clear ISNULL AND cleared ISNULL ) OR
+    (state IN ('finished', 'cancelled')                               AND (clear NOTNULL != cleared NOTNULL) )
+);
 

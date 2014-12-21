@@ -335,7 +335,9 @@ CREATE TABLE issue (
     finished timestamp with time zone,
     clear date,
     cleared timestamp with time zone,
-    state issue_state DEFAULT 'entry'::issue_state NOT NULL
+    state issue_state DEFAULT 'entry'::issue_state NOT NULL,
+    CONSTRAINT clear CHECK (((((state = ANY (ARRAY['entry'::issue_state, 'debate'::issue_state, 'preparation'::issue_state, 'voting'::issue_state, 'counting'::issue_state])) AND (clear IS NULL)) AND (cleared IS NULL)) OR ((state = ANY (ARRAY['finished'::issue_state, 'cancelled'::issue_state])) AND ((clear IS NOT NULL) <> (cleared IS NOT NULL))))),
+    CONSTRAINT issue_state CHECK (((((((((((((state = 'entry'::issue_state) AND (debate_started IS NULL)) AND (preparation_started IS NULL)) AND (voting_started IS NULL)) AND (counting_started IS NULL)) AND (finished IS NULL)) OR ((((((state = 'debate'::issue_state) AND (debate_started IS NOT NULL)) AND (preparation_started IS NULL)) AND (voting_started IS NULL)) AND (counting_started IS NULL)) AND (finished IS NULL))) OR ((((((state = 'preparation'::issue_state) AND (debate_started IS NOT NULL)) AND (preparation_started IS NOT NULL)) AND (voting_started IS NULL)) AND (counting_started IS NULL)) AND (finished IS NULL))) OR ((((((state = 'voting'::issue_state) AND (debate_started IS NOT NULL)) AND (preparation_started IS NOT NULL)) AND (voting_started IS NOT NULL)) AND (counting_started IS NULL)) AND (finished IS NULL))) OR ((((((state = 'counting'::issue_state) AND (debate_started IS NOT NULL)) AND (preparation_started IS NOT NULL)) AND (voting_started IS NOT NULL)) AND (counting_started IS NOT NULL)) AND (finished IS NULL))) OR ((((state = 'finished'::issue_state) AND (debate_started IS NOT NULL)) AND (preparation_started IS NOT NULL)) AND (finished IS NOT NULL))) OR (state = 'cancelled'::issue_state)))
 );
 
 
@@ -537,7 +539,8 @@ CREATE TABLE proposal (
     no integer,
     abstention integer,
     score integer,
-    accepted boolean
+    accepted boolean,
+    CONSTRAINT proposal_state CHECK ((((((((((state = 'draft'::proposal_state) AND (submitted IS NULL)) AND (admitted IS NULL)) AND (cancelled IS NULL)) OR ((((state = 'submitted'::proposal_state) AND (submitted IS NOT NULL)) AND (admitted IS NULL)) AND (cancelled IS NULL))) OR ((((state = 'admitted'::proposal_state) AND (submitted IS NOT NULL)) AND (admitted IS NOT NULL)) AND (cancelled IS NULL))) OR ((state = 'done'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'revoked'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'cancelled'::proposal_state) AND (cancelled IS NOT NULL))))
 );
 
 
