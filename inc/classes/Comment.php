@@ -95,18 +95,24 @@ class Comment extends Relation {
 		$this->session = session_id();
 		$this->create();
 
-		// notification to proponents and to authors of all parent comments
-		$recipients = $proposal->proponents();
+		// notification to authors of all parent comments
+		$recipients = array();
 		$parent = $this->parent;
 		while ( $parent > 0 ) { // "pro"/"contra"/"discussion" will be converted to 0
 			$comment = new Comment($parent);
 			$recipients[] = $comment->member;
 			$parent = $comment->parent;
 		}
-		$notification = new Notification("comment");
+		$notification = new Notification("reply");
 		$notification->proposal = $proposal;
 		$notification->comment = $this;
 		$notification->send($recipients);
+
+		// notification according to notify settings
+		$notification = new Notification("comment");
+		$notification->proposal = $proposal;
+		$notification->comment = $this;
+		$notification->send([], $recipients);
 
 	}
 

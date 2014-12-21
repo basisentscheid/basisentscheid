@@ -429,6 +429,7 @@ CREATE TABLE member_ngroup (
 CREATE TABLE notify (
     member integer NOT NULL,
     interest notify_interest NOT NULL,
+    comment boolean DEFAULT false NOT NULL,
     new_proposal boolean DEFAULT false NOT NULL,
     admitted boolean DEFAULT false NOT NULL,
     submitted boolean DEFAULT false NOT NULL,

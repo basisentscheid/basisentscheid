@@ -70,5 +70,6 @@ ALTER TABLE issue ALTER COLUMN state SET DEFAULT 'entry';
 
 ALTER TABLE proposal ADD activity INT DEFAULT 0 NOT NULL;
 
+ALTER TABLE notify ADD comment BOOL DEFAULT false NOT NULL;
 
 

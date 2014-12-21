@@ -125,8 +125,15 @@ Das <b>Profil</b> wird anderen Benutzern angezeigt, wenn sie auf den Benutzernam
 
 ===settings_notifications.php
 
-Hier kannst du auswählen, bei welchen Ereignissen in welchen Anträgen du eine Benachrichtigung bekommen möchtest. Die Spalten stehen für die <b>Ereignisse</b>, dass ein neuer Antrag erstellt wurde, ein Antrag eingereicht wurde, ein Antrag zugelassen wurde, die Debatte begonnen hat oder die Abstimmung abgeschlossen wurde. Die Zeilen besagen, <b>bei welchen Anträgen</b> dich diese Ereignisse interessieren.
+Hier kannst du auswählen, bei welchen Ereignissen in welchen Anträgen du eine Benachrichtigung bekommen möchtest. Die Spalten stehen für die <b>Ereignisse</b>:
+ * Ein <i>neuer Beitrag</i> in der Diskussion oder den Pro- und Kontra-Argumenten wurde geschrieben. Antworten auf deine Beiträge bekommst du immer, auch wenn du diese Benachrichtigung hier nicht aktiviert hast.
+ * Ein <i>neuer Antrag</i> wurde erstellt.
+ * Ein Antrag wurde <i>eingereicht</i>.
+ * Ein Antrag wurde <i>zugelassen</i>.
+ * Die <i>Debatte</i> über einen Antrag hat begonnen.
+ * Die Online-Abstimmung über einen Antrag wurde <i>abgeschlossen</i>. In dieser Benachrichtigung wird auch das Ergebnis mitgeteilt.
+Die Zeilen besagen, <b>bei welchen Anträgen</b> dich diese Ereignisse interessieren.
 
 Wenn du zu viele Benachrichtigungen bekommst, ist es wahrscheinlich am sinnvollsten, oben links anzufangen, Haken herauszunehmen. Was in anderen Gliederungen passiert oder welche Anträge alle erst entworfen werden, dürfte weniger interessant sein, als die Debatte in der eigenen Gliederung oder was mit eigenen oder von dir unterstützten Anträgen passiert.
 
-Weitere Benachrichtigungen, die hier nicht aufgeführt sind, wie etwa beim Beginn einer Abstimmung oder bei einer Antwort auf einen Beitrag von dir, bekommst du immer.
+Weitere Benachrichtigungen, die hier nicht aufgeführt sind, bekommst du immer. Beispielsweise beim Beginn einer Abstimmung oder wenn du eine Stimme abgegeben hast.

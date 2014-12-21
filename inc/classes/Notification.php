@@ -29,11 +29,11 @@ class Notification {
 	public $all_tokens;
 
 	public static $default_settings = array(
-		'all'         => array('new_proposal'=>false, 'submitted'=>false, 'admitted'=>false, 'debate'=>false, 'finished'=>false),
-		'ngroups'     => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
-		'participant' => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
-		'supporter'   => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
-		'proponent'   => array('new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true)
+		'all'         => array('comment'=>false, 'new_proposal'=>false, 'submitted'=>false, 'admitted'=>false, 'debate'=>false, 'finished'=>false),
+		'ngroups'     => array('comment'=>false, 'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'participant' => array('comment'=>false, 'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'supporter'   => array('comment'=>false, 'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'proponent'   => array('comment'=>true,  'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true)
 	);
 
 
@@ -69,6 +69,7 @@ class Notification {
 	 */
 	public static function types() {
 		return array(
+			'comment'      => _("new comment"),
 			'new_proposal' => _("new proposal"),
 			'submitted'    => _("submitted"),
 			'admitted'     => _("admitted"),
@@ -83,12 +84,13 @@ class Notification {
 	/**
 	 * finally send the notifications
 	 *
-	 * @param array|null $recipients (optional) array of member IDs
-	 * @return boolean
+	 * @param array   $members (optional) array of member IDs
+	 * @param array   $exclude (optional) array of member IDs to send no mail
+	 * @return bool
 	 */
-	public function send($recipients=null) {
+	public function send($members=array(), $exclude=array()) {
 
-		$recipients = $this->recipients($recipients);
+		$recipients = $this->recipients($members, $exclude);
 
 		// nobody to notify
 		if (!$recipients) return;
@@ -114,29 +116,35 @@ class Notification {
 	/**
 	 * get mail addresses of the recipients
 	 *
-	 * @param array|null $recipients
+	 * @param array   $members array of member IDs
+	 * @param array   $exclude array of member IDs to send no mail
 	 * @return array
 	 */
-	private function recipients($recipients) {
+	private function recipients($members, $exclude) {
 
-		$sql = "SELECT DISTINCT mail FROM member ";
+		$sql = "SELECT DISTINCT mail FROM member";
+		$or = array();
 
-		if (is_array($recipients)) {
-			if (!$recipients) return array();
-			$sql .= "WHERE mail IS NOT NULL AND id IN (".join(",", $recipients).")";
-		} else {
+		// specified members
+		if ( $members ) {
+			$or[] = "member.id IN (".join(",", $members).")";
+		}
 
+		// members who enabled notification settings
+		if ( isset(self::$default_settings['all'][$this->type]) ) {
 			$sql .= "
-				JOIN notify             ON        notify.member = member.id
+				LEFT JOIN notify        ON        notify.member = member.id
 				LEFT JOIN member_ngroup ON member_ngroup.member = member.id
 				LEFT JOIN participant   ON   participant.member = member.id
-				LEFT JOIN supporter     ON     supporter.member = member.id
-				WHERE member.mail IS NOT NULL
-					AND notify.".$this->type."=TRUE
-					AND ( notify.interest='all'";
+				LEFT JOIN supporter     ON     supporter.member = member.id";
+
+			$where_notify = "
+					notify.".$this->type."=TRUE
+					AND (
+						notify.interest='all'";
 
 			if ($this->period) {
-				$sql .= "
+				$where_notify .= "
 						OR (notify.interest='ngroups' AND member_ngroup.ngroup=".intval($this->period->id).")";
 			}
 
@@ -162,24 +170,33 @@ class Notification {
 
 			if ($areas) {
 				$areas = join(",", array_unique($areas));
-				$sql .= "
+				$where_notify .= "
 						OR (notify.interest='participant' AND participant.area IN (".$areas."))";
 			}
 
 			if ($proposals) {
 				$proposals = join(",", $proposals);
-				$sql .= "
+				$where_notify .= "
 						OR (notify.interest='supporter' AND supporter.proposal IN (".$proposals."))
 						OR (notify.interest='proponent' AND supporter.proposal IN (".$proposals.") AND supporter.proponent_confirmed=TRUE)";
 			}
 
-			$sql .= ")";
+			$where_notify .= "
+					)";
 
+			$or[] = "(".$where_notify.")";
 		}
 
+		if (!$or) return array();
+		$sql .= "
+				WHERE member.mail IS NOT NULL
+					AND (".join(" OR ", $or).")";
+
 		// don't notify a member about his own actions
-		if (Login::$member) {
-			$sql .= " AND member.id != ".intval(Login::$member->id);
+		if (Login::$member) $exclude[] = intval(Login::$member->id);
+		if ($exclude) {
+			$sql .= "
+					AND member.id NOT IN (".join(", ", $exclude).")";
 		}
 
 		return DB::fetchfieldarray($sql);
@@ -206,6 +223,42 @@ class Notification {
 		$separator = "-----8<--------------------------------------------------------------------\n"; // 75 characters
 
 		switch ($this->type) {
+		case "comment":
+
+			$subject = sprintf(_("New comment in proposal %d"), $this->proposal->id);
+
+			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
+			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
+			$uri .= "&show[]=".$this->comment->id;
+
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
+				.$uri."\n\n"
+				.sprintf(_("Member '%s' posted this comment:"), Login::$member->username())."\n"
+				.$separator
+				.$this->comment->title."\n\n"
+				.$this->comment->content."\n"
+				.$separator
+				._("Reply:")." ".$uri."&parent=".$this->comment->id."#form";
+
+			break;
+		case "reply":
+
+			$subject = sprintf(_("New reply to your comment in proposal %d"), $this->proposal->id);
+
+			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
+			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
+			$uri .= "&show[]=".$this->comment->id;
+
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
+				.$uri."\n\n"
+				.sprintf(_("Member '%s' replied to your comment:"), Login::$member->username())."\n"
+				.$separator
+				.$this->comment->title."\n\n"
+				.$this->comment->content."\n"
+				.$separator
+				._("Reply:")." ".$uri."&parent=".$this->comment->id."#form";
+
+			break;
 		case "new_proposal":
 
 			$subject = sprintf(_("New proposal %d in area %s"), $this->proposal->id, $this->proposal->issue()->area()->name);
@@ -265,24 +318,6 @@ class Notification {
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				._("The following proponent removed himself:")."\n\n"
 				.$this->proponent."\n";
-
-			break;
-		case "comment":
-
-			$subject = sprintf(_("New reply to your comment in proposal %d"), $this->proposal->id);
-
-			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
-			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
-			$uri .= "&show[]=".$this->comment->id;
-
-			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.$uri."\n\n"
-				.sprintf(_("Member '%s' replied to your comment:"), Login::$member->username())."\n"
-				.$separator
-				.$this->comment->title."\n\n"
-				.$this->comment->content."\n"
-				.$separator
-				._("Reply:")." ".$uri."&parent=".$this->comment->id."#form";
 
 			break;
 		case "admitted":
