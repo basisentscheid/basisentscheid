@@ -75,7 +75,7 @@ if ($action) {
 			if (DEBUG) {
 ?>
 <!--
-<?=h(var_dump($import))?>
+<?=h(print_r($import, true))?>
 -->
 <?
 			}
