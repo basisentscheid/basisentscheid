@@ -203,21 +203,7 @@ function cron($skip_if_locked=false) {
 
 				$issues_finished_voting[] = $issue;
 
-				// remove inactive participants from areas, who's last activation is before the counting of the period before the current one
-				$sql = "SELECT counting FROM period
-					WHERE ngroup=".intval($period->ngroup)."
-						AND counting <= now()
-					ORDER BY counting DESC
-					LIMIT 2";
-				$result = DB::query($sql);
-				DB::fetch_assoc($result); // skip the current counting
-				if ( $last_counting = DB::fetch_assoc($result) ) {
-					// area participation
-					$sql = "DELETE FROM participant
-						WHERE area IN (SELECT id FROM area WHERE ngroup=".intval($period->ngroup).")
-							AND activated < ".DB::esc($last_counting['counting']);
-					DB::query($sql);
-				}
+				remove_inactive_participants($period->ngroup);
 
 				break;
 				// "finished" and "cancelled" are the final issue states.
@@ -328,6 +314,29 @@ function clear_issues() {
 		DB::query($sql_delete);
 		$issue->clear = null;
 		$issue->update(["clear"], "cleared=now()");
+	}
+}
+
+
+/**
+ * remove inactive participants from areas, who's last activation is before the counting of the period before the current one
+ *
+ * @param integer $ngroup
+ */
+function remove_inactive_participants($ngroup) {
+	$sql = "SELECT counting FROM period
+		WHERE ngroup=".intval($ngroup)."
+			AND counting <= now()
+		ORDER BY counting DESC
+		LIMIT 2";
+	$result = DB::query($sql);
+	DB::fetch_assoc($result); // skip the current counting
+	if ( $last_counting = DB::fetch_assoc($result) ) {
+		// area participation
+		$sql = "DELETE FROM participant
+			WHERE area IN (SELECT id FROM area WHERE ngroup=".intval($ngroup).")
+				AND activated < ".DB::esc($last_counting['counting']);
+		DB::query($sql);
 	}
 }
 
