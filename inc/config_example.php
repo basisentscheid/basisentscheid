@@ -26,7 +26,9 @@ define("MAIL_SUPPORT", "example@example.com");
 define("MAIL_FROM", "example@example.com");
 define("MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
 
-// for error notifications, see inc/errors.php
+// for error handling, see inc/errors.php
+// In live environment you should disable the display of errors by setting this to 0.
+define("ERROR_DISPLAY", E_ALL);
 // Enter a mail address or a local user to get error mails.
 define("ERROR_MAIL", "");
 define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");

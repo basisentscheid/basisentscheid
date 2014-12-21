@@ -8,18 +8,20 @@ php_flag short_open_tag on
 php_flag asp_tags off
 
 # Disable deprecated features 
-php_flag register_globals off
+php_flag register_globals     off
 php_flag register_long_arrays off
-php_flag register_argc_argv off
-php_flag magic_quotes_gpc off
+php_flag register_argc_argv   off
+php_flag magic_quotes_gpc     off
 php_flag magic_quotes_runtime off
-php_flag safe_mode off
+php_flag safe_mode            off
 
 # Error handling and logging
-php_value error_reporting E_ALL
-php_flag  display_errors on
+php_value error_reporting 32767
 php_value log_errors on
 php_value error_log var/log/phperrors.log
+# In live environment, you should set the following flags to "off":
+php_flag  display_errors         on
+php_flag  display_startup_errors on
 
 # Session
 php_flag  session.use_cookies on
