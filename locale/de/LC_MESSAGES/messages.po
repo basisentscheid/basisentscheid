@@ -2259,7 +2259,7 @@ msgstr "Mitglied %s"
 #
 # File: settings.php, line: 46
 msgid "The PGP public key fingerprint has been saved."
-msgstr "Der öffentliche PGP-Schlüssel wurde gespeichert."
+msgstr "Der Fingerabdruck des öffentlichen PGP-Schlüssel wurde gespeichert."
 #
 # File: settings.php, line: 77
 #, php-format
