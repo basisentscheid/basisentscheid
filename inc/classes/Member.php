@@ -365,12 +365,12 @@ class Member extends Relation {
 
 		DB::transaction_start();
 
-		$sql = "SELECT ngroup FROM members_ngroup WHERE member=".intval($this->id);
+		$sql = "SELECT ngroup FROM member_ngroup WHERE member=".intval($this->id);
 		$existing_ngroups = DB::fetchfieldarray($sql);
 
 		$insert_ngroups = array_diff($ngroups, $existing_ngroups);
 		if ($insert_ngroups) {
-			$sql = "INSERT INTO members_ngroup (member, ngroup) VALUES ";
+			$sql = "INSERT INTO member_ngroup (member, ngroup) VALUES ";
 			resetfirst();
 			foreach ($insert_ngroups as $insert_ngroup) {
 				if (!first()) $sql .= ", ";
