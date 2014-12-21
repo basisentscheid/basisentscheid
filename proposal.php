@@ -430,7 +430,7 @@ if (Login::$member) {
 <h2><?=_("This and alternative proposals")?></h2>
 <table class="proposals">
 <?
-$show_results = in_array($issue->state, array('finished', 'cleared', 'cancelled'));
+$show_results = in_array($issue->state, array('finished', 'cancelled'));
 Issue::display_proposals_th($show_results);
 list($proposals, $submitted) = $issue->proposals_list();
 $issue->display_proposals($proposals, $submitted, count($proposals), $show_results, $proposal->id);
