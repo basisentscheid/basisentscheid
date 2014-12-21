@@ -21,6 +21,13 @@ class Period extends Relation {
 	public $state;
 	public $postage;
 
+	public $debate_now;
+	public $preparation_now;
+	public $voting_now;
+	public $ballot_assignment_now;
+	public $ballot_preparation_now;
+	public $counting_now;
+
 	private $ngroup_obj;
 
 	protected $boolean_fields = array("ballot_voting", "postage");

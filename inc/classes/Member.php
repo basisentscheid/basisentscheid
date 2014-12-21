@@ -34,6 +34,9 @@ class Member extends Relation {
 	public $profile  = "";
 	public $hide_help;
 
+	public $proponent_name;
+	public $proponent_confirmed;
+
 	protected $boolean_fields = array("eligible", "verified");
 	protected $update_fields = array("username");
 

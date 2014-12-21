@@ -479,6 +479,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <?
 	$confirmed_proponents = 0;
 	foreach ( $proponents as $proponent ) {
+		/** @var Member $proponent */
 		if ($proponent->proponent_confirmed) $confirmed_proponents++;
 		// show unconfirmed proponents only to confirmed proponents and himself
 		if (!$is_proponent and !$proponent->proponent_confirmed and (!Login::$member or $proponent->id!=Login::$member->id)) continue;

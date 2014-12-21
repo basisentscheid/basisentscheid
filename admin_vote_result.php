@@ -38,6 +38,7 @@ if ($action) {
 			}
 		}
 		foreach ( $proposals as $proposal ) {
+			/** @var Proposal $proposal yes */
 			$proposal->yes        = intval($_POST['yes'][$proposal->id]);
 			$proposal->no         = intval($_POST['no'][$proposal->id]);
 			$proposal->abstention = intval($_POST['abstention'][$proposal->id]);

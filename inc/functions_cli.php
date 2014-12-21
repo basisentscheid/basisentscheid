@@ -34,6 +34,7 @@ function cron($skip_if_locked=false) {
 	// TODO: exclude closed
 	$result_period = DB::query($sql_period);
 	while ( $period = DB::fetch_object($result_period, "Period") ) {
+		/** @var Period $period */
 		DB::to_bool($period->debate_now);
 		DB::to_bool($period->preparation_now);
 		DB::to_bool($period->voting_now);
@@ -105,6 +106,7 @@ function cron($skip_if_locked=false) {
 			AND state NOT IN ('finished', 'cancelled')";
 		$result_issue = DB::query($sql_issue);
 		while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
+			/** @var Issue $issue */
 
 			switch ($issue->state) {
 
