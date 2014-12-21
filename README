@@ -29,6 +29,8 @@ example we assume the user "cmr" for cli and "apache" for the webserver.
 # chgrp -R basisentscheid var/
 # find var/ -type d -exec chmod 770 {} \;
 # find var/ -type f -exec chmod 660 {} \;
+Make sure that GnuPG keeps the group when replacing files:
+# chmod g+s var/gnupg/
 To make the webserver use the new group, we have to restart it:
 # /etc/init.d/apache2 restart
 
