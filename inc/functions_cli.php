@@ -171,20 +171,10 @@ function cron($skip_if_locked=false) {
 			case "debate":
 				if (!$period->preparation_now) break;
 
-				// revoke proposals, which were scheduled for revokation (and still have less than required proponents)
-				$sql = "SELECT * FROM proposal
-					WHERE issue=".intval($issue->id)."
-						AND revoke IS NOT NULL";
-				$result = DB::query($sql);
-				while ( $proposal = DB::fetch_object($result, "Proposal") ) {
-					// clear revoke date
-					$proposal->revoke = null;
-					$proposal->update(['revoke']);
-					// don't revoke already cancelled/revoked/done proposals
-					if ( in_array($proposal->state, array("draft", "submitted", "admitted")) ) {
-						$proposal->cancel("revoked");
-					}
-				}
+				// revoke proposals, which were scheduled for revokation
+				revoke_before_preparation($issue);
+				// don't proceed to preparation if all proposals were cancelled
+				if ($issue->state == "cancelled") break;
 
 				$issue->state = "preparation";
 				$issue->update(["state"], 'preparation_started=now()');
@@ -282,6 +272,28 @@ function revoke_not_enough_proponents() {
 			// don't revoke already cancelled/revoked/done proposals
 			in_array($proposal->state, array("draft", "submitted", "admitted"))
 		) {
+			$proposal->cancel("revoked");
+		}
+	}
+}
+
+
+/**
+ * revoke proposals, which were scheduled for revokation (and still have less than required proponents)
+ *
+ * @param Issue   $issue
+ */
+function revoke_before_preparation(Issue $issue) {
+	$sql = "SELECT * FROM proposal WHERE issue=".intval($issue->id)." AND revoke NOTNULL";
+	$result = DB::query($sql);
+	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		// to set the cancelled state if all proposals get cancelled
+		$proposal->set_issue($issue);
+		// clear revoke date
+		$proposal->revoke = null;
+		$proposal->update(['revoke']);
+		// don't revoke already cancelled/revoked/done proposals
+		if ( in_array($proposal->state, array("draft", "submitted", "admitted")) ) {
 			$proposal->cancel("revoked");
 		}
 	}
