@@ -345,9 +345,11 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 					ob_end_flush();
 				}
 			}
+			if ($show) {
 ?>
 <p class="syserror">Script execution aborted.</p>
 <?
+			}
 			if (function_exists("html_foot")) {
 				html_foot();
 			} else {
