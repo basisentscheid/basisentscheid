@@ -136,7 +136,9 @@ a.iconlink img {
 }
 
 img.iconbutton {
+	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
 	cursor: hand;
 	vertical-align: bottom;
 }
@@ -481,8 +483,7 @@ header {
 	line-height: 46px;
 }
 header div#header {
-	background-color: #AAA;
-	background: linear-gradient(to right, #AAA 15em, #FFF 22em);
+	background: #AAA linear-gradient(to right, #AAA 15em, #FFF 22em);
 	display: inline-block;
 	width: 100%;
 	line-height: 1.6em;

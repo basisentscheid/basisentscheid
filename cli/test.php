@@ -482,7 +482,7 @@ function create_member($username) {
 /**
  * move all times in the past to pretend we moved into the future
  *
- * @param object  $issue
+ * @param Issue   $issue
  * @param string  $interval (optional)
  */
 function time_warp(Issue $issue, $interval="1 hour") {

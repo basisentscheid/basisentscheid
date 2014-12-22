@@ -17,6 +17,7 @@ class Ngroup extends Relation {
 	public $minimum_population;
 
 	public $member;
+	public $depth;
 
 	protected $boolean_fields = array("active");
 

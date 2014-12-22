@@ -62,6 +62,8 @@ html_foot();
  * @param string  $to_text
  */
 function diff($from_text, $to_text) {
+	/** @noinspection PhpUndefinedClassInspection */
 	$opcodes = FineDiff::getDiffOpcodes($from_text, $to_text);
+	/** @noinspection PhpUndefinedClassInspection */
 	echo FineDiff::renderDiffToHTMLFromOpcodes($from_text, $opcodes);
 }

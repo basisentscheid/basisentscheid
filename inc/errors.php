@@ -171,7 +171,7 @@ function error_common($errno, $errstr, $errfile, $errline, $errcontext, $fatal, 
 	if (PHP_SAPI!="cli") {
 		if ($show and !$repeated) {
 ?>
-<p class="syserror">
+<div class="syserror">
 <b><?=$errortype[$errno]?></b>:  <?=$errstr?><br>
 in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 <?
@@ -294,6 +294,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 			$filename = "backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
 			file_put_contents(ERROR_BACKTRACE_PATH.$filename, $backtrace);
 			if (ERROR_MAIL and ERROR_BACKTRACE_URL) {
+				/** @noinspection PhpUndefinedVariableInspection */
 				$mailbody .= "\n"
 					."complete backtrace:\n"
 					.ERROR_BACKTRACE_URL.$filename."\n";
@@ -308,6 +309,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 			} else {
 				$subject .= $errstr;
 			}
+			/** @noinspection PhpUndefinedVariableInspection */
 			error_send_mail($subject, $mailbody);
 		}
 
@@ -322,7 +324,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 <?
 				}
 ?>
-</p>
+</div>
 <?
 			}
 		} else {
@@ -352,11 +354,6 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 			}
 			if (function_exists("html_foot")) {
 				html_foot();
-			} else {
-?>
-</body>
-</html>
-<?
 			}
 		} else {
 			// display as text

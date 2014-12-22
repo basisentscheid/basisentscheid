@@ -49,7 +49,9 @@ cron();
 cron();
 cron();
 
+/** @noinspection PhpUndefinedVariableInspection */
 random_votes($issue1);
+/** @noinspection PhpUndefinedVariableInspection */
 random_votes($issue2);
 
 cron();

@@ -3,7 +3,6 @@
 /**
  * Proposal
  *
- * @property  supported_by_member
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */
@@ -37,6 +36,8 @@ class Proposal extends Relation {
 	public $abstention;
 	public $score;
 	public $accepted;
+
+	public $supported_by_member;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member", "accepted");
 	protected $update_fields = array("title", "content", "reason");
@@ -948,10 +949,12 @@ class Proposal extends Relation {
 				_("Yes: 0, No: 0, Abstention: %d"),
 				$abstention
 			);
+			$legend = null; // satisfy phpstorm
 		}
 
 		?><div class="bargraph acceptance" title="<?=$title?>"><?
 		if ($all) {
+			/** @noinspection PhpUndefinedVariableInspection */
 			$width_no = $width - $width_yes;
 			?><div class="bar yes" style="width:<?=$width_yes?>px">&nbsp;</div><?
 			?><div class="bar no" style="width:<?=$width_no?>px">&nbsp;</div><?
@@ -1020,11 +1023,7 @@ class Proposal extends Relation {
 <!--
 function draft_select(side, draft) {
 	for (var i = 0; i < <?=$i?>; i++) {
-		if ( ( side == 1 && i > draft ) || ( side == 2 && i < draft ) ) {
-			document.getElementById('draft'+side+'_'+i).disabled = false;
-		} else {
-			document.getElementById('draft'+side+'_'+i).disabled = true;
-		}
+		document.getElementById('draft' + side + '_' + i).disabled = !(( side == 1 && i > draft ) || ( side == 2 && i < draft ));
 	}
 }
 //-->

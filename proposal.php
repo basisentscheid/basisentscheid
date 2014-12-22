@@ -458,6 +458,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <p class="proposal"><?=h($issue->area()->name)?></p>
 <?
 
+	$allowed_edit_proponent = false;
 	$is_any_proponent = false;
 	if (Login::$member) {
 		foreach ( $proponents as $proponent ) {

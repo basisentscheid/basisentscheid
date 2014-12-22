@@ -419,8 +419,12 @@ function send_mail($to, $subject, $body, array $headers=array(), $sign=false, $f
  * @return object
  */
 function new_gnupg() {
+	/** @noinspection PhpUndefinedClassInspection */
 	$gnupg = new gnupg();
 	putenv('GNUPGHOME='.GNUPGHOME);
-	if (DEBUG) $gnupg->seterrormode(GNUPG_ERROR_WARNING);
+	if (DEBUG) {
+		/** @noinspection PhpUndefinedMethodInspection PhpUndefinedConstantInspection */
+		$gnupg->seterrormode(GNUPG_ERROR_WARNING);
+	}
 	return $gnupg;
 }

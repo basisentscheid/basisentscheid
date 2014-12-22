@@ -96,6 +96,7 @@ $entitled = ( Login::$member and Login::$member->entitled($ngroup) );
 <?
 
 // don't show select buttons if the member is agent for some ballot
+/** @noinspection PhpUndefinedVariableInspection */
 $show_select = ( $entitled and (!$row_voters or !$row_voters['agent']) and !$period->postage() );
 
 if ($show_select and $entitled and $period->state=="ballot_application") {
@@ -158,6 +159,7 @@ if (!$pager->linescount) {
 ?>
 		<td>
 <?
+			/** @noinspection PhpUndefinedVariableInspection */
 			if ($row_voters and $row_voters['ballot']==$ballot->id) {
 				if ($row_voters['agent']) {
 					?><a href="ballot_edit.php?id=<?=$ballot->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>><?=_("You are agent for this ballot.")?></a><?
@@ -229,6 +231,7 @@ $pager->display();
 
 // postal voting
 if ($entitled) {
+	/** @noinspection PhpUndefinedVariableInspection */
 	if ($row_voters and $row_voters['ballot']===null) {
 ?>
 <h2 class="postal"><?=_("Postal voting")?></h2>

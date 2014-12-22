@@ -315,7 +315,7 @@ class DbTableAdmin {
 				error("Parameter with invalid value");
 			}
 			foreach ( $action as $action_name => $dummy ) {}
-
+			/** @noinspection PhpUndefinedVariableInspection */
 			switch ($action_name) {
 
 			case "delete_checked":
@@ -348,6 +348,7 @@ class DbTableAdmin {
 					if ( !is_array($columnarray) or !count($columnarray) ) continue;
 
 					$object = new $this->classname($id);
+					/** @var Relation $object */
 					if (!$object->id) {
 						warning(_("One of the records to be updated does not exist!"));
 						continue;
@@ -403,6 +404,7 @@ class DbTableAdmin {
 	protected function delete($id) {
 
 		$object = new $this->classname($id);
+		/** @var Relation $object */
 
 		// If the record does not exists, we don't have to delete it (again).
 		if (!$object->id) return;
@@ -430,6 +432,7 @@ class DbTableAdmin {
 	protected function duplicate($id) {
 
 		$object = new $this->classname($id);
+		/** @var Relation $object */
 		if (!$object->id) {
 			warning(_("The record to be duplicated does not exist."));
 			return;
@@ -1272,10 +1275,10 @@ function submit_delete_checked() {
 	 * first part of a longer text
 	 *
 	 * @param mixed   $content
-	 * @param object  $object
+	 * @param Relation $object
 	 * @param array   $column
 	 */
-	protected function print_text_limit($content, $object, array $column) {
+	protected function print_text_limit($content, Relation $object, array $column) {
 		if (!empty($column['print_limit'])) $limit = $column['print_limit']; else $limit = 50;
 		$content = ltrim($content);
 		if (mb_strlen($content) > $limit) {
@@ -1315,10 +1318,10 @@ function submit_delete_checked() {
 	 * selected value from a drop down menu
 	 *
 	 * @param mixed   $content
-	 * @param object  $object
+	 * @param Relation $object
 	 * @param array   $column
 	 */
-	protected function print_select($content, $object, array $column) {
+	protected function print_select($content, Relation $object, array $column) {
 		echo h(@$column['options'][$content]);
 	}
 
@@ -1340,12 +1343,12 @@ function submit_delete_checked() {
 	 * arrows to change the manual order
 	 *
 	 * @param mixed   $content
-	 * @param object  $object
+	 * @param Relation $object
 	 * @param array   $column
 	 * @param integer $line
 	 * @param integer $linescount
 	 */
-	protected function print_manualorder($content, $object, array $column, $line, $linescount) {
+	protected function print_manualorder($content, Relation $object, array $column, $line, $linescount) {
 
 		// show arrows only if order is by manualorder ascending
 		if ( $this->order!=$column[0] or $this->orderdesc ) return;

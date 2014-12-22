@@ -1170,7 +1170,7 @@ class Issue extends Relation {
 	 * display a list of votes
 	 *
 	 * @param array   $proposals
-	 * @param string  $result
+	 * @param resource $result
 	 * @param string  $token     (optional) token of the logged in member for highlighting
 	 */
 	public static function display_votes(array $proposals, $result, $token="") {
@@ -1192,6 +1192,7 @@ class Issue extends Relation {
 			}
 			?></tr>
 <tr><?
+			/** @noinspection PhpUnusedLocalVariableInspection */
 			foreach ($proposals as $proposal) {
 				?><th><?=_("Acceptance")?></th><th><?=_("Score")?></th><?
 			}
@@ -1222,6 +1223,7 @@ class Issue extends Relation {
 			} else {
 				// member did not vote
 				?><td class="tdc"></td><?
+				/** @noinspection PhpUnusedLocalVariableInspection */
 				foreach ($proposals as $proposal) {
 					?><td></td><?
 					if ($show_scores) {
@@ -1242,7 +1244,7 @@ class Issue extends Relation {
 	/**
 	 * display a list of voting mode votes
 	 *
-	 * @param string  $result
+	 * @param resource $result
 	 * @param string  $token  (optional) token of the logged in member for highlighting
 	 */
 	public static function display_votingmode_votes($result, $token="") {

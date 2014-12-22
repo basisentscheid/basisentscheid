@@ -3,8 +3,6 @@
 /**
  * Member
  *
- * @property  proponent_name
- * @property  proponent_confirmed
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */
@@ -88,8 +86,10 @@ class Member extends Relation {
 		$member_ngroups = DB::fetchfieldarray($sql);
 
 		// find lowest in member ngroups
+		/** @var Ngroup $lowest_member_ngroup */
 		$lowest_member_ngroup = null;
 		foreach ( $ngroups as $ngroup ) {
+			/** @var Ngroup $ngroup */
 			if ( in_array($ngroup->id, $member_ngroups) and (!$lowest_member_ngroup or $ngroup->depth > $lowest_member_ngroup->depth) ) {
 				$lowest_member_ngroup = $ngroup;
 			}
@@ -370,13 +370,11 @@ class Member extends Relation {
 
 		$insert_ngroups = array_diff($ngroups, $existing_ngroups);
 		if ($insert_ngroups) {
-			$sql = "INSERT INTO member_ngroup (member, ngroup) VALUES ";
-			resetfirst();
+			$sql_groups = array();
 			foreach ($insert_ngroups as $insert_ngroup) {
-				if (!first()) $sql .= ", ";
-				$sql .= "(".intval($this->id).", ".intval($insert_ngroup).")";
+				$sql_groups[] = "(".intval($this->id).", ".intval($insert_ngroup).")";
 			}
-			DB::query($sql);
+			DB::query("INSERT INTO member_ngroup (member, ngroup) VALUES ".join(", ", $sql_groups));
 		}
 
 		$delete_ngroups = array_diff($existing_ngroups, $ngroups);

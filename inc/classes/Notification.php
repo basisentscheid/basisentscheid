@@ -12,16 +12,21 @@ class Notification {
 	private $type;
 
 	// content for the notifications
+	/** @var  Period $period */
 	public $period;
 	public $issues;
+	/** @var  Issue $issue */
 	public $issue;
+	/** @var  Issue $issue */
 	public $issue_old;
 	public $proposals;
+	/** @var  Proposal $proposal */
 	public $proposal;
 	public $proponent;
 	public $proponent_confirmed;
 	public $proponent_confirming;
 	public $comment;
+	/** @var  Ballot $ballot */
 	public $ballot;
 
 	// vote tokens
@@ -217,6 +222,9 @@ class Notification {
 			$ngroup = $this->issue->area()->ngroup();
 		} elseif ($this->proposal) {
 			$ngroup = $this->proposal->issue()->area()->ngroup();
+		} else {
+			trigger_error("ngroup could not be determined", E_USER_WARNING);
+			$ngroup = null;
 		}
 		$body = _("Group").": ".$ngroup->name."\n\n";
 
@@ -434,6 +442,9 @@ class Notification {
 				.BASE_URL."ballots.php?period=".$this->period->id;
 
 			break;
+		default:
+			trigger_error("unknown notification type", E_USER_WARNING);
+			$subject = null;
 		}
 
 		// remove HTML line break hints

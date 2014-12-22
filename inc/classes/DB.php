@@ -145,9 +145,11 @@ abstract class DB {
 
 		if (php_sapi_name()!="cli") {
 			// error message as HTML
+			/** @noinspection PhpUndefinedVariableInspection */
 			$errormsg .= " in SQL Query <i>".$sql."</i> called from <i>".$tracepart['file']."</i> on line <i>".$tracepart['line']."</i>";
 		} else {
 			// error message as text
+			/** @noinspection PhpUndefinedVariableInspection */
 			$errormsg .= " in SQL Query ".$sql." called from ".$tracepart['file']." on line ".$tracepart['line'];
 		}
 		trigger_error($errormsg, E_USER_WARNING);

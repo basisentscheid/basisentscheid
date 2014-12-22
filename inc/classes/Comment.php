@@ -3,7 +3,6 @@
 /**
  * Comment
  *
- * @property  score
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */
@@ -29,6 +28,7 @@ class Comment extends Relation {
 	public $session = "";
 
 	public $score;
+	public $seen;
 
 	protected $boolean_fields = array("removed");
 	protected $create_fields = array("title", "content", "proposal", "parent", "rubric", "member", "session");
