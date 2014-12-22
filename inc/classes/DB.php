@@ -252,9 +252,9 @@ abstract class DB {
 	 */
 	public static function fetchfield($sql) {
 		$result = self::query($sql);
-		$row = pg_fetch_row($result);
+		$value = pg_fetch_result($result, 0);
 		pg_free_result($result);
-		return $row[0];
+		return $value;
 	}
 
 
@@ -266,8 +266,7 @@ abstract class DB {
 	 */
 	public static function fetchfieldarray($sql) {
 		$result = self::query($sql);
-		$fieldarray = array();
-		while ( $row = pg_fetch_row($result) ) $fieldarray[] = $row[0];
+		$fieldarray = pg_fetch_all_columns($result);
 		pg_free_result($result);
 		return $fieldarray;
 	}
@@ -331,8 +330,7 @@ abstract class DB {
 		}
 
 		if ($insert_id!==false) {
-			$row = pg_fetch_row($result);
-			$insert_id = $row[0];
+			$insert_id = pg_fetch_result($result, 0);
 		}
 
 		//self::transaction_commit();
