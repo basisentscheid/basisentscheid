@@ -209,7 +209,7 @@ CREATE TABLE comment (
     content text NOT NULL,
     rating integer DEFAULT 0 NOT NULL,
     member integer,
-    session text DEFAULT ''::text NOT NULL,
+    session text,
     created timestamp with time zone DEFAULT now() NOT NULL,
     updated timestamp with time zone,
     removed boolean DEFAULT false NOT NULL
@@ -585,7 +585,7 @@ CREATE TABLE rating (
     comment integer NOT NULL,
     member integer,
     score integer DEFAULT 0 NOT NULL,
-    session text DEFAULT ''::text NOT NULL
+    session text
 );
 
 
@@ -1021,6 +1021,14 @@ ALTER TABLE ONLY ballot
 
 
 --
+-- Name: comment_session_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT comment_session_fkey FOREIGN KEY (session) REFERENCES session(session_id) ON UPDATE RESTRICT ON DELETE SET NULL;
+
+
+--
 -- Name: comments_member_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1130,6 +1138,14 @@ ALTER TABLE ONLY period
 
 ALTER TABLE ONLY proposal
     ADD CONSTRAINT proposals_issue_fkey FOREIGN KEY (issue) REFERENCES issue(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: rating_session_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY rating
+    ADD CONSTRAINT rating_session_fkey FOREIGN KEY (session) REFERENCES session(session_id) ON UPDATE RESTRICT ON DELETE SET NULL;
 
 
 --
