@@ -277,28 +277,28 @@ class Member extends Relation {
 		//var_dump($info);
 
 		if ( !gnupg_keyinfo_matches_email($info, $this->mail) ) {
-			?><span class="problem"><?=_("No key matching fingerprint and email address was found.")?></span><?
+			?><p class="problem"><?=_("No key matching fingerprint and email address was found.")?></p><?
 			return;
 		}
 
 		if ($info[0]["disabled"]) {
-			?><span class="problem"><?=_("This key is disabled.")?></span><?
+			?><p class="problem"><?=_("This key is disabled.")?></p><?
 			return;
 		}
 		if ($info[0]["expired"]) {
-			?><span class="problem"><?=_("This key is expired.")?></span><?
+			?><p class="problem"><?=_("This key is expired.")?></p><?
 			return;
 		}
 		if ($info[0]["revoked"]) {
-			?><span class="problem"><?=_("This key is revoked.")?></span><?
+			?><p class="problem"><?=_("This key is revoked.")?></p><?
 			return;
 		}
 		if ($info[0]["is_secret"]) {
-			?><span class="problem"><?=_("This key is a secret key.")?></span><?
+			?><p class="problem"><?=_("This key is a secret key.")?></p><?
 			return;
 		}
 		if (!$info[0]["can_encrypt"]) {
-			?><span class="problem"><?=_("This key can not encrypt.")?></span><?
+			?><p class="problem"><?=_("This key can not encrypt.")?></p><?
 			return;
 		}
 

@@ -138,4 +138,4 @@ Weitere Benachrichtigungen, die hier nicht aufgeführt sind, bekommst du immer. 
 
 ===settings_encryption.php
 
-Um E-Mail-Benachrichtigungen mit vertraulichen Daten in verschlüsselter Form zu bekommen, gibt es die Möglichkeit, einen <b>öffentlichen PGP-Schlüssel</b> hochzuladen. Dieser ist im ACSII-Armor-Format in das Textfeld zu kopieren. In einem weiteren Feld ist der Fingerabdruck dieses Schlüssels anzugeben. Der Schlüssel muss außerdem die angegebene E-Mail-Adresse enthalten.
+Um E-Mail-Benachrichtigungen mit vertraulichen Daten in verschlüsselter Form zu bekommen, gibt es die Möglichkeit, einen <b>öffentlichen PGP-Schlüssel</b> hochzuladen. Dieser ist im ASCII-Armor-Format in das Textfeld zu kopieren. In einem weiteren Feld ist der Fingerabdruck dieses Schlüssels anzugeben. Der Schlüssel muss außerdem die bestätigte E-Mail-Adresse enthalten.

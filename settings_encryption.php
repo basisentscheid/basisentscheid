@@ -71,20 +71,20 @@ form(BN);
 ?>
 <fieldset class="member">
 	<div class="input <?=stripes()?>">
-		<label for="mail"><?=_("Email address for notifications")?></label>
-		<span class="input"><?=_("confirmed")?>: <?=h(Login::$member->mail)?></span>
+		<label for="mail"><?=_("Confirmed email address for notifications")?></label>
+		<span class="input"><?=h(Login::$member->mail)?></span>
 	</div>
 	<div class="input <?=stripes()?>">
-		<label><?=_("PGP Public Key Fingerprint")?></label>
+		<label><?=_("PGP Public Key import")?></label>
+		<span class="input"><textarea name="key" cols="80" rows="15"></textarea></span>
+	</div>
+	<div class="input <?=stripes()?>">
+		<label><?=_("Fingerprint")?></label>
 		<span class="input"><input type="text" name="fingerprint" value="<?=h(Login::$member->fingerprint)?>" size="50" maxlength="<?=Member::fingerprint_length?>">
 <?
 Login::$member->display_fingerprint_info();
 ?>
 		</span>
-	</div>
-	<div class="input <?=stripes()?>">
-		<label><?=_("PGP Public Key import")?></label>
-		<span class="input"><textarea name="key" cols="80" rows="15"></textarea></span>
 	</div>
 	<div class="button th">
 		<input type="hidden" name="action" value="save">

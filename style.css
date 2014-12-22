@@ -676,7 +676,6 @@ fieldset.member div.description {
 fieldset.member div.input {
 	margin: 1px 0;
 	padding: 0;
-	white-space: nowrap;
 }
 fieldset.member div.input label {
 	display: inline-block;
@@ -1247,8 +1246,9 @@ form.login input[type=submit] {
 
 /* 5.5 settings */
 
-span.problem {
+p.problem {
 	color: #C00;
+	display: block;
 }
 span.fine {
 	color: #0A0;
