@@ -390,7 +390,7 @@ class Notification {
 
 			$subject = sprintf(_("Proposal %d moved to a different issue"), $this->proposal->id);
 
-			$body .= sprintf(_("An administrator moved the following proposal from issue %d to issue %d:"), $this->issue_old->id, $this->issue->id)
+			$body .= sprintf(_("An administrator moved the following proposal from issue %d to issue %d:"), $this->issue_old->id, $this->issue->id)."\n"
 				._("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				.sprintf(_("Proposals in the old issue %d:"), $this->issue_old->id)."\n";
@@ -399,12 +399,13 @@ class Notification {
 					.BASE_URL."proposal.php?id=".$proposal->id."\n";
 			}
 			$body .= "\n"
-				.sprintf(_("Proposals in the new issue %d:"), $this->issue->id)."\n";
+				.sprintf(_("Other proposals in the new issue %d:"), $this->issue->id)."\n";
 			foreach ( $this->issue->proposals() as $proposal ) {
+				if ($proposal->id == $this->proposal->id) continue; // skip the moved proposal
 				$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
 					.BASE_URL."proposal.php?id=".$proposal->id."\n";
 			}
-			$body .= _("Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!")."\n";
+			$body .= "\n"._("Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!")."\n";
 
 			break;
 		case "ballot_approved":

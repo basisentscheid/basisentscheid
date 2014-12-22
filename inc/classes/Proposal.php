@@ -689,7 +689,6 @@ class Proposal extends Relation {
 
 		// send notification
 		$notification = new Notification("proposal_moved");
-		$notification->period    = $period;
 		$notification->issue_old = $old_issue;
 		$notification->issue     = $new_issue;
 		$notification->proposal  = $this;
@@ -698,7 +697,7 @@ class Proposal extends Relation {
 		$recipients = DB::fetchfieldarray($sql);
 		// supporters and proponents of the proposal
 		$sql = "SELECT DISTINCT member FROM supporter WHERE proposal=".intval($this->id);
-		$recipients = array_unique($recipients, DB::fetchfieldarray($sql));
+		$recipients = array_unique(array_merge($recipients, DB::fetchfieldarray($sql)));
 		$notification->send($recipients);
 
 	}
