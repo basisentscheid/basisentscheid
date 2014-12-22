@@ -395,10 +395,10 @@ function send_mail($to, $subject, $body, array $headers=array(), $sign=false, $f
 		$gnupg = new_gnupg();
 		if ( $gnupg->addsignkey(GNUPG_SIGN_KEY) ) {
 			if ($fingerprint) {
-				if ( $gnupg->addencryptkey($fingerprint) ) {
+				if ( gnupg_keyinfo_matches_email($gnupg->keyinfo($fingerprint), $to) and $gnupg->addencryptkey($fingerprint) ) {
 					$body = $gnupg->encryptsign($body);
 				} else {
-					$body .= "\n\n".mb_wordwrap(_("This email should be encrypted, but no available key matching your fingerprint was found! Please check your settings:")." ".BASE_URL."settings.php");
+					$body .= "\n\n".mb_wordwrap(_("This email should be encrypted, but no available key matching your fingerprint and email address was found! Please check your settings:")." ".BASE_URL."settings.php");
 					$body = $gnupg->sign($body);
 				}
 			} else {
@@ -427,4 +427,22 @@ function new_gnupg() {
 		$gnupg->seterrormode(GNUPG_ERROR_WARNING);
 	}
 	return $gnupg;
+}
+
+
+/**
+ * check if the email address is among the key uids
+ *
+ * @param array   $info return of gnupg::keyinfo()
+ * @param string  $mail
+ * @return bool
+ */
+function gnupg_keyinfo_matches_email(array $info, $mail) {
+	if (!isset($info[0]["uids"])) return false;
+	foreach ( $info[0]["uids"] as $uid ) {
+		if ( $uid['email'] == $mail and !$uid["revoked"] and !$uid["invalid"] ) {
+			return true;
+		}
+	}
+	return false;
 }

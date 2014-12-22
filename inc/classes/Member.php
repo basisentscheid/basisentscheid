@@ -265,23 +265,6 @@ class Member extends Relation {
 
 
 	/**
-	 * check if the email address is among the key uids
-	 *
-	 * @param array   $info return of gnupg::keyinfo()
-	 * @return boolean
-	 */
-	public function keyinfo_matches_email(array $info) {
-		if (!isset($info[0]["uids"])) return false;
-		foreach ( $info[0]["uids"] as $uid ) {
-			if ( $uid['email'] == Login::$member->mail and !$uid["revoked"] and !$uid["invalid"] ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-	/**
 	 * check if the matching key is available
 	 */
 	public function display_fingerprint_info() {
@@ -293,7 +276,7 @@ class Member extends Relation {
 		$info = $gnupg->keyinfo($this->fingerprint());
 		//var_dump($info);
 
-		if ( !$this->keyinfo_matches_email($info) ) {
+		if ( !gnupg_keyinfo_matches_email($info, $this->mail) ) {
 			?><span class="problem"><?=_("No key matching fingerprint and email address was found.")?></span><?
 			return;
 		}

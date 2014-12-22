@@ -84,13 +84,10 @@ if ($action) {
 			} elseif ($import['imported'] or $import['newuserids'] or $import['newuserids'] or $import['newsubkeys']) {
 				if ($import['fingerprint'] != Login::$member->fingerprint()) {
 					notice(_("The key has been imported, but does not match the fingerprint."));
+				} elseif ( !gnupg_keyinfo_matches_email( $gnupg->keyinfo($import['fingerprint']), Login::$member->mail ) ) {
+					notice(_("The key has been imported, but does not match the email address."));
 				} else {
-					$info = $gnupg->keyinfo($import['fingerprint']);
-					if ( !Login::$member->keyinfo_matches_email($info) ) {
-						notice(_("The key has been imported, but does not match the email address."));
-					} else {
-						success(_("The key has been imported."));
-					}
+					success(_("The key has been imported."));
 				}
 			} elseif ($import['unchanged']) {
 				notice(_("The key has already been imported."));
