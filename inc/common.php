@@ -13,7 +13,12 @@ define("VERSION", "development");
 
 define("BN", basename($_SERVER['PHP_SELF']));
 
-// autoload classes on demand
-set_include_path(DOCROOT."inc/classes/");
-spl_autoload_extensions('.php');
-spl_autoload_register();
+
+/**
+ * load classes on demand
+ *
+ * @param string  $class_name
+ */
+function __autoload($class_name) {
+	require_once DOCROOT.'inc/classes/'.$class_name.'.php';
+}
