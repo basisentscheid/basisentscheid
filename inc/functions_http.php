@@ -333,6 +333,11 @@ function display_nav_settings() {
 	<a href="settings_notifications.php"<?
 	if (BN=="settings_notifications.php") { ?> class="active"<? }
 	?>><?=_("Email notifications")?></a>
+<? if (GNUPG_SIGN_KEY) { ?>
+	<a href="settings_encryption.php"<?
+		if (BN=="settings_encryption.php") { ?> class="active"<? }
+		?>><?=_("Email encryption")?></a>
+<? } ?>
 </div>
 <?
 	help();

@@ -15,7 +15,6 @@ if ($action) {
 	switch ($action) {
 	case "save":
 		action_required_parameters('username', 'password', 'password2', 'mail', 'profile');
-		if (GNUPG_SIGN_KEY) action_required_parameters('fingerprint', 'key');
 
 		$save_fields = array();
 		$success_msgs = array();
@@ -37,16 +36,6 @@ if ($action) {
 			$success_msgs[] = _("The new password has been saved.");
 		}
 
-		// save fingerprint
-		if (GNUPG_SIGN_KEY) {
-			$fingerprint = trim($_POST['fingerprint']);
-			if ( $fingerprint != Login::$member->fingerprint ) {
-				Login::$member->set_fingerprint($fingerprint);
-				$save_fields[] = "fingerprint";
-				$success_msgs[] = _("The PGP public key fingerprint has been saved.");
-			}
-		}
-
 		// save profile
 		$profile = trim($_POST['profile']);
 		if ( $profile != Login::$member->profile ) {
@@ -66,34 +55,6 @@ if ($action) {
 			Login::check_mail($mail)
 		) {
 			Login::$member->set_mail($mail);
-		}
-
-		// import PGP public key
-		if (GNUPG_SIGN_KEY and $_POST['key']) {
-			$gnupg = new_gnupg();
-			$import = $gnupg->import($_POST['key']);
-			if (DEBUG) {
-?>
-<!--
-<?=h(print_r($import, true))?>
--->
-<?
-			}
-			if ($import['imported'] + $import['unchanged'] + $import['newuserids'] + $import['newsubkeys'] > 1) {
-				notice(sprintf(_("Multiple keys were uploaded at once. %d keys have been imported and %d keys are unchanged."), $import['imported'], $import['unchanged']));
-			} elseif ($import['imported'] or $import['newuserids'] or $import['newuserids'] or $import['newsubkeys']) {
-				if ($import['fingerprint'] != Login::$member->fingerprint()) {
-					notice(_("The key has been imported, but does not match the fingerprint."));
-				} elseif ( !gnupg_keyinfo_matches_email( $gnupg->keyinfo($import['fingerprint']), Login::$member->mail ) ) {
-					notice(_("The key has been imported, but does not match the email address."));
-				} else {
-					success(_("The key has been imported."));
-				}
-			} elseif ($import['unchanged']) {
-				notice(_("The key has already been imported."));
-			} else {
-				warning(_("The key could not be imported."));
-			}
 		}
 
 		redirect();
@@ -145,23 +106,9 @@ Login::$member->display_ngroups();
 <? } ?>
 		</span>
 	</div>
-<? if (GNUPG_SIGN_KEY) { ?>
-	<div class="input <?=stripes()?>">
-		<label><?=_("PGP Public Key Fingerprint")?></label>
-		<span class="input"><input type="text" name="fingerprint" value="<?=h(Login::$member->fingerprint)?>" size="50" maxlength="<?=Member::fingerprint_length?>">
-<?
-	Login::$member->display_fingerprint_info();
-?>
-		</span>
-	</div>
-	<div class="input <?=stripes()?>">
-		<label><?=_("PGP Public Key import")?></label>
-		<span class="input"><textarea name="key" cols="80" rows="5"></textarea></span>
-	</div>
-<? } ?>
 	<div class="input <?=stripes()?>">
 		<label><?=_("Profile")?></label>
-		<span class="input"><textarea name="profile" cols="80" rows="5" maxlength="<?=Comment::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
+		<span class="input"><textarea name="profile" cols="80" rows="10" maxlength="<?=Comment::title_length?>"><?=h(Login::$member->profile)?></textarea></span>
 	</div>
 	<div class="button th">
 		<input type="hidden" name="action" value="save">

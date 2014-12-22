@@ -28,6 +28,7 @@
  * @see request_password_reset.php
  * @see reset_password.php
  * @see settings.php
+ * @see settings_encryption.php
  * @see settings_notifications.php
  * @see test_dbtableadmin.php
  * @see test_mail.php
