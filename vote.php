@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {

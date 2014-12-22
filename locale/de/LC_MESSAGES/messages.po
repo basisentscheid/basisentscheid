@@ -2172,7 +2172,7 @@ msgstr "Deine Benutzer-ID"
 msgid "You have voted on this issue."
 msgstr "Du hast zu diesem Thema abgestimmt."
 #
-# File: inc/common.php, line: 105
+# File: inc/common_http.php, line: 105
 msgid "You have logged out."
 msgstr "Du hast dich abgemeldet."
 #

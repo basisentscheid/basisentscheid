@@ -2,6 +2,7 @@
 /**
  * functions used by command line scripts
  *
+ * @see inc/common_cli.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

@@ -6,7 +6,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 $ngroup = Ngroup::get();
 

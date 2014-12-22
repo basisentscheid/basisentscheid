@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 require "inc/libs/PHP-FineDiff/finediff.php";
 
 $draft = new Draft(@$_GET['draft1']);

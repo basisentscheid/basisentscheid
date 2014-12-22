@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 Login::access("admin");
 

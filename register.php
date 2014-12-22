@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 $invite = trim(@$_GET['invite']);
 

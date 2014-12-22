@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 trigger_error("Test notice before action", E_USER_NOTICE);
 trigger_error("Test warning before action", E_USER_WARNING);

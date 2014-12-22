@@ -2,7 +2,7 @@
 /**
  * functions used on every page, which is called by http
  *
- * @see inc/common.php
+ * @see inc/common_http.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

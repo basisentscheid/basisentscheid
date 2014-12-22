@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 URI::strip_one_time_params(array(
 		'parent',

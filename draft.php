@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 $draft = new Draft(@$_GET['id']);
 if (!$draft->id) {

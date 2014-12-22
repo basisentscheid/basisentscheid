@@ -7,7 +7,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 if ($action) {
 	if ($action!="confirm") error(_("Unknown action"));

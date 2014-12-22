@@ -10,7 +10,7 @@
 
 
 if (PHP_SAPI != "cli") {
-	require "inc/common.php";
+	require "inc/common_http.php";
 	html_head("Test mail signing, encryption and sending");
 }
 

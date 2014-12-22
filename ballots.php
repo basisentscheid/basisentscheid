@@ -6,7 +6,7 @@
  */
 
 
-require "inc/common.php";
+require "inc/common_http.php";
 
 
 $period = new Period(@$_GET['period']);

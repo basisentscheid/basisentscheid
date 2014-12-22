@@ -2,7 +2,8 @@
 /**
  * configuration
  *
- * @see inc/common.php
+ * @see inc/common_http.php
+ * @see inc/common_cli.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
  */

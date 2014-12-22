@@ -4,7 +4,7 @@
  *
  * example:
  *
- * require "inc/common.php";
+ * require "inc/common_http.php";
  * $d = new DbTableAdmin("Example");
  * $d->columns = array(
  *     array("id", _("ID"), "right", "", false, 'type'=>"integer"),
