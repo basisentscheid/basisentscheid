@@ -2187,12 +2187,10 @@ msgstr "Das Profil wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt
 msgid "The profile has been saved."
 msgstr "Das Profil wurde gespeichert."
 #
-# File: settings_encryption.php, line: 74
 # File: settings.php, line: 100
 msgid "Email address for notifications"
 msgstr "E-Mail-Adresse für Benachrichtigungen"
 #
-# File: settings_encryption.php, line: 75
 # File: settings.php, line: 102
 msgid "confirmed"
 msgstr "bestätigt"
@@ -2298,11 +2296,10 @@ msgstr "Passwort ändern"
 msgid "To change the password, enter the new password twice:"
 msgstr "Um das Passwort zu ändern, bitte zweimal das neue Passwort eingeben:"
 #
-# File: settings_encryption.php, line: 78
 msgid "PGP Public Key Fingerprint"
 msgstr "Fingerabdruck des öffentlichen PGP-Schlüssels"
 #
-# File: settings_encryption.php, line: 86
+# File: settings_encryption.php, line: 78
 msgid "PGP Public Key import"
 msgstr "öffentlichen PGP-Schlüssel hochladen"
 #
@@ -2850,3 +2847,11 @@ msgstr "E-Mail-Verschlüsselung"
 # File: inc/functions.php, line: 401
 msgid "This email should be encrypted, but no available key matching your fingerprint and email address was found! Please check your settings:"
 msgstr "Diese E-Mail sollte eigentlich verschlüsselt werden, aber es wurde kein verwendbarer Schlüssel zu deinem Fingerabdruck und deiner E-Mail-Adresse gefunden! Bitte überprüfe deine Einstellungen:"
+#
+# File: settings_encryption.php, line: 74
+msgid "Confirmed email address for notifications"
+msgstr "Bestätigte E-Mail-Adresse für Benachrichtigungen"
+#
+# File: settings_encryption.php, line: 82
+msgid "Fingerprint"
+msgstr "Fingerabdruck"
