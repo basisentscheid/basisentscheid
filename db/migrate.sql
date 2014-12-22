@@ -94,3 +94,8 @@ ALTER TABLE issue ADD CONSTRAINT "clear" CHECK (
     (state IN ('finished', 'cancelled')                               AND (clear NOTNULL != cleared NOTNULL) )
 );
 
+CREATE TABLE session (
+    session_id  TEXT                         NOT NULL PRIMARY KEY,
+    last_active TIMESTAMPTZ DEFAULT now()    NOT NULL,
+    data        TEXT        DEFAULT ''::text NOT NULL
+);

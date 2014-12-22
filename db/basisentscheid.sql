@@ -600,6 +600,17 @@ CREATE TABLE seen (
 
 
 --
+-- Name: session; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE session (
+    session_id text NOT NULL,
+    last_active timestamp with time zone DEFAULT now() NOT NULL,
+    data text DEFAULT ''::text NOT NULL
+);
+
+
+--
 -- Name: supporter; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -895,6 +906,14 @@ ALTER TABLE ONLY participant
 
 ALTER TABLE ONLY period
     ADD CONSTRAINT periods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: php_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY session
+    ADD CONSTRAINT php_sessions_pkey PRIMARY KEY (session_id);
 
 
 --

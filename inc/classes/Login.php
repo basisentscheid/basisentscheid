@@ -36,6 +36,7 @@ abstract class Login {
 	 */
 	public static function init() {
 
+		require DOCROOT."inc/pgsql_session_handler.php";
 		session_start();
 
 		if (!isset($_SESSION['csrf'])) $_SESSION['csrf'] = self::generate_token(32);
