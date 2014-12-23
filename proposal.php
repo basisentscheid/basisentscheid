@@ -349,16 +349,14 @@ if ($proposal->submitted or $proposal->revoke) {
 		case "revoked":
 			$times[] = array($proposal->cancelled, _("Revoked"), _("Revoked at %s."));
 			break;
-		case "done":
-			$times[] = array($proposal->cancelled, _("Done"), _("Marked as done otherwise at %s."));
+		case "cancelled_interval":
+			$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s because not admitted for too long."));
 			break;
-		case "cancelled":
-			// TODO: Maybe it would be better to have 2 different states for this
-			if (strtotime($proposal->cancelled) > strtotime($proposal->submitted." + ".CANCEL_NOT_ADMITTED_INTERVAL)) {
-				$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s because not admitted for too long."));
-			} else {
-				$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s because for other proposals of the same issue the debate was started."));
-			}
+		case "cancelled_debate":
+			$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled at %s because for other proposals of the same issue the debate was started."));
+			break;
+		case "cancelled_admin":
+			$times[] = array($proposal->cancelled, _("Cancelled"), _("Cancelled by admin at %s."));
 			break;
 		}
 	}

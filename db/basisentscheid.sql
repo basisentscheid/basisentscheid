@@ -55,9 +55,10 @@ CREATE TYPE period_state AS ENUM (
 --
 
 CREATE TYPE proposal_state AS ENUM (
-    'cancelled',
+    'cancelled_admin',
+    'cancelled_debate',
+    'cancelled_interval',
     'revoked',
-    'done',
     'draft',
     'submitted',
     'admitted'
@@ -540,7 +541,7 @@ CREATE TABLE proposal (
     abstention integer,
     score integer,
     accepted boolean,
-    CONSTRAINT proposal_state CHECK ((((((((((state = 'draft'::proposal_state) AND (submitted IS NULL)) AND (admitted IS NULL)) AND (cancelled IS NULL)) OR ((((state = 'submitted'::proposal_state) AND (submitted IS NOT NULL)) AND (admitted IS NULL)) AND (cancelled IS NULL))) OR ((((state = 'admitted'::proposal_state) AND (submitted IS NOT NULL)) AND (admitted IS NOT NULL)) AND (cancelled IS NULL))) OR ((state = 'done'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'revoked'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'cancelled'::proposal_state) AND (cancelled IS NOT NULL))))
+    CONSTRAINT proposal_state CHECK (((((((((((state = 'draft'::proposal_state) AND (submitted IS NULL)) AND (admitted IS NULL)) AND (cancelled IS NULL)) OR ((((state = 'submitted'::proposal_state) AND (submitted IS NOT NULL)) AND (admitted IS NULL)) AND (cancelled IS NULL))) OR ((((state = 'admitted'::proposal_state) AND (submitted IS NOT NULL)) AND (admitted IS NOT NULL)) AND (cancelled IS NULL))) OR ((state = 'revoked'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'cancelled_interval'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'cancelled_debate'::proposal_state) AND (cancelled IS NOT NULL))) OR ((state = 'cancelled_admin'::proposal_state) AND (cancelled IS NOT NULL))))
 );
 
 

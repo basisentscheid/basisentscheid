@@ -119,7 +119,8 @@ function cron($skip_if_locked=false) {
 				$admitted_proposals = false;
 				$not_admitted_proposals = false;
 				foreach ( $issue->proposals() as $proposal ) {
-					if ($proposal->state=="revoked" or $proposal->state=="cancelled" or $proposal->state=="done") continue;
+					/** @var Proposal $proposal */
+					if ($proposal->state_cancelled()) continue;
 					//if ( $proposal->check_proponents() ) {
 					$all_proposals_revoked = false;
 					if ($proposal->state=="admitted") $admitted_proposals = true; else $not_admitted_proposals = true;
@@ -145,7 +146,7 @@ function cron($skip_if_locked=false) {
 					$new_issue->area = $issue->area;
 					$new_issue->create();
 					foreach ( $issue->proposals() as $proposal ) {
-						if ($proposal->state=="revoked" or $proposal->state=="cancelled" or $proposal->state=="done") continue;
+						if ($proposal->state_cancelled()) continue;
 						if ($proposal->state=="admitted") continue;
 						$proposal->issue = $new_issue->id;
 						$proposal->update(["issue"]);
@@ -154,9 +155,9 @@ function cron($skip_if_locked=false) {
 					// cancel proposals
 					foreach ( $issue->proposals() as $proposal ) {
 						/** @var $proposal Proposal */
-						if ($proposal->state=="revoked" or $proposal->state=="cancelled" or $proposal->state=="done") continue;
+						if ($proposal->state_cancelled()) continue;
 						if ($proposal->state=="admitted") continue;
-						$proposal->cancel();
+						$proposal->cancel("cancelled_debate");
 					}
 
 				}
@@ -256,8 +257,8 @@ function revoke_not_enough_proponents() {
 		if (
 			// Drafts need just 1 proponent, submitted proposals need the count required for submission.
 			$proposal->proponents_count() < ($proposal->state=="draft" ? 1 : REQUIRED_PROPONENTS) and
-			// don't revoke already cancelled/revoked/done proposals
-			in_array($proposal->state, array("draft", "submitted", "admitted"))
+			// don't revoke already cancelled proposals
+			!$proposal->state_cancelled()
 		) {
 			$proposal->cancel("revoked");
 		}
@@ -279,8 +280,8 @@ function revoke_before_preparation(Issue $issue) {
 		// clear revoke date
 		$proposal->revoke = null;
 		$proposal->update(['revoke']);
-		// don't revoke already cancelled/revoked/done proposals
-		if ( in_array($proposal->state, array("draft", "submitted", "admitted")) ) {
+		// don't revoke already cancelled proposals
+		if ( !$proposal->state_cancelled() ) {
 			$proposal->cancel("revoked");
 		}
 	}
@@ -296,7 +297,8 @@ function cancel_not_admitted() {
 			AND submitted < now() - interval ".DB::esc(CANCEL_NOT_ADMITTED_INTERVAL);
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
-		$proposal->cancel();
+		/** @var Proposal $proposal */
+		$proposal->cancel("cancelled_interval");
 	}
 }
 

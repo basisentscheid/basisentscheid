@@ -106,7 +106,7 @@ class Issue extends Relation {
 				'voting'      => _("Voting"),
 				'counting'    => _("Counting"),
 				'finished'    => _("Finished"),
-				'cancelled'   => _("Cancelled") // when all proposals are 'cancelled', 'revoked' or 'done'
+				'cancelled'   => _("Cancelled") // when all proposals are cancelled
 			);
 		return $states[$this->state];
 	}
@@ -726,11 +726,10 @@ class Issue extends Relation {
 			case "revoked":
 				?> revoked<?
 				break;
-			case "cancelled":
+			case "cancelled_interval":
+			case "cancelled_debate":
+			case "cancelled_admin":
 				?> cancelled<?
-				break;
-			case "done":
-				?> done<?
 				break;
 			}
 			?>" onClick="location.href='<?=$link?>'"><?
@@ -845,7 +844,7 @@ class Issue extends Relation {
 					$first_admitted = false;
 				}
 			} else {
-				// submitted, cancelled, revoked, done
+				// submitted, cancelled
 ?>
 		<td class="center"><?=$proposal->state_name()?></td>
 <?

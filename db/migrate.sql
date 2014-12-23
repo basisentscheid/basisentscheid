@@ -108,3 +108,19 @@ ALTER TABLE rating ALTER COLUMN session DROP NOT NULL;
 ALTER TABLE rating ALTER COLUMN session SET DEFAULT NULL ;
 UPDATE rating SET session=NULL;
 ALTER TABLE rating ADD FOREIGN KEY (session) REFERENCES session (session_id) ON UPDATE RESTRICT ON DELETE SET NULL;
+
+ALTER TYPE proposal_state ADD VALUE 'cancelled_admin' BEFORE 'cancelled';
+ALTER TYPE proposal_state ADD VALUE 'cancelled_debate' BEFORE 'cancelled';
+ALTER TYPE proposal_state ADD VALUE 'cancelled_interval' BEFORE 'cancelled';
+ALTER TABLE proposal DROP CONSTRAINT "proposal_state";
+UPDATE proposal SET state='cancelled_interval' WHERE state='cancelled' AND cancelled > submitted + interval '6 months';
+UPDATE proposal SET state='cancelled_debate'   WHERE state='cancelled';
+ALTER TABLE proposal ADD  CONSTRAINT "proposal_state" CHECK (
+    ( state = 'draft'              AND submitted ISNULL  AND admitted ISNULL  AND cancelled ISNULL ) OR
+    ( state = 'submitted'          AND submitted NOTNULL AND admitted ISNULL  AND cancelled ISNULL ) OR
+    ( state = 'admitted'           AND submitted NOTNULL AND admitted NOTNULL AND cancelled ISNULL ) OR
+    ( state = 'revoked'            AND                                            cancelled NOTNULL ) OR
+    ( state = 'cancelled_interval' AND                                            cancelled NOTNULL ) OR
+    ( state = 'cancelled_debate'   AND                                            cancelled NOTNULL ) OR
+    ( state = 'cancelled_admin'    AND                                            cancelled NOTNULL )
+);

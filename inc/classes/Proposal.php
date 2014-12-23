@@ -128,6 +128,22 @@ class Proposal extends Relation {
 
 
 	/**
+	 * check if the proposal is in any of the cancelled states
+	 *
+	 * @return boolean
+	 */
+	public function state_cancelled() {
+		switch ($this->state) {
+		case "revoked":
+		case "cancelled_interval":
+		case "cancelled_debate":
+		case "cancelled_admin":
+			return true;
+		}
+	}
+
+
+	/**
 	 * human friendly state names
 	 *
 	 * @return string
@@ -135,12 +151,13 @@ class Proposal extends Relation {
 	public function state_name() {
 		static $states;
 		if (!$states) $states = array(
-				'draft'     => _("Draft"),
-				'submitted' => _("Submitted"),
-				'admitted'  => _("Admitted"),
-				'revoked'   => _("Revoked"),
-				'cancelled' => _("Cancelled"),
-				'done'      => _("Done otherwise")
+				'draft'              => _("Draft"),
+				'submitted'          => _("Submitted"),
+				'admitted'           => _("Admitted"),
+				'revoked'            => _("Revoked"),
+				'cancelled_interval' => _("Cancelled"),
+				'cancelled_debate'   => _("Cancelled"),
+				'cancelled_admin'    => _("Cancelled")
 			);
 		return $states[$this->state];
 	}
@@ -707,11 +724,11 @@ class Proposal extends Relation {
 	/**
 	 * cancel the proposal
 	 *
-	 * @param string  $state (optional) destination state: "cancelled", "revoked" or "done"
+	 * @param string  $state destination state: revoked, cancelled_interval, cancelled_debate, cancelled_admin
 	 * @return boolean
 	 */
-	public function cancel($state="cancelled") {
-		if (!in_array($this->issue()->state, array("entry", "debate"))) {
+	public function cancel($state) {
+		if (!in_array($this->issue()->state, ["entry", "debate"])) {
 			warning(_("In the current phase the proposal can not be revoked anymore."));
 			return false;
 		}
@@ -723,14 +740,10 @@ class Proposal extends Relation {
 
 		$issue = $this->issue();
 
-		// check if all proposals of the issue are cancelled, revoked or done
+		// check if all proposals of the issue are cancelled
 		foreach ( $issue->proposals() as $proposal ) {
-			switch ($proposal->state) {
-			case "draft":
-			case "submitted":
-			case "admitted":
-				return;
-			}
+			/** @var Proposal $proposal */
+			if (!$proposal->state_cancelled()) return;
 		}
 
 		// cancel issue
@@ -797,13 +810,7 @@ class Proposal extends Relation {
 		case "cancelled":
 			return false;
 		}
-		switch ($this->state) {
-		case "draft":
-		case "revoked":
-		case "cancelled":
-		case "done":
-			return false;
-		}
+		if ($this->state=="draft" or $this->state_cancelled()) return false;
 		return true;
 	}
 
