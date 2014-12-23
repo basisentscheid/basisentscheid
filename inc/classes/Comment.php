@@ -25,7 +25,7 @@ class Comment extends Relation {
 	public $title;
 	public $content;
 	public $member;
-	public $session = "";
+	public $session;
 
 	public $score;
 	public $seen;
@@ -72,6 +72,20 @@ class Comment extends Relation {
 	}
 
 
+	/**
+	 * get and check session id
+	 *
+	 * @return string|null
+	 */
+	private function session_id() {
+		if (PHP_SAPI=="cli") return null;
+		$session = session_id();
+		if ($session) return $session;
+		trigger_error("Empty session id", E_USER_WARNING);
+		return null;
+	}
+
+
 	// action
 
 
@@ -92,7 +106,7 @@ class Comment extends Relation {
 		}
 
 		if (Login::$member) $this->member = Login::$member->id;
-		$this->session = session_id();
+		$this->session = self::session_id();
 		$this->create();
 
 		// notification to authors of all parent comments
@@ -135,7 +149,7 @@ class Comment extends Relation {
 			// if a member wrote a comment without login then logges in and edits the comment, set the author subsequently
 			$this->member = Login::$member->id;
 			// update the session if it changes
-			$this->session = session_id();
+			$this->session = self::session_id();
 		}
 		$this->update(["title", "content", "member", "session"], "updated=now()");
 	}
@@ -159,7 +173,7 @@ class Comment extends Relation {
 		$fields_values = array(
 			'comment' => $this->id,
 			'score'   => min(max($score, 1), self::rating_score_max),
-			'session' => session_id()
+			'session' => self::session_id()
 		);
 		if (Login::$member) {
 			$fields_values['member'] = Login::$member->id;
@@ -186,11 +200,8 @@ class Comment extends Relation {
 		if (Login::$member) {
 			$where .= " AND member=".intval(Login::$member->id);
 		} else {
-			$session = session_id();
-			if (!$session) {
-				trigger_error("Empty session id", E_USER_WARNING);
-				return false;
-			}
+			$session = self::session_id();
+			if (!$session) return false;
 			$where .= " AND session=".DB::esc($session);
 		}
 		DB::delete("rating", $where);
