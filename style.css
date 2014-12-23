@@ -202,7 +202,7 @@ div.messages {
 }
 
 div.motd {
-	background-color: #ffe0d7;
+	background-color: #FFE0D7;
 	padding: 2px 5px;
 	margin-bottom: 1em;
 	border-radius: 6px;
@@ -444,7 +444,9 @@ div.pager a.active {
 }
 
 div.pager {
+	/*noinspection CssOverwrittenProperties*/
 	margin: 10px 0;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 1rem 0;
 }
 div.pager div.itemsperpage {
@@ -580,7 +582,9 @@ div.add {
 form.filter,
 div.filter,
 div.add_record {
+	/*noinspection CssOverwrittenProperties*/
 	margin-bottom: 5px;
+	/*noinspection CssOverwrittenProperties*/
 	margin-bottom: 0.5rem;
 }
 #dbtableadmin table,
@@ -603,7 +607,9 @@ div.tableblock table {
 }
 
 #dbtableadmin h2 {
+	/*noinspection CssOverwrittenProperties*/
 	margin-left: 150px;
+	/*noinspection CssOverwrittenProperties*/
 	margin-left: 15rem;
 }
 
@@ -626,9 +632,13 @@ form.editform div.input label,
 form.editform div.buttons span.cancel {
 	display: inline-block;
 	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
 	width: 140px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 14rem;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 2px    0 2px    5px;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 0.2rem 0 0.2rem 0.5rem;
 }
 form.editform div.input label {
@@ -639,9 +649,13 @@ form.editform div.input span.input,
 form.editform div.buttons span.input {
 	display: inline-block;
 	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
 	width: calc(100% - 153px);
+	/*noinspection CssOverwrittenProperties*/
 	width: calc(100% - 15.3rem);
+	/*noinspection CssOverwrittenProperties*/
 	margin: 2px    3px    2px    5px;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
 /*form.editform div.input input[type=text],
@@ -678,9 +692,13 @@ fieldset.member div.input {
 fieldset.member div.input label {
 	display: inline-block;
 	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
 	width: 200px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 20rem;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 2px    0 2px    5px;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 0.2rem 0 0.2rem 0.5rem;
 }
 fieldset.member div.input label {
@@ -690,7 +708,9 @@ fieldset.member div.input label {
 fieldset.member div.input span.input {
 	display: inline-block;
 	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 2px    3px    2px    5px;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
 fieldset.member div.input span.input p {
@@ -701,20 +721,28 @@ fieldset.member div.button {
 	margin-top: 5px;
 }
 fieldset.member div.button input[type=submit] {
+	/*noinspection CssOverwrittenProperties*/
 	margin-left: 212px;
+	/*noinspection CssOverwrittenProperties*/
 	margin-left: 21.2rem;
 }
 @media screen and (max-width: 70em) {
 	fieldset.member div.input label {
+		/*noinspection CssOverwrittenProperties*/
 		width: 100px;
+		/*noinspection CssOverwrittenProperties*/
 		width: 10rem;
 	}
 	fieldset.member div.button input[type=submit] {
+		/*noinspection CssOverwrittenProperties*/
 		margin-left: 112px;
+		/*noinspection CssOverwrittenProperties*/
 		margin-left: 11.2rem;
 	}
 	fieldset.member div.input textarea {
+		/*noinspection CssOverwrittenProperties*/
 		width: 370px;
+		/*noinspection CssOverwrittenProperties*/
 		width: 37rem;
 	}
 }
@@ -761,7 +789,9 @@ div.proposal_info {
 	float: right;
 	margin-left: 20px;
 	margin-bottom: 5px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 210px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 21rem;
 }
 @media screen and (max-width: 65em) {
@@ -784,7 +814,9 @@ div.proposal_info ul li form,
 div.proposal_info ul li div.form {
 	display: inline-block;
 	vertical-align: top;
+	/*noinspection CssOverwrittenProperties*/
 	width: 194px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 19.4rem;
 	margin-top: 2px;
 }
@@ -838,7 +870,9 @@ div.proposal_info table.drafts td.content a:focus {
 }
 
 div.proposal_info tr td.content {
+	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
 	cursor: hand;
 }
 div.proposal_info tr td.content:hover,
@@ -959,7 +993,9 @@ table.proposals td.issue_separator {
 
 table.proposals td.proposal_link,
 table.proposals td.proposal_link_active {
+	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
 	cursor: hand;
 	padding: 2px 3px;
 	border: 1px solid #FFF;
@@ -999,7 +1035,9 @@ table.proposals td.support {
 	white-space: nowrap;
 }
 table.proposals td.result {
+	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
 	cursor: hand;
 	white-space: nowrap;
 }
@@ -1238,17 +1276,23 @@ form.login label span.input,
 form.login label span.label {
 	display: inline-block;
 	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 2px    0 2px    5px;
+	/*noinspection CssOverwrittenProperties*/
 	margin: 0.2rem 0 0.2rem 0.5rem;
 }
 form.login label span.label {
+	/*noinspection CssOverwrittenProperties*/
 	width: 100px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 10rem;
 	text-align: right;
 }
 form.login input[type=text],
 form.login input[type=password] {
+	/*noinspection CssOverwrittenProperties*/
 	width: 140px;
+	/*noinspection CssOverwrittenProperties*/
 	width: 14rem;
 }
 form.login div {
