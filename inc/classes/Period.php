@@ -328,6 +328,7 @@ class Period extends Relation {
 			}
 
 			// assign member to random of the best ballots
+			/** @noinspection PhpUndefinedMethodInspection */
 			$best_ballots[rand(0, count($best_ballots)-1)]->assign_member($member);
 
 		}
