@@ -531,6 +531,7 @@ CREATE TABLE proposal (
     supporters integer DEFAULT 0 NOT NULL,
     quorum_reached boolean DEFAULT false NOT NULL,
     admission_decision text,
+    annotation text DEFAULT ''::text NOT NULL,
     activity integer DEFAULT 0 NOT NULL,
     admitted timestamp with time zone,
     cancelled timestamp with time zone,

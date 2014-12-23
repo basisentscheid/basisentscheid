@@ -24,6 +24,7 @@ class Proposal extends Relation {
 	public $supporters;
 	public $quorum_reached;
 	public $admission_decision;
+	public $annotation;
 	public $activity;
 	public $submitted;
 	public $revoke;

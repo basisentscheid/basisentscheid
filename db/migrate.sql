@@ -124,3 +124,5 @@ ALTER TABLE proposal ADD  CONSTRAINT "proposal_state" CHECK (
     ( state = 'cancelled_debate'   AND                                            cancelled NOTNULL ) OR
     ( state = 'cancelled_admin'    AND                                            cancelled NOTNULL )
 );
+
+ALTER TABLE proposal ADD annotation TEXT DEFAULT '' NOT NULL;

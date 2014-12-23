@@ -14,6 +14,7 @@ URI::strip_one_time_params(array(
 		'comment_edit',
 		'openhl',
 		'edit_admission_decision',
+		'edit_annotation',
 		'show_drafts',
 		'edit_proponent',
 		'become_proponent',
@@ -117,6 +118,14 @@ if ($action) {
 		Login::access_action("admin");
 		action_required_parameters("admission_decision");
 		$proposal->set_admission_decision(trim($_POST['admission_decision']));
+		redirect();
+		break;
+
+	case "save_annotation":
+		Login::access_action("admin");
+		action_required_parameters("annotation");
+		$proposal->annotation = trim($_POST['annotation']);
+		$proposal->update(["annotation"]);
 		redirect();
 		break;
 
@@ -401,6 +410,8 @@ if ($proposal->submitted or $proposal->revoke) {
 	Timebar::display($times);
 }
 
+display_annotation($proposal);
+
 display_quorum($proposal, $supporters, $is_supporter);
 
 ?>
@@ -677,4 +688,46 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 ?>
 </div>
 <?
+}
+
+
+/**
+ * display annotation by admins
+ *
+ * @param Proposal $proposal
+ */
+function display_annotation(Proposal $proposal) {
+	if (Login::$admin) {
+?>
+<div id="annotation">
+<?
+		if (!empty($_GET['edit_annotation'])) {
+?>
+<h2><?=_("Annotation by admins")?></h2>
+<?
+			form(URI::same()."#annotation", 'class="annotation"');
+?>
+<textarea name="annotation" cols="100" rows="3"><?=h($proposal->annotation)?></textarea>
+<input type="hidden" name="action" value="save_annotation">
+<input type="submit" value="<?=_("save")?>">
+<?
+			form_end();
+		} else {
+?>
+<div class="add"><a href="<?=URI::append(['edit_annotation'=>1])?>#annotation" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a></div>
+<h2><?=_("Annotation by admins")?></h2>
+<?=content2html($proposal->annotation)?>
+<?
+		}
+?>
+</div>
+<?
+	} elseif ($proposal->annotation) {
+?>
+<div id="annotation">
+<h2><?=_("Annotation by admins")?></h2>
+<?=content2html($proposal->annotation)?>
+</div>
+<?
+	}
 }
