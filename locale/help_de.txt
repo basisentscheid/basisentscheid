@@ -35,8 +35,7 @@ Die <b>Diskussion</b> ist ab dem ersten Entwurf eines Antrags immer verfügbar. 
 
 ===proposal_edit.php
 
-Der eingegebene Text wird unverändert wieder angezeigt und nach folgenden Regeln verschönert dargestellt:
- * Eine Leerzeile erzeugt einen Absatz.
+Der eingegebene Text wird unverändert wieder angezeigt und nur nach folgenden Regeln verschönert dargestellt:
  * Doppelte einfache Anführungsstriche machen den Bereich <i>''kursiv''</i>.
  * URLs und E-Mail-Adressen werden automatisch verlinkt.
 
