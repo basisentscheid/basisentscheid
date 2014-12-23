@@ -6,6 +6,7 @@ style guide:
 - colors upper case #07F or #0A7CF3
 */
 
+
 /* 1. common definitions without id or class */
 
 body {
@@ -16,6 +17,7 @@ body {
 	padding: 0;
 }
 
+/* fonts */
 td, th,
 div.timebar,
 div.proposal_info ul {
@@ -32,13 +34,7 @@ header, footer, nav {
 	display: block;
 }
 
-hr {
-	background-color: #FFF;
-	border: none;
-	height: 2px;
-	margin: 1.5em 0;
-}
-
+/* block elements */
 h1 {
 	font-size: 150%;
 	margin: 0 0 0.5em 0; padding-top: 0.8em; /* workaround for Firefox bug applying h1 margin-top to the page top */
@@ -54,7 +50,14 @@ h3 {
 p, ul {
 	margin: 0.5em 0;
 }
+hr {
+	background-color: #FFF;
+	border: none;
+	height: 2px;
+	margin: 1.5em 0;
+}
 
+/* tables */
 table {
 	border-spacing: 1px;
 	border-collapse: separate;
@@ -82,6 +85,7 @@ tr.highlight {
 	background-color: #F8B;
 }
 
+/* links */
 a {
 	padding: 0 3px 1px 3px;
 }
@@ -105,51 +109,12 @@ a:focus {
 a:active {
 	background-color: #F3F3F3;
 }
-
 h1 a {
 	text-decoration: none;
 }
 
 
-/* 2. common class definitions */
-
-a.icontextlink {
-	padding-left: 0;
-	text-decoration: none;
-}
-a.icontextlink img {
-	vertical-align: middle;
-	margin-right: 5px;
-	border: 0;
-}
-
-a.iconlink {
-	margin: 0;
-	padding: 0 1px 0 0;
-}
-a.iconlink img {
-	margin: 0;
-	padding: 0;
-	display: inline-block;
-	vertical-align: bottom;
-	border: 0;
-}
-
-img.iconbutton {
-	/*noinspection CssOverwrittenProperties*/
-	cursor: pointer;
-	/*noinspection CssOverwrittenProperties*/
-	cursor: hand;
-	vertical-align: bottom;
-}
-img.iconbutton:hover {
-	outline: 1px solid #DDD;
-	background-color: #F8F8F8;
-}
-
-a.anchor {
-	padding: 0;
-}
+/* 2. common class and id definitions */
 
 .clearfix {
 	display: block;
@@ -174,6 +139,85 @@ a.anchor {
 	vertical-align: middle;
 }
 
+span.admin {
+	background-color: #FEE;
+	padding: 0 3px;
+}
+span.self {
+	font-weight: bold;
+}
+span.datetime {
+	white-space: nowrap;
+}
+span.stateinfo {
+	font-style: italic;
+}
+.revoked,
+.revoked a {
+	text-decoration: line-through;
+	color: #AAA;
+}
+.cancelled,
+.cancelled a {
+	color: #AAA;
+}
+.current {
+	font-weight: bold;
+}
+.over {
+	font-style: italic;
+	color: #666;
+}
+
+option.selected {
+	background-color: #DDD;
+}
+form.button {
+	display: inline;
+}
+
+/* links, icons */
+a.icontextlink {
+	padding-left: 0;
+	text-decoration: none;
+}
+a.icontextlink img {
+	vertical-align: middle;
+	margin-right: 5px;
+	border: 0;
+}
+a.iconlink {
+	margin: 0;
+	padding: 0 1px 0 0;
+}
+a.iconlink img {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	vertical-align: bottom;
+	border: 0;
+}
+img.iconbutton {
+	/*noinspection CssOverwrittenProperties*/
+	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
+	cursor: hand;
+	vertical-align: bottom;
+}
+img.iconbutton:hover {
+	outline: 1px solid #DDD;
+	background-color: #F8F8F8;
+}
+a.active,
+a.active:hover,
+a.active:focus {
+	outline: 1px solid #999;
+}
+a.anchor {
+	padding: 0;
+}
+
+/* messages */
 div.messages {
 	/*border: 1px solid #CCC;*/
 	background: #FFF;
@@ -199,279 +243,6 @@ div.messages {
 	color: #900;
 	font-weight: normal;
 	margin: 0.4em 0;
-}
-
-div.motd {
-	background-color: #FFE0D7;
-	padding: 2px 5px;
-	margin-bottom: 1em;
-	border-radius: 6px;
-}
-div.motd p,
-div.motd h2,
-div.motd h3 {
-	margin: 0.5em 0;
-}
-
-div.help {
-	clear: both;
-	background-color: #FFE;
-	padding: 2px 5px;
-	margin-bottom: 1em;
-	border-radius: 6px;
-}
-div.help p {
-	margin: 5px 0;
-}
-div.help form.hide_help {
-	background-color: #FFE;
-	padding: 0 0 3px 5px;
-	margin: 0;
-	float: right;
-}
-form.show_help {
-	background-color: #FFE;
-	padding: 2px 5px;
-	margin: 0 0 5px 3px;
-	float: right;
-	border-radius: 6px;
-}
-form.show_help.h1 {
-	margin-top: 1.4em;
-}
-
-div.bargraph {
-	display: inline-block;
-	vertical-align: middle;
-	margin: 0 0 2px 0;
-}
-div.bargraph.acceptance {
-	width: 100px;
-}
-div.bargraph.score {
-	width: 100px;
-	margin-left: 3px;
-}
-div.bargraph div.bar {
-	float: left;
-	height: 1em;
-	background-color: #777;
-}
-div.bargraph div.bar.yes {
-	background-color: #0A0;
-}
-div.bargraph div.bar.no {
-	background-color: #B00;
-}
-div.bargraph.score div.bar {
-	background-color: #FA0;
-}
-div.bargraph div.legend {
-	position: absolute;
-	z-index: 1;
-	margin: 0;
-	height: 1em;
-	line-height: 1.2em;
-	font-size: 0.8em;
-	vertical-align: middle;
-	padding-left: 2px;
-}
-div.bargraph.bargraph_quorum div.legend {
-	text-align: right;
-}
-div.bargraph.acceptance div.legend {
-	color: #FFF;
-}
-div.bargraph div.required {
-	position: absolute;
-	z-index: 2;
-	width: 1px;
-	padding: 0;
-	margin: 0;
-	height: 1em;
-	background-color: #FA0;
-}
-div.bargraph div.supported {
-	position: absolute;
-	z-index: 3;
-	padding: 0;
-	margin: 0 0 0 80px;
-	line-height: 1em;
-	vertical-align: middle;
-}
-div.bargraph div.clear {
-	height: 0;
-	clear: both;
-}
-
-div.timebar {
-	clear: both;
-	background-color: #E0E0FF;
-	padding: 2px 10px;
-	margin: 10px 0;
-}
-div.timebar div.datebar,
-div.timebar div.bar {
-	display: inline-block;
-	width: 0.15em;
-}
-div.timebar div.part {
-	display: inline-block;
-	white-space: nowrap;
-	margin-bottom: 0.1em;
-}
-div.timebar div.months {
-	margin-bottom: 0.1em;
-}
-div.timebar div.days,
-div.timebar div.day {
-	line-height: 1em;
-	height: 1.1em;
-}
-div.timebar div.day {
-	display: inline-block;
-	width: 1.9em;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-div.timebar div.months div.day {
-	padding-left: 0.2em;
-}
-div.timebar div.days div.day {
-	border-left: 1px dotted #448;
-	padding-left: 0.1em;
-}
-div.timebar div.days div.day.month0 {
-	background-color: #FFF;
-}
-div.timebar div.days div.day.month1 {
-	background-color: #FFB;
-}
-div.timebar div.days div.day span.weekend {
-	color: #D00;
-}
-div.timebar div.beam {
-	clear: both;
-	background-color: #448;
-	height: 0.25em;
-}
-div.timebar div.datebar {
-	vertical-align: top;
-}
-div.timebar div.datespace {
-	display: inline-block;
-	overflow: visible;
-	vertical-align: top;
-}
-div.timebar div.mark {
-	display: inline-block;
-	width: 1px;
-	height: 0.6em;
-	vertical-align: bottom;
-	background-color: #448;
-}
-div.timebar div.datebar div.mark {
-	vertical-align: top;
-	height: 100%;
-}
-div.timebar div.datebar.now div.mark {
-	background-color: #C00;
-}
-div.timebar div.datespace.now {
-	color: #C00;
-}
-
-span.admin {
-	background-color: #FEE;
-	padding: 0 3px;
-}
-
-span.self {
-	font-weight: bold;
-}
-
-span.datetime {
-	white-space: nowrap;
-}
-span.stateinfo {
-	font-style: italic;
-}
-.revoked,
-.revoked a {
-	text-decoration: line-through;
-	color: #AAA;
-}
-.cancelled,
-.cancelled a {
-	color: #AAA;
-}
-
-.current {
-	font-weight: bold;
-}
-.over {
-	font-style: italic;
-	color: #666;
-}
-
-option.selected {
-	background-color: #DDD;
-}
-
-form.button {
-	display: inline;
-}
-
-a.active,
-a.active:hover,
-a.active:focus {
-	outline: 1px solid #999;
-}
-
-div.filter a,
-div.pager a {
-	padding: 0 4px 2px 4px;
-	text-decoration: none;
-}
-div.filter a.active,
-div.pager a.active {
-	padding: 0 4px 2px 4px;
-	text-decoration: none;
-	outline: 1px solid #999;
-	background-color: #FFF;
-	color: #000;
-}
-
-div.pager {
-	/*noinspection CssOverwrittenProperties*/
-	margin: 10px 0;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 1rem 0;
-}
-div.pager div.itemsperpage {
-	float: right;
-}
-
-div.filter {
-	margin-left: 2px;
-}
-div.filter form {
-	display: inline;
-	margin-left: 20px;
-}
-div.filter.nav {
-	margin-top: 0.5em;
-	margin-bottom: 1.5em;
-}
-
-img.online_small {
-	margin: 0 3px 0 3px;
-	vertical-align: middle;
-}
-img.ballot_small {
-	margin: 0 0 0 2px;
-	vertical-align: middle;
 }
 
 
@@ -569,7 +340,240 @@ footer a:visited {
 }
 
 
-/* 4. id definitions */
+/* 4. specific blocks */
+
+/* help, motd */
+
+div.help {
+	clear: both;
+	background-color: #FFE;
+	padding: 2px 5px;
+	margin-bottom: 1em;
+	border-radius: 6px;
+}
+div.help p {
+	margin: 5px 0;
+}
+div.help form.hide_help {
+	background-color: #FFE;
+	padding: 0 0 3px 5px;
+	margin: 0;
+	float: right;
+}
+form.show_help {
+	background-color: #FFE;
+	padding: 2px 5px;
+	margin: 0 0 5px 3px;
+	float: right;
+	border-radius: 6px;
+}
+form.show_help.h1 {
+	margin-top: 1.4em;
+}
+div.motd {
+	background-color: #FFE0D7;
+	padding: 2px 5px;
+	margin-bottom: 1em;
+	border-radius: 6px;
+}
+div.motd p,
+div.motd h2,
+div.motd h3 {
+	margin: 0.5em 0;
+}
+
+/* pager, filter */
+
+div.filter a,
+div.pager a {
+	padding: 0 4px 2px 4px;
+	text-decoration: none;
+}
+div.filter a.active,
+div.pager a.active {
+	padding: 0 4px 2px 4px;
+	text-decoration: none;
+	outline: 1px solid #999;
+	background-color: #FFF;
+	color: #000;
+}
+div.pager {
+	/*noinspection CssOverwrittenProperties*/
+	margin: 10px 0;
+	/*noinspection CssOverwrittenProperties*/
+	margin: 1rem 0;
+}
+div.pager div.itemsperpage {
+	float: right;
+}
+div.filter {
+	margin-left: 2px;
+}
+div.filter form {
+	display: inline;
+	margin-left: 20px;
+}
+div.filter.nav {
+	margin-top: 0.5em;
+	margin-bottom: 1.5em;
+}
+
+/* proposals table */
+
+table.proposals {
+	width: 100%;
+	border-spacing: 1px 2px;
+}
+table.proposals th.proposal {
+	width: 81%;
+}
+table.proposals th.support {
+	width: 1%;
+}
+table.proposals th.state {
+	width: 10%;
+}
+table.proposals th.period {
+	width: 1%;
+}
+table.proposals th.votingmode {
+	width: 7%;
+}
+table.proposals th.result {
+	width: 0;
+}
+table.proposals tr.proposal {
+	background-color: #FFF;
+}
+table.proposals td.issue_separator {
+	height: 3px;
+	padding: 0;
+}
+
+table.proposals td.proposal_link,
+table.proposals td.proposal_link_active {
+	/*noinspection CssOverwrittenProperties*/
+	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
+	cursor: hand;
+	padding: 2px 3px;
+	border: 1px solid #FFF;
+}
+table.proposals td.proposal_link_active {
+	font-weight: bold;
+	border-color: #999;
+}
+table.proposals td.proposal_link:hover,
+table.proposals td.proposal_link:focus {
+	border-color: #DDD;
+}
+table.proposals td.proposal_link a,
+table.proposals td.proposal_link_active a {
+	text-decoration: none;
+	outline: none;
+}
+table.proposals td.proposal_link:hover,
+table.proposals td.proposal_link:focus,
+table.proposals td.proposal_link_active:hover,
+table.proposals td.proposal_link_active:focus,
+table.proposals td.proposal_link:hover a,
+table.proposals td.proposal_link:focus a,
+table.proposals td.proposal_link_active:hover a,
+table.proposals td.proposal_link_active:focus a {
+	color: #000;
+	background-color: #F8F8F8;
+}
+table.proposals td.proposal_link:active,
+table.proposals td.proposal_link_active:active,
+table.proposals td.proposal_link:active a,
+table.proposals td.proposal_link_active:active a {
+	background-color: #F3F3F3;
+}
+
+table.proposals td.support {
+	white-space: nowrap;
+}
+table.proposals td.result {
+	/*noinspection CssOverwrittenProperties*/
+	cursor: pointer;
+	/*noinspection CssOverwrittenProperties*/
+	cursor: hand;
+	white-space: nowrap;
+}
+table.proposals td.vote {
+	padding-right: 8px;
+}
+table.proposals span.activity {
+	float: right;
+}
+
+/* bargraph */
+
+div.bargraph {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 0 2px 0;
+}
+div.bargraph.acceptance {
+	width: 100px;
+}
+div.bargraph.score {
+	width: 100px;
+	margin-left: 3px;
+}
+div.bargraph div.bar {
+	float: left;
+	height: 1em;
+	background-color: #777;
+}
+div.bargraph div.bar.yes {
+	background-color: #0A0;
+}
+div.bargraph div.bar.no {
+	background-color: #B00;
+}
+div.bargraph.score div.bar {
+	background-color: #FA0;
+}
+div.bargraph div.legend {
+	position: absolute;
+	z-index: 1;
+	margin: 0;
+	height: 1em;
+	line-height: 1.2em;
+	font-size: 0.8em;
+	vertical-align: middle;
+	padding-left: 2px;
+}
+div.bargraph.bargraph_quorum div.legend {
+	text-align: right;
+}
+div.bargraph.acceptance div.legend {
+	color: #FFF;
+}
+div.bargraph div.required {
+	position: absolute;
+	z-index: 2;
+	width: 1px;
+	padding: 0;
+	margin: 0;
+	height: 1em;
+	background-color: #FA0;
+}
+div.bargraph div.supported {
+	position: absolute;
+	z-index: 3;
+	padding: 0;
+	margin: 0 0 0 80px;
+	line-height: 1em;
+	vertical-align: middle;
+}
+div.bargraph div.clear {
+	height: 0;
+	clear: both;
+}
+
+/* dbtableadmin and similar */
 
 #dbtableadmin,
 div.tableblock {
@@ -676,82 +680,11 @@ form.editform div.comment {
 	vertical-align: middle;
 }
 
-fieldset.member {
-	margin: 0;
-	padding: 0;
-	border: none;
-	display: inline-block;
-}
-fieldset.member div.description {
-	padding: 3px 10px;
-}
-fieldset.member div.input {
-	margin: 1px 0;
-	padding: 0;
-}
-fieldset.member div.input label {
-	display: inline-block;
-	vertical-align: middle;
-	/*noinspection CssOverwrittenProperties*/
-	width: 200px;
-	/*noinspection CssOverwrittenProperties*/
-	width: 20rem;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 2px    0 2px    5px;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 0.2rem 0 0.2rem 0.5rem;
-}
-fieldset.member div.input label {
-	text-align: right;
-	white-space: normal;
-}
-fieldset.member div.input span.input {
-	display: inline-block;
-	vertical-align: middle;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 2px    3px    2px    5px;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
-}
-fieldset.member div.input span.input p {
-	margin-top: 0.1em;
-	margin-bottom: 0.3em;
-}
-fieldset.member div.button {
-	margin-top: 5px;
-}
-fieldset.member div.button input[type=submit] {
-	/*noinspection CssOverwrittenProperties*/
-	margin-left: 212px;
-	/*noinspection CssOverwrittenProperties*/
-	margin-left: 21.2rem;
-}
-@media screen and (max-width: 70em) {
-	fieldset.member div.input label {
-		/*noinspection CssOverwrittenProperties*/
-		width: 100px;
-		/*noinspection CssOverwrittenProperties*/
-		width: 10rem;
-	}
-	fieldset.member div.button input[type=submit] {
-		/*noinspection CssOverwrittenProperties*/
-		margin-left: 112px;
-		/*noinspection CssOverwrittenProperties*/
-		margin-left: 11.2rem;
-	}
-	fieldset.member div.input textarea {
-		/*noinspection CssOverwrittenProperties*/
-		width: 370px;
-		/*noinspection CssOverwrittenProperties*/
-		width: 37rem;
-	}
-}
+
+/* 5. specific pages */
 
 
-/* 5. classes for specific pages */
-
-
-/* 5.0 index */
+/* index.php */
 
 div.dates {
 	float: left;
@@ -773,7 +706,19 @@ div.ngroups tr.own td.proposals {
 }
 
 
-/* 5.1 proposals */
+/* proposal.php, proposal_edit.php */
+
+form.proposal h2,
+div.proposal_info h2,
+div.proposal_content h2,
+div.issue h2 {
+	font-size: 115%;
+	font-weight: normal;
+	margin: 5px 0 0 0;
+}
+
+
+/* proposal.php */
 
 p.proposal,
 div.proposal {
@@ -894,15 +839,82 @@ div.proposal_info tr.active td.content {
 	padding: 2px;
 }
 
-div.diff p ins {
-	color: green;
-	background: #DFD;
-	text-decoration: none;
+div.timebar {
+	clear: both;
+	background-color: #E0E0FF;
+	padding: 2px 10px;
+	margin: 10px 0;
 }
-div.diff p del {
-	color: red;
-	background: #FDD;
-	text-decoration: none;
+div.timebar div.datebar,
+div.timebar div.bar {
+	display: inline-block;
+	width: 0.15em;
+}
+div.timebar div.part {
+	display: inline-block;
+	white-space: nowrap;
+	margin-bottom: 0.1em;
+}
+div.timebar div.months {
+	margin-bottom: 0.1em;
+}
+div.timebar div.days,
+div.timebar div.day {
+	line-height: 1em;
+	height: 1.1em;
+}
+div.timebar div.day {
+	display: inline-block;
+	width: 1.9em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+div.timebar div.months div.day {
+	padding-left: 0.2em;
+}
+div.timebar div.days div.day {
+	border-left: 1px dotted #448;
+	padding-left: 0.1em;
+}
+div.timebar div.days div.day.month0 {
+	background-color: #FFF;
+}
+div.timebar div.days div.day.month1 {
+	background-color: #FFB;
+}
+div.timebar div.days div.day span.weekend {
+	color: #D00;
+}
+div.timebar div.beam {
+	clear: both;
+	background-color: #448;
+	height: 0.25em;
+}
+div.timebar div.datebar {
+	vertical-align: top;
+}
+div.timebar div.datespace {
+	display: inline-block;
+	overflow: visible;
+	vertical-align: top;
+}
+div.timebar div.mark {
+	display: inline-block;
+	width: 1px;
+	height: 0.6em;
+	vertical-align: bottom;
+	background-color: #448;
+}
+div.timebar div.datebar div.mark {
+	vertical-align: top;
+	height: 100%;
+}
+div.timebar div.datebar.now div.mark {
+	background-color: #C00;
+}
+div.timebar div.datespace.now {
+	color: #C00;
 }
 
 div.quorum {
@@ -959,125 +971,7 @@ div.issue {
 	margin-top: 6px;
 }
 
-table.proposals {
-	width: 100%;
-	border-spacing: 1px 2px;
-}
-
-table.proposals th.proposal {
-	width: 81%;
-}
-table.proposals th.support {
-	width: 1%;
-}
-table.proposals th.state {
-	width: 10%;
-}
-table.proposals th.period {
-	width: 1%;
-}
-table.proposals th.votingmode {
-	width: 7%;
-}
-table.proposals th.result {
-	width: 0;
-}
-
-table.proposals tr.proposal {
-	background-color: #FFF;
-}
-table.proposals td.issue_separator {
-	height: 3px;
-	padding: 0;
-}
-
-table.proposals td.proposal_link,
-table.proposals td.proposal_link_active {
-	/*noinspection CssOverwrittenProperties*/
-	cursor: pointer;
-	/*noinspection CssOverwrittenProperties*/
-	cursor: hand;
-	padding: 2px 3px;
-	border: 1px solid #FFF;
-}
-table.proposals td.proposal_link_active {
-	font-weight: bold;
-	border-color: #999;
-}
-table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link:focus {
-	border-color: #DDD;
-}
-table.proposals td.proposal_link a,
-table.proposals td.proposal_link_active a {
-	text-decoration: none;
-	outline: none;
-}
-table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link:focus,
-table.proposals td.proposal_link_active:hover,
-table.proposals td.proposal_link_active:focus,
-table.proposals td.proposal_link:hover a,
-table.proposals td.proposal_link:focus a,
-table.proposals td.proposal_link_active:hover a,
-table.proposals td.proposal_link_active:focus a {
-	color: #000;
-	background-color: #F8F8F8;
-}
-table.proposals td.proposal_link:active,
-table.proposals td.proposal_link_active:active,
-table.proposals td.proposal_link:active a,
-table.proposals td.proposal_link_active:active a {
-	background-color: #F3F3F3;
-}
-
-table.proposals td.support {
-	white-space: nowrap;
-}
-table.proposals td.result {
-	/*noinspection CssOverwrittenProperties*/
-	cursor: pointer;
-	/*noinspection CssOverwrittenProperties*/
-	cursor: hand;
-	white-space: nowrap;
-}
-
-table.proposals td.vote {
-	padding-right: 8px;
-}
-
-table.proposals span.activity {
-	float: right;
-}
-
-form.proposal h2,
-div.proposal_info h2,
-div.proposal_content h2,
-div.issue h2 {
-	font-size: 115%;
-	font-weight: normal;
-	margin: 5px 0 0 0;
-}
-form.proposal h2 span.explain {
-	font-size: 80%;
-	margin-left: 1em;
-}
-form.proposal input[type=text],
-form.proposal textarea {
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-form.proposal textarea {
-	height: 100px;
-}
-form.proposal input[type=submit] {
-	margin-top: 10px;
-}
-
-
-/* 5.2 comments */
+/* comments */
 
 div.comments {
 	margin: 10px 0;
@@ -1232,7 +1126,42 @@ div.comments_rubric form.rating.reset input[type=submit] {
 }
 
 
-/* 5.3 ballots */
+/* proposal_edit.php */
+
+form.proposal h2 span.explain {
+	font-size: 80%;
+	margin-left: 1em;
+}
+form.proposal input[type=text],
+form.proposal textarea {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+form.proposal textarea {
+	height: 100px;
+}
+form.proposal input[type=submit] {
+	margin-top: 10px;
+}
+
+
+/* diff.php */
+
+div.diff p ins {
+	color: green;
+	background: #DFD;
+	text-decoration: none;
+}
+div.diff p del {
+	color: red;
+	background: #FDD;
+	text-decoration: none;
+}
+
+
+/* ballots.php, ballot_edit.php */
 
 form.edit_ballot,
 form.edit_ballot input[type=text] {
@@ -1251,7 +1180,7 @@ h2.postal {
 }
 
 
-/* 5.4 login */
+/* login.php */
 
 form.login {
 	margin-top: 10px;
@@ -1303,18 +1232,81 @@ form.login input[type=submit] {
 }
 
 
-/* 5.5 settings */
+/* settings.php, register.php */
 
-p.problem {
-	color: #C00;
-	display: block;
+fieldset.member {
+	margin: 0;
+	padding: 0;
+	border: none;
+	display: inline-block;
 }
-span.fine {
-	color: #0A0;
+fieldset.member div.description {
+	padding: 3px 10px;
+}
+fieldset.member div.input {
+	margin: 1px 0;
+	padding: 0;
+}
+fieldset.member div.input label {
+	display: inline-block;
+	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
+	width: 200px;
+	/*noinspection CssOverwrittenProperties*/
+	width: 20rem;
+	/*noinspection CssOverwrittenProperties*/
+	margin: 2px    0 2px    5px;
+	/*noinspection CssOverwrittenProperties*/
+	margin: 0.2rem 0 0.2rem 0.5rem;
+}
+fieldset.member div.input label {
+	text-align: right;
+	white-space: normal;
+}
+fieldset.member div.input span.input {
+	display: inline-block;
+	vertical-align: middle;
+	/*noinspection CssOverwrittenProperties*/
+	margin: 2px    3px    2px    5px;
+	/*noinspection CssOverwrittenProperties*/
+	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
+}
+fieldset.member div.input span.input p {
+	margin-top: 0.1em;
+	margin-bottom: 0.3em;
+}
+fieldset.member div.button {
+	margin-top: 5px;
+}
+fieldset.member div.button input[type=submit] {
+	/*noinspection CssOverwrittenProperties*/
+	margin-left: 212px;
+	/*noinspection CssOverwrittenProperties*/
+	margin-left: 21.2rem;
+}
+@media screen and (max-width: 70em) {
+	fieldset.member div.input label {
+		/*noinspection CssOverwrittenProperties*/
+		width: 100px;
+		/*noinspection CssOverwrittenProperties*/
+		width: 10rem;
+	}
+	fieldset.member div.button input[type=submit] {
+		/*noinspection CssOverwrittenProperties*/
+		margin-left: 112px;
+		/*noinspection CssOverwrittenProperties*/
+		margin-left: 11.2rem;
+	}
+	fieldset.member div.input textarea {
+		/*noinspection CssOverwrittenProperties*/
+		width: 370px;
+		/*noinspection CssOverwrittenProperties*/
+		width: 37rem;
+	}
 }
 
 
-/* 5.6 settings notifications */
+/* settings_notifications.php */
 
 table.notify th.type {
 	width: 12%;
@@ -1330,7 +1322,18 @@ table.notify tfoot tr td.left {
 }
 
 
-/* 5.7 vote result */
+/* settings_encryption.php */
+
+p.problem {
+	color: #C00;
+	display: block;
+}
+span.fine {
+	color: #0A0;
+}
+
+
+/* vote_result.php, votingmode_result.php */
 
 table.votes td {
 	font-family: monospace;
@@ -1348,7 +1351,7 @@ table.votes tr.self td.tdc {
 }
 
 
-/* 5.8 periods */
+/* periods.php */
 
 th.period,
 td.period {
