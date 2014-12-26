@@ -33,9 +33,8 @@ define("ERROR_DISPLAY", E_ALL);
 // Enter a mail address or a local user to get error mails.
 define("ERROR_MAIL", "");
 define("ERROR_MAIL_SUBJECT_PREFIX", "[Basisentscheid] ");
-// Uncomment these lines to get backtrace files.
-//define("ERROR_BACKTRACE_PATH", DOCROOT."var/errors/");
-//define("ERROR_BACKTRACE_URL", BASE_URL."var/errors/");
+// Uncomment this line to get backtrace files.
+//define("ERROR_BACKTRACE_FILES", true);
 
 // home for gnupg
 define("GNUPGHOME", "/www/basisentscheid/var/gnupg");

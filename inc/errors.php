@@ -44,19 +44,13 @@ if (!defined("ERROR_MAIL"))                define("ERROR_MAIL", "root");
 // prefix for the subject of the error mails
 if (!defined("ERROR_MAIL_SUBJECT_PREFIX")) define("ERROR_MAIL_SUBJECT_PREFIX", "");
 
-// path to the directory for backtrace files
-// (relative or absolute with trailing slash, e.g. DOCROOT."var/errors/")
-// If not set writing backtrace files will be disabled.
-if (!defined("ERROR_BACKTRACE_PATH"))      define("ERROR_BACKTRACE_PATH", "");
-
-// URL to the directory for backtrace files
-// (absolute URL with trailing slash, e.g. BASE_URL."var/errors/")
-// If not set the backtrace links in the mails will be disabled.
-if (!defined("ERROR_BACKTRACE_URL"))       define("ERROR_BACKTRACE_URL", "");
+// write backtrace to files
+// For the link in the backtrace mails BASE_URL should be set to the absolute URL of the application with trailing slash.
+if (!defined("ERROR_BACKTRACE_FILES"))     define("ERROR_BACKTRACE_FILES", false);
 
 // output backtraces to the browser or shell
 // (for debugging only!)
-if (!defined("ERROR_PRINT_BACKTRACE"))     define("ERROR_PRINT_BACKTRACE", false);
+if (!defined("ERROR_BACKTRACE_DISPLAY"))   define("ERROR_BACKTRACE_DISPLAY", false);
 
 
 error_reporting(E_ALL);
@@ -123,12 +117,6 @@ function fatal_error_handler() {
 	// The script terminated without an error.
 	if ( $error === NULL) return;
 
-	// Apache changes the working directory when calling a shutdown function.
-	if (getcwd()=="/") {
-		// go back to the correct path
-		chdir(dirname($_SERVER['SCRIPT_FILENAME']));
-	}
-
 	error_common($error['type'], $error['message'], $error['file'], $error['line'], array(), true);
 }
 
@@ -185,7 +173,15 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 	error_log($logline, 0);
 
 	// backtrace
-	if ((ERROR_MAIL or ERROR_BACKTRACE_PATH or ERROR_PRINT_BACKTRACE) and !$repeated) {
+	if ((ERROR_MAIL or ERROR_BACKTRACE_FILES or ERROR_BACKTRACE_DISPLAY) and !$repeated) {
+
+		// We prefer SCRIPT_FILENAME because webservers often change the working directory when calling a shutdown function.
+		if ( PHP_SAPI!="cli" and isset($_SERVER['SCRIPT_FILENAME']) ) {
+			$absolute_path = dirname($_SERVER['SCRIPT_FILENAME'])."/";
+		} else {
+			$absolute_path = getcwd()."/";
+		}
+		if (defined('DOCROOT')) $absolute_path .= DOCROOT;
 
 		$backtrace = date("r")."\n\n";
 
@@ -223,7 +219,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
 			$backtrace .= "_SERVER[HTTP_USER_AGENT]: ".$_SERVER['HTTP_USER_AGENT']."\n";
 		}
-		$backtrace .= "\n";
+		$backtrace .= "getcwd(): ".getcwd()."\n\n";
 
 		// actual backtrace
 		$debug_backtrace = debug_backtrace();
@@ -245,7 +241,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 		}
 
 		// extended backtrace
-		if (ERROR_BACKTRACE_PATH or ERROR_PRINT_BACKTRACE) {
+		if (ERROR_BACKTRACE_FILES or ERROR_BACKTRACE_DISPLAY) {
 
 			// We list the superglobals separately, so we don't want to have them also in the context and the global variables.
 			$superglobals = array(
@@ -289,15 +285,15 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 		}
 
 		// write backtrace file
-		if (ERROR_BACKTRACE_PATH) {
+		if (ERROR_BACKTRACE_FILES) {
 			$microtime = microtime();
-			$filename = "backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
-			file_put_contents(ERROR_BACKTRACE_PATH.$filename, $backtrace);
-			if (ERROR_MAIL and ERROR_BACKTRACE_URL) {
+			$filename = "var/errors/backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
+			file_put_contents($absolute_path.$filename, $backtrace);
+			if (ERROR_MAIL) {
 				/** @noinspection PhpUndefinedVariableInspection */
-				$mailbody .= "\n"
-					."complete backtrace:\n"
-					.ERROR_BACKTRACE_URL.$filename."\n";
+				$mailbody .= "\ncomplete backtrace:\n";
+				if (defined('BASE_URL')) $mailbody .= BASE_URL;
+				$mailbody .= $filename."\n";
 			}
 		}
 
@@ -310,14 +306,14 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 				$subject .= $errstr;
 			}
 			/** @noinspection PhpUndefinedVariableInspection */
-			error_send_mail($subject, $mailbody);
+			error_send_mail($subject, $mailbody, $absolute_path);
 		}
 
 		// display backtrace
 		if (PHP_SAPI!="cli") {
 			// display as HTML
 			if ($show) {
-				if (ERROR_PRINT_BACKTRACE) {
+				if (ERROR_BACKTRACE_DISPLAY) {
 ?>
 <br>
 <pre><?=htmlspecialchars($backtrace)?></pre>
@@ -329,7 +325,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 			}
 		} else {
 			// display as Text
-			if (ERROR_PRINT_BACKTRACE) {
+			if (ERROR_BACKTRACE_DISPLAY) {
 				echo $backtrace."\n";
 			}
 		}
@@ -370,8 +366,9 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
  *
  * @param string  $subject
  * @param string  $mailbody
+ * @param string  $absolute_path
  */
-function error_send_mail($subject, $mailbody) {
+function error_send_mail($subject, $mailbody, $absolute_path) {
 
 	// counter
 	$count = 0;
@@ -383,7 +380,7 @@ function error_send_mail($subject, $mailbody) {
 	if (PHP_SAPI=="cli") {
 		$file .= "_cli_".getenv('USER');
 	}
-	if ( $fh = fopen(DOCROOT.$file, 'a+') ) {
+	if ( $fh = fopen($absolute_path.$file, 'a+') ) {
 		if ( flock($fh, LOCK_EX) ) {
 			rewind($fh);
 			$count = intval(fgets($fh)) + 1;

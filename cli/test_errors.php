@@ -13,6 +13,9 @@ define('DOCROOT', "../");
 require DOCROOT."inc/common_cli.php";
 
 
+// a "real" fatal error
+//$not_defined_variable->not_defined_method();
+
 trigger_error("Test", E_USER_NOTICE);
 trigger_error("Test", E_USER_WARNING);
 trigger_error("Test", E_USER_ERROR);

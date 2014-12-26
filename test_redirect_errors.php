@@ -9,6 +9,9 @@
 
 require "inc/common_http.php";
 
+// a "real" fatal error
+//$not_defined_variable->not_defined_method();
+
 trigger_error("Test notice before action", E_USER_NOTICE);
 trigger_error("Test warning before action", E_USER_WARNING);
 if (@$_POST['fatal_php_error_before_action']) trigger_error("Test error before action", E_USER_ERROR);
