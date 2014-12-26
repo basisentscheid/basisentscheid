@@ -126,3 +126,6 @@ ALTER TABLE proposal ADD  CONSTRAINT "proposal_state" CHECK (
 );
 
 ALTER TABLE proposal ADD annotation TEXT DEFAULT '' NOT NULL;
+
+ALTER TABLE ngroup ADD minimum_quorum_votingmode INT DEFAULT 25 NOT NULL;
+UPDATE ngroup SET minimum_quorum_votingmode = minimum_population / 20;

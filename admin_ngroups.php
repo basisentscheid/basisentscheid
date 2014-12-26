@@ -17,7 +17,8 @@ $d->columns = array(
 	array("parent", "parent", "right", "", false, 'type'=>"integer"),
 	array("name", _("Name"), 'disabled'=>true),
 	array("active", _("active"), "center", "boolean", "boolean", 'type'=>"boolean"),
-	array("minimum_population", _("minimum population"), "center", "", "", 'type'=>"integer")
+	array("minimum_population", _("minimum population"), "center", "", "", 'type'=>"integer"),
+	array("minimum_quorum_votingmode", _("minimum quorum votingmode"), "center", "", "", 'type'=>"integer")
 );
 $d->enable_filter = false;
 

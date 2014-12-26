@@ -18,7 +18,7 @@ require DOCROOT."inc/functions_test.php";
 // to avoid conflicts with existing usernames
 $date = dechex(time());
 
-$ngroup = new_ngroup("Test ballots group", 500);
+$ngroup = new_ngroup("Test ballots group", 500, 25);
 
 // create main member
 $login = new Member;

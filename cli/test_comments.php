@@ -17,7 +17,7 @@ require DOCROOT."inc/functions_test.php";
 
 mb_internal_encoding("UTF-8");
 
-$ngroup = new_ngroup("Diskussion", 200);
+$ngroup = new_ngroup("Diskussion", 200, 10);
 
 // create area
 $area = new Area;

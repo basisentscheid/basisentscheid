@@ -295,7 +295,8 @@ CREATE TABLE ngroup (
     parent integer,
     name text NOT NULL,
     active boolean DEFAULT false NOT NULL,
-    minimum_population integer DEFAULT 500 NOT NULL
+    minimum_population integer DEFAULT 500 NOT NULL,
+    minimum_quorum_votingmode integer DEFAULT 25 NOT NULL
 );
 
 

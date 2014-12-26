@@ -170,14 +170,12 @@ class Proposal extends Relation {
 	 * @return array
 	 */
 	function quorum_level() {
-
 		$sql = "SELECT * FROM proposal WHERE issue=".intval($this->issue)." AND quorum_reached=TRUE";
 		if ( DB::numrows($sql) ) {
 			return array(QUORUM_SUPPORT_ALTERNATIVE_NUM, QUORUM_SUPPORT_ALTERNATIVE_DEN);
 		} else {
 			return array(QUORUM_SUPPORT_NUM, QUORUM_SUPPORT_DEN);
 		}
-
 	}
 
 
@@ -187,14 +185,10 @@ class Proposal extends Relation {
 	 * @return integer
 	 */
 	function quorum_required() {
-
 		list($num, $den) = $this->quorum_level();
-
 		$issue = new Issue($this->issue);
 		$area = new Area($issue->area);
-
 		return ceil($area->population() * $num / $den);
-
 	}
 
 

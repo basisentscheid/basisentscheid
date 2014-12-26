@@ -245,7 +245,7 @@ class Issue extends Relation {
 	function quorum_votingmode_required() {
 		list($num, $den) = $this->quorum_votingmode_level();
 		$area = new Area($this->area);
-		return ceil($area->population() * $num / $den);
+		return max( ceil($area->participants * $num / $den), $area->ngroup()->minimum_quorum_votingmode );
 	}
 
 

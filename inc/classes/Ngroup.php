@@ -15,6 +15,7 @@ class Ngroup extends Relation {
 	public $name;
 	public $active;
 	public $minimum_population;
+	public $minimum_quorum_votingmode;
 
 	public $member;
 	public $depth;

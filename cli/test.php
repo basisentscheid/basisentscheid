@@ -15,7 +15,7 @@ require DOCROOT."inc/common_cli.php";
 require DOCROOT."inc/functions_test.php";
 
 
-$ngroup = new_ngroup("Test group", 500);
+$ngroup = new_ngroup("Test group", 500, 25);
 
 // to aviod conflicts with existing usernames
 $date = dechex(time());

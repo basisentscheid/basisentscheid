@@ -15,7 +15,7 @@ require DOCROOT."inc/common_cli.php";
 require DOCROOT."inc/functions_test.php";
 
 
-$ngroup = new_ngroup("Beispielgliederung", 200);
+$ngroup = new_ngroup("Beispielgliederung", 200, 10);
 
 // create area
 $area = new Area;
