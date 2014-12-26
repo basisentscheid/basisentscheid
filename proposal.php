@@ -10,6 +10,8 @@
 require "inc/common_http.php";
 
 URI::strip_one_time_params(array(
+		'comment',
+		'reply',
 		'parent',
 		'comment_edit',
 		'openhl',
@@ -20,6 +22,10 @@ URI::strip_one_time_params(array(
 		'become_proponent',
 		'remove_proponent'
 	));
+
+// resolve shortcuts for notification mails
+if (!empty($_GET['comment'])) Comments::redirect_append_show(intval($_GET['comment']));
+if (!empty($_GET['reply']))   Comments::redirect_append_reply(intval($_GET['reply']));
 
 $proposal = new Proposal(@$_GET['id']);
 if (!$proposal->id) {
@@ -171,7 +177,7 @@ if ($action) {
 			break;
 		}
 		$comment->add($proposal);
-		Comments::redirect_append_show($comment);
+		Comments::redirect_append_show($comment->id);
 		break;
 	case "update_comment":
 		if ( !Login::access_allowed("comment") ) {
@@ -195,7 +201,7 @@ if ($action) {
 			break;
 		}
 		$comment->apply_changes();
-		Comments::redirect_append_show($comment);
+		Comments::redirect_append_show($comment->id);
 		break;
 
 	case "set_rating":

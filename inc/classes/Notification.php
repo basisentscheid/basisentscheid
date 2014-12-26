@@ -237,21 +237,21 @@ class Notification {
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
-			// URLencode the [] to make mail clients recognize the whole link
-			$uri .= "&show%5B%5D=".$this->comment->id;
 
-			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.$uri."\n\n";
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n\n";
 			if (Login::$member) {
 				$body .= sprintf(_("Member '%s' posted this comment:"), Login::$member->username());
 			} else {
 				$body .= _("Someone not logged in posted this comment:");
 			}
-			$body .= "\n".$separator
+			$body .= "\n"
+				.$uri."&comment=".$this->comment->id."\n"
+				.$separator
 				.$this->comment->title."\n\n"
 				.$this->comment->content."\n"
 				.$separator
-				._("Reply:")." ".$uri."&parent=".$this->comment->id."#form";
+				._("Reply:")."\n"
+				.$uri."&reply=".$this->comment->id;
 
 			break;
 		case "reply":
@@ -260,21 +260,21 @@ class Notification {
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
-			// URLencode the [] to make mail clients recognize the whole link
-			$uri .= "&show%5B%5D=".$this->comment->id;
 
-			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.$uri."\n\n";
+			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n\n";
 			if (Login::$member) {
 				$body .= sprintf(_("Member '%s' replied to your comment:"), Login::$member->username());
 			} else {
 				$body .= _("Someone not logged in replied to your comment:");
 			}
-			$body .= "\n".$separator
+			$body .= "\n"
+				.$uri."&comment=".$this->comment->id."\n"
+				.$separator
 				.$this->comment->title."\n\n"
 				.$this->comment->content."\n"
 				.$separator
-				._("Reply:")." ".$uri."&parent=".$this->comment->id."#form";
+				._("Reply:")."\n"
+				.$uri."&reply=".$this->comment->id;
 
 			break;
 		case "new_proposal":

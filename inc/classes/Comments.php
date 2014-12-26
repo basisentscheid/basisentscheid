@@ -70,14 +70,31 @@ class Comments {
 
 
 	/**
+	 * redirect to show a comment
 	 *
-	 * @param Comment $comment
+	 * @param integer $comment
 	 */
 	public static function redirect_append_show($comment) {
 		$show = self::$show;
-		$show[] = $comment->id;
+		$show[] = $comment;
 		$show = array_unique($show);
-		redirect(URI::append(['open'=>self::$open, 'show'=>$show], true)."#comment".$comment->id);
+		redirect(URI::append(['open'=>self::$open, 'show'=>$show], true)."#comment".$comment);
+	}
+
+
+	/**
+	 * redirect to reply to a comment
+	 *
+	 * @param integer $reply
+	 */
+	public static function redirect_append_reply($reply) {
+		$open = self::$open;
+		$open[] = $reply;
+		$open = array_unique($open);
+		$show = self::$show;
+		$show[] = $reply;
+		$show = array_unique($show);
+		redirect(URI::append(['open'=>$open, 'show'=>$show, 'parent'=>$reply], true)."#form");
 	}
 
 
@@ -512,8 +529,13 @@ if ( window.location.hash ) {
 			self::$parent!=$comment->id and
 			!$comment->removed
 		) {
+
+			$open = self::$open;
+			$open[] = $comment->id;
+			$open = array_unique($open);
+
 ?>
-		<div class="reply"><a href="<?=URI::append(['parent'=>$comment->id])?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
+		<div class="reply"><a href="<?=URI::append(['open'=>$open, 'parent'=>$comment->id])?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
 <?
 		}
 
