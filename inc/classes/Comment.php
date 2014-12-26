@@ -114,7 +114,7 @@ class Comment extends Relation {
 		$parent = $this->parent;
 		while ( $parent > 0 ) { // "pro"/"contra"/"discussion" will be converted to 0
 			$comment = new Comment($parent);
-			$recipients[] = $comment->member;
+			if ($comment->member) $recipients[] = $comment->member;
 			$parent = $comment->parent;
 		}
 		$notification = new Notification("reply");
