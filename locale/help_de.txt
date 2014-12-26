@@ -23,7 +23,7 @@ Rechts oben werden die <b>Antragsteller</b> des Antrags angezeigt. Jeder kann si
 
 Bei eingereichten Anträgen zeigt der <b>Zeitstrahl</b> vergangene und zukünftige Ereignisse. Wenn du mit der Maus über ein Ereignis fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
 
-Um zur Abstimmung zugelassen zu werden, benötigt ein Antrag <b>Unterstützer</b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Sobald ein Antrag das Quorum erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
+Um zur Abstimmung zugelassen zu werden, benötigt ein eingereichter Antrag <b>Unterstützer</b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Unterstützer in grau sind verfallen, weil ihre Unterstützung schon länger zurück liegt. Sie können ihre Unterstützung aber zurückziehen und erneut setzen. Sobald ein Antrag das Quorum erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
 
 Solange ein Thema noch nicht die Debatte erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
 

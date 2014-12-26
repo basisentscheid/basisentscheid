@@ -146,6 +146,9 @@ span.admin {
 span.self {
 	font-weight: bold;
 }
+span.expired {
+	color: #999;
+}
 span.datetime {
 	white-space: nowrap;
 }

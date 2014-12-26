@@ -235,6 +235,7 @@ function cron($skip_if_locked=false) {
 	}
 
 	// actually only daily tasks
+	update_supporters_cache();
 	revoke_not_enough_proponents();
 	cancel_not_admitted();
 	clear_issues();
@@ -245,12 +246,26 @@ function cron($skip_if_locked=false) {
 
 
 /**
+ * Draw off expired supporters from all submitted but not yet admitted proposals
+ */
+function update_supporters_cache() {
+	$sql = "SELECT * FROM proposal WHERE state = 'submitted'";
+	$result = DB::query($sql);
+	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		/** @var Proposal $proposal */
+		$proposal->update_supporters_cache();
+	}
+}
+
+
+/**
  * revoke due proposals, which have have less than required proponents
  */
 function revoke_not_enough_proponents() {
 	$sql = "SELECT * FROM proposal WHERE revoke < now()";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		/** @var Proposal $proposal */
 		// clear revoke date
 		$proposal->revoke = null;
 		$proposal->update(['revoke']);

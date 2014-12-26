@@ -547,11 +547,11 @@ class Proposal extends Relation {
 	/**
 	 * count supporters and admit proposal if quorum is reached
 	 */
-	private function update_supporters_cache() {
+	public function update_supporters_cache() {
 
 		$sql = "SELECT COUNT(1) FROM supporter
 			WHERE proposal=".intval($this->id)."
-				AND created > current_date - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
+				AND ".$this->sql_supporter_valid();
 		$this->supporters = DB::fetchfield($sql);
 
 		if ( $this->submitted and !$this->quorum_reached and $this->supporters >= $this->quorum_required() ) {
@@ -564,6 +564,19 @@ class Proposal extends Relation {
 			$this->update(["supporters"]);
 		}
 
+	}
+
+
+	/**
+	 * SQL expression for not expired supporters
+	 *
+	 * @return string
+	 */
+	private function sql_supporter_valid() {
+		return "created > "
+		// Supporters don't expire anymore after admission.
+		.($this->admitted ? "date ".DB::esc(date("Y-m-d", strtotime($this->admitted))) : "current_date")
+			." - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
 	}
 
 
@@ -822,30 +835,37 @@ class Proposal extends Relation {
 		$proponents = array(); // list of proponents (also unconfirmed) as objects of class member
 		$is_supporter = false; // if the logged in member is supporter
 		$is_proponent = false; // if the logged in member is confirmed proponent
-		$sql = "SELECT member, anonymous, proponent, proponent_confirmed FROM supporter WHERE proposal=".intval($this->id);
+		$sql = "SELECT member, anonymous, proponent, proponent_confirmed, ".$this->sql_supporter_valid()." AS valid
+		    FROM supporter
+		    WHERE proposal=".intval($this->id);
 		$result = DB::query($sql);
 		while ( $row = DB::fetch_assoc($result) ) {
 			DB::to_bool($row['proponent_confirmed']);
+			DB::to_bool($row['valid']);
+			$expired = $row['valid'] ? " expired" : "";
 			$member = new Member($row['member']);
 			if (Login::$member and $member->id==Login::$member->id) {
 				if ($row['proponent_confirmed']) {
 					$is_proponent = true;
 					$is_supporter = true;
-					$supporters[] = '<span class="self">'.$row['proponent'].' <i>('._("proponent").')</i></span>';
+					$supporters[] = '<span class="self'.$expired.'">'.$row['proponent'].' <i>('._("proponent").')</i></span>';
 				} elseif ($row['anonymous']===DB::value_true) {
 					$is_supporter = "anonymous";
-					$supporters[] = '<span class="self">'._("anonymous").'</span>';
+					$supporters[] = '<span class="self'.$expired.'">'._("anonymous").'</span>';
 				} else {
 					$is_supporter = true;
-					$supporters[] = '<span class="self">'.$member->link().'</span>';
+					$supporters[] = '<span class="self'.$expired.'">'.$member->link().'</span>';
 				}
 			} else {
 				if ($row['proponent_confirmed']) {
-					$supporters[] = $row['proponent'].' <i>('._("proponent").')</i>';
+					if ($row['valid']) $supporters[] = $row['proponent'].' <i>('._("proponent").')</i>';
+					else               $supporters[] = '<span class="expired">'.$row['proponent'].' <i>('._("proponent").')</i></span>';
 				} elseif ($row['anonymous']===DB::value_true) {
-					$supporters[] = _("anonymous");
+					if ($row['valid']) $supporters[] = _("anonymous");
+					else               $supporters[] = '<span class="expired">'._("anonymous").'</span>';
 				} else {
-					$supporters[] = $member->link();
+					if ($row['valid']) $supporters[] = $member->link();
+					else               $supporters[] = '<span class="expired">'.$member->link().'</span>';
 				}
 			}
 			if ($row['proponent']!==null) {
