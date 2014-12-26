@@ -418,7 +418,7 @@ if ($proposal->submitted or $proposal->revoke) {
 
 display_annotation($proposal);
 
-display_quorum($proposal, $supporters, $is_supporter);
+if ($proposal->state != "draft") display_quorum($proposal, $supporters, $is_supporter);
 
 ?>
 

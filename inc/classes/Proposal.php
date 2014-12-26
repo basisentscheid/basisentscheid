@@ -273,7 +273,6 @@ class Proposal extends Relation {
 		case "debate":
 		case "preparation":
 			switch ($this->state) {
-			case "draft":
 			case "submitted":
 			case "admitted":
 				return true;
@@ -291,7 +290,7 @@ class Proposal extends Relation {
 	 */
 	public function add_support($anonymous=false) {
 		if (!$this->allowed_change_supporters()) {
-			warning(_("Support for this proposal can not be added anymore."));
+			warning(_("Support for this proposal can not be added in this phase."));
 			return false;
 		}
 		$fields_values = array(
