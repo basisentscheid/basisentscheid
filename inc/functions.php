@@ -377,11 +377,10 @@ function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
  * @param string  $subject
  * @param string  $body
  * @param array   $headers     (optional)
- * @param boolean $sign        (optional) sign mail with the configured private key
  * @param string  $fingerprint (optional) encrypt mail with the public key with this fingerprint
  * @return bool
  */
-function send_mail($to, $subject, $body, array $headers=array(), $sign=false, $fingerprint="") {
+function send_mail($to, $subject, $body, array $headers=array(), $fingerprint="") {
 
 	$subject = MAIL_SUBJECT_PREFIX.$subject;
 
@@ -391,7 +390,7 @@ function send_mail($to, $subject, $body, array $headers=array(), $sign=false, $f
 
 	$body = mb_wordwrap($body);
 
-	if ($sign and GNUPG_SIGN_KEY) {
+	if (GNUPG_SIGN_KEY) {
 		$gnupg = new_gnupg();
 		if ( $gnupg->addsignkey(GNUPG_SIGN_KEY) ) {
 			if ($fingerprint) {

@@ -138,7 +138,7 @@ class Period extends Relation {
 					._("Your vote token").": ".$personal_tokens[$member->id][$issue->id]."\n";
 			}
 			$body .= $body_lists;
-			send_mail($member->mail, $subject, $body, array(), true, $member->fingerprint);
+			send_mail($member->mail, $subject, $body, array(), $member->fingerprint);
 		}
 
 	}

@@ -74,7 +74,7 @@ $info = $gnupg->import($keydata);
 $info = $gnupg->keyinfo("");
 //var_dump($info);
 
-send_mail($to, $subject, $body, $headers, true, $fingerprint);
+send_mail($to, $subject, $body, $headers, $fingerprint);
 
 
 if (PHP_SAPI != "cli") {
