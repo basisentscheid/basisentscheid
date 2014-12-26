@@ -241,9 +241,13 @@ class Notification {
 			$uri .= "&show%5B%5D=".$this->comment->id;
 
 			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.$uri."\n\n"
-				.sprintf(_("Member '%s' posted this comment:"), Login::$member->username())."\n"
-				.$separator
+				.$uri."\n\n";
+			if (Login::$member) {
+				$body .= sprintf(_("Member '%s' posted this comment:"), Login::$member->username());
+			} else {
+				$body .= _("Someone not logged in posted this comment:");
+			}
+			$body .= "\n".$separator
 				.$this->comment->title."\n\n"
 				.$this->comment->content."\n"
 				.$separator
@@ -260,9 +264,13 @@ class Notification {
 			$uri .= "&show%5B%5D=".$this->comment->id;
 
 			$body .= _("Proposal")." ".$this->proposal->id.": ".$this->proposal->title."\n"
-				.$uri."\n\n"
-				.sprintf(_("Member '%s' replied to your comment:"), Login::$member->username())."\n"
-				.$separator
+				.$uri."\n\n";
+			if (Login::$member) {
+				$body .= sprintf(_("Member '%s' replied to your comment:"), Login::$member->username());
+			} else {
+				$body .= _("Someone not logged in replied to your comment:");
+			}
+			$body .= "\n".$separator
 				.$this->comment->title."\n\n"
 				.$this->comment->content."\n"
 				.$separator
