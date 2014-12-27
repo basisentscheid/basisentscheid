@@ -9,7 +9,7 @@
 
 
 if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
-define('DOCROOT', "../");
+const DOCROOT = "../";
 require DOCROOT."inc/common_cli.php";
 
 DB::query("INSERT INTO ngroup (id, parent, name, active) VALUES (1, null, 'Bund', true)");

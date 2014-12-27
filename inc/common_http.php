@@ -39,7 +39,7 @@
  */
 
 
-define('DOCROOT', "./");
+const DOCROOT = "./";
 
 require DOCROOT."inc/config.php";
 require DOCROOT."inc/errors.php";

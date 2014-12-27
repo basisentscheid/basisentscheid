@@ -9,7 +9,7 @@
  */
 
 
-define("VERSION", "development");
+const VERSION = "development";
 
 define("BN", basename($_SERVER['PHP_SELF']));
 
