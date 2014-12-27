@@ -146,7 +146,7 @@ span.admin {
 span.self {
 	font-weight: bold;
 }
-span.expired {
+span.expired, div.expired {
 	color: #999;
 }
 span.datetime {
@@ -937,13 +937,19 @@ div.quorum div.bargraph_container {
 	vertical-align: bottom;
 	background-color: #FFF;
 }
-div.quorum form {
+div.quorum form,
+div.quorum div.support {
 	display: inline-block;
 	margin-top: 2px;
 }
-div.quorum form.supported {
+div.quorum div.support {
 	background-color: #0A0;
-	padding: 0 6px;
+	padding: 0 0.5em 0.2em 0.5em;
+	margin-right: 0.5em;
+	border-radius: 4px;
+}
+div.quorum div.support.expired {
+	background-color: #999;
 }
 div.admission_decision,
 form.admission_decision {

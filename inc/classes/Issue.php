@@ -674,7 +674,10 @@ class Issue extends Relation {
 	public function proposals_list($admitted=false) {
 
 		if (Login::$member) {
-			$sql = "SELECT proposal.*, supporter.member AS supported_by_member FROM proposal
+			$sql = "SELECT proposal.*,
+						supporter.member  AS supported_by_member,
+						supporter.created AS supported_created
+					FROM proposal
 					LEFT JOIN supporter ON proposal.id = supporter.proposal AND supporter.member = ".intval(Login::$member->id);
 		} else {
 			$sql = "SELECT * FROM proposal";
@@ -745,7 +748,7 @@ class Issue extends Relation {
 				if (BN!="admin_vote_result.php") {
 ?>
 		<td><?
-					$proposal->bargraph_quorum($proposal->supported_by_member);
+					$proposal->bargraph_quorum($proposal->supported_by_member, $proposal->supporter_valid());
 					?></td>
 <?
 				}

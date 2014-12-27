@@ -38,7 +38,9 @@ class Proposal extends Relation {
 	public $score;
 	public $accepted;
 
+	// used by Issue::proposals_list()
 	public $supported_by_member;
+	private $supported_created;
 
 	protected $boolean_fields = array("quorum_reached", "supported_by_member", "accepted");
 	protected $update_fields = array("title", "content", "reason");
@@ -295,6 +297,26 @@ class Proposal extends Relation {
 		$keys = array('proposal', 'member');
 
 		DB::insert_or_update("supporter", $fields_values, $keys);
+
+		$this->update_supporters_cache();
+		$this->issue()->area()->activate_participation();
+		return true;
+	}
+
+
+	/**
+	 * renew the logged in member as supporter
+	 *
+	 * @return boolean
+	 */
+	public function renew_support() {
+		if (!$this->allowed_change_supporters()) {
+			warning(_("Support for this proposal can not be added in this phase."));
+			return false;
+		}
+
+		$sql = "UPDATE supporter SET created=now() WHERE proposal=".intval($this->id)." AND member=".intval(Login::$member->id);
+		DB::query($sql);
 
 		$this->update_supporters_cache();
 		$this->issue()->area()->activate_participation();
@@ -583,6 +605,19 @@ class Proposal extends Relation {
 
 
 	/**
+	 * check if a supporter with the created timestamp 'supported_created' is not expired
+	 *
+	 * @return boolean
+	 */
+	public function supporter_valid() {
+		if     ($this->admitted)  $date = date("Y-m-d", strtotime($this->admitted));
+		elseif ($this->cancelled) $date = date("Y-m-d", strtotime($this->cancelled));
+		else                      $date = date("Y-m-d");
+		return strtotime($this->supported_created) > strtotime($date." - ".SUPPORTERS_VALID_INTERVAL);
+	}
+
+
+	/**
 	 * admit the proposal circumventing the quorum
 	 *
 	 * @param string  $text
@@ -837,6 +872,7 @@ class Proposal extends Relation {
 		$proponents = array(); // list of proponents (also unconfirmed) as objects of class member
 		$is_supporter = false; // if the logged in member is supporter
 		$is_proponent = false; // if the logged in member is confirmed proponent
+		$is_valid     = false; // if the logged in member is valid supporter
 		$sql = "SELECT member, anonymous, proponent, proponent_confirmed, ".$this->sql_supporter_valid()." AS valid
 		    FROM supporter
 		    WHERE proposal=".intval($this->id);
@@ -844,7 +880,7 @@ class Proposal extends Relation {
 		while ( $row = DB::fetch_assoc($result) ) {
 			DB::to_bool($row['proponent_confirmed']);
 			DB::to_bool($row['valid']);
-			$expired = $row['valid'] ? " expired" : "";
+			$expired = $row['valid'] ? "" : " expired";
 			$member = new Member($row['member']);
 			if (Login::$member and $member->id==Login::$member->id) {
 				if ($row['proponent_confirmed']) {
@@ -858,6 +894,7 @@ class Proposal extends Relation {
 					$is_supporter = true;
 					$supporters[] = '<span class="self'.$expired.'">'.$member->link().'</span>';
 				}
+				$is_valid = $row['valid'];
 			} else {
 				if ($row['proponent_confirmed']) {
 					if ($row['valid']) $supporters[] = $row['proponent'].' <i>('._("proponent").')</i>';
@@ -876,16 +913,17 @@ class Proposal extends Relation {
 				$proponents[] = $member;
 			}
 		}
-		return array($supporters, $proponents, $is_supporter, $is_proponent);
+		return array($supporters, $proponents, $is_supporter, $is_proponent, $is_valid);
 	}
 
 
 	/**
 	 * display quorum bargraph
 	 *
-	 * @param boolean $supported_by_member (optional)
+	 * @param boolean $supported_by_member proposal is supported by the logged in member
+	 * @param boolean $valid               the support by the logged in member is not expired
 	 */
-	public function bargraph_quorum($supported_by_member=false) {
+	public function bargraph_quorum($supported_by_member, $valid) {
 
 		$value = $this->supporters;
 		$population = $this->issue()->area()->population();
@@ -909,7 +947,11 @@ class Proposal extends Relation {
 		?><div class="required" style="margin-left:<?=$required_left?>px"></div><?
 		?><div class="legend" style="width:<?=$width?>px"><?=$value?></div><?
 		if ($supported_by_member) {
-			?><div class="supported" title="<?=_("You support this proposal.")?>">&#10003;</div><?
+			if ($valid) {
+				?><div class="supported" title="<?=_("You support this proposal.")?>">&#10003;</div><?
+			} else {
+				?><div class="supported expired" title="<?=_("Your support for this proposal is expired.")?>">&#10003;</div><?
+			}
 		}
 		?><div class="clear"></div><?
 		?></div><?

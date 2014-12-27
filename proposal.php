@@ -93,6 +93,11 @@ if ($action) {
 		$proposal->add_support(true);
 		redirect();
 		break;
+	case "renew_support":
+		Login::access_action("entitled", $ngroup);
+		$proposal->renew_support();
+		redirect();
+		break;
 	case "revoke_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->revoke_support();
@@ -262,7 +267,7 @@ if ($action) {
 }
 
 
-list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
+list($supporters, $proponents, $is_supporter, $is_proponent, $is_valid) = $proposal->supporters();
 
 
 html_head(_("Proposal")." ".$proposal->id, true);
@@ -418,7 +423,7 @@ if ($proposal->submitted or $proposal->revoke) {
 
 display_annotation($proposal);
 
-if ($proposal->state != "draft") display_quorum($proposal, $supporters, $is_supporter);
+if ($proposal->state != "draft") display_quorum($proposal, $supporters, $is_supporter, $is_valid);
 
 ?>
 
@@ -590,15 +595,16 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
  * @param Proposal $proposal
  * @param array   $supporters
  * @param mixed   $is_supporter
+ * @param boolean $is_valid
  */
-function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
+function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $is_valid) {
 	global $ngroup;
 ?>
 <div class="quorum">
 <h2 id="supporters"><?=_("Supporters")?>:</h2>
 <div class="bargraph_container">
 <?
-	$proposal->bargraph_quorum($is_supporter);
+	$proposal->bargraph_quorum($is_supporter, $is_valid);
 ?>
 </div>
 <?
@@ -611,27 +617,43 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter) {
 <br class="clear">
 <?
 			if ($is_supporter) {
-				form(URI::same()."#supporters", 'class="supported"');
-?>
-&#10003; <?
-				if ($is_supporter==="anonymous") {
-					echo _("You support this proposal anonymously.");
+				if ($is_valid) {
+					?><div class="support">&#10003; <?
+					if ($is_supporter==="anonymous") {
+						echo _("You support this proposal anonymously.");
+					} else {
+						echo _("You support this proposal.");
+					}
+					?></div><?
 				} else {
-					echo _("You support this proposal.");
+					?><div class="support_expired">&#10003; <?
+					if ($is_supporter==="anonymous") {
+						echo _("Your anonymous support for this proposal is expired.");
+					} else {
+						echo _("Your support for this proposal is expired.");
+					}
+					?></div><?
+					form(URI::same()."#supporters");
+?>
+<input type="hidden" name="action" value="renew_support">
+<input type="submit" value="<?=_("Renew your support for this proposal")?>">
+<?
+					form_end();
 				}
+				form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="revoke_support">
 <input type="submit" value="<?=_("Revoke your support for this proposal")?>">
 <?
 				form_end();
 			} else {
-				form(URI::same()."#supporters", 'style="display:inline-block"');
+				form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="add_support">
 <input type="submit" value="<?=_("Support this proposal")?>">
 <?
 				form_end();
-				form(URI::same()."#supporters", 'style="display:inline-block"');
+				form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="add_support_anonym">
 <input type="submit" value="<?=_("Support this proposal anonymously")?>">
