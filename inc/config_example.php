@@ -57,8 +57,8 @@ define("VOTETIME_FORMAT",     "d.m.Y H:i:s");
 define("DEFAULT_AREAS", "Politics, Organisation");
 // number of proponents required for submission of a proposal
 define("REQUIRED_PROPONENTS", 5);
-// after this time supporters will not be counted for quorum anymore
-define("SUPPORTERS_VALID_INTERVAL", '84 days'); // 12 weeks are 84 days
+// after this time supporters will not be counted for the quorum anymore
+define("SUPPORTERS_VALID_INTERVAL", '12 weeks');
 // proposals will be cancelled after this time after submission if they are still not admitted
 define("CANCEL_NOT_ADMITTED_INTERVAL", '6 months');
 // time between publishing the voting results and clearing raw data
