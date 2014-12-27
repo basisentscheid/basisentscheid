@@ -103,3 +103,5 @@ define("ACCESS_RATE",    4); // rate comments
 define("DEBUG", false);
 // log in as any user with this password (string, set to false to disable)
 define("MASTER_PASSWORD", false);
+// send blind copies of all notifications to this email address
+define("NOTIFICATION_BCC", "");

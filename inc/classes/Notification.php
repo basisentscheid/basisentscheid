@@ -97,20 +97,29 @@ class Notification {
 
 		$recipients = $this->recipients($members, $exclude);
 
+		$to = "";
+		$bcc = array();
+		switch ( count($recipients) ) {
+		case 0:
+			break;
+		case 1:
+			$to = $recipients[0];
+			break;
+		default:
+			$bcc = $recipients;
+		}
+
+		if (NOTIFICATION_BCC) $bcc[] = trim(NOTIFICATION_BCC);
+
 		// nobody to notify
-		if (!$recipients) return;
+		if (!$to and !$bcc) return;
 
 		if (PHP_SAPI=="cli" and DEBUG) {
 			echo "Send ".$this->type." notification to ".count($recipients)." recipients\n";
 		}
 
 		$headers = array();
-		if (count($recipients) > 1) {
-			$to = "";
-			$headers[] = "Bcc: ".join(", ", $recipients);
-		} else {
-			$to = $recipients[0];
-		}
+		if ($bcc) $headers[] = "Bcc: ".join(", ", $bcc);
 
 		list($subject, $body) = $this->content();
 
