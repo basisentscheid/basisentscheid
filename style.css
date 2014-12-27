@@ -1318,7 +1318,7 @@ fieldset.member div.button input[type=submit] {
 /* settings_notifications.php */
 
 table.notify th.type {
-	width: 12%;
+	width: 10%;
 }
 table.notify tr td.space {
 	height: 5px;

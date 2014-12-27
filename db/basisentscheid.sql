@@ -435,6 +435,7 @@ CREATE TABLE notify (
     interest notify_interest NOT NULL,
     comment boolean DEFAULT false NOT NULL,
     new_proposal boolean DEFAULT false NOT NULL,
+    new_draft boolean DEFAULT false NOT NULL,
     admitted boolean DEFAULT false NOT NULL,
     submitted boolean DEFAULT false NOT NULL,
     debate boolean DEFAULT false NOT NULL,

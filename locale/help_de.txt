@@ -125,6 +125,7 @@ Das <b>Profil</b> wird anderen Benutzern angezeigt, wenn sie auf den Benutzernam
 Hier kannst du auswählen, bei welchen Ereignissen in welchen Anträgen du eine Benachrichtigung bekommen möchtest. Die Spalten stehen für die <b>Ereignisse</b>:
  * Ein <i>neuer Beitrag</i> in der Diskussion oder den Pro- und Kontra-Argumenten wurde geschrieben. Antworten auf deine Beiträge bekommst du immer, auch wenn du diese Benachrichtigung hier nicht aktiviert hast.
  * Ein <i>neuer Antrag</i> wurde erstellt.
+ * Ein <i>neuer Entwurf</i> für einen schon erstellten Antrag wurde gemacht.
  * Ein Antrag wurde <i>eingereicht</i>.
  * Ein Antrag wurde <i>zugelassen</i>.
  * Die <i>Debatte</i> über einen Antrag hat begonnen.

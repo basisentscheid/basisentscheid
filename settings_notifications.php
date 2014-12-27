@@ -67,11 +67,11 @@ foreach (Notification::interests() as $interest => $interest_title) {
 <?
 }
 ?>
-	<tr><td colspan="7" class="space"></td></tr>
+	<tr><td colspan="8" class="space"></td></tr>
 	<tfoot>
 		<tr>
 			<td class="left"></td>
-			<td colspan="6"><input type="hidden" name="action" value="save"><input type="submit" value="<?=_("Save")?>"></td>
+			<td colspan="7"><input type="hidden" name="action" value="save"><input type="submit" value="<?=_("Save")?>"></td>
 		</tr>
 	</tfoot>
 </table>

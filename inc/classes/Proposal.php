@@ -71,7 +71,7 @@ class Proposal extends Relation {
 
 
 	/**
-	 * Create a new proposal
+	 * create a new proposal
 	 *
 	 * @return boolean
 	 * @param string  $proponent proponent name
@@ -110,7 +110,23 @@ class Proposal extends Relation {
 
 
 	/**
-	 *
+	 * create a new draft
+	 */
+	public function new_draft() {
+
+		$this->create_draft();
+		$this->update();
+
+		$notification = new Notification("new_draft");
+		$notification->proposal = $this;
+		$notification->proponent = $this->proponent_name(Login::$member->id);
+		$notification->send();
+
+	}
+
+
+	/**
+	 * save the proposal as a draft
 	 */
 	public function create_draft() {
 

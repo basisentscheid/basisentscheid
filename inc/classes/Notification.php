@@ -34,11 +34,11 @@ class Notification {
 	public $all_tokens;
 
 	public static $default_settings = array(
-		'all'         => array('comment'=>false, 'new_proposal'=>false, 'submitted'=>false, 'admitted'=>false, 'debate'=>false, 'finished'=>false),
-		'ngroups'     => array('comment'=>false, 'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
-		'participant' => array('comment'=>false, 'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
-		'supporter'   => array('comment'=>false, 'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
-		'proponent'   => array('comment'=>true,  'new_proposal'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true)
+		'all'         => array('comment'=>false, 'new_proposal'=>false, 'new_draft'=>false, 'submitted'=>false, 'admitted'=>false, 'debate'=>false, 'finished'=>false),
+		'ngroups'     => array('comment'=>false, 'new_proposal'=>true,  'new_draft'=>false, 'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'participant' => array('comment'=>false, 'new_proposal'=>true,  'new_draft'=>false, 'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'supporter'   => array('comment'=>false, 'new_proposal'=>true,  'new_draft'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true),
+		'proponent'   => array('comment'=>true,  'new_proposal'=>true,  'new_draft'=>true,  'submitted'=>true,  'admitted'=>true,  'debate'=>true,  'finished'=>true)
 	);
 
 
@@ -76,6 +76,7 @@ class Notification {
 		return array(
 			'comment'      => _("new comment"),
 			'new_proposal' => _("new proposal"),
+			'new_draft'    => _("new draft"),
 			'submitted'    => _("submitted"),
 			'admitted'     => _("admitted"),
 			'debate'       => _("debate"),
@@ -291,6 +292,20 @@ class Notification {
 			$subject = sprintf(_("New proposal %d in area %s"), $this->proposal->id, $this->proposal->issue()->area()->name);
 
 			$body .= sprintf(_("Proponent '%s' added a new proposal:"), $this->proponent)."\n"
+				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
+				."===== "._("Title")." =====\n"
+				.$this->proposal->title."\n\n"
+				."===== "._("Content")." =====\n"
+				.$this->proposal->content."\n\n"
+				."===== "._("Reason")." =====\n"
+				.$this->proposal->reason."\n";
+
+			break;
+		case "new_draft":
+
+			$subject = sprintf(_("New draft for proposal %d"), $this->proposal->id);
+
+			$body .= sprintf(_("Proponent '%s' added a new draft:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				."===== "._("Title")." =====\n"
 				.$this->proposal->title."\n\n"

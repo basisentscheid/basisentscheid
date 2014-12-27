@@ -88,8 +88,7 @@ if ($action) {
 
 		if ($proposal->id) {
 			// update existing proposal
-			$proposal->create_draft();
-			$proposal->update();
+			$proposal->new_draft();
 		} else {
 			// add proposal
 			action_required_parameters('proponent');
