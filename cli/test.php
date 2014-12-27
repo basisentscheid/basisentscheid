@@ -496,6 +496,10 @@ function time_warp(Issue $issue, $interval="1 hour") {
 		DB::query($sql);
 	}
 
+	$sql = "UPDATE supporter SET created = created - $interval
+		WHERE proposal IN (SELECT id FROM proposal WHERE issue=".intval($issue->id).")";
+	DB::query($sql);
+
 	foreach ( array('debate_started', 'preparation_started', 'voting_started', 'counting_started', 'clear', 'cleared') as $column ) {
 		$sql = "UPDATE issue SET
 				$column = $column - $interval
@@ -511,4 +515,6 @@ function time_warp(Issue $issue, $interval="1 hour") {
 			counting    = counting    - $interval
 		WHERE id=".intval($issue->period);
 	DB::query($sql);
+
+	cron_daily();
 }

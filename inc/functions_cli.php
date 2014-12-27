@@ -10,12 +10,11 @@
 
 /**
  * called by cli/cron.php
- *
- * @param boolean $skip_if_locked (optional)
  */
-function cron($skip_if_locked=false) {
+function cron() {
 
-	if ($skip_if_locked) {
+	// If called by a regular cron job it's no problem to skip it sometimes.
+	if (BN=="cron.php") {
 		if (!cron_lock()) return;
 	} else {
 		while (!cron_lock()) {
@@ -234,7 +233,20 @@ function cron($skip_if_locked=false) {
 
 	}
 
-	// actually only daily tasks
+	cron_unlock();
+}
+
+
+/**
+ * called by cli/cron_daily.php
+ */
+function cron_daily() {
+
+	while (!cron_lock()) {
+		echo "Waiting for lock ...\n";
+		sleep(5);
+	}
+
 	update_supporters_cache();
 	revoke_not_enough_proponents();
 	cancel_not_admitted();
@@ -290,6 +302,7 @@ function revoke_before_preparation(Issue $issue) {
 	$sql = "SELECT * FROM proposal WHERE issue=".intval($issue->id)." AND revoke NOTNULL";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		/** @var Proposal $proposal */
 		// to set the cancelled state if all proposals get cancelled
 		$proposal->set_issue($issue);
 		// clear revoke date
@@ -325,6 +338,7 @@ function clear_issues() {
 	$sql = "SELECT * FROM issue WHERE clear <= now()";
 	$result = DB::query($sql);
 	while ( $issue = DB::fetch_object($result, "Issue") ) {
+		/** @var Issue $issue */
 		// delete raw voting data
 		$sql_delete = "DELETE FROM vote_token WHERE issue=".intval($issue->id);
 		DB::query($sql_delete);
@@ -366,6 +380,7 @@ function update_activity() {
 	$sql = "SELECT * FROM proposal WHERE activity!=0 OR state IN ('draft', 'submitted', 'admitted')";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
+		/** @var Proposal $proposal */
 		$sql = "SELECT COUNT(created) + COUNT(created > now() - interval '3 day') + COUNT(created > now() - interval '1 day') FROM comment
 		WHERE proposal=".intval($proposal->id)." AND created > now() - interval '7 day'";
 		$activity = DB::fetchfield($sql);

@@ -573,10 +573,12 @@ class Proposal extends Relation {
 	 * @return string
 	 */
 	private function sql_supporter_valid() {
-		return "created > "
-		// Supporters don't expire anymore after admission.
-		.($this->admitted ? "date ".DB::esc(date("Y-m-d", strtotime($this->admitted))) : "current_date")
-			." - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
+		$sql = "created > ";
+		// Supporters don't expire anymore after submitted phase is left.
+		if     ($this->admitted)  $sql .= "date ".DB::esc(date("Y-m-d", strtotime($this->admitted)));
+		elseif ($this->cancelled) $sql .= "date ".DB::esc(date("Y-m-d", strtotime($this->cancelled)));
+		else                      $sql .= "current_date";
+		return $sql." - interval ".DB::esc(SUPPORTERS_VALID_INTERVAL);
 	}
 
 
