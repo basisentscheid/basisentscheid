@@ -244,7 +244,7 @@ msgstr "abgeschlossen"
 msgid "Finished and cleared"
 msgstr "abgeschlossen und bereinigt"
 #
-# File: inc/functions.php, line: 86
+# File: inc/functions.php, line: 98
 msgid "Error"
 msgstr "Fehler"
 #
@@ -1072,7 +1072,7 @@ msgid "Do you really want to remove yourself from the proponents of this proposa
 msgstr "Willst Du Dich wirklich auch der Liste der Antragsteller löschen?"
 #
 # File: proposal.php, line: 292
-# File: inc/functions.php, line: 191
+# File: inc/functions.php, line: 203
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 642
 # File: inc/classes/Issue.php, line: 1024
@@ -1081,7 +1081,7 @@ msgid "Yes"
 msgstr "Ja"
 #
 # File: proposal.php, line: 293
-# File: inc/functions.php, line: 192
+# File: inc/functions.php, line: 204
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 643
 # File: inc/classes/Issue.php, line: 1027
@@ -1872,8 +1872,8 @@ msgstr "Zustimmung"
 msgid "Score"
 msgstr "Bewertung"
 #
-# File: inc/functions.php, line: 193
 # File: inc/functions.php, line: 205
+# File: inc/functions.php, line: 217
 # File: inc/classes/Issue.php, line: 644
 # File: inc/classes/Issue.php, line: 1030
 # File: inc/classes/Notification.php, line: 419
@@ -2847,7 +2847,7 @@ msgstr "Signierung und Verschlüsselung von E-Mails ist nicht eingeschaltet."
 msgid "Email encryption"
 msgstr "E-Mail-Verschlüsselung"
 #
-# File: inc/functions.php, line: 400
+# File: inc/functions.php, line: 412
 msgid "This email should be encrypted, but no available key matching your fingerprint and email address was found! Please check your settings:"
 msgstr "Diese E-Mail sollte eigentlich verschlüsselt werden, aber es wurde kein verwendbarer Schlüssel zu deinem Fingerabdruck und deiner E-Mail-Adresse gefunden! Bitte überprüfe deine Einstellungen:"
 #
@@ -2913,3 +2913,7 @@ msgstr "Neuer Entwurf für Antrag %d"
 #, php-format
 msgid "Proponent '%s' added a new draft:"
 msgstr "Antragsteller '%s' hat einen neuen Entwurf gemacht:"
+#
+# File: about.php, line: 17
+msgid "Version"
+msgstr "Version"

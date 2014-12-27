@@ -67,9 +67,9 @@ function html_head($title, $help=false) {
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="stylesheet" media="all" type="text/css" href="style.css?<?=VERSION?>">
+	<link rel="stylesheet" media="all" type="text/css" href="style.css?<?=version()?>">
 <? if (Login::$admin) { ?>
-	<link rel="stylesheet" media="all" type="text/css" href="admin.css?<?=VERSION?>">
+	<link rel="stylesheet" media="all" type="text/css" href="admin.css?<?=version()?>">
 <? } ?>
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 	<title><?=h(TITLE." - ".$title)?></title>

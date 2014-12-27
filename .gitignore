@@ -15,10 +15,10 @@
 
 /inc/config.php
 /about_*.html
+/VERSION
 
 /db/basisentscheid_*.sql
 /db/tmp_*.sql
-/ssl/
 /*.sh
 /phpinfo.php
 /robots.txt

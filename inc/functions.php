@@ -10,6 +10,18 @@
 
 
 /**
+ * read version from file
+ *
+ * @return string
+ */
+function version() {
+	static $version;
+	if (!$version) $version = trim(file_get_contents(DOCROOT."VERSION"));
+	return $version;
+}
+
+
+/**
  * display a text independent of output interface
  *
  * @param string  $text

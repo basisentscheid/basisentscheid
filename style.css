@@ -1369,3 +1369,10 @@ td.period {
 td.period {
 	white-space: nowrap;
 }
+
+
+/* about.php */
+
+p.version span {
+	font-family: monospace;
+}
