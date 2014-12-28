@@ -12,8 +12,18 @@ set -e
 path=$( readlink -f $( dirname $0 ) )
 
 # get configuration
-dbname=$( php -r 'define("DOCROOT", "'$path'/../"); require DOCROOT."inc/config.php"; preg_match("/dbname=(\w+)/", DATABASE_CONNECT, $matches); echo $matches[1];' )
-dbuser=$( php -r 'define("DOCROOT", "'$path'/../"); require DOCROOT."inc/config.php"; preg_match("/user=(\w+)/",   DATABASE_CONNECT, $matches); echo $matches[1];' )
+dbname=$( php -r '
+	const DOCROOT = "'$path'/../";
+	require DOCROOT."inc/config.php";
+    preg_match("/dbname=(\w+)/", DATABASE_CONNECT, $matches);
+    echo $matches[1];
+' )
+dbuser=$( php -r '
+    const DOCROOT = "'$path'/../";
+    require DOCROOT."inc/config.php";
+    preg_match("/user=(\w+)/",   DATABASE_CONNECT, $matches);
+    echo $matches[1];
+' )
 
 tmpsql="$path/tmp_recreate_schema_$( date +%Y-%m-%d_%H-%I-%S ).sql"
 

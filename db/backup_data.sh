@@ -1,7 +1,7 @@
 #!/bin/bash
-# write the database schema to basisentscheid.sql
+# backup all data except raw voting data
 #
-# Usage: dump_schema.sh
+# Usage: backup_data.sh
 
 path=$( readlink -f $( dirname $0 ) )
 
@@ -19,4 +19,6 @@ dbuser=$( php -r '
     echo $matches[1];
 ' )
 
-pg_dump --username=$dbuser --schema-only --schema=public --no-owner --no-privileges $dbname > $path/basisentscheid.sql
+backupfile="$path/backup_data_$( date +%Y-%m-%d_%H-%I-%S ).sql.bz2"
+
+pg_dump --username=$dbuser --data-only --exclude-table="*_token" --exclude-table="*_vote" $dbname | bzip2 -c > $backupfile

@@ -19,6 +19,7 @@
 
 /db/basisentscheid_*.sql
 /db/tmp_*.sql
+/db/backup_data_*.sql.bz2
 /*.sh
 /phpinfo.php
 /robots.txt
