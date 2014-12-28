@@ -36,7 +36,7 @@ $sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting
 		now() - interval '2 weeks',
 		now() - interval '1 week',
 		now(),
-		true,
+		false,
 		".$ngroup->id."
 	) RETURNING id";
 $result = DB::query($sql);
@@ -65,7 +65,7 @@ $sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting
 		now() - interval '3 days',
 		now(),
 		now() + interval '2 weeks',
-		true,
+		false,
 		".$ngroup->id."
 	) RETURNING id";
 $result = DB::query($sql);
@@ -107,7 +107,7 @@ $sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting
 		now() + interval '2 weeks',
 		now() + interval '3 weeks',
 		now() + interval '4 weeks',
-		true,
+		false,
 		".$ngroup->id."
 	) RETURNING id";
 $result = DB::query($sql);

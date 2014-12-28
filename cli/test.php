@@ -275,7 +275,7 @@ function create_case($case, $stopcase) {
 				now() + interval '2 weeks',
 				now() + interval '3 weeks',
 				now() + interval '4 weeks',
-				true,
+				false,
 				".$ngroup->id."
 			) RETURNING id";
 			$result = DB::query($sql);
