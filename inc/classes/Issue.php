@@ -737,7 +737,7 @@ class Issue extends Relation {
 			}
 			?>" onClick="location.href='<?=$link?>'"><?
 			if ($proposal->activity >= ACTIVITY_THRESHOLD) {
-				?><span class="activity" style="opacity:<?=min($proposal->activity / ACTIVITY_DIVISOR, 1)?>" title="<?=_("Recent activity")?>">&#10239;</span><?
+				?><img src="img/activity.png" width="31" height="16" class="activity" style="opacity:<?=min($proposal->activity / ACTIVITY_DIVISOR, 1)?>" <?alt(_("Recent activity"))?>><?
 			}
 			echo _("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
 <?
