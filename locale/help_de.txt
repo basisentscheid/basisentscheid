@@ -1,6 +1,6 @@
 ===index.php
 
-Es gibt zwei Möglichkeiten, zu den Inhalten der Gliederungen zu kommen: Man kann in der <b>Menüleiste</b> oben erst eine Gliederung auswählen und dann rechts daneben zu einer Seite dieser Gliederung gehen. Oder man folgt unten in der <b>Tabelle der Gliederungen</b> direkt einem der Links. In beiden Fällen zeigen die Haken, in welchen Gliederungen der angemeldete Benutzer stimmberechtigt ist.
+Es gibt zwei Möglichkeiten, zu den Inhalten der Gliederungen zu kommen: Man kann in der <b>Menüleiste</b> oben erst eine Gliederung auswählen und dann rechts daneben zu einer Seite dieser Gliederung gehen. Oder man folgt unten in der <b>Tabelle der Gliederungen</b> direkt einem der Links. In beiden Fällen sind die eigenen Gliederungen an den schwarz gefüllten Karos zu erkennen.
 
 ===proposals.php
 
