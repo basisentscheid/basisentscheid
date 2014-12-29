@@ -73,10 +73,10 @@ class Proposal extends Relation {
 	/**
 	 * create a new proposal
 	 *
-	 * @return boolean
 	 * @param string  $proponent proponent name
 	 * @param integer $area      (optional) area for a new created issue
 	 * @param array   $fields    (optional)
+	 * @return boolean
 	 */
 	public function create($proponent, $area=0, array $fields=array("title", "content", "reason", "issue")) {
 

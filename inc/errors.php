@@ -20,10 +20,10 @@
  *
  * These functions use only native PHP functions and the functions in this file, because it can not be assumed, that other functions are accessible and work without errors.
  *
- * @see inc/common_http.php
- * @see inc/common_cli.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see inc/common_cli.php
+ * @see inc/common_http.php
  */
 
 

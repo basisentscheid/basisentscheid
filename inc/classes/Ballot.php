@@ -27,8 +27,8 @@ class Ballot extends Relation {
 	/**
 	 * create a new ballot
 	 *
-	 * @return void
 	 * @param array   $fields (optional)
+	 * @return void
 	 */
 	public function create( array $fields = array("name", "agents", "period", "opening", "ngroup") ) {
 

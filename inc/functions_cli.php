@@ -2,9 +2,9 @@
 /**
  * functions used by command line scripts
  *
- * @see inc/common_cli.php
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see inc/common_cli.php
  */
 
 
@@ -393,9 +393,9 @@ function update_activity() {
 /**
  * upload voter lists for postal voting and for each ballot
  *
- * @return boolean
  * @param Period  $period
  * @param boolean $include_ballot_voters (optional)
+ * @return boolean
  */
 function upload_voters($period, $include_ballot_voters=false) {
 

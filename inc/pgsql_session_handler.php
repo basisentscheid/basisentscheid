@@ -43,6 +43,7 @@
  * @author  Jon Parise <jon@php.net>
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see inc/classes/Login.php
  */
 
 
