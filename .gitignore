@@ -14,7 +14,7 @@
 .phptidy-cache
 
 /inc/config.php
-/about_*.html
+/locale/about_*.html
 /VERSION
 
 /db/basisentscheid_*.sql
