@@ -641,7 +641,7 @@ function help($anchor="", $h1=false) {
 			'REQUIRED_PROPONENTS' => REQUIRED_PROPONENTS,
 			'QUORUM_VOTINGMODE'   => numden([QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN])
 		);
-		foreach ( file("locale/help_".LANG.".txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
+		foreach ( file("locale/help_".LANG.".html", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
 			if ($display) {
 				$line_begin = mb_substr($line, 0, 3);
 				if ($line_begin == "===") break;
