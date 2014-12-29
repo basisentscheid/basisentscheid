@@ -305,7 +305,12 @@ class Notification {
 
 			$subject = sprintf(_("New draft for proposal %d"), $this->proposal->id);
 
-			$body .= sprintf(_("Proponent '%s' added a new draft:"), $this->proponent)."\n"
+			if ($this->proponent !== false) {
+				$body .= sprintf(_("Proponent '%s' added a new draft:"), $this->proponent);
+			} else {
+				$body .= _("An admin added a new draft:");
+			}
+			$body .= "\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
 				."===== "._("Title")." =====\n"
 				.$this->proposal->title."\n\n"

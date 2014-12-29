@@ -119,7 +119,12 @@ class Proposal extends Relation {
 
 		$notification = new Notification("new_draft");
 		$notification->proposal = $this;
-		$notification->proponent = $this->proponent_name(Login::$member->id);
+		if (Login::$member) {
+			$notification->proponent = $this->proponent_name(Login::$member->id);
+		} else {
+			// admin
+			$notification->proponent = false;
+		}
 		$notification->send();
 
 	}
