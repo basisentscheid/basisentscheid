@@ -659,7 +659,8 @@ function help($anchor="", $h1=false) {
 		// placeholders
 		$replace = array(
 			'REQUIRED_PROPONENTS' => REQUIRED_PROPONENTS,
-			'QUORUM_VOTINGMODE'   => numden([QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN])
+			'QUORUM_VOTINGMODE'   => numden([QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN]),
+			'MAIL_SUPPORT'        => MAIL_SUPPORT
 		);
 		foreach ( file("locale/help_".LANG.".html", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
 			if ($display) {

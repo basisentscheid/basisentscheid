@@ -10,13 +10,13 @@ Hier sind die Anträge in der oben ausgewählten <a href="manual.php#Gliederunge
 Anträge durchlaufen folgende <b>Phasen</b>:
  * <a href="manual.php#Entwurf">Entwurf</a>: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn REQUIRED_PROPONENTS Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
  * <a href="manual.php#eingereicht">eingereicht</a>: Der Antrag sammelt nun <a href="manual.php#Unterstuetzer">Unterstützer</a>, um das <a href="manual.php#Zulassung">Quorum zur Zulassung</a> zu erreichen.
- * <a href="manual.php#zugelassen">zugelassen</a>: Der Antrag hat das Zulassungsquorum erreicht und wartet darauf, von den Verantwortlichen einer <a href="manual.php#Abstimmungsperioden">Abstimmungsperiode</a> zugeordnet zu werden, in der dann die weiteren Phasen ablaufen.
+ * <a href="manual.php#zugelassen">zugelassen</a>: Der Antrag hat das Zulassungsquorum erreicht und wartet darauf, von den <a href="manual.php#Verantwortliche">Verantwortlichen</a> einer <a href="manual.php#Abstimmungsperioden">Abstimmungsperiode</a> zugeordnet zu werden, in der dann die weiteren Phasen ablaufen.
 
 Die aktuelle Phase eines Antrags wird in der Spalte <b>Status</b> angezeigt.
 
-Wenn eine <a href="manual.php#Abstimmung">Abstimmung</a> abgeschlossen ist, kommst du mit einem Klick auf die Spalte <b>Ergebnis</b> zu einer Liste aller abgegebenen Stimmen.
+Unter <b>Geschlossen</b> werden <a href="manual.php#abgeschlossen">abgeschlossene</a> und abgebrochene Themen angezeigt. Mit einem Klick auf die dort angezeigte Spalte <b>Ergebnis</b> kommst du zu einer Liste aller bei der <a href="manual.php#Abstimmung">Abstimmung</a> abgegebenen Stimmen.
 
-Wenn das <a href="manual.php#Abstimmungsverfahren">Abstimmungsverfahren</a> für ein Thema feststeht, kommst du mit einem Klick auf die Spalte <b>Abstimmungsverfahren</b> zu einer Liste aller dazu abgegebenen Stimmen.
+Wenn das <a href="manual.php#Abstimmungsverfahren">Abstimmungsverfahren</a> für ein Thema feststeht, kommst du mit einem Klick auf die Spalte <b>Verfahren</b> zu einer Liste aller dazu abgegebenen Stimmen.
 
 ===proposal.php
 
@@ -28,7 +28,7 @@ Um zur <a href="manual.php#Abstimmung">Abstimmung</a> zugelassen zu werden, ben�
 
 Solange ein <a href="manual.php#Thema">Thema</a> noch nicht die <a href="manual.php#Debatte">Debatte</a> erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
 
-Bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> kannst du eine <b><a href="manual.php#Abstimmungsverfahren">geheime Offline-Abstimmung</a></b> eines Themas fordern. Wenn bis dahin QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
+Bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> kannst du eine <b><a href="manual.php#Offline-Abstimmung">geheime Offline-Abstimmung</a></b> eines Themas fordern. Wenn bis dahin QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
 
 ===proposal.php#comments
 
@@ -65,7 +65,7 @@ Anhand dieser Liste kannst du folgendes überprüfen:
 
 Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
 
-Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die Verantwortlichen!
+Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:MAIL_SUPPORT">MAIL_SUPPORT</a>)!
 
 ===votingmode_result.php
 
@@ -79,13 +79,13 @@ Anhand dieser Liste kannst du folgendes überprüfen:
 
 Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
 
-Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die Verantwortlichen!
+Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:MAIL_SUPPORT">MAIL_SUPPORT</a>)!
 
 ===periods.php
 
 Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
 
-Bevor eine Abstimmungsperiode beginnt, ordnen die Verantwortlichen die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b>Debatte</b>. Bis zur <b><a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a></b> kann bei jedem Antrag eine <a href="manual.php#Abstimmungsverfahren">Offline-Abstimmung</a> gefordert werden. Wenn bis dahin das Quorum zur Offline-Abstimmung erreicht ist, bleibt das <a href="manual.php#Thema">Thema</a> in dieser Phase bis die Verantwortlichen das Ergebnis eingegeben haben. Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag.
+Bevor eine Abstimmungsperiode beginnt, ordnen die <a href="manual.php#Verantwortliche">Verantwortlichen</a> die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b>Debatte</b>. Bis zur <b><a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a></b> kann bei jedem Antrag eine <a href="manual.php#Offline-Abstimmung">Offline-Abstimmung</a> gefordert werden. Wenn bis dahin das Quorum zur Offline-Abstimmung erreicht ist, bleibt das <a href="manual.php#Thema">Thema</a> in dieser Phase bis die <a href="manual.php#Verantwortliche">Verantwortlichen</a> das Ergebnis eingegeben haben. Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag.
 
 Wenn bei einer Abstimmungsperiode die <b>Urnenabstimmung</b> aktiviert ist, stehen weitere Felder und Funktionen zur Vorbereitung der Urnenabstimmung zur Verfügung. Diese findet parallel zur Debatte, <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> und <a href="manual.php#Abstimmung">Online-Abstimmung</a> statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Zum Zeitpunkt der <i>Urnenzuordnung</i> werden alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet. Bis zum Zeitpunkt der <i>Urnenvorbereitung</i> können die Teilnehmer noch eine andere Urne auswählen.
 
@@ -95,7 +95,7 @@ Aktuelle Phasen sind hier fett dargestellt, vergangene Zeitpunkte kursiv, zukün
 
 Bei einer <b>Urnenabstimmung</b> wird die Abstimmung an mehreren über das Gebiet der <a href="manual.php#Gliederungen">Gliederung</a> verteilten Urnen durchgeführt.
 
-Zunächst werden dazu hier Urnen (Urnenanträge) gesammelt. Mitglieder können sich bereits unverbindlich als (Abstimmungs-)Teilnehmer einer Urne zuordnen. Die Verantwortlichen genehmigen Urnen, die u.a. eine ausreichende Teilnahme erwarten lassen.
+Zunächst werden dazu hier Urnen (Urnenanträge) gesammelt. Mitglieder können sich bereits unverbindlich als (Abstimmungs-)Teilnehmer einer Urne zuordnen. Die <a href="manual.php#Verantwortliche">Verantwortlichen</a> genehmigen Urnen, die u.a. eine ausreichende Teilnahme erwarten lassen.
 
 Zum Zeitpunkt <i>Urnenzuordnung</i> werden die noch nicht einer genehmigten Urne zugeordneten Mitglieder automatisch der räumlich nächsten Urne zugeordnet. Diese Zuordnung ist freilich nicht perfekt und die Mitglieder können bis zum Zeitpunkt der <i>Urnenvorbereitung</i> noch eine andere Urne auswählen.
 
@@ -109,9 +109,11 @@ Wähle als <b>Gliederung des Ortes</b> bitte die niedrigste Gliederung aus, in d
 
 ===areas.php
 
-Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. Durch Einreichung, <a href="manual.php#Unterstuetzer">Unterstützung</a> oder <a href="manual.php#Abstimmung">Abstimmung</a> eines Antrags meldest du dich automatisch beim entsprechenden Themenbereich an. Die Anmeldung verfällt nach dem zweiten Stichtag nach der letzten Anmeldung.
+Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. Normalerweise musst du dich um die Anmeldung zu Themenbereichen nicht selbst kümmern, da diese bei Einreichung, <a href="manual.php#Unterstuetzer">Unterstützung</a> oder <a href="manual.php#Abstimmung">Abstimmung</a> eines Antrags automatisch geschieht. Wer über zwei <a href="manual.php#Abstimmungsperioden">Stichtage</a> hinweg keine dieser Aktionen tätigt, wird auch wieder automatisch abgemeldet.
 
-Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für das <a href="manual.php#Zulassung"><b>Quorum</b> zur Zulassung eines Antrags</a> und für das <a href="menual.php#Abstimmungsverfahren">Quorum zur Durchführung einer Offline-Abstimmung</a>.
+Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für die beiden <b>Quoren</b>:
+ * das <a href="manual.php#Zulassung">Quorum zur Zulassung eines Antrags</a>
+ * das <a href="manual.php#Abstimmungsverfahren">Quorum zur Durchführung einer geheimen Offline-Abstimmung</a>
 
 ===settings.php
 
