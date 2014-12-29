@@ -361,6 +361,9 @@ div.help {
 	margin-bottom: 1em;
 	border-radius: 6px;
 }
+div.help a {
+	padding: 0 0 1px 0;
+}
 div.help p {
 	margin: 5px 0;
 }
