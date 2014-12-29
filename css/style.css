@@ -384,6 +384,19 @@ form.show_help.h1 {
 	margin-top: 1.4em;
 }
 
+div.help.manual {
+	padding: 1em 0.7em;
+	-webkit-column-width: 50em;
+	-moz-column-width:    50em;
+	column-width:         50em;
+	-webkit-column-gap: 1.4em;
+	-moz-column-gap:    1.4em;
+	column-gap:         1.4em;
+	-webkit-column-rule: 2px dotted #F4EEF7;
+	-moz-column-rule:    2px dotted #F4EEF7;
+	column-rule:         2px dotted #F4EEF7;
+}
+
 /* numbering h2 and h3 */
 div.help main {
 	counter-reset: level1;

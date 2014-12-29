@@ -12,7 +12,7 @@ require "inc/common_http.php";
 html_head(_("Manual"));
 
 ?>
-<div class="help">
+<div class="help manual">
 <?
 readfile("locale/manual_".LANG.".html");
 ?>
