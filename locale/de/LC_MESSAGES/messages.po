@@ -52,7 +52,7 @@ msgstr "Speichern"
 #
 # File: index.php, line: 130
 # File: periods.php, line: 53
-# File: inc/functions_http.php, line: 189
+# File: inc/functions_http.php, line: 209
 msgid "Periods"
 msgstr "Abstimmungsperioden"
 #
@@ -68,8 +68,8 @@ msgstr "Neuer Antrag"
 # File: proposal_edit.php, line: 170
 # File: proposal.php, line: 332
 # File: inc/classes/Notification.php, line: 296
-# File: inc/classes/Notification.php, line: 310
-# File: inc/classes/Notification.php, line: 324
+# File: inc/classes/Notification.php, line: 315
+# File: inc/classes/Notification.php, line: 329
 msgid "Title"
 msgstr "Titel"
 #
@@ -81,15 +81,15 @@ msgstr "Titel"
 # File: inc/classes/Issue.php, line: 1193
 # File: inc/classes/Notification.php, line: 251
 # File: inc/classes/Notification.php, line: 274
-# File: inc/classes/Notification.php, line: 336
-# File: inc/classes/Notification.php, line: 347
-# File: inc/classes/Notification.php, line: 359
-# File: inc/classes/Notification.php, line: 376
-# File: inc/classes/Notification.php, line: 397
-# File: inc/classes/Notification.php, line: 417
-# File: inc/classes/Notification.php, line: 434
-# File: inc/classes/Notification.php, line: 438
-# File: inc/classes/Notification.php, line: 445
+# File: inc/classes/Notification.php, line: 341
+# File: inc/classes/Notification.php, line: 352
+# File: inc/classes/Notification.php, line: 364
+# File: inc/classes/Notification.php, line: 381
+# File: inc/classes/Notification.php, line: 402
+# File: inc/classes/Notification.php, line: 422
+# File: inc/classes/Notification.php, line: 439
+# File: inc/classes/Notification.php, line: 443
+# File: inc/classes/Notification.php, line: 450
 # File: inc/classes/Period.php, line: 128
 msgid "Proposal"
 msgstr "Antrag"
@@ -108,8 +108,8 @@ msgstr "Diesen Antrag unterstützen"
 # File: proposal_edit.php, line: 172
 # File: proposal.php, line: 334
 # File: inc/classes/Notification.php, line: 298
-# File: inc/classes/Notification.php, line: 312
-# File: inc/classes/Notification.php, line: 326
+# File: inc/classes/Notification.php, line: 317
+# File: inc/classes/Notification.php, line: 331
 msgid "Content"
 msgstr "Antragstext"
 #
@@ -118,14 +118,14 @@ msgstr "Antragstext"
 # File: proposal_edit.php, line: 178
 # File: proposal.php, line: 343
 # File: inc/classes/Notification.php, line: 300
-# File: inc/classes/Notification.php, line: 314
-# File: inc/classes/Notification.php, line: 328
+# File: inc/classes/Notification.php, line: 319
+# File: inc/classes/Notification.php, line: 333
 msgid "Reason"
 msgstr "Begründung"
 #
 # File: index.php, line: 125
 # File: proposals.php, line: 27
-# File: inc/functions_http.php, line: 188
+# File: inc/functions_http.php, line: 208
 msgid "Proposals"
 msgstr "Anträge"
 #
@@ -134,12 +134,12 @@ msgid "Add proposal"
 msgstr "Antrag hinzufügen"
 #
 # File: index.php, line: 131
-# File: inc/functions_http.php, line: 191
-# File: inc/functions_http.php, line: 193
+# File: inc/functions_http.php, line: 211
+# File: inc/functions_http.php, line: 213
 msgid "Areas"
 msgstr "Themenbereiche"
 #
-# File: inc/functions_http.php, line: 309
+# File: inc/functions_http.php, line: 334
 msgid "Logout"
 msgstr "abmelden"
 #
@@ -147,9 +147,9 @@ msgstr "abmelden"
 msgid "Login"
 msgstr "Anmeldung"
 #
-# File: inc/classes/Proposal.php, line: 908
-# File: inc/classes/Proposal.php, line: 919
-# File: inc/classes/Proposal.php, line: 920
+# File: inc/classes/Proposal.php, line: 913
+# File: inc/classes/Proposal.php, line: 924
+# File: inc/classes/Proposal.php, line: 925
 msgid "anonymous"
 msgstr "anonym"
 #
@@ -177,7 +177,7 @@ msgstr "Debatte"
 # File: inc/classes/Issue.php, line: 887
 # File: inc/classes/Issue.php, line: 895
 # File: inc/classes/Issue.php, line: 900
-# File: inc/classes/Notification.php, line: 403
+# File: inc/classes/Notification.php, line: 408
 msgid "Voting"
 msgstr "Abstimmung"
 #
@@ -190,7 +190,7 @@ msgstr "Auszählung"
 # File: admin_areas.php, line: 32
 # File: proposal_edit.php, line: 205
 # File: proposal.php, line: 477
-# File: inc/classes/Proposal.php, line: 1062
+# File: inc/classes/Proposal.php, line: 1067
 msgid "Area"
 msgstr "Themenbereich"
 #
@@ -198,22 +198,22 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
-# File: inc/classes/Proposal.php, line: 173
+# File: inc/classes/Proposal.php, line: 178
 msgid "Draft"
 msgstr "Entwurf"
 #
 # File: proposal.php, line: 357
-# File: inc/classes/Proposal.php, line: 174
+# File: inc/classes/Proposal.php, line: 179
 msgid "Submitted"
 msgstr "eingereicht"
 #
 # File: proposal.php, line: 360
-# File: inc/classes/Proposal.php, line: 175
+# File: inc/classes/Proposal.php, line: 180
 msgid "Admitted"
 msgstr "zugelassen"
 #
 # File: proposal.php, line: 370
-# File: inc/classes/Proposal.php, line: 176
+# File: inc/classes/Proposal.php, line: 181
 msgid "Revoked"
 msgstr "zurückgezogen"
 #
@@ -221,9 +221,9 @@ msgstr "zurückgezogen"
 # File: proposal.php, line: 376
 # File: proposal.php, line: 379
 # File: inc/classes/Issue.php, line: 109
-# File: inc/classes/Proposal.php, line: 177
-# File: inc/classes/Proposal.php, line: 178
-# File: inc/classes/Proposal.php, line: 179
+# File: inc/classes/Proposal.php, line: 182
+# File: inc/classes/Proposal.php, line: 183
+# File: inc/classes/Proposal.php, line: 184
 msgid "Cancelled"
 msgstr "abgebrochen"
 #
@@ -232,7 +232,7 @@ msgstr "anderweitig erledigt"
 #
 # File: periods.php, line: 18
 # File: inc/classes/Issue.php, line: 105
-# File: inc/classes/Notification.php, line: 402
+# File: inc/classes/Notification.php, line: 407
 msgid "Voting preparation"
 msgstr "Abstimmungs&shy;vorbereitung"
 #
@@ -270,7 +270,7 @@ msgstr "zuletzt aktiviert"
 #
 # File: proposal_edit.php, line: 222
 # File: proposal.php, line: 498
-# File: inc/classes/Proposal.php, line: 1064
+# File: inc/classes/Proposal.php, line: 1069
 msgid "Proponents"
 msgstr "Antragsteller"
 #
@@ -291,7 +291,7 @@ msgid "Edit proposal"
 msgstr "Antrag bearbeiten"
 #
 # File: proposal.php, line: 625
-# File: inc/classes/Proposal.php, line: 967
+# File: inc/classes/Proposal.php, line: 972
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 #
@@ -605,7 +605,7 @@ msgid "Debate starts at %s"
 msgstr "Debatte startet am %s"
 #
 # File: about.php, line: 12
-# File: inc/functions_http.php, line: 353
+# File: inc/functions_http.php, line: 378
 msgid "About"
 msgstr "Impressum"
 #
@@ -778,7 +778,7 @@ msgid "Password (2x)"
 msgstr "Passwort (2x)"
 #
 # File: admins.php, line: 31
-# File: inc/functions_http.php, line: 203
+# File: inc/functions_http.php, line: 228
 msgid "Admins"
 msgstr "Verantwortliche"
 #
@@ -807,12 +807,12 @@ msgstr "%d von momentan für Offline-Abstimmung erforderlichen %d (%s von %d)"
 msgid "%d of currently required %d (%s of %d) for admission"
 msgstr "%d von momentan zur Zulassung erforderlichen %d (%s von %d)"
 #
-# File: inc/functions_http.php, line: 278
+# File: inc/functions_http.php, line: 303
 #, php-format
 msgid "logged in as %s"
 msgstr "angemeldet als %s"
 #
-# File: inc/functions_http.php, line: 302
+# File: inc/functions_http.php, line: 327
 #, php-format
 msgid "logged in as admin %s"
 msgstr "angemeldet als Verantwortlicher %s"
@@ -835,11 +835,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 662
+# File: inc/functions_http.php, line: 687
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 608
+# File: inc/functions_http.php, line: 633
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -865,7 +865,7 @@ msgid "You support this proposal anonymously."
 msgstr "Du unterstützt diesen Antrag anonym."
 #
 # File: admin_members.php, line: 60
-# File: inc/functions_http.php, line: 202
+# File: inc/functions_http.php, line: 227
 msgid "Members"
 msgstr "Mitglieder"
 #
@@ -905,11 +905,11 @@ msgstr "In dieser Phase ist es nicht erlaubt, einen konkurrierenden Antrag hinzu
 msgid "Edit Proposal %d"
 msgstr "Antrag %d bearbeiten"
 #
-# File: inc/classes/Proposal.php, line: 255
+# File: inc/classes/Proposal.php, line: 260
 msgid "The proposal has already been submitted."
 msgstr "Der Antrag wurde bereits eingereicht."
 #
-# File: inc/classes/Proposal.php, line: 792
+# File: inc/classes/Proposal.php, line: 797
 msgid "In the current phase the proposal can not be revoked anymore."
 msgstr "In der aktuellen Phase kann der Antrag nicht mehr zurückgezogen werden."
 #
@@ -922,8 +922,8 @@ msgid "Proposal %d, draft from %s"
 msgstr "Antrag %d, Entwurf vom %s"
 #
 # File: proposal.php, line: 573
-# File: inc/classes/Proposal.php, line: 1097
-# File: inc/classes/Proposal.php, line: 1180
+# File: inc/classes/Proposal.php, line: 1102
+# File: inc/classes/Proposal.php, line: 1185
 msgid "Drafts"
 msgstr "Entwürfe"
 #
@@ -1022,8 +1022,8 @@ msgid "reply"
 msgstr "antworten"
 #
 # File: proposal_edit.php, line: 98
-# File: inc/classes/Proposal.php, line: 405
-# File: inc/classes/Proposal.php, line: 458
+# File: inc/classes/Proposal.php, line: 410
+# File: inc/classes/Proposal.php, line: 463
 #, php-format
 msgid "The input has been truncated to the maximum allowed length of %d characters!"
 msgstr "Die Eingabe wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
@@ -1032,38 +1032,38 @@ msgstr "Die Eingabe wurde auf die maximal erlaubte Länge von %d Zeichen gekürz
 msgid "Enter your name and contact details as you would like to see them in the proposal."
 msgstr "Gib Deinen Namen und Kontaktdaten so an, wie Du sie im Antrag stehen haben willst."
 #
-# File: inc/classes/Proposal.php, line: 259
+# File: inc/classes/Proposal.php, line: 264
 #, php-format
 msgid "For submission %d proponents are required."
 msgstr "Zur Einreichung sind %d Antragsteller erforderlich."
 #
-# File: inc/classes/Proposal.php, line: 452
+# File: inc/classes/Proposal.php, line: 457
 msgid "Your proponent info can not be changed anymore once voting preparation has started or the proposal has been closed!"
 msgstr "Deine Antragsteller-Angaben können nicht mehr geändert werden, wenn die Antragsvorbereitung begonnen hat oder der Antrag geschlossen wurde!"
 #
-# File: inc/classes/Proposal.php, line: 392
-# File: inc/classes/Proposal.php, line: 446
+# File: inc/classes/Proposal.php, line: 397
+# File: inc/classes/Proposal.php, line: 451
 msgid "Your proponent info must be not empty."
 msgstr "Deine Antragsteller-Angaben dürfen nicht leer sein."
 #
-# File: inc/classes/Proposal.php, line: 399
+# File: inc/classes/Proposal.php, line: 404
 msgid "You can not become proponent anymore once voting preparation has started or the proposal has been closed!"
 msgstr "Du kannst nicht mehr Antragsteller werden, wenn die Antragsvorbereitung begonnen hat oder der Antrag geschlossen wurde!"
 #
-# File: inc/classes/Proposal.php, line: 429
+# File: inc/classes/Proposal.php, line: 434
 msgid "Your application to become proponent has been submitted to the current proponents to confirm your request."
 msgstr "Deine Anfrage, als Mitantragsteller aufgenommen zu werden, wurde an die derzeitigen Antragsteller geschickt, damit diese die Anfrage bestätigen."
 #
-# File: inc/classes/Proposal.php, line: 478
+# File: inc/classes/Proposal.php, line: 483
 msgid "You can not confirm proponents anymore once voting preparation has started or the proposal has been closed!"
 msgstr "Anfragen um Mitantragsteller zu werden, können nicht mehr bestätigt werden, wenn die Antragsvorbereitung begonnen hat oder der Antrag geschlossen wurde!"
 #
-# File: inc/classes/Proposal.php, line: 483
+# File: inc/classes/Proposal.php, line: 488
 msgid "The to be confirmed member is not applying to become proponent of this proposal."
 msgstr "Das zu bestätigende Mitglied stellt keine Anfrage, Mitantragsteller zu werden."
 #
 # File: proposal.php, line: 283
-# File: inc/classes/Proposal.php, line: 534
+# File: inc/classes/Proposal.php, line: 539
 msgid "You can not remove yourself from the proponents list once voting preparation has started or the proposal has been closed!"
 msgstr "Du kannst Dich nicht mehr aus der Antragsteller-Liste löschen wenn die Antragsvorbereitung begonnen hat oder der Antrag geschlossen wurde!"
 #
@@ -1076,7 +1076,7 @@ msgstr "Willst Du Dich wirklich auch der Liste der Antragsteller löschen?"
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 642
 # File: inc/classes/Issue.php, line: 1024
-# File: inc/classes/Notification.php, line: 419
+# File: inc/classes/Notification.php, line: 424
 msgid "Yes"
 msgstr "Ja"
 #
@@ -1085,7 +1085,7 @@ msgstr "Ja"
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 643
 # File: inc/classes/Issue.php, line: 1027
-# File: inc/classes/Notification.php, line: 419
+# File: inc/classes/Notification.php, line: 424
 msgid "No"
 msgstr "Nein"
 #
@@ -1245,8 +1245,8 @@ msgstr "zurückziehen"
 msgid "Demand offline voting"
 msgstr "Offline-Abstimmung fordern"
 #
-# File: inc/classes/Proposal.php, line: 1124
-# File: inc/classes/Proposal.php, line: 1190
+# File: inc/classes/Proposal.php, line: 1129
+# File: inc/classes/Proposal.php, line: 1195
 msgid "proponent revoked"
 msgstr "zurückgezogen"
 #
@@ -1272,7 +1272,7 @@ msgstr "Diesen Antrag anonym unterstützen"
 msgid "Support"
 msgstr "Unterstützer"
 #
-# File: inc/classes/Proposal.php, line: 948
+# File: inc/classes/Proposal.php, line: 953
 #, php-format
 msgid "%d supporters of %d participants - %d supporters (%s) currently required for admission"
 msgstr "%d Unterstützer von %d Teilnehmern - %d Unterstützer (%s) momentan erforderlich zur Zulassung"
@@ -1375,9 +1375,9 @@ msgstr "Bitte bestätige Deine E-Mail-Adresse durch Klick auf folgenden Link:"
 msgid "If this link does not work, please open the following URL in your web browser:"
 msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web-Browser:"
 #
-# File: inc/classes/Proposal.php, line: 905
-# File: inc/classes/Proposal.php, line: 916
-# File: inc/classes/Proposal.php, line: 917
+# File: inc/classes/Proposal.php, line: 910
+# File: inc/classes/Proposal.php, line: 921
+# File: inc/classes/Proposal.php, line: 922
 msgid "proponent"
 msgstr "Antragsteller"
 #
@@ -1393,25 +1393,25 @@ msgstr "Debatte"
 msgid "finished"
 msgstr "abgeschlossen"
 #
-# File: inc/classes/Notification.php, line: 381
+# File: inc/classes/Notification.php, line: 386
 #, php-format
 msgid "Proposals %s admitted"
 msgstr "Antrag %s zugelassen"
 #
-# File: inc/classes/Notification.php, line: 368
+# File: inc/classes/Notification.php, line: 373
 msgid "The following proposals have been admitted"
 msgstr "Die folgenden Anträge wurden zugelassen"
 #
-# File: inc/classes/Notification.php, line: 383
+# File: inc/classes/Notification.php, line: 388
 #, php-format
 msgid "Proposal %d admitted"
 msgstr "Antrag %d zugelassen"
 #
-# File: inc/classes/Notification.php, line: 370
+# File: inc/classes/Notification.php, line: 375
 msgid "The following proposal has been admitted"
 msgstr "Der folgende Antrag wurde zugelassen"
 #
-# File: inc/classes/Notification.php, line: 389
+# File: inc/classes/Notification.php, line: 394
 #, php-format
 msgid "Debate started in period %d"
 msgstr "Debatte in Periode %d gestartet"
@@ -1425,23 +1425,23 @@ msgstr "Abstimmung in Periode %d gestartet"
 msgid "Voting end"
 msgstr "Abstimmungsende"
 #
-# File: inc/classes/Proposal.php, line: 688
+# File: inc/classes/Proposal.php, line: 693
 msgid "create a new issue"
 msgstr "neues Thema anlegen"
 #
-# File: inc/classes/Proposal.php, line: 724
+# File: inc/classes/Proposal.php, line: 729
 msgid "Moving this proposal is not allowed anymore."
 msgstr "Diesen Antrag zu verschieben ist nicht mehr erlaubt."
 #
-# File: inc/classes/Proposal.php, line: 731
+# File: inc/classes/Proposal.php, line: 736
 msgid "The selected option is not available."
 msgstr "Die ausgewählte Option nicht nicht mehr verfügbar."
 #
-# File: inc/classes/Proposal.php, line: 741
+# File: inc/classes/Proposal.php, line: 746
 msgid "The issue does not exist."
 msgstr "Das Thema existiert nicht."
 #
-# File: inc/classes/Proposal.php, line: 1167
+# File: inc/classes/Proposal.php, line: 1172
 msgid "compare versions"
 msgstr "Versionen vergleichen"
 #
@@ -1453,17 +1453,17 @@ msgstr "Nr."
 # File: admin_ngroups.php, line: 30
 # File: index.php, line: 97
 # File: settings.php, line: 77
-# File: inc/functions_http.php, line: 204
+# File: inc/functions_http.php, line: 229
 msgid "Groups"
 msgstr "Gliederungen"
 #
 # File: admin_members.php, line: 38
-# File: inc/functions_http.php, line: 284
+# File: inc/functions_http.php, line: 309
 msgid "eligible"
 msgstr "stimmberechtigt"
 #
 # File: login.php, line: 48
-# File: inc/functions_http.php, line: 317
+# File: inc/functions_http.php, line: 342
 msgid "login"
 msgstr "anmelden"
 #
@@ -1569,34 +1569,34 @@ msgstr "Urnenbeauftragte:  "
 msgid "Postage has started, choice for postal voting can not be changed any longer. Also this option itself can not be deactivated anymore once it has been activated."
 msgstr "Versand der Briefabstimmungsunterlagen hat bereits begonnen, die Auswahl der Briefabstimmung kann nicht mehr rückgängig gemacht werden. Auch diese Option selbst kann nicht mehr deaktiviert werden, nachdem sie einmal aktiviert wurde."
 #
-# File: inc/classes/Notification.php, line: 453
+# File: inc/classes/Notification.php, line: 458
 #, php-format
 msgid "Ballot approved in period %d"
 msgstr "Urne genehmigt in Abstimmungsperiode %d"
 #
-# File: inc/classes/Notification.php, line: 455
+# File: inc/classes/Notification.php, line: 460
 msgid "Your ballot application has been approved:"
 msgstr "Dein Urnenantrag wurde genehmigt:"
 #
-# File: inc/classes/Notification.php, line: 461
+# File: inc/classes/Notification.php, line: 466
 #, php-format
 msgid "Ballot not approved in period %d"
 msgstr "Urne nicht genehmigt in Abstimmungsperiode %d"
 #
-# File: inc/classes/Notification.php, line: 463
+# File: inc/classes/Notification.php, line: 468
 msgid "Your ballot application has NOT been approved:"
 msgstr "Dein Urnenantrag wurde NICHT genehmigt:"
 #
-# File: inc/classes/Notification.php, line: 469
+# File: inc/classes/Notification.php, line: 474
 #, php-format
 msgid "Ballot assigned in period %d"
 msgstr "Einer Urne zugeordnet in Abstimmungsperiode %d"
 #
-# File: inc/classes/Notification.php, line: 471
+# File: inc/classes/Notification.php, line: 476
 msgid "Ballot assignment has been started. You have been assigned to the following ballot:"
 msgstr "Die Urnenzuordnung hat begonnen. Du wurdest folgender Urne zugeordnet:"
 #
-# File: inc/classes/Notification.php, line: 473
+# File: inc/classes/Notification.php, line: 478
 #, php-format
 msgid "This ballot has been selected, either because you selected it yourself and it was approved or because it looks like it's the nearest one to where you live. You can change the selected ballot here until ballot preparation starts at %s:"
 msgstr "Diese Urne wurde ausgewählt, entweder weil du sie selbst ausgewählt hast oder weil sie die nächste Urne zu deinem Wohnort zu sein scheint. Du kannst hier zu einer anderen Urne oder zu Briefabstimmung wechseln bis die Urnenvorbereitung am %s startet:"
@@ -1676,7 +1676,7 @@ msgstr "<a%s>Antrag %d</a>, Versionsunterschiede"
 msgid "Voting for issue %d could not be started, because the determined voting mode is not available in the current and all further voting periods!"
 msgstr "Die Abstimmung für Thema %d konnte nicht gestartet werden, weil das ermittelte Abstimmungsverfahren in der aktuellen und allen zukünftigen Abstimmungsperioden nicht verfügbar ist!"
 #
-# File: inc/functions_http.php, line: 100
+# File: inc/functions_http.php, line: 120
 msgid "Logo"
 msgstr "Logo"
 #
@@ -1698,44 +1698,44 @@ msgstr "Neuer Antrag %d in Themenbereich %s"
 msgid "Proponent '%s' added a new proposal:"
 msgstr "Antragsteller '%s' hat einen neuen Antrag erstellt:"
 #
-# File: inc/classes/Notification.php, line: 320
+# File: inc/classes/Notification.php, line: 325
 #, php-format
 msgid "Proposal %d submitted"
 msgstr "Antrag %d eingereicht"
 #
-# File: inc/classes/Notification.php, line: 322
+# File: inc/classes/Notification.php, line: 327
 #, php-format
 msgid "Proponent '%s' submitted this proposal:"
 msgstr "Antragsteller '%s' hat diesen Antrag eingereicht:"
 #
-# File: inc/classes/Notification.php, line: 334
+# File: inc/classes/Notification.php, line: 339
 #, php-format
 msgid "New proponent for proposal %d"
 msgstr "Neuer Antragsteller für Antrag %d"
 #
-# File: inc/classes/Notification.php, line: 338
+# File: inc/classes/Notification.php, line: 343
 msgid "The following member asks to become proponent:"
 msgstr "Das folgende Mitglied möchte Antragsteller werden:"
 #
-# File: inc/classes/Notification.php, line: 345
+# File: inc/classes/Notification.php, line: 350
 #, php-format
 msgid "Proponent confirmed for proposal %d"
 msgstr "Antragsteller bestätigt für Antrag %d"
 #
-# File: inc/classes/Notification.php, line: 349
+# File: inc/classes/Notification.php, line: 354
 msgid "The proponent ..."
 msgstr "Der Antragsteller ..."
 #
-# File: inc/classes/Notification.php, line: 351
+# File: inc/classes/Notification.php, line: 356
 msgid "... has been confirmed by:"
 msgstr "... wurde bestätigt von:"
 #
-# File: inc/classes/Notification.php, line: 357
+# File: inc/classes/Notification.php, line: 362
 #, php-format
 msgid "Proponent removed himself from proposal %d"
 msgstr "Antragsteller hat sich von Antrag %d zurückgezogen"
 #
-# File: inc/classes/Notification.php, line: 361
+# File: inc/classes/Notification.php, line: 366
 msgid "The following proponent removed himself:"
 msgstr "Der folgende Antragsteller hat sich zurückgezogen:"
 #
@@ -1763,7 +1763,7 @@ msgid "move"
 msgstr "verschieben"
 #
 # File: admins.php, line: 26
-# File: inc/classes/Proposal.php, line: 1120
+# File: inc/classes/Proposal.php, line: 1125
 msgid "Admin"
 msgstr "Verantwortlicher"
 #
@@ -1842,7 +1842,7 @@ msgid "Entitled and verified"
 msgstr "stimmberechtigt und verifiziert"
 #
 # File: vote_result.php, line: 20
-# File: inc/classes/Notification.php, line: 425
+# File: inc/classes/Notification.php, line: 430
 msgid "Vote result"
 msgstr "Abstimmungsergebnis"
 #
@@ -1868,7 +1868,7 @@ msgstr "Zustimmung"
 # File: inc/classes/Issue.php, line: 630
 # File: inc/classes/Issue.php, line: 648
 # File: inc/classes/Issue.php, line: 1199
-# File: inc/classes/Notification.php, line: 421
+# File: inc/classes/Notification.php, line: 426
 msgid "Score"
 msgstr "Bewertung"
 #
@@ -1876,7 +1876,7 @@ msgstr "Bewertung"
 # File: inc/functions.php, line: 217
 # File: inc/classes/Issue.php, line: 644
 # File: inc/classes/Issue.php, line: 1030
-# File: inc/classes/Notification.php, line: 419
+# File: inc/classes/Notification.php, line: 424
 msgid "Abstention"
 msgstr "Enthaltung"
 #
@@ -1884,7 +1884,7 @@ msgstr "Enthaltung"
 msgid "%d points, rank %d"
 msgstr "%d Punkte, Rang %d"
 #
-# File: inc/classes/Proposal.php, line: 1020
+# File: inc/classes/Proposal.php, line: 1025
 #, php-format
 msgid "Yes: %d (%s), No: %d (%s), Abstention: %d"
 msgstr "Ja: %d (%s), Nein: %d (%s), Enthaltung: %d"
@@ -2122,7 +2122,7 @@ msgstr "Bitte gib eine E-Mail-Adresse ein!"
 msgid "On that page enter the code:"
 msgstr "Gib auf dieser Seite den Code ein:"
 #
-# File: inc/classes/Notification.php, line: 391
+# File: inc/classes/Notification.php, line: 396
 msgid "Debate has started on the following proposals"
 msgstr "Die Debatte zu den folgenden Anträgen hat begonnen"
 #
@@ -2138,21 +2138,21 @@ msgstr "Thema"
 msgid "Lists of all vote tokens"
 msgstr "Listen aller Abstimmungskennungen"
 #
-# File: inc/classes/Notification.php, line: 408
+# File: inc/classes/Notification.php, line: 413
 #, php-format
 msgid "Voting finished in period %d"
 msgstr "Abstimmung abgeschlossen in Periode %d"
 #
-# File: inc/classes/Notification.php, line: 410
+# File: inc/classes/Notification.php, line: 415
 msgid "Voting has finished on the following proposals"
 msgstr "Die Abstimmung zu den folgenden Anträgen wurde abgeschlossen"
 #
-# File: inc/classes/Proposal.php, line: 986
+# File: inc/classes/Proposal.php, line: 991
 #, php-format
 msgid "%d points"
 msgstr "%d Punkte"
 #
-# File: inc/classes/Proposal.php, line: 1030
+# File: inc/classes/Proposal.php, line: 1035
 #, php-format
 msgid "Yes: 0, No: 0, Abstention: %d"
 msgstr "Ja: 0, Nein: 0, Enthaltungen: %d"
@@ -2181,7 +2181,7 @@ msgstr "Deine Benutzer-ID"
 msgid "You have voted on this issue."
 msgstr "Du hast zu diesem Thema abgestimmt."
 #
-# File: inc/common_http.php, line: 103
+# File: inc/common_http.php, line: 104
 msgid "You have logged out."
 msgstr "Du hast dich abgemeldet."
 #
@@ -2370,7 +2370,7 @@ msgstr "Anträge, die ich unterstütze"
 msgid "proposals where I'm proponent"
 msgstr "Anträge, bei denen ich Antragsteller bin"
 #
-# File: inc/functions_http.php, line: 335
+# File: inc/functions_http.php, line: 360
 msgid "Email notifications"
 msgstr "E-Mail-Benachrichtigungen"
 #
@@ -2431,22 +2431,22 @@ msgstr "Deine Stimme zum Abstimmungsverfahren wurde gespeichert, aber der Beleg 
 msgid "Your vote on the voting mode could not be saved!"
 msgstr "Deine Stimme zum Abstimmungsverfahren konnte nicht gespeichert werden!"
 #
-# File: inc/classes/Notification.php, line: 431
+# File: inc/classes/Notification.php, line: 436
 #, php-format
 msgid "Proposal %d moved to a different issue"
 msgstr "Antrag %d in ein anderes Thema verschoben"
 #
-# File: inc/classes/Notification.php, line: 433
+# File: inc/classes/Notification.php, line: 438
 #, php-format
 msgid "An administrator moved the following proposal from issue %d to issue %d:"
 msgstr "Ein Verantwortlicher hat den folgenden Antrag vom Thema %d in das Thema %d verschoben:"
 #
-# File: inc/classes/Notification.php, line: 436
+# File: inc/classes/Notification.php, line: 441
 #, php-format
 msgid "Proposals in the old issue %d:"
 msgstr "Anträge im alten Thema %d:"
 #
-# File: inc/classes/Notification.php, line: 448
+# File: inc/classes/Notification.php, line: 453
 msgid "Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!"
 msgstr "Beachte, dass die Stimmen für eine Offline-Abstimmung bei dem alten Thema nicht automatisch in das neue Thema übernommen werden. Falls du immer noch eine Offline-Abstimmung möchtest, solltest du das im neuen Thema noch einmal fordern!"
 #
@@ -2588,11 +2588,11 @@ msgstr "Text und Antworten zeigen"
 msgid "New reply"
 msgstr "Neue Antwort"
 #
-# File: inc/classes/Proposal.php, line: 354
+# File: inc/classes/Proposal.php, line: 359
 msgid "You can not remove your support while you are proponent."
 msgstr "Du kannst deine Unterstützung nicht zurückziehen solange du Antragsteller bist."
 #
-# File: inc/classes/Proposal.php, line: 350
+# File: inc/classes/Proposal.php, line: 355
 msgid "Support for this proposal can no longer be removed."
 msgstr "Unterstützung für diesen Antrag kann nicht mehr zurückgezogen werden."
 #
@@ -2725,18 +2725,18 @@ msgid "elegible"
 msgstr "stimmberechtigt"
 #
 # File: admin_members.php, line: 39
-# File: inc/functions_http.php, line: 288
+# File: inc/functions_http.php, line: 313
 msgid "not eligible"
 msgstr "nicht stimmberechtigt"
 #
 # File: admin_members.php, line: 42
 # File: admin_members.php, line: 43
-# File: inc/functions_http.php, line: 293
+# File: inc/functions_http.php, line: 318
 msgid "verified"
 msgstr "verifiziert"
 #
 # File: admin_members.php, line: 44
-# File: inc/functions_http.php, line: 297
+# File: inc/functions_http.php, line: 322
 msgid "not verified"
 msgstr "nicht verifiziert"
 #
@@ -2754,23 +2754,23 @@ msgstr "Du hast nicht die Berechtigung, Beiträge zu bewerten."
 msgid "The email notification settings have been saved."
 msgstr "Die E-Mail-Benachrichtigungs-Einstellungen wurden übernommen."
 #
-# File: inc/functions_http.php, line: 284
+# File: inc/functions_http.php, line: 309
 msgid "You are eligible."
 msgstr "Du bist stimmberechtigt."
 #
-# File: inc/functions_http.php, line: 288
+# File: inc/functions_http.php, line: 313
 msgid "You are not eligible."
 msgstr "Du bist nicht stimmberechtigt."
 #
-# File: inc/functions_http.php, line: 293
+# File: inc/functions_http.php, line: 318
 msgid "You are verified."
 msgstr "Du bist verifiziert."
 #
-# File: inc/functions_http.php, line: 297
+# File: inc/functions_http.php, line: 322
 msgid "You are not verified."
 msgstr "Du bist nicht verifiziert."
 #
-# File: inc/functions_http.php, line: 332
+# File: inc/functions_http.php, line: 357
 msgid "Account"
 msgstr "Mitgliedskonto"
 #
@@ -2796,15 +2796,15 @@ msgstr "Du hast nicht die Berechtigung, Beiträge zu schreiben."
 msgid "This group does not participate."
 msgstr "Diese Gliederung nimmt nicht teil."
 #
-# File: inc/functions_http.php, line: 146
+# File: inc/functions_http.php, line: 166
 msgid "own groups"
 msgstr "eigene Gliederungen"
 #
-# File: inc/functions_http.php, line: 166
+# File: inc/functions_http.php, line: 186
 msgid "other groups"
 msgstr "übrige Gliederungen"
 #
-# File: inc/functions_http.php, line: 166
+# File: inc/functions_http.php, line: 186
 msgid "groups"
 msgstr "Gliederungen"
 #
@@ -2834,7 +2834,7 @@ msgstr "Mitglied '%s' schrieb folgenden Beitrag:"
 msgid "Sorry, but the connection to the database failed. Please try again in a few minutes."
 msgstr "Leider konnte die Datenbank nicht erreicht werden. Bitte versuche es in ein paar Minuten noch einmal."
 #
-# File: inc/classes/Notification.php, line: 442
+# File: inc/classes/Notification.php, line: 447
 #, php-format
 msgid "Other proposals in the new issue %d:"
 msgstr "Weitere Anträge im neuen Thema %d:"
@@ -2843,7 +2843,7 @@ msgstr "Weitere Anträge im neuen Thema %d:"
 msgid "Signing and encryption of emails is not enabled."
 msgstr "Signierung und Verschlüsselung von E-Mails ist nicht eingeschaltet."
 #
-# File: inc/functions_http.php, line: 339
+# File: inc/functions_http.php, line: 364
 msgid "Email encryption"
 msgstr "E-Mail-Verschlüsselung"
 #
@@ -2878,8 +2878,8 @@ msgstr "Ein nicht angemeldeter Benutzer schrieb folgenden Beitrag:"
 msgid "Someone not logged in replied to your comment:"
 msgstr "Ein nicht angemeldeter Benutzer antwortete auf deinen Beitrag"
 #
-# File: inc/classes/Proposal.php, line: 305
-# File: inc/classes/Proposal.php, line: 330
+# File: inc/classes/Proposal.php, line: 310
+# File: inc/classes/Proposal.php, line: 335
 msgid "Support for this proposal can not be added in this phase."
 msgstr "Dieser Antrag kann nicht in dieser Phase nicht unterstützt werden."
 #
@@ -2892,7 +2892,7 @@ msgid "Your anonymous support for this proposal is expired."
 msgstr "Deine anonyme Unterstützung dieses Antrags ist verfallen."
 #
 # File: proposal.php, line: 633
-# File: inc/classes/Proposal.php, line: 969
+# File: inc/classes/Proposal.php, line: 974
 msgid "Your support for this proposal is expired."
 msgstr "Deine Unterstützung dieses Antrags ist verfallen."
 #
@@ -2909,7 +2909,7 @@ msgstr "neuer Entwurf"
 msgid "New draft for proposal %d"
 msgstr "Neuer Entwurf für Antrag %d"
 #
-# File: inc/classes/Notification.php, line: 308
+# File: inc/classes/Notification.php, line: 309
 #, php-format
 msgid "Proponent '%s' added a new draft:"
 msgstr "Antragsteller '%s' hat einen neuen Entwurf gemacht:"
@@ -2917,3 +2917,12 @@ msgstr "Antragsteller '%s' hat einen neuen Entwurf gemacht:"
 # File: about.php, line: 17
 msgid "Version"
 msgstr "Version"
+#
+# File: manual.php, line: 12
+# File: inc/functions_http.php, line: 219
+msgid "Manual"
+msgstr "Anleitung"
+#
+# File: inc/classes/Notification.php, line: 311
+msgid "An admin added a new draft:"
+msgstr "Ein Verantwortlicher hat einen neuen Entwurf gemacht:"
