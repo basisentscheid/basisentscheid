@@ -1106,13 +1106,11 @@ class Proposal extends Relation {
 		$i = DB::num_rows($result);
 ?>
 <script type="text/javascript">
-<!--
 function draft_select(side, draft) {
 	for (var i = 0; i < <?=$i?>; i++) {
 		document.getElementById('draft' + side + '_' + i).disabled = !(( side == 1 && i > draft ) || ( side == 2 && i < draft ));
 	}
 }
-//-->
 </script>
 <form action="diff.php" method="GET">
 <table class="drafts">

@@ -964,7 +964,6 @@ class DbTableAdmin {
 	protected function display_list_javascript($button_js) {
 ?>
 <script type="text/javascript">
-<!--
 <?
 		if ($button_js) {
 ?>
@@ -1010,7 +1009,6 @@ function submit_delete_checked() {
 <?
 		}
 ?>
-//-->
 </script>
 <?
 	}

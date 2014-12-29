@@ -508,7 +508,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 	<li><?
 		if (Login::$member and $proponent->id==Login::$member->id and $allowed_edit_proponent) {
 			if (isset($_GET['edit_proponent'])) {
-				form(URI::same());
+				form(URI::same(), "", "proponent", true);
 ?>
 <input type="text" name="proponent" value="<?=h($proponent->proponent_name)?>" maxlength="<?=Proposal::proponent_length?>"><br>
 <input type="hidden" name="action" value="apply_proponent">
@@ -547,7 +547,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 	if (Login::$member and $allowed_edit_proponent and isset($_GET['become_proponent']) and !$is_any_proponent) {
 ?>
 	<li><?
-		form(URI::same());
+		form(URI::same(), "", "proponent", true);
 ?>
 <input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>"><br>
 <div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also the following will be shown to the other proponents:")?> (<?=h(Login::$member->identity())?>)</div>
@@ -670,7 +670,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 	// admission by decision
 	if (Login::$admin) {
 		if (!empty($_GET['edit_admission_decision'])) {
-			form(URI::same()."#admission_decision", 'class="admission_decision"');
+			form(URI::same()."#admission_decision", 'class="admission_decision"', "admission_decision", true);
 			if ($proposal->admission_decision!==null) {
 ?>
 <b><?=_("Admitted by decision")?>:</b>
@@ -733,7 +733,7 @@ function display_annotation(Proposal $proposal) {
 ?>
 <h2><?=_("Annotation by admins")?></h2>
 <?
-			form(URI::same()."#annotation", 'class="annotation"');
+			form(URI::same()."#annotation", 'class="annotation"', "annotation", true);
 ?>
 <textarea name="annotation" cols="100" rows="3"><?=h($proposal->annotation)?></textarea>
 <input type="hidden" name="action" value="save_annotation">

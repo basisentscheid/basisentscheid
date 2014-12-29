@@ -434,14 +434,34 @@ function action_proposal_select_period() {
 /**
  * POST form open tag with CSRF token
  *
- * @param string  $url        (optional) leave empty to stay on same URI, set to BN to remove parameters
- * @param string  $attributes (optional)
+ * @param string  $url                      (optional) leave empty to stay on same URI, set to BN to remove parameters
+ * @param string  $attributes               (optional)
+ * @param string  $id                       (optional)
+ * @param boolean $confirm_exit_if_modified (optional)
  */
-function form($url="", $attributes="") {
+function form($url="", $attributes="", $id="", $confirm_exit_if_modified=false) {
+
+	if ($attributes) $attributes = " ".$attributes;
+	if ($id) $attributes .= ' id="'.$id.'"';
+
+	if ($confirm_exit_if_modified) {
+		static $loaded = false;
+		if (!$loaded) {
 ?>
-<form action="<?=$url?>" method="POST"<?
-	if ($attributes) { ?> <?=$attributes; }
-	?>>
+<script type="text/javascript" src="js/confirm_exit_if_modified.js"></script>
+<?
+			$loaded = true;
+		}
+?>
+<script type="text/javascript">
+confirmExitIfModified("<?=$id?>", "<?=_("You have unsaved changes.")?>");
+</script>
+<?
+		$attributes .= ' onsubmit="window.onbeforeunload=null"';
+	}
+
+?>
+<form action="<?=$url?>" method="POST"<?=$attributes?>>
 <input type="hidden" name="csrf" value="<?=$_SESSION['csrf']?>">
 <?
 }

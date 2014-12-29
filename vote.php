@@ -67,7 +67,7 @@ if ( $row = DB::fetch_assoc($result) ) {
 }
 
 // voting form
-form(BN."?issue=".$issue->id);
+form(BN."?issue=".$issue->id, "", "vote", true);
 ?>
 <input type="hidden" name="action" value="submit">
 <table class="proposals">
