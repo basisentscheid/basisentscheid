@@ -214,6 +214,11 @@ function html_head($title, $help=false) {
 	}
 ?>
 			</ul>
+			<ul class="manual">
+<?
+	navlink('manual.php', _("Manual"));
+?>
+			</ul>
 <?
 	if (Login::$admin) {
 ?>

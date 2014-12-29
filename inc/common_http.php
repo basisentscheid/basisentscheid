@@ -19,6 +19,7 @@
  * @see draft.php
  * @see index.php
  * @see login.php
+ * @see manual.php
  * @see member.php
  * @see periods.php
  * @see proposal.php
