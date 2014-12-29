@@ -67,6 +67,7 @@ function html_head($title, $help=false) {
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title><?=h(TITLE." - ".$title)?></title>
 	<link rel="stylesheet" media="all" type="text/css" href="style.css?<?=version()?>">
 <?
 	if (Login::$admin) {
@@ -92,7 +93,6 @@ function html_head($title, $help=false) {
 	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
 	<meta name="msapplication-TileColor" content="#603cba">
 	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
-	<title><?=h(TITLE." - ".$title)?></title>
 </head>
 <body>
 
