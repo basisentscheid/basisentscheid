@@ -39,18 +39,18 @@
  */
 
 
-const DOCROOT = "./";
+const DOCROOT = "";
 
-require DOCROOT."inc/config.php";
-require DOCROOT."inc/errors.php";
-require DOCROOT."inc/common.php";
-require DOCROOT."inc/functions.php";
-require DOCROOT."inc/functions_http.php";
+require "inc/config.php";
+require "inc/errors.php";
+require "inc/common.php";
+require "inc/functions.php";
+require "inc/functions_http.php";
 
 // buffer output until it either gets displayed on this page or gets written to the session at a redirect
 ob_start();
 
-require DOCROOT."inc/locale.php";
+require "inc/locale.php";
 
 Login::init(); // start session
 

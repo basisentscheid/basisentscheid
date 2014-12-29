@@ -10,9 +10,9 @@
 
 if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 const DOCROOT = "../";
-require DOCROOT."inc/common_cli.php";
+require "../inc/common_cli.php";
 
-require DOCROOT."inc/functions_test.php";
+require "../inc/functions_test.php";
 
 
 mb_internal_encoding("UTF-8");

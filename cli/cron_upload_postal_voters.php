@@ -17,7 +17,7 @@
 
 if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 const DOCROOT = "../";
-require DOCROOT."inc/common_cli.php";
+require "../inc/common_cli.php";
 
 // active between postage set and ballot preparation started
 $sql_period = "SELECT * FROM period WHERE postage = TRUE AND state != 'ballot_preparation'";

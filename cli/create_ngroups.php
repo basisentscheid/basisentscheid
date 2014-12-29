@@ -10,7 +10,7 @@
 
 if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
 const DOCROOT = "../";
-require DOCROOT."inc/common_cli.php";
+require "../inc/common_cli.php";
 
 DB::query("INSERT INTO ngroup (id, parent, name, active) VALUES (1, null, 'Bund', true)");
 DB::query("INSERT INTO ngroup (id, parent, name, active) VALUES (2, 1, 'Bayern', true)");

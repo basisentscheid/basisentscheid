@@ -117,14 +117,14 @@ function html_head($title, $help=false) {
 ?>
 
 <header>
-	<a href="<?=DOCROOT?>index.php" id="logo"><img src="img/logo.png" width="58" height="50" alt="<?=_("Logo")?>"></a>
+	<a href="index.php" id="logo"><img src="img/logo.png" width="58" height="50" alt="<?=_("Logo")?>"></a>
 	<div id="header">
 		<div id="user">
 			<? html_user(); ?>
 		</div>
 		<nav>
 			<ul>
-				<li><a href="<?=DOCROOT?>index.php" id="home">Basisentscheid</a></li>
+				<li><a href="index.php" id="home">Basisentscheid</a></li>
 				<li>
 					<form method="GET" action="<?
 	switch (BN) {
@@ -636,7 +636,7 @@ function help($anchor="", $h1=false) {
 			'REQUIRED_PROPONENTS' => REQUIRED_PROPONENTS,
 			'QUORUM_VOTINGMODE'   => numden([QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN])
 		);
-		foreach ( file(DOCROOT."locale/help_".LANG.".txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
+		foreach ( file("locale/help_".LANG.".txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
 			if ($display) {
 				$line_begin = mb_substr($line, 0, 3);
 				if ($line_begin == "===") break;
