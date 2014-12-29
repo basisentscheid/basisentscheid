@@ -506,7 +506,7 @@ table.proposals td.result {
 table.proposals td.vote {
 	padding-right: 8px;
 }
-table.proposals span.activity {
+table.proposals img.activity {
 	float: right;
 }
 
