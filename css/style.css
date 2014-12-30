@@ -384,7 +384,7 @@ form.show_help.h1 {
 	margin-top: 1.4em;
 }
 
-div.help.manual {
+div.help#manual {
 	padding: 1em 0.7em;
 	-webkit-column-width: 50em;
 	-moz-column-width:    50em;
@@ -396,19 +396,26 @@ div.help.manual {
 	-moz-column-rule:    2px dotted #F4EEF7;
 	column-rule:         2px dotted #F4EEF7;
 }
-
+div.help#manual .anchor {
+	border-left: 10px solid #F00;
+	/*noinspection CssOverwrittenProperties*/
+	border-left: 1rem solid #F00;
+	padding-left: 4px;
+	/*noinspection CssOverwrittenProperties*/
+	padding-left: 0.4rem;
+}
 /* numbering h2 and h3 */
-div.help main {
+div.help#manual main {
 	counter-reset: level1;
 }
-div.help main h2:before {
+div.help#manual main h2:before {
     content: counter(level1) ". ";
     counter-increment: level1;
 }
-div.help main h2 {
+div.help#manual main h2 {
 	counter-reset: level2;
 }
-div.help main h3:before {
+div.help#manual main h3:before {
     content: counter(level1) "." counter(level2) ". ";
     counter-increment: level2;
 }
