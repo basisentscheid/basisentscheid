@@ -19,18 +19,19 @@ readfile("locale/manual_".LANG.".html");
 </div>
 <script type="text/javascript">
 // highlight anchor
+var hash;
 if ( window.location.hash ) {
-	var hash = window.location.hash.substring(1);
+	hash = window.location.hash.substring(1);
 	document.getElementById(hash).className += " anchor";
 }
-// change highlighted anchor when jumping inside the page
+// change highlighted anchor when jumping within the page
 var manual = document.getElementById("manual");
 var links = manual.getElementsByTagName("a");
 for (var i = 0; i < links.length; i++) {
 	links[i].onclick = function () {
-		document.getElementById(hash).className -= " anchor";
+		if (hash) document.getElementById(hash).className -= " anchor";
 		hash = this.href.split("#")[1];
-		document.getElementById(hash).className += " anchor";
+		if (hash) document.getElementById(hash).className += " anchor";
 	}
 }
 </script>
