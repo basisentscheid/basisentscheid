@@ -18,7 +18,7 @@ const TITLE = "Basisentscheid";
 // head line on the home page
 const HOME_H1 = "Basisentscheid example heading";
 // with trailing slash
-const BASE_URL = "http://example.com/basisentscheid/portal/";
+const BASE_URL = "http://example.com/basisentscheid/";
 
 // This email address will be shown in some error messages to contact the support.
 const MAIL_SUPPORT = "example@example.com";
