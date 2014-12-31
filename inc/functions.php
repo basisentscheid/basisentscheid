@@ -409,7 +409,7 @@ function send_mail($to, $subject, $body, array $headers=array(), $fingerprint=""
 				if ( gnupg_keyinfo_matches_email($gnupg->keyinfo($fingerprint), $to) and $gnupg->addencryptkey($fingerprint) ) {
 					$body = $gnupg->encryptsign($body);
 				} else {
-					$body .= "\n\n".mb_wordwrap(_("This email should be encrypted, but no available key matching your fingerprint and email address was found! Please check your settings:")." ".BASE_URL."settings.php");
+					$body .= "\n\n".mb_wordwrap(_("This email should be encrypted, but no available key matching your fingerprint and email address was found! Please check your settings:")." ".BASE_URL."settings_encryption.php");
 					$body = $gnupg->sign($body);
 				}
 			} else {
