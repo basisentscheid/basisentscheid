@@ -93,14 +93,14 @@ if ($ballot->id) {
 form("", 'class="editform edit_ballot"', "ballot", true);
 ?>
 <fieldset>
-<div class="input <?=stripes()?>"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" value="<?=h($ballot->name)?>"></span></div>
+<div class="input <?=stripes()?>"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" id="name" value="<?=h($ballot->name)?>"></span></div>
 <div class="input <?=stripes()?>"><label for="ngroup"><?=_("Group of location")?></label><span class="input">
 <?
-input_select("ngroup", Ngroup::options($period->ngroup()->parent), $ballot->ngroup);
+input_select("ngroup", Ngroup::options($period->ngroup()->parent), $ballot->ngroup, 'id="ngroup"');
 ?>
 </span></div>
 <div class="input <?=stripes()?>"><label for="opening_hour"><?=_("Opening hours")?></label><span class="input">
-<select name="opening_hour">
+<select name="opening_hour" id="opening_hour">
 <?
 if ($ballot->opening) {
 	list($hour, $minute, $second) = explode(":", $ballot->opening);
@@ -132,7 +132,7 @@ for ( $m=0; $m<60; $m++ ) {
 </select>
 &mdash; <?=BALLOT_CLOSE_TIME?>
 </span></div>
-<div class="input <?=stripes()?>"><label for="agents"><?=_("Agents")?></label><span class="input"><input type="text" name="agents" value="<?=h($ballot->agents)?>"></span></div>
+<div class="input <?=stripes()?>"><label for="agents"><?=_("Agents")?></label><span class="input"><input type="text" name="agents" id="agents" value="<?=h($ballot->agents)?>"></span></div>
 <div class="buttons th"><span class="cancel"><a href="ballots.php?period=<?=$period->id?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("Save")?>"></span></div>
 </fieldset>
 <input type="hidden" name="action" value="save">

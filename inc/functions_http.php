@@ -540,11 +540,14 @@ function input_checkbox($name, $value, $checked=false, $disabled=false, $attribu
  *
  * @param string  $name
  * @param array   $options
- * @param mixed   $selected (optional)
+ * @param mixed   $selected   (optional)
+ * @param string  $attributes (optional)
  */
-function input_select($name, array $options, $selected=false) {
+function input_select($name, array $options, $selected=false, $attributes="") {
 ?>
-<select name="<?=$name?>">
+<select name="<?=$name?>"<?
+	if ($attributes) { ?> <?=$attributes; }
+	?>>
 <?
 	foreach ( $options as $key => $value ) {
 ?>

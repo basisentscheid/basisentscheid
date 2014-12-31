@@ -70,8 +70,8 @@ if ($member) {
 ?>
 	<div class="description td1"><?=_("Please enter the code you have received by email:")?></div>
 	<div class="input td1">
-		<label for="username"><?=_("Code")?></label>
-		<span class="input"><input type="text" name="code" value="<?=h($code)?>" size="30"></span>
+		<label for="code"><?=_("Code")?></label>
+		<span class="input"><input type="text" name="code" id="code" value="<?=h($code)?>" size="30"></span>
 	</div>
 <?
 }
@@ -79,7 +79,7 @@ if ($member) {
 	<div class="description td0"><?=_("Please enter your new password twice. The password is case sensitive and has to be at least 8 characters long.")?></div>
 	<div class="input td0">
 		<label for="password"><?=_("Password")?></label>
-		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25"> <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
+		<span class="input"><input type="password" name="password" id="password" value="<?=h($password)?>" size="25"> <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
 	</div>
   	<div class="button th"><input type="submit" value="<?=_("Set new password")?>"></div>
 </fieldset>
