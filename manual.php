@@ -12,11 +12,11 @@ require "inc/common_http.php";
 html_head(_("Manual"));
 
 ?>
-<div class="help" id="manual">
+<section class="help" id="manual">
 <?
 readfile("locale/manual_".LANG.".html");
 ?>
-</div>
+</section>
 <script type="text/javascript">
 // highlight anchor
 var hash;

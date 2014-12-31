@@ -35,18 +35,18 @@ html_head( sprintf(_("<a%s>Proposal %d</a>, version differences"), ' href="propo
 
 ?>
 
-<div class="proposal_info">
+<section class="proposal_info">
 <? $proposal->display_proposal_info($issue, $proponents, $is_proponent); ?>
-</div>
+</section>
 
-<div class="proposal_content diff">
+<section class="proposal_content diff">
 <h2><?=_("Title")?></h2>
 <p class="proposal proposal_title"><? diff($draft->title, $draft2->title)?></p>
 <h2><?=_("Content")?></h2>
 <p class="proposal"><? diff($draft->content, $draft2->content)?></p>
 <h2><?=_("Reason")?></h2>
 <p class="proposal"><? diff($draft->reason, $draft2->reason)?></p>
-</div>
+</section>
 
 <div class="clearfix"></div>
 

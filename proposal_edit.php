@@ -154,11 +154,11 @@ if (isset($_GET['issue'])) {
 }
 
 ?>
-<div class="proposal_info">
+<section class="proposal_info">
 <? display_proposal_info($proposal, $issue, $proponents); ?>
-</div>
+</section>
 
-<div class="proposal_content">
+<section class="proposal_content">
 <?
 
 if ($edit_content) {
@@ -180,8 +180,7 @@ if ($edit_content) {
 ?>
 <h2><?=_("Reason")?></h2>
 <textarea name="reason" maxlength="<?=Proposal::reason_length?>"><?=h($proposal->reason)?></textarea><br>
-
-</div>
+</section>
 
 <input type="hidden" name="action" value="save">
 <input type="submit" value="<?=_("Save")?>">

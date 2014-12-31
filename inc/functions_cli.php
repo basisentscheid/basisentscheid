@@ -43,7 +43,6 @@ function cron() {
 		DB::to_bool($period->counting_now);
 
 		$issues_start_debate = array();
-		// collect issues for upload to the ID server
 		$issues_start_voting = array();
 		$issues_finished_voting = array();
 

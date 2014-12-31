@@ -29,18 +29,18 @@ html_head(sprintf(_("Proposal %d, draft from %s"), $proposal->id, datetimeformat
 
 ?>
 
-<div class="proposal_info">
+<section class="proposal_info">
 <? $proposal->display_proposal_info($issue, $proponents, $is_proponent); ?>
-</div>
+</section>
 
-<div class="proposal_content">
+<section class="proposal_content">
 <h2><?=_("Title")?></h2>
 <p class="proposal proposal_title"><?=h($draft->title)?></p>
 <h2><?=_("Content")?></h2>
 <p class="proposal"><?=content2html($draft->content)?></p>
 <h2><?=_("Reason")?></h2>
 <p class="proposal"><?=content2html($draft->reason)?></p>
-</div>
+</section>
 
 <div class="clearfix"></div>
 

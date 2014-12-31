@@ -22,7 +22,7 @@ abstract class Timebar {
 	 */
 	public static function display(array $times) {
 ?>
-<div class="timebar">
+<section class="timebar">
 <?
 
 		// convert to timestamps
@@ -78,7 +78,7 @@ abstract class Timebar {
 		);
 
 ?>
-</div>
+</section>
 <div class="clearfix"></div>
 <?
 	}

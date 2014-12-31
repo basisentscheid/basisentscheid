@@ -20,13 +20,9 @@ body {
 /* fonts */
 td, th,
 div.timebar,
-div.proposal_info ul {
+section.proposal_info ul {
 	/* narrow font */
 	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-}
-div.ngroups td.member {
-	/* wide font */
-	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 }
 
 /* for compatibility with older browsers */
@@ -225,7 +221,7 @@ a.anchor {
 }
 
 /* messages */
-div.messages {
+section.messages {
 	/*border: 1px solid #CCC;*/
 	background: #FFF;
 	padding: 5px;
@@ -364,20 +360,20 @@ footer a:visited {
 
 /* help, motd */
 
-div.help {
+section.help {
 	clear: both;
 	background-color: #FFE;
 	padding: 2px 5px 2px 8px;
 	margin-bottom: 1em;
 	border-radius: 6px;
 }
-div.help a {
+section.help a {
 	padding: 0 0 1px 0;
 }
-div.help p {
+section.help p {
 	margin: 5px 0;
 }
-div.help form.hide_help {
+section.help form.hide_help {
 	background-color: #FFE;
 	padding: 0 0 3px 5px;
 	margin: 0;
@@ -394,7 +390,7 @@ form.show_help.h1 {
 	margin-top: 1.4em;
 }
 
-div.help#manual {
+section.help#manual {
 	padding: 1em 0.7em;
 	-webkit-column-width: 50em;
 	-moz-column-width:    50em;
@@ -406,39 +402,40 @@ div.help#manual {
 	-moz-column-rule:    2px dotted #F4EEF7;
 	column-rule:         2px dotted #F4EEF7;
 }
-div.help#manual .anchor {
+section.help#manual .anchor {
 	border-left: 10px solid #F00;
 	/*noinspection CssOverwrittenProperties*/
 	border-left: 1rem solid #F00;
+	/*noinspection CssOverwrittenProperties*/
 	padding-left: 4px;
 	/*noinspection CssOverwrittenProperties*/
 	padding-left: 0.4rem;
 }
 /* numbering h2 and h3 */
-div.help#manual main {
+section.help#manual main {
 	counter-reset: level1;
 }
-div.help#manual main h2:before {
+section.help#manual main h2:before {
     content: counter(level1) ". ";
     counter-increment: level1;
 }
-div.help#manual main h2 {
+section.help#manual main h2 {
 	counter-reset: level2;
 }
-div.help#manual main h3:before {
+section.help#manual main h3:before {
     content: counter(level1) "." counter(level2) ". ";
     counter-increment: level2;
 }
 
-div.motd {
+section.motd {
 	background-color: #FFE0D7;
 	padding: 2px 5px;
 	margin-bottom: 1em;
 	border-radius: 6px;
 }
-div.motd p,
-div.motd h2,
-div.motd h3 {
+section.motd p,
+section.motd h2,
+section.motd h3 {
 	margin: 0.5em 0;
 }
 
@@ -746,22 +743,22 @@ form.editform div.comment {
 
 /* index.php */
 
-div.dates {
+section.dates {
 	float: left;
 	margin-right: 20px;
 }
-div.ngroups {
+section.ngroups {
 	float: left;
 }
-div.ngroups td.inactive {
+section.ngroups td.inactive {
 	color: #999;
 }
-div.ngroups td.name {
+section.ngroups td.name {
 	padding-left: 0.5em;
 }
-div.dates   tr.own,
-div.ngroups tr.own td.name,
-div.ngroups tr.own td.proposals {
+section.dates tr.own,
+section.ngroups tr.own td.name,
+section.ngroups tr.own td.proposals {
 	font-weight: bold;
 }
 
@@ -769,15 +766,12 @@ div.ngroups tr.own td.proposals {
 /* proposal.php, proposal_edit.php */
 
 form.proposal h2,
-div.proposal_info h2,
-div.proposal_content h2,
-div.issue h2 {
+section.proposal_info h2,
+section.proposal_content h2,
+section.issue h2 {
 	font-size: 115%;
 	font-weight: normal;
 	margin: 5px 0 0 0;
-}
-div.issue div.add form {
-	display: inline-block;
 }
 
 
@@ -793,7 +787,7 @@ p.proposal_title {
 	font-weight: bold;
 	font-size: 110%;
 }
-div.proposal_info {
+section.proposal_info {
 	float: right;
 	margin-left: 20px;
 	margin-bottom: 5px;
@@ -803,23 +797,23 @@ div.proposal_info {
 	width: 21rem;
 }
 @media screen and (max-width: 65em) {
-	div.proposal_info {
+	section.proposal_info {
 		float: none;
 		width: auto;
 		margin-left: 0;
 	}
 }
-div.proposal_info ul {
+section.proposal_info ul {
 	background-color: #FFF;
 	margin: 0;
 	padding: 3px 2px 3px 5px;
 	list-style: square inside;
 }
-div.proposal_info ul li span.unconfirmed {
+section.proposal_info ul li span.unconfirmed {
 	color: #AAA;
 }
-div.proposal_info ul li form,
-div.proposal_info ul li div.form {
+section.proposal_info ul li form,
+section.proposal_info ul li div.form {
 	display: inline-block;
 	vertical-align: top;
 	/*noinspection CssOverwrittenProperties*/
@@ -828,221 +822,224 @@ div.proposal_info ul li div.form {
 	width: 19.4rem;
 	margin-top: 2px;
 }
-div.proposal_info ul li form div.explain {
+section.proposal_info ul li form div.explain {
 	margin: 0 0 2px 0;
 }
-div.proposal_info ul li form input[type=text] {
+section.proposal_info ul li form input[type=text] {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-div.proposal_content {
+section.proposal_content {
 	overflow: hidden;
 }
-div.proposal_content div.add,
-div.proposal_info div.add {
+section.proposal_content div.add,
+section.proposal_info div.add {
 	margin-top: 0.3em;
 }
 
-div.proposal_info table.drafts {
+section.proposal_info table.drafts {
 	width: 100%;
 }
-div.proposal_info table.drafts td {
+section.proposal_info table.drafts td {
 	vertical-align: top;
 	padding: 3px 2px;
 	background-color: #FFF;
 }
-div.proposal_info table.drafts td.diffradio {
+section.proposal_info table.drafts td.diffradio {
 	width: 1%;
 	padding-left: 0;
 	padding-right: 0;
 	white-space: nowrap;
 	text-align: right;
 }
-div.proposal_info table.drafts td.diffradio span {
+section.proposal_info table.drafts td.diffradio span {
 	padding-right: 3px;
 }
-div.proposal_info table.drafts td.content {
+section.proposal_info table.drafts td.content {
 	width: 99%;
 }
-div.proposal_info table.drafts td.diffradio input {
+section.proposal_info table.drafts td.diffradio input {
 	margin: 1px;
 }
-div.proposal_info table.drafts td.content a {
+section.proposal_info table.drafts td.content a {
 	padding: 0;
 }
-div.proposal_info table.drafts td.content a:hover,
-div.proposal_info table.drafts td.content a:focus {
+section.proposal_info table.drafts td.content a:hover,
+section.proposal_info table.drafts td.content a:focus {
 	outline: none;
 }
 
-div.proposal_info tr td.content {
+section.proposal_info tr td.content {
 	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
 	/*noinspection CssOverwrittenProperties*/
 	cursor: hand;
 }
-div.proposal_info tr td.content:hover,
-div.proposal_info tr td.content:focus,
-div.proposal_info tr td.content:hover a,
-div.proposal_info tr td.content:focus a {
+section.proposal_info tr td.content:hover,
+section.proposal_info tr td.content:focus,
+section.proposal_info tr td.content:hover a,
+section.proposal_info tr td.content:focus a {
 	background-color: #F8F8F8;
 	color: #000;
 }
-div.proposal_info tr td.content:active,
-div.proposal_info tr td.content:active a {
+section.proposal_info tr td.content:active,
+section.proposal_info tr td.content:active a {
 	background-color: #F3F3F3;
 }
-div.proposal_info tr.active {
+section.proposal_info tr.active {
 	font-weight: bold;
 }
-div.proposal_info tr.active td.content {
+section.proposal_info tr.active td.content {
 	border: 1px solid #999;
 	padding: 2px;
 }
 
-div.timebar {
+section.timebar {
 	clear: both;
 	background-color: #E0E0FF;
 	padding: 2px 10px;
 	margin: 10px 0;
 }
-div.timebar div.datebar,
-div.timebar div.bar {
+section.timebar div.datebar,
+section.timebar div.bar {
 	display: inline-block;
 	width: 0.15em;
 }
-div.timebar div.part {
+section.timebar div.part {
 	display: inline-block;
 	white-space: nowrap;
 	margin-bottom: 0.1em;
 }
-div.timebar div.months {
+section.timebar div.months {
 	margin-bottom: 0.1em;
 }
-div.timebar div.days,
-div.timebar div.day {
+section.timebar div.days,
+section.timebar div.day {
 	line-height: 1em;
 	height: 1.1em;
 }
-div.timebar div.day {
+section.timebar div.day {
 	display: inline-block;
 	width: 1.9em;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-div.timebar div.months div.day {
+section.timebar div.months div.day {
 	padding-left: 0.2em;
 }
-div.timebar div.days div.day {
+section.timebar div.days div.day {
 	border-left: 1px dotted #448;
 	padding-left: 0.1em;
 }
-div.timebar div.days div.day.month0 {
+section.timebar div.days div.day.month0 {
 	background-color: #FFF;
 }
-div.timebar div.days div.day.month1 {
+section.timebar div.days div.day.month1 {
 	background-color: #FFB;
 }
-div.timebar div.days div.day span.weekend {
+section.timebar div.days div.day span.weekend {
 	color: #D00;
 }
-div.timebar div.beam {
+section.timebar div.beam {
 	clear: both;
 	background-color: #448;
 	height: 0.25em;
 }
-div.timebar div.datebar {
+section.timebar div.datebar {
 	vertical-align: top;
 }
-div.timebar div.datespace {
+section.timebar div.datespace {
 	display: inline-block;
 	overflow: visible;
 	vertical-align: top;
 }
-div.timebar div.mark {
+section.timebar div.mark {
 	display: inline-block;
 	width: 1px;
 	height: 0.6em;
 	vertical-align: bottom;
 	background-color: #448;
 }
-div.timebar div.datebar div.mark {
+section.timebar div.datebar div.mark {
 	vertical-align: top;
 	height: 100%;
 }
-div.timebar div.datebar.now div.mark {
+section.timebar div.datebar.now div.mark {
 	background-color: #C00;
 }
-div.timebar div.datespace.now {
+section.timebar div.datespace.now {
 	color: #C00;
 }
 
-div.quorum {
+section.quorum {
 	background-color: #E0DAF0;
 	padding: 5px 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-div.quorum h2 {
+section.quorum h2 {
 	display: inline;
 	font-size: 100%;
 }
-div.quorum div.bargraph_container {
+section.quorum div.bargraph_container {
 	display: inline-block;
 	margin: 0 5px;
 	padding: 1px 4px;
 	vertical-align: bottom;
 	background-color: #FFF;
 }
-div.quorum form,
-div.quorum div.support {
+section.quorum form,
+section.quorum div.support {
 	display: inline-block;
 	margin-top: 2px;
 }
-div.quorum div.support {
+section.quorum div.support {
 	background-color: #0A0;
 	padding: 0 0.5em 0.2em 0.5em;
 	margin-right: 0.5em;
 	border-radius: 4px;
 }
-div.quorum div.support.expired {
+section.quorum div.support.expired {
 	background-color: #999;
 }
-div.admission_decision,
-form.admission_decision {
+section.quorum div.admission_decision,
+section.quorum form.admission_decision {
 	margin-top: 5px;
 }
-form.admission_decision input[type=text] {
+section.quorum form.admission_decision input[type=text] {
 	width: 50em;
 }
 
-div#annotation {
+section#annotation {
 	clear: both;
 	background-color: #FFD4ED;
 	padding: 2px 10px 4px 10px;
 	margin: 10px 0;
 }
-div#annotation div.add {
+section#annotation div.add {
 	margin-top: 2px;
 }
-div#annotation h2 {
+section#annotation h2 {
 	margin-top: 0;
 	margin-bottom: 0.1em;
 }
-div#annotation textarea {
+section#annotation textarea {
 	width: 100%;
 }
 
-div.issue {
+section.issue {
 	margin-top: 6px;
+}
+section.issue div.add form {
+	display: inline-block;
 }
 
 /* comments */
 
-div.comments {
+section.comments {
 	margin: 10px 0;
 	padding: 0;
 }
@@ -1079,53 +1076,53 @@ div.comments_rubric ul {
 div.comments_rubric > ul {
 	padding-left: 0;
 }
-div.comments_rubric ul li {
+div.comments_rubric li {
 	margin: 3px 0;
 }
 
-div.comments_rubric ul li.anchor,
-div.comments_rubric ul div#openhl {
+div.comments_rubric li.anchor,
+div.comments_rubric div#openhl {
 	border: 1px dashed #F00;
 }
 
-div.comments_rubric ul li div.comment h3,
-div.comments_rubric ul li div.comment p {
+div.comments_rubric div.comment h3,
+div.comments_rubric div.comment p {
 	font-size: 100%;
 	padding-left: 3px;
 	padding-right: 3px;
 	margin: 0;
 }
-div.comments_rubric ul li div.comment h3 {
+div.comments_rubric div.comment h3 {
 	font-weight: bold;
 }
-div.comments_rubric ul li div.comment h3.removed {
+div.comments_rubric div.comment h3.removed {
 	font-weight: normal;
 	font-style: italic;
 }
-div.comments_rubric ul li div.comment {
+div.comments_rubric div.comment {
 	border: 1px solid #E6E6E6;
 	background-color: #FFF;
 }
-div.comments_rubric ul li div.comment h3 {
+div.comments_rubric div.comment h3 {
 	background-color: #EAEAEA;
 }
 
-div.comments_rubric ul li div.comment h3 a,
-div.comments_rubric ul li div.comment h3 a:link {
+div.comments_rubric div.comment h3 a,
+div.comments_rubric div.comment h3 a:link {
 	padding: 0;
 	text-decoration: none;
 	color: #000;
 	background-color: #EAEAEA;
 	outline: none;
 }
-div.comments_rubric ul li div.comment h3 a:hover {
+div.comments_rubric div.comment h3 a:hover {
 	color: #66C;
 }
-div.comments_rubric ul li div.comment div.time {
+div.comments_rubric div.comment div.time {
 	padding-left: 3px;
 	background-color: #EAEAEA;
 }
-div.comments_rubric ul li div.comment div.author {
+div.comments_rubric div.comment div.author {
 	float: right;
 	clear: right;
 	font-style: italic;
@@ -1134,32 +1131,32 @@ div.comments_rubric ul li div.comment div.author {
 	background-color: #EAEAEA;
 }
 
-div.comments_rubric ul li div.comment.new {
+div.comments_rubric div.comment.new {
 	border-color: #D9E7FF;
 }
-div.comments_rubric ul li div.comment.new h3,
-div.comments_rubric ul li div.comment.new h3 a,
-div.comments_rubric ul li div.comment.new h3 a:link,
-div.comments_rubric ul li div.comment.new div.time,
-div.comments_rubric ul li div.comment.new div.author {
+div.comments_rubric div.comment.new h3,
+div.comments_rubric div.comment.new h3 a,
+div.comments_rubric div.comment.new h3 a:link,
+div.comments_rubric div.comment.new div.time,
+div.comments_rubric div.comment.new div.author {
 	background-color: #D9E7FF;
 }
 
-div.comments_rubric ul li div.comment.new_children h3 {
+div.comments_rubric div.comment.new_children h3 {
 	background-image: linear-gradient(135deg, #D9E7FF 25%, transparent 25%, transparent 50%, #D9E7FF 50%, #D9E7FF 75%, transparent 75%, transparent);
 	background-size: 25px 25px;
 }
-div.comments_rubric ul li div.comment.new_children h3 a,
-div.comments_rubric ul li div.comment.new_children h3 a:link,
-div.comments_rubric ul li div.comment.new_children div.time,
-div.comments_rubric ul li div.comment.new_children div.author {
+div.comments_rubric div.comment.new_children h3 a,
+div.comments_rubric div.comment.new_children h3 a:link,
+div.comments_rubric div.comment.new_children div.time,
+div.comments_rubric div.comment.new_children div.author {
 	background: transparent;
 }
 
-div.comments_rubric ul li div.comment .removed {
+div.comments_rubric div.comment .removed {
 	color: #999;
 }
-div.comments_rubric ul li div.comment div.reply {
+div.comments_rubric div.comment div.reply {
 	float: right;
 	clear: right;
 	margin-bottom: 3px;
@@ -1219,12 +1216,12 @@ form.proposal input[type=submit] {
 
 /* diff.php */
 
-div.diff p ins {
+section.diff p ins {
 	color: green;
 	background: #DFD;
 	text-decoration: none;
 }
-div.diff p del {
+section.diff p del {
 	color: red;
 	background: #FDD;
 	text-decoration: none;

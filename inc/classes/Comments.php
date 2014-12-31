@@ -106,7 +106,7 @@ class Comments {
 		self::$proposal = $proposal;
 
 ?>
-<div class="comments" id="comments">
+<section class="comments" id="comments">
 <?
 
 		help("comments");
@@ -180,7 +180,7 @@ class Comments {
 <?
 		}
 ?>
-</div>
+</section>
 <?
 
 		// highlight anchor

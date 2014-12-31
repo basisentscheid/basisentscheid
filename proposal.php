@@ -317,11 +317,11 @@ if (Login::$member and $proposal->revoke) {
 
 ?>
 
-<div class="proposal_info">
+<section class="proposal_info">
 <? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
-</div>
+</section>
 
-<div class="proposal_content">
+<section class="proposal_content">
 <?
 if (($is_proponent or Login::$admin) and $proposal->allowed_edit_content()) {
 ?>
@@ -342,7 +342,7 @@ if ($is_proponent and $proposal->allowed_edit_reason_only()) {
 ?>
 <h2><?=_("Reason")?></h2>
 <p class="proposal"><?=content2html($proposal->reason)?></p>
-</div>
+</section>
 
 <div class="clearfix"></div>
 
@@ -427,7 +427,7 @@ if ($proposal->state != "draft") display_quorum($proposal, $supporters, $is_supp
 
 ?>
 
-<div class="issue">
+<section class="issue">
 <?
 if (Login::$member) {
 	if (Login::$member->entitled($ngroup) and $issue->allowed_add_alternative_proposal()) {
@@ -456,7 +456,7 @@ list($proposals, $submitted) = $issue->proposals_list();
 $issue->display_proposals($proposals, $submitted, count($proposals), $show_results, $proposal->id);
 ?>
 </table>
-</div>
+</section>
 
 <?
 
@@ -600,7 +600,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $is_valid) {
 	global $ngroup;
 ?>
-<div class="quorum">
+<section class="quorum">
 <h2 id="supporters"><?=_("Supporters")?>:</h2>
 <div class="bargraph_container">
 <?
@@ -714,7 +714,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 	}
 
 ?>
-</div>
+</section>
 <?
 }
 
@@ -727,7 +727,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 function display_annotation(Proposal $proposal) {
 	if (Login::$admin) {
 ?>
-<div id="annotation">
+<section id="annotation">
 <?
 		if (!empty($_GET['edit_annotation'])) {
 ?>
@@ -748,14 +748,14 @@ function display_annotation(Proposal $proposal) {
 <?
 		}
 ?>
-</div>
+</section>
 <?
 	} elseif ($proposal->annotation) {
 ?>
-<div id="annotation">
+<section id="annotation">
 <h2><?=_("Annotation by admins")?></h2>
 <?=content2html($proposal->annotation)?>
-</div>
+</section>
 <?
 	}
 }

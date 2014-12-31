@@ -12,6 +12,7 @@ require "inc/common_http.php";
 html_head(HOME_H1, true);
 
 ?>
+<section>
 <h2><?=_("Recently interesting issues")?></h2>
 <table class="proposals">
 <?
@@ -36,14 +37,15 @@ while ( $issue = DB::fetch_object($result, "Issue") ) {
 	/** @var $issue Issue */
 	list($proposals, $submitted) = $issue->proposals_list();
 ?>
-	<tr><td colspan="6" class="issue_separator"></td></tr>
+	<tr><td colspan="5" class="issue_separator"></td></tr>
 <?
 	$issue->display_proposals($proposals, $submitted, count($proposals));
 }
 ?>
 </table>
+</section>
 
-<div class="dates">
+<section class="dates">
 	<h2><?=_("Upcoming dates")?></h2>
 	<table>
 <?
@@ -91,9 +93,9 @@ foreach ( $dates as $index => $time ) {
 }
 ?>
 	</table>
-</div>
+</section>
 
-<div class="ngroups">
+<section class="ngroups">
 <h2 id="ngroups"><?=_("Groups")?></h2>
 <table>
 <?
@@ -146,7 +148,7 @@ foreach ($ngroups as $ngroup) {
 }
 ?>
 </table>
-</div>
+</section>
 
 <div class="clearfix"></div>
 <?

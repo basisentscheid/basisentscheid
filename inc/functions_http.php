@@ -247,7 +247,7 @@ function html_head($title, $help=false) {
 	// show MOTD once for each session and always on the home page
 	if ( defined("MOTD") and (empty($_SESSION['motd_seen']) or BN=="index.php") ) {
 ?>
-<div class="motd"><?=MOTD?></div>
+<section class="motd"><?=MOTD?></section>
 <?
 		$_SESSION['motd_seen'] = true;
 	}
@@ -256,7 +256,7 @@ function html_head($title, $help=false) {
 	if (isset($_SESSION['output'])) {
 		if ($_SESSION['output']) {
 ?>
-<div class="messages"><?=$_SESSION['output']?></div>
+<section class="messages"><?=$_SESSION['output']?></section>
 <div class="clearfix"></div>
 <?
 		}
@@ -268,7 +268,7 @@ function html_head($title, $help=false) {
 	// output from before the html head
 	if ($output) {
 ?>
-<div class="messages"><?=$output?></div>
+<section class="messages"><?=$output?></section>
 <div class="clearfix"></div>
 <?
 	}
@@ -639,7 +639,7 @@ function help($anchor="", $h1=false) {
 	}
 	if ($show) {
 ?>
-<div class="help">
+<section class="help">
 <?
 		form(URI::same().$hash_anchor, 'class="hide_help"');
 		if ($anchor) {
@@ -693,7 +693,7 @@ function help($anchor="", $h1=false) {
 			}
 		}
 ?>
-</div>
+</section>
 <?
 	} else {
 		form(URI::same().$hash_anchor, 'class="show_help'.($h1?' h1':'').'"');
