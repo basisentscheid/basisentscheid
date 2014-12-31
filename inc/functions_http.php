@@ -233,7 +233,7 @@ function html_head($title, $help=false) {
 	}
 ?>
 		</nav>
-		<div style="clear:right"></div>
+		<div class="rclear"></div>
 	</div>
 </header>
 
@@ -328,18 +328,17 @@ function html_user() {
 				'<span class="admin">'.Login::$admin->username.'</span>'
 			);
 		}
-		form("", 'class="button" style="margin-left: 10px"');
+		form("", 'class="logout"');
 ?>
 <input type="hidden" name="action" value="logout">
-<input type="submit" value="<?=_("Logout")?>">
+<input type="submit" value="<?=_("Log out")?>">
 <?
 		form_end();
 	} else {
-		// login as member via ID server
-		form("login.php", 'class="button"');
+		form("login.php", 'class="login"');
 ?>
 <input type="hidden" name="origin" value="<?=URI::same()?>">
-<input type="submit" value="<?=_("login")?>">
+<input type="submit" value="<?=_("Log in")?>">
 <?
 		form_end();
 	}

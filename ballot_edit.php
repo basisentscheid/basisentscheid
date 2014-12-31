@@ -93,7 +93,7 @@ if ($ballot->id) {
 form("", 'class="editform edit_ballot"', "ballot", true);
 ?>
 <fieldset>
-<div class="input <?=stripes()?>" style="width:100%"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" value="<?=h($ballot->name)?>"></span></div>
+<div class="input <?=stripes()?>"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" value="<?=h($ballot->name)?>"></span></div>
 <div class="input <?=stripes()?>"><label for="ngroup"><?=_("Group of location")?></label><span class="input">
 <?
 input_select("ngroup", Ngroup::options($period->ngroup()->parent), $ballot->ngroup);

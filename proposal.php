@@ -438,7 +438,7 @@ if (Login::$member) {
 } elseif (Login::$admin and $proposal->allowed_move_to_issue()) {
 ?>
 <div class="add"><?=_("Move this proposal to issue")?>: <?
-	form(URI::same(), 'style="display:inline-block"');
+	form(URI::same());
 	input_select("issue", $proposal->options_move_to_issue());
 	input_hidden("action", "move_to_issue");
 	input_submit(_("move"));

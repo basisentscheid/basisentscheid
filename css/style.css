@@ -126,6 +126,9 @@ h1 a {
 .clear {
 	clear: both;
 }
+.rclear {
+	clear: right;
+}
 
 .nowrap {
 	white-space: nowrap;
@@ -336,6 +339,13 @@ div#user a.user {
 }
 div#user img {
 	vertical-align: middle;
+}
+div#user form.login {
+	display: inline;
+}
+div#user form.logout {
+	display: inline;
+	margin-left: 10px;
 }
 
 footer {
@@ -765,6 +775,9 @@ div.issue h2 {
 	font-size: 115%;
 	font-weight: normal;
 	margin: 5px 0 0 0;
+}
+div.issue div.add form {
+	display: inline-block;
 }
 
 
