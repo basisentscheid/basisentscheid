@@ -13,7 +13,7 @@ Login::access("admin");
 $d = new DbTableAdmin("Admin");
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
-	array("username", _("Username")),
+	array("username", _("Username"), 'required'=>true),
 	array("password", _("Password (2x)"), "", false, "password", 'beforesave'=>"password")
 );
 $d->enable_filter = false;

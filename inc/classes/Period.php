@@ -437,7 +437,11 @@ class Period extends Relation {
 			$time = strtotime($default);
 			if ($time) $default = date(DATETIMEYEAR_FORMAT, $time);
 		}
-		input_text($colname, $default, $disabled, 'size="30"');
+		$attributes = array('size="30"');
+		if (!empty($column['required'])) {
+			$attributes[] = 'required';
+		}
+		input_text($colname, $default, $disabled, join(" ", $attributes));
 		?> <?=sprintf(_("date and time, format e.g. %s"), date(DATETIMEYEAR_FORMAT, 2117003400));
 	}
 

@@ -15,7 +15,7 @@ $ngroup = Ngroup::get();
 $d = new DbTableAdmin("Area");
 $d->columns = array(
 	array("id", _("No."), "right", "", false),
-	array("name", _("Name"), 'size'=>30),
+	array("name", _("Name"), 'size'=>30, 'required'=>true),
 	array("participants", _("Participants"), "center", "", false)
 );
 $d->enable_filter = false;

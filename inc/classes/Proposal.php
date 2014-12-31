@@ -79,6 +79,7 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function create($proponent, $area=0, array $fields=array("title", "content", "reason", "issue")) {
+		if (!$this->check_proponent($proponent)) return false;
 
 		if (!$this->issue) {
 			$issue = new Issue;
@@ -393,10 +394,7 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function add_proponent($proponent, $proponent_confirmed=false) {
-		if (!$proponent) {
-			warning(_("Your proponent info must be not empty."));
-			return false;
-		}
+		if (!$this->check_proponent($proponent)) return false;
 
 		DB::transaction_start();
 		$this->read();
@@ -447,11 +445,7 @@ class Proposal extends Relation {
 	 * @return boolean
 	 */
 	public function update_proponent($proponent) {
-		if (!$proponent) {
-			warning(_("Your proponent info must be not empty."));
-			return false;
-		}
-
+		if (!$this->check_proponent($proponent)) return false;
 		DB::transaction_start();
 		if (!$this->allowed_change_proponents()) {
 			warning(_("Your proponent info can not be changed anymore once voting preparation has started or the proposal has been closed!"));
@@ -468,6 +462,19 @@ class Proposal extends Relation {
 				AND proponent IS NOT NULL";
 		DB::query($sql);
 		DB::transaction_commit();
+	}
+
+
+	/**
+	 * check if the proponent is not empty
+	 *
+	 * @param string  $proponent
+	 * @return boolean
+	 */
+	private function check_proponent($proponent) {
+		if ($proponent) return true;
+		warning(_("Your proponent info must be not empty."));
+		return false;
 	}
 
 

@@ -1402,6 +1402,9 @@ function submit_delete_checked() {
 		if (isset($column['maxlength'])) {
 			$attributes[] = 'maxlength="'.$column['maxlength'].'"';
 		}
+		if (!empty($column['required'])) {
+			$attributes[] = 'required';
+		}
 		input_text($colname, $default, $disabled, join(" ", $attributes));
 	}
 
@@ -1425,6 +1428,9 @@ function submit_delete_checked() {
 		}
 		if (isset($column['rows'])) {
 			$attributes[] = 'rows="'.$column['rows'].'"';
+		}
+		if (!empty($column['required'])) {
+			$attributes[] = 'required';
 		}
 		input_textarea($colname, $default, $disabled, join(" ", $attributes));
 	}

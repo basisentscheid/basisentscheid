@@ -38,7 +38,7 @@ if (!$member) {
 	<div class="description td0"><?=_("Please enter the invite code you've received.")?></div>
 	<div class="input td0">
 		<label for="invite"><?=_("Invite code")?></label>
-		<span class="input"><input type="text" name="invite" size="30" value="<?=h($invite)?>"></span>
+		<span class="input"><input type="text" name="invite" size="30" value="<?=h($invite)?>" required></span>
 	</div>
 	<div class="button th"><input type="submit" value="<?=_("Proceed with registration")?>"></div>
 </fieldset>
@@ -97,17 +97,17 @@ form(h(BN."?invite=".$invite));
 	<div class="description td0"><?=_("Please choose a user name, i.e. your real name or your nick name. This name will be used for login and will be shown to others to identify you. The user name is case sensitive.")?></div>
 	<div class="input td0">
 		<label for="username"><?=_("Username")?></label>
-		<span class="input"><input type="text" name="username" value="<?=h($username)?>" size="32" maxlength="32"></span>
+		<span class="input"><input type="text" name="username" value="<?=h($username)?>" size="32" maxlength="32" required></span>
 	</div>
 	<div class="description td1"><?=_("Please choose a password and enter it twice. The password is case sensitive and has to be at least 8 characters long.")?></div>
 	<div class="input td1">
 		<label for="password"><?=_("Password")?></label>
-		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25"> <input type="password" name="password2" value="<?=h($password)?>" size="25"></span>
+		<span class="input"><input type="password" name="password" value="<?=h($password)?>" size="25" required> <input type="password" name="password2" value="<?=h($password)?>" size="25" required></span>
 	</div>
 	<div class="description td0"><?=_("Please enter your email address. This address will be used for automatic notifications (if you request them) and in case you've lost your password. This address will not be published. After registration you will receive an email with a confirmation link.")?></div>
 	<div class="input td0">
 		<label for="mail"><?=_("Mail address for notifications")?></label>
-		<span class="input"><input type="text" name="mail" value="<?=h($mail)?>" size="40"></span>
+		<span class="input"><input type="email" name="mail" value="<?=h($mail)?>" size="40" required></span>
 	</div>
 	<div class="button th"><input type="submit" value="<?=_("Activate account")?>"></div>
 </fieldset>

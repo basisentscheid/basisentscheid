@@ -87,7 +87,7 @@ Login::$member->display_ngroups();
 <? } ?>
 	<div class="input <?=stripes()?>">
 		<label for="username"><?=_("Username")?></label>
-		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32"></span>
+		<span class="input"><input type="text" name="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32" required></span>
 	</div>
 	<div class="input <?=stripes()?>">
 		<label for="password"><?=_("Change password")?></label>
@@ -100,7 +100,7 @@ Login::$member->display_ngroups();
 		<label for="mail"><?=_("Email address for notifications")?></label>
 		<span class="input">
 			<p><?=_("confirmed")?>: <?=h(Login::$member->mail)?></p>
-			<?=_("new")?>: <input type="text" name="mail" value="<?=h(Login::$member->mail_unconfirmed)?>" size="40">
+			<?=_("new")?>: <input type="email" name="mail" value="<?=h(Login::$member->mail_unconfirmed)?>" size="40">
 <? if (Login::$member->mail_unconfirmed) { ?>
 			<input type="submit" name="submit_mail" value="<?=_("send the confirmation email again")?>">
 <? } ?>

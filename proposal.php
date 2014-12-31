@@ -510,7 +510,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 			if (isset($_GET['edit_proponent'])) {
 				form(URI::same(), "", "proponent", true);
 ?>
-<input type="text" name="proponent" value="<?=h($proponent->proponent_name)?>" maxlength="<?=Proposal::proponent_length?>"><br>
+<input type="text" name="proponent" value="<?=h($proponent->proponent_name)?>" maxlength="<?=Proposal::proponent_length?>" required><br>
 <input type="hidden" name="action" value="apply_proponent">
 <input type="submit" value="<?=_("apply changes")?>">
 <?
@@ -549,7 +549,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 	<li><?
 		form(URI::same(), "", "proponent", true);
 ?>
-<input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>"><br>
+<input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>" required><br>
 <div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also the following will be shown to the other proponents:")?> (<?=h(Login::$member->identity())?>)</div>
 <input type="hidden" name="action" value="become_proponent">
 <input type="submit" value="<?=_("apply to become proponent")?>">

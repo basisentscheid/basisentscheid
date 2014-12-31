@@ -346,8 +346,8 @@ if ( window.location.hash ) {
 			elseif ($this->rubric=="discussion") echo _("New comment");
 			else echo _("New argument");
 			?>:</div>
-<input name="title" type="text" maxlength="<?=Comment::title_length?>" value="<?=h(isset($_POST['title'])?$_POST['title']:"")?>"><br>
-<textarea name="content" rows="5" maxlength="<?=Comment::content_length?>"><?=h(isset($_POST['content'])?$_POST['content']:"")?></textarea><br>
+<input name="title" type="text" maxlength="<?=Comment::title_length?>" value="<?=h(isset($_POST['title'])?$_POST['title']:"")?>" required><br>
+<textarea name="content" rows="5" maxlength="<?=Comment::content_length?>" required><?=h(isset($_POST['content'])?$_POST['content']:"")?></textarea><br>
 <input type="hidden" name="action" value="add_comment">
 <input type="hidden" name="parent" value="<?=$parent?>">
 <input type="submit" value="<?=_("save")?>">
@@ -420,8 +420,8 @@ if ( window.location.hash ) {
 <?
 				form(URI::append(['comment_edit'=>$comment->id]), 'class="comment"', "comment", true);
 ?>
-<input id="comment<?=$comment->id?>" name="title" type="text" maxlength="<?=Comment::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$comment->title)?>"><br>
-<textarea name="content" rows="5" maxlength="<?=Comment::content_length?>"><?=h(!empty($_POST['content'])?$_POST['content']:$comment->content)?></textarea><br>
+<input id="comment<?=$comment->id?>" name="title" type="text" maxlength="<?=Comment::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$comment->title)?>" required><br>
+<textarea name="content" rows="5" maxlength="<?=Comment::content_length?>" required><?=h(!empty($_POST['content'])?$_POST['content']:$comment->content)?></textarea><br>
 <input type="hidden" name="action" value="update_comment">
 <input type="hidden" name="id" value="<?=$comment->id?>">
 <input type="submit" value="<?=_("apply changes")?>">

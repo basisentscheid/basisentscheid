@@ -116,7 +116,10 @@ if ($action) {
 			} else {
 				error("Missing parameters");
 			}
-			if (!$proposal->id) trigger_error("The proposal could not be created!", E_USER_WARNING);
+			if (!$proposal->id) {
+				warning(_("The proposal could not be created!"));
+				break;
+			}
 		}
 
 		// don't activate participation for admins
@@ -161,7 +164,7 @@ if (isset($_GET['issue'])) {
 if ($edit_content) {
 ?>
 <h2><?=_("Title")?></h2>
-<input type="text" name="title" value="<?=h($proposal->title)?>" maxlength="<?=Proposal::title_length?>"><br>
+<input type="text" name="title" value="<?=h($proposal->title)?>" maxlength="<?=Proposal::title_length?>" required><br>
 <h2><?=_("Content")?></h2>
 <textarea name="content" maxlength="<?=Proposal::content_length?>"><?=h($proposal->content)?></textarea><br>
 <?
@@ -240,7 +243,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 		<div class="form">
 			<input type="text" name="proponent" value="<?
 		if (!empty($_POST['proponent'])) echo h($_POST['proponent']); else echo h(Login::$member->username());
-		?>" maxlength="<?=Proposal::proponent_length?>"><br>
+		?>" maxlength="<?=Proposal::proponent_length?>" required><br>
 			<div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal.")?></div>
 		</div>
 	</li>
