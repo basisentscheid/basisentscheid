@@ -64,7 +64,7 @@ function html_head($title, $help=false) {
 	// we use HTML 5
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?=LANG?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title><?=h(TITLE." - ".$title)?></title>
