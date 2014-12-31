@@ -1,4 +1,3 @@
-
 # UTF-8 for Apache and PHP
 AddDefaultCharset UTF-8
 php_value default_charset utf-8
@@ -42,5 +41,3 @@ php_value variables_order "GPCS"
 php_value request_order "GP"
 php_value enable_post_data_reading on
 php_value always_populate_raw_post_data off
-
-
