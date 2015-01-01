@@ -43,14 +43,14 @@ msgid "Username"
 msgstr "Benutzername"
 #
 # File: ballot_edit.php, line: 136
-# File: proposal_edit.php, line: 187
+# File: proposal_edit.php, line: 186
 # File: settings_encryption.php, line: 91
 # File: settings_notifications.php, line: 74
 # File: settings.php, line: 115
 msgid "Save"
 msgstr "Speichern"
 #
-# File: index.php, line: 130
+# File: index.php, line: 132
 # File: periods.php, line: 53
 # File: inc/functions_http.php, line: 209
 msgid "Periods"
@@ -117,7 +117,7 @@ msgstr "Antragstext"
 msgid "Reason"
 msgstr "Begründung"
 #
-# File: index.php, line: 125
+# File: index.php, line: 127
 # File: proposals.php, line: 27
 # File: inc/functions_http.php, line: 208
 msgid "Proposals"
@@ -127,7 +127,7 @@ msgstr "Anträge"
 msgid "Add proposal"
 msgstr "Antrag hinzufügen"
 #
-# File: index.php, line: 131
+# File: index.php, line: 133
 # File: inc/functions_http.php, line: 211
 # File: inc/functions_http.php, line: 213
 msgid "Areas"
@@ -178,7 +178,7 @@ msgid "Counting"
 msgstr "Auszählung"
 #
 # File: admin_areas.php, line: 32
-# File: proposal_edit.php, line: 208
+# File: proposal_edit.php, line: 207
 # File: proposal.php, line: 477
 # File: inc/classes/Proposal.php, line: 1074
 msgid "Area"
@@ -255,7 +255,7 @@ msgstr "Teilnahme"
 msgid "last time activated"
 msgstr "zuletzt aktiviert"
 #
-# File: proposal_edit.php, line: 225
+# File: proposal_edit.php, line: 224
 # File: proposal.php, line: 498
 # File: inc/classes/Proposal.php, line: 1076
 msgid "Proponents"
@@ -389,7 +389,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Neuer Urnenantrag"
 #
-# File: proposals.php, line: 199
+# File: proposals.php, line: 201
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -754,11 +754,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 707
+# File: inc/functions_http.php, line: 716
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 652
+# File: inc/functions_http.php, line: 655
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -933,7 +933,7 @@ msgstr "antworten"
 msgid "The input has been truncated to the maximum allowed length of %d characters!"
 msgstr "Die Eingabe wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
 #
-# File: proposal_edit.php, line: 247
+# File: proposal_edit.php, line: 246
 msgid "Enter your name and contact details as you would like to see them in the proposal."
 msgstr "Gib Deinen Namen und Kontaktdaten so an, wie Du sie im Antrag stehen haben willst."
 #
@@ -1191,21 +1191,21 @@ msgstr "Der Entwurf existiert nicht."
 msgid "You are not a proponent of this proposal!"
 msgstr "Du bist kein Antragsteller dieses Antrags!"
 #
-# File: index.php, line: 47
+# File: index.php, line: 49
 msgid "Upcoming dates"
 msgstr "Die nächsten Termine"
 #
-# File: index.php, line: 78
+# File: index.php, line: 80
 #, php-format
 msgid "debate in period %d starts"
 msgstr "Debatte in Periode %d startet"
 #
-# File: index.php, line: 81
+# File: index.php, line: 83
 #, php-format
 msgid "voting in period %d starts"
 msgstr "Abstimmung in Periode %d startet"
 #
-# File: index.php, line: 84
+# File: index.php, line: 86
 #, php-format
 msgid "voting in period %d closes"
 msgstr "Abstimmung in Periode %d endet"
@@ -1337,7 +1337,7 @@ msgstr "Nr."
 #
 # File: admin_members.php, line: 26
 # File: admin_ngroups.php, line: 30
-# File: index.php, line: 97
+# File: index.php, line: 99
 # File: settings.php, line: 77
 # File: inc/functions_http.php, line: 229
 msgid "Groups"
@@ -1490,7 +1490,7 @@ msgstr "Diese Urne wurde ausgewählt, entweder weil du sie selbst ausgewählt ha
 msgid "You can not change your choice for postal voting any longer, because postage has already started."
 msgstr "Du kannst deine Entscheidung für Briefabstimmung nicht mehr ändern, weil der Versand der Briefabstimmungsunterlagen schon begonnen hat."
 #
-# File: proposal_edit.php, line: 220
+# File: proposal_edit.php, line: 219
 msgid "There are no areas in this group. You can not add a proposal without an area."
 msgstr "Es gibt in dieser Gliederung noch keine Themenbereiche. Ein Antrag ohne Themenbereich kann nicht angelegt werden."
 #
@@ -2606,8 +2606,8 @@ msgstr "verifiziert"
 msgid "not verified"
 msgstr "nicht verifiziert"
 #
-# File: index.php, line: 65
-# File: index.php, line: 111
+# File: index.php, line: 67
+# File: index.php, line: 113
 msgid "You are member of this group."
 msgstr "Du bist Mitglied dieser Gliederung."
 #
@@ -2658,7 +2658,7 @@ msgstr "Du bist nicht in dieser Gliederung nicht stimmberechtigt."
 msgid "You don't have permissions to write comments."
 msgstr "Du hast nicht die Berechtigung, Beiträge zu schreiben."
 #
-# File: index.php, line: 135
+# File: index.php, line: 137
 msgid "This group does not participate."
 msgstr "Diese Gliederung nimmt nicht teil."
 #
@@ -2674,7 +2674,7 @@ msgstr "übrige Gliederungen"
 msgid "groups"
 msgstr "Gliederungen"
 #
-# File: index.php, line: 15
+# File: index.php, line: 16
 msgid "Recently interesting issues"
 msgstr "Aktuell interessante Themen"
 #
@@ -2713,7 +2713,7 @@ msgstr "Signierung und Verschlüsselung von E-Mails ist nicht eingeschaltet."
 msgid "Email encryption"
 msgstr "E-Mail-Verschlüsselung"
 #
-# File: inc/functions.php, line: 412
+# File: inc/functions.php, line: 427
 msgid "This email should be encrypted, but no available key matching your fingerprint and email address was found! Please check your settings:"
 msgstr "Diese E-Mail sollte eigentlich verschlüsselt werden, aber es wurde kein verwendbarer Schlüssel zu deinem Fingerabdruck und deiner E-Mail-Adresse gefunden! Bitte überprüfe deine Einstellungen:"
 #
@@ -2808,3 +2808,27 @@ msgstr "anmelden"
 # File: inc/functions_http.php, line: 456
 msgid "You have unsaved changes."
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Wenn du die Seite verlässt, gehen diese verloren."
+#
+# File: inc/functions.php, line: 304
+msgid "days"
+msgstr "Tage"
+#
+# File: inc/functions.php, line: 304
+msgid "day"
+msgstr "Tag"
+#
+# File: inc/functions.php, line: 304
+msgid "hours"
+msgstr "Stunden"
+#
+# File: inc/functions.php, line: 304
+msgid "hour"
+msgstr "Stunde"
+#
+# File: inc/functions.php, line: 304
+msgid "minutes"
+msgstr "Minuten"
+#
+# File: inc/functions.php, line: 304
+msgid "minute"
+msgstr "Minute"
