@@ -757,7 +757,7 @@ function show_help() {
 	} else {
 		if (empty($_SESSION['show_help'])) {
 			$_SESSION['show_help'] = array($identifier);
-		} elseif (!in_array(BN, $_SESSION['show_help'])) {
+		} elseif (!in_array($identifier, $_SESSION['show_help'])) {
 			$_SESSION['show_help'][] = $identifier;
 		}
 	}
