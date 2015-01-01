@@ -63,7 +63,7 @@ Create cronjobs as described in cli/cron.php and cli/cron_daily.php.
 
 === License ===
 
-Copyright 2014 Magnus Rosenbaum <dev@cmr.cx>
+Copyright 2014-2015 Magnus Rosenbaum <dev@cmr.cx>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
