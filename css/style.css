@@ -373,7 +373,8 @@ section.help {
 	clear: both;
 	background-color: #FFE;
 	padding: 2px 5px 2px 8px;
-	margin-bottom: 1em;
+	margin-bottom: 10px;
+	margin-top: 10px;
 	border-radius: 6px;
 }
 section.help a {
@@ -437,7 +438,7 @@ section.help#manual main h3:before {
 }
 
 section.motd {
-	background-color: #FFE0D7;
+	background-color: #FFEBE6;
 	padding: 2px 5px;
 	margin-bottom: 1em;
 	border-radius: 6px;
@@ -991,8 +992,8 @@ section.timebar div.datespace.now {
 section.quorum {
 	background-color: #E0DAF0;
 	padding: 5px 10px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-top: 10px;
+	margin-bottom: 6px;
 }
 section.quorum h2 {
 	display: inline;

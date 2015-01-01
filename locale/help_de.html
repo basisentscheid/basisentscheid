@@ -1,7 +1,9 @@
 <!--suppress HtmlUnknownAnchorTarget -->
 ===index.php
 
-Es gibt zwei Möglichkeiten, zu den Inhalten der <a href="manual.php#Gliederungen">Gliederungen</a> zu kommen: Man kann in der <b>Menüleiste</b> oben erst eine Gliederung auswählen und dann rechts daneben zu einer Seite dieser Gliederung gehen. Oder man folgt unten in der <b>Tabelle der Gliederungen</b> direkt einem der Links. In beiden Fällen sind die eigenen Gliederungen an den schwarz gefüllten Karos zu erkennen.
+Es gibt zwei Möglichkeiten, zu den Inhalten der <a href="manual.php#Gliederungen">Gliederungen</a> zu kommen: Du kannst oben in der <b>Menüleiste</b>  erst eine Gliederung auswählen und dann rechts daneben zu einer Seite dieser Gliederung gehen. Oder du folgst unten in der <b>Tabelle der Gliederungen</b> direkt einem der Links.
+
+Wenn du angemeldet bist, kannst du deine <b>eigenen Gliederungen</b> an den schwarz gefüllten Karos erkennen.
 
 ===proposals.php
 
@@ -14,25 +16,31 @@ Anträge durchlaufen folgende <b>Phasen</b>:
 
 Die aktuelle Phase eines Antrags wird in der Spalte <b>Status</b> angezeigt.
 
-Unter <b>Geschlossen</b> werden <a href="manual.php#abgeschlossen">abgeschlossene</a> und abgebrochene Themen angezeigt. Mit einem Klick auf die dort angezeigte Spalte <b>Ergebnis</b> kommst du zu einer Liste aller bei der <a href="manual.php#Abstimmung">Abstimmung</a> abgegebenen Stimmen.
+Unter <b>Geschlossen</b> werden <a href="manual.php#abgeschlossen">abgeschlossene</a> und abgebrochene Themen angezeigt. Mit einem Klick auf die nur dort angezeigte Spalte <b>Ergebnis</b> kommst du zu einer Liste aller bei der <a href="manual.php#Abstimmung">Abstimmung</a> abgegebenen Stimmen.
 
 Wenn das <a href="manual.php#Abstimmungsverfahren">Abstimmungsverfahren</a> für ein Thema feststeht, kommst du mit einem Klick auf die Spalte <b>Verfahren</b> zu einer Liste aller dazu abgegebenen Stimmen.
 
 ===proposal.php
 
-Rechts oben werden die <b>Antragsteller</b> des Antrags angezeigt. Jeder kann sich dort als weiterer Antragsteller bewerben. Die derzeitigen Antragsteller entscheiden über die Aufnahme neuer Antragsteller.
-
-Bei <a href="manual.php#eingereicht">eingereichten</a> Anträgen zeigt der <b>Zeitstrahl</b> vergangene und zukünftige Ereignisse. Wenn du mit der Maus über ein Ereignis fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
-
-Um zur <a href="manual.php#Abstimmung">Abstimmung</a> zugelassen zu werden, benötigt ein eingereichter Antrag <b><a href="manual.php#Unterstuetzer">Unterstützer</a></b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Unterstützer in grau sind verfallen, weil ihre Unterstützung schon länger zurück liegt. Sie können ihre Unterstützung aber zurückziehen und erneut setzen. Sobald ein Antrag das <a href="manual.php#Zulassung">Quorum</a> erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
-
-Solange ein <a href="manual.php#Thema">Thema</a> noch nicht die <a href="manual.php#Debatte">Debatte</a> erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
-
-Bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> kannst du eine <b><a href="manual.php#Offline-Abstimmung">geheime Offline-Abstimmung</a></b> eines Themas fordern. Wenn bis dahin %QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
+Rechts werden die <b>Antragsteller</b> des Antrags angezeigt. Jeder kann sich dort als weiterer Antragsteller bewerben. Die derzeitigen Antragsteller entscheiden über die Aufnahme neuer Antragsteller.
 
 ===proposal.php#comments
 
-Die <b>Diskussion</b> ist bei jedem Antrag von Anfang an immer verfügbar. Die Beiträge können bewertet werden und werden dann nach der Bewertung sortiert. Wenn die Beiträge etwas mehr werden, werden von den schlechter bewerteten nur noch die Titel angezeigt, weitere gar nicht mehr. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, erscheint ein Link, mit dem man diese anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt der angemeldete Benutzer noch nie angesehen hat. <i>Blau gestreift</i> sind Beiträge, auf die es momentan nicht sichbare neue Antworten gibt. <i>Rot umrandet</i> werden Beiträge, die man gerade aufgeklappt, bewertet oder bearbeitet hat. Nachdem man einen neuen Beitrag erstellt hat, ist dieser noch %COMMENT_EDIT_INTERVAL bearbeitbar. Ab der Einreichung eines Antrags können dann in der gleichen Art auch <b>Pro- und Kontra-Argumente</b> sowie Antworten darauf eingegeben werden.
+Die <b>Diskussion</b> ist bei jedem Antrag von Anfang an immer verfügbar. Du kannst die Beiträge hinzufügen, beantworten und mit bis zu 2 Punkten bewerten. Nach der in grün angezeigten <i>Summe der Bewertungen</i> werden die Beiträge dann sortiert. Nachdem du einen neuen Beitrag erstellt hast, kannst du ihn noch %COMMENT_EDIT_INTERVAL bearbeiten.
+
+Wenn die Beiträge etwas mehr werden, werden weiter unten nur noch die Titel angezeigt. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, werden diese gar nicht mehr angezeigt. Statt dessen erscheint dort dann ein Link, mit dem man diese Beiträge anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt du noch nie gesehen hast. <i>Blau gestreift</i> sind Beiträge, auf die es verdeckte neue Antworten gibt. <i>Rot umrandet</i> werden Beiträge, die du gerade aufgeklappt, bewertet oder bearbeitet hast.
+
+Ab der Einreichung eines Antrags kannst du in der gleichen Art auch <b>Pro- und Kontra-Argumente</b> eingeben und beantworten.
+
+===proposal.php#timebar
+
+Bei <a href="manual.php#eingereicht">eingereichten</a> Anträgen zeigt der <b>Zeitstrahl</b> vergangene und zukünftige Ereignisse. Wenn du mit der Maus über eines der Ereignisse auf der Unterseite des Zeitstrahls fährst, werden der genaue Zeitpunkt und weitere Informationen angezeigt.
+
+Um zur <a href="manual.php#Abstimmung">Abstimmung</a> zugelassen zu werden, benötigt ein eingereichter Antrag <b><a href="manual.php#Unterstuetzer">Unterstützer</a></b>. Bei der Unterstützung hast du die Wahl, ob dein Benutzername angezeigt werden soll oder nicht. Unterstützer in grau sind verfallen, weil ihre Unterstützung schon länger zurück liegt. Sie können ihre Unterstützung aber zurückziehen und erneut setzen. Sobald ein Antrag das <a href="manual.php#Zulassung">Quorum</a> erreicht hat, wechselt der Antrag in den Status <i>zugelassen</i>.
+
+Solange ein <a href="manual.php#Thema">Thema</a> noch nicht die <a href="manual.php#Debatte">Debatte</a> erreicht hat, kannst du <b>konkurrierende Anträge</b> einreichen.
+
+Bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> kannst du eine <b><a href="manual.php#Offline-Abstimmung">geheime Offline-Abstimmung</a></b> eines Themas fordern. Wenn bis dahin %QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
 
 ===proposal_edit.php
 
@@ -40,7 +48,7 @@ Der eingegebene Text wird unverändert wieder angezeigt und nur nach folgenden R
  * Doppelte einfache Anführungsstriche machen den Bereich <i>''kursiv''</i>.
  * URLs und E-Mail-Adressen werden automatisch verlinkt.
 
-Der Titel und der Antragstext können bis zur Einreichung bearbeitet werden, die Begründung sogar bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a>.
+Der Titel und der Antragstext kannst du bis zur Einreichung bearbeiten, die Begründung sogar bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a>.
 
 ===vote.php
 
@@ -52,44 +60,44 @@ Wenn du die Anträge oder die <a href="manual.php#Argumente">Argumente</a> dazu 
 
 ===vote_result.php
 
-Wenn du mit der Maus über die Balken in der Spalte <i>Ergebnis</i> fährst, wird das Ergebnis in Zahlen angezeigt.
+Wenn du mit der Maus über die Balken in der Spalte <b>Ergebnis</b> fährst, wird das Ergebnis in Zahlen angezeigt.
 
-Unten ist eine Liste mit allen Abstimmungskennungen und allen abgegebenen Stimmen zu diesem <a href="manual.php#Thema">Thema</a>. Wenn ein Mitglied keine Stimme abgegeben hat, steht nur die Abstimmungskennung in der Zeile. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert.
+Unten ist eine Liste mit allen Abstimmungskennungen und allen <b>abgegebenen Stimmen</b> zu diesem <a href="manual.php#Thema">Thema</a>. Wenn ein Mitglied keine Stimme abgegeben hat, steht nur die Abstimmungskennung in der Zeile. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine <i>eigene Stimme</i> ist rot markiert.
 
 Anhand dieser Liste kannst du folgendes überprüfen:
 
- * Du kannst die Auszählung nachzählen.
- * Du kannst prüfen, ob deine eigene Stimme korrekt in der Liste steht. Du solltest bei der <a href="manual.php#Abstimmung">Abstimmung</a> eine Beleg-E-Mail bekommen haben, die du nun hiermit vergleichen kannst.
- * Du kannst prüfen, ob die Abstimmungskennungen mit der Liste in der Benachrichtigungs-E-Mail über den Abstimmungsbeginn übereinstimmen. Es dürfen keine Abstimmungskennungen dazugekommen oder verschwunden sein.
- * Du kannst prüfen, ob deine Abstimmungskennung in den beiden E-Mails und der Liste hier übereinstimmt.
+ * Du kannst die <i>Auszählung</i> nachzählen.
+ * Du kannst prüfen, ob deine <i>eigene Stimme</i> korrekt in der Liste steht. Du solltest bei der <a href="manual.php#Abstimmung">Abstimmung</a> eine Beleg-E-Mail bekommen haben, die du nun hiermit vergleichen kannst.
+ * Du kannst prüfen, ob die <i>Abstimmungskennungen</i> mit der Liste in der Benachrichtigungs-E-Mail über den Abstimmungsbeginn übereinstimmen. Es dürfen keine Abstimmungskennungen dazugekommen oder verschwunden sein.
+ * Du kannst prüfen, ob <i>deine Abstimmungskennung</i> in den beiden E-Mails und der Liste hier übereinstimmt.
 
 Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
 
-Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:%MAIL_SUPPORT">%MAIL_SUPPORT</a>)!
+Sollte dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:%MAIL_SUPPORT">%MAIL_SUPPORT</a>)!
 
 ===votingmode_result.php
 
-Unten ist eine Liste mit allen abgegebenen Stimmen zum <a href="manual.php#Abstimmungsverfahren">Abstimmungsverfahren</a> bei diesem <a href="manual.php#Thema">Thema</a>. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine eigene Stimme ist rot markiert, sofern du eine abgegeben hast.
+Unten ist eine Liste mit allen <b>abgegebenen Stimmen</b> zum <a href="manual.php#Abstimmungsverfahren">Abstimmungsverfahren</a> bei diesem <a href="manual.php#Thema">Thema</a>. Hat ein Mitglied mehr als eine Stimme abgegeben, wird nur die zuletzt abgegebene Stimme gezählt, die anderen werden durchgestrichen angezeigt. Deine <i>eigene Stimme</i> ist rot markiert, sofern du eine abgegeben hast.
 
 Anhand dieser Liste kannst du folgendes überprüfen:
 
- * Du kannst die Stimmen zählen und die Anzahl mit dem Quorum vergleichen.
- * Du kannst prüfen, ob deine eigene Stimme korrekt in der Liste steht. Du solltest bei der Abstimmung eine Beleg-E-Mail bekommen haben, die du nun hiermit vergleichen kannst.
- * Du kannst prüfen, ob deine Abstimmungskennung in der Beleg-E-Mails und die in der Liste hier übereinstimmt.
+ * Du kannst die Stimmen zählen und die <i>Anzahl</i> mit dem Quorum vergleichen.
+ * Du kannst prüfen, ob deine <i>eigene Stimme</i> korrekt in der Liste steht. Du solltest bei der Abstimmung eine Beleg-E-Mail bekommen haben, die du nun hiermit vergleichen kannst.
+ * Du kannst prüfen, ob <i>deine Abstimmungskennung</i> in der Beleg-E-Mails und die in der Liste hier übereinstimmt.
 
 Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
 
-Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:%MAIL_SUPPORT">%MAIL_SUPPORT</a>)!
+Sollte dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:%MAIL_SUPPORT">%MAIL_SUPPORT</a>)!
 
 ===periods.php
 
-Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
+Hier kannst du die von den <a href="manual.php#Verantwortliche">Verantwortlichen</a> eingetragenen Abstimmungsperioden einsehen. Eine Abstimmungsperiode ist ein Zeitraum, in dem eine Liste von Anträgen erst debattiert und dann abgestimmt wird.
 
-Bevor eine Abstimmungsperiode beginnt, ordnen die <a href="manual.php#Verantwortliche">Verantwortlichen</a> die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b>Debatte</b>. Bis zur <b><a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a></b> kann bei jedem Antrag eine <a href="manual.php#Offline-Abstimmung">Offline-Abstimmung</a> gefordert werden. Wenn bis dahin das Quorum zur Offline-Abstimmung erreicht ist, bleibt das <a href="manual.php#Thema">Thema</a> in dieser Phase bis die <a href="manual.php#Verantwortliche">Verantwortlichen</a> das Ergebnis eingegeben haben. Die Online-Abstimmung beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag.
+Bevor eine Abstimmungsperiode beginnt, ordnen die <a href="manual.php#Verantwortliche">Verantwortlichen</a> die zugelassenen Anträge der nächsten passenden Abstimmungsperiode zu. Zum festgelegten Zeitpunkt beginnt dann die <b><a href="manual.php#Debatte">Debatte</a></b>. Bis zur <b><a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a></b> kann bei jedem Antrag eine <a href="manual.php#Offline-Abstimmung">Offline-Abstimmung</a> gefordert werden. Wenn bis dahin das <a href="manual.php#Abstimmungsverfahren">Quorum zur Offline-Abstimmung</a> erreicht ist, bleibt das <a href="manual.php#Thema">Thema</a> in dieser Phase bis die <a href="manual.php#Verantwortliche">Verantwortlichen</a> das Ergebnis eingegeben haben. Die <b><a href="manual.php#Abstimmung">Online-Abstimmung</a></b> beginnt zum festgesetzten Zeitpunkt und endet mit dem Zeitpunkt der <b>Auszählung</b> am Stichtag.
 
-Wenn bei einer Abstimmungsperiode die <b>Urnenabstimmung</b> aktiviert ist, stehen weitere Felder und Funktionen zur Vorbereitung der Urnenabstimmung zur Verfügung. Diese findet parallel zur Debatte, <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> und <a href="manual.php#Abstimmung">Online-Abstimmung</a> statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Zum Zeitpunkt der <i>Urnenzuordnung</i> werden alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet. Bis zum Zeitpunkt der <i>Urnenvorbereitung</i> können die Teilnehmer noch eine andere Urne auswählen.
+Wenn bei einer Abstimmungsperiode die <b>Urnenabstimmung</b> aktiviert ist, stehen weitere Felder und Funktionen zur Vorbereitung der Urnenabstimmung zur Verfügung. Diese findet parallel zur <a href="manual.php#Debatte">Debatte</a>, <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> und <a href="manual.php#Abstimmung">Online-Abstimmung</a> statt. Zunächst können Urnenanträge gestellt und die vorgeschlagenen Urnen von Teilnehmern für ihre Abstimmung ausgewählt werden. Zum Zeitpunkt der <i>Urnenzuordnung</i> werden alle verbleibenden Teilnehmer den genehmigten Urnen entsprechend ihrem Wohnort zugeordnet. Bis zum Zeitpunkt der <i>Urnenvorbereitung</i> können die Teilnehmer noch eine andere Urne auswählen.
 
-Aktuelle Phasen sind hier fett dargestellt, vergangene Zeitpunkte kursiv, zukünftige normal.
+Aktuelle Phasen sind hier <i>fett</i> dargestellt, vergangene Zeitpunkte <i>kursiv</i>, zukünftige <i>normal</i>.
 
 ===ballots.php
 
@@ -99,17 +107,17 @@ Zunächst werden dazu hier Urnen (Urnenanträge) gesammelt. Mitglieder können s
 
 Zum Zeitpunkt <i>Urnenzuordnung</i> werden die noch nicht einer genehmigten Urne zugeordneten Mitglieder automatisch der räumlich nächsten Urne zugeordnet. Diese Zuordnung ist freilich nicht perfekt und die Mitglieder können bis zum Zeitpunkt der <i>Urnenvorbereitung</i> noch eine andere Urne auswählen.
 
-Anstatt einer Urne kann auch <b>Briefabstimmung</b> ausgewählt werden. Dies ist zwar bis zum Zeitpunkt der Urnenvorbereitung möglich, sollte um den rechtzeitigen Erhalt und Rückerhalt der Briefwahlunterlagen sicherzustellen, aber nach Möglichkeit schon früher gemacht werden. Wenn der Versand der Briefwahlunterlagen begonnen hat, ist eine Entscheidung zur Teilnahme per Briefabstimmung ab dann nicht mehr rücknehmbar.
+Anstatt einer Urne kannst du auch <b>Briefabstimmung</b> auswählen. Dies ist zwar bis zum Zeitpunkt der Urnenvorbereitung möglich, sollte um den rechtzeitigen Erhalt und Rückerhalt der Briefwahlunterlagen sicherzustellen, aber nach Möglichkeit schon früher gemacht werden. Wenn der Versand der Briefwahlunterlagen begonnen hat, kannst du eine Entscheidung zur Teilnahme per Briefabstimmung ab dann nicht mehr zurücknehmen.
 
 ===ballot_edit.php
 
-Wenn du am Stichtag als Urnenbeauftragter eine Urne betreiben möchtest, kannst du die Urne hier anmelden. Trage dazu bitte Dich und die weiteren vorgesehenen Urnenbeauftragten und die Kontaktdaten in das Feld <b>Beauftragte</b> ein.
+Wenn du am Stichtag als Urnenbeauftragter eine Urne betreiben möchtest, kannst du die Urne hier anmelden. Trage dazu bitte dich und die weiteren vorgesehenen Urnenbeauftragten und die Kontaktdaten in das Feld <b>Beauftragte</b> ein.
 
 Wähle als <b>Gliederung des Ortes</b> bitte die niedrigste Gliederung aus, in deren Gebiet der vorgesehene Ort der Urne liegt. Diese kann von deiner Gliederungszugehörigkeit abweichen.
 
 ===areas.php
 
-Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen an- und abmelden. Normalerweise musst du dich um die Anmeldung zu Themenbereichen nicht selbst kümmern, da diese bei Einreichung, <a href="manual.php#Unterstuetzer">Unterstützung</a> oder <a href="manual.php#Abstimmung">Abstimmung</a> eines Antrags automatisch geschieht. Wer über zwei <a href="manual.php#Abstimmungsperioden">Stichtage</a> hinweg keine dieser Aktionen tätigt, wird auch wieder automatisch abgemeldet.
+Hier kannst du dich zur Teilnahme an den verschiedenen Themenbereichen <b>an- und abmelden</b>. Normalerweise musst du dich um die Anmeldung zu Themenbereichen nicht selbst kümmern, da du <i>automatisch angemeldet</i> wirst, wenn du einen Antrag im entsprechenden Themenbereich <a href="manual.php#Einreichung">einreichst</a>, <a href="manual.php#Unterstuetzer">unterstützt</a> oder <a href="manual.php#Abstimmung">abstimmst</a>. Wenn du über zwei <a href="manual.php#Abstimmungsperioden">Stichtage</a> hinweg nichts davon tust, wird auch wieder <i>automatisch abgemeldet</i>. Um trotzdem nicht automatisch abgemeldet zu werden, kannst du dich auch <b>erneut anmelden</b>.
 
 Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für die beiden <b>Quoren</b>:
  * das <a href="manual.php#Zulassung">Quorum zur Zulassung eines Antrags</a>
@@ -118,6 +126,8 @@ Die Anzahl der Teilnehmer in einem Themenbereich bildet die Grundlage für die b
 ===settings.php
 
 Eine Änderung des <b>Benutzernamens</b> ist jederzeit möglich, sofern der neue noch nicht vergeben ist. Bei <a href="manual.php#Unterstuetzer">Unterstützerlisten</a> und <a href="manual.php#Diskussion">Diskussionsbeiträgen</a> wird fortan der neue Benutzername angezeigt, bei Antragstellern und Urnenbeauftragten dagegen bleiben die Namen so, wie sie angegeben wurden.
+
+Das <b>Passwort</b> muss mindestens 8 Zeichen lang sein. Nach der Änderung bekommst du eine Benachrichtigungsmail, damit du es bemerkst, wenn jemand unbefugter dein Passwort ändert.
 
 Bei der Registrierung wird eine E-Mail mit einem Bestätigungscode an die eingegebene <b>E-Mail-Adresse</b> geschickt. Erst wenn auf den Link in dieser E-Mail geklickt wurde, gilt die E-Mail-Adresse als bestätigt und wird verwendet. Falls diese E-Mail nicht angekommen sein sollte, kann man sich mit dem entsprechenden Button die "Bestätigungs-E-Mail nocheinmal senden". Man kann auch eine andere E-Mail-Adresse angeben und sich an diese die Bestätigungsmail schicken lassen. Die E-Mail-Adresse wird nur für Benachrichtigungsmails verwendet und nie irgendjemand anderem angezeigt.
 

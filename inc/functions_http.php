@@ -625,10 +625,12 @@ function stripes($change=false, $suffix="") {
  */
 function help($anchor="", $h1=false) {
 	if ($anchor) {
-		$hash_anchor = "#".$anchor;
-		$identifier = BN.$hash_anchor;
+		$link_anchor = "#help_".$anchor;
+		$id = ' id="help_'.$anchor.'"';
+		$identifier = BN."#".$anchor;
 	} else {
-		$hash_anchor = "";
+		$link_anchor = "";
+		$id = '';
 		$identifier = BN;
 	}
 	if (Login::$member) {
@@ -642,9 +644,9 @@ function help($anchor="", $h1=false) {
 	}
 	if ($show) {
 ?>
-<section class="help">
+<section class="help"<?=$id?>>
 <?
-		form(URI::same().$hash_anchor, 'class="hide_help"');
+		form(URI::same().$link_anchor, 'class="hide_help"');
 		if ($anchor) {
 ?>
 <input type="hidden" name="anchor" value="<?=$anchor?>">
@@ -705,7 +707,7 @@ function help($anchor="", $h1=false) {
 </section>
 <?
 	} else {
-		form(URI::same().$hash_anchor, 'class="show_help'.($h1?' h1':'').'"');
+		form(URI::same().$link_anchor, 'class="show_help'.($h1?' h1':'').'"'.$id);
 		if ($anchor) {
 ?>
 <input type="hidden" name="anchor" value="<?=$anchor?>">

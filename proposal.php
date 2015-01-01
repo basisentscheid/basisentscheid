@@ -349,6 +349,8 @@ if ($is_proponent and $proposal->allowed_edit_reason_only()) {
 <?
 Comments::display($proposal);
 
+help("timebar");
+
 // time bar
 if ($proposal->submitted or $proposal->revoke) {
 	$times = array();
