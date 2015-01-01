@@ -20,7 +20,7 @@ if ($issue->state == 'finished') {
 }
 
 $ngroup = $issue->area()->ngroup();
-Login::access("eligible", $ngroup->id);
+Login::access("entitled", $ngroup->id);
 
 $token = $issue->vote_token();
 if (!$token) {
