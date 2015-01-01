@@ -747,7 +747,7 @@ class Issue extends Relation {
 				// column "support"
 				if (BN!="admin_vote_result.php") {
 ?>
-		<td><?
+		<td class="support" onClick="location.href='<?=$link?>#supporters'"><?
 					$proposal->bargraph_quorum($proposal->supported_by_member, $proposal->supporter_valid());
 					?></td>
 <?

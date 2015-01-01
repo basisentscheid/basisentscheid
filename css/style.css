@@ -547,9 +547,7 @@ table.proposals td.proposal_link_active:active a {
 	background-color: #F3F3F3;
 }
 
-table.proposals td.support {
-	white-space: nowrap;
-}
+table.proposals td.support,
 table.proposals td.result {
 	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
