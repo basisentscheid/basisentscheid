@@ -34,7 +34,7 @@ $d->filter->filters = array(
 		'activated IS NULL'     => _("not activated")
 	),
 	'eligible' => array(
-		''                      => _("all")." ["._("elegible")."]",
+		''                      => _("all")." ["._("eligible")."]",
 		'eligible=TRUE'         => _("eligible"),
 		'eligible=FALSE'        => _("not eligible")
 	),

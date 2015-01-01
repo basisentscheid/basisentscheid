@@ -451,7 +451,7 @@ if (Login::$admin) {
 <?
 		} else {
 ?>
-<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not elegible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></div>
+<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not eligible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></div>
 <?
 		}
 	}
@@ -509,7 +509,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 			}
 		} else {
 ?>
-<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not elegible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></div>
+<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not eligible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></div>
 <?
 		}
 	}
