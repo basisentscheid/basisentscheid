@@ -762,7 +762,7 @@ class Issue extends Relation {
 				// columns "period" and "votingmode"
 				if ($first) {
 					$this->display_period($period_rowspan, $num_rows);
-					$this->display_votingmode($num_rows, $submitted, $selected_proposal);
+					$this->display_votingmode($num_rows, $submitted, $selected_proposal, $link);
 				}
 			}
 ?>
@@ -937,13 +937,14 @@ class Issue extends Relation {
 	 * @param integer $num_rows
 	 * @param boolean $submitted
 	 * @param integer $selected_proposal enable form only on detail page
+	 * @param string  $link
 	 */
-	private function display_votingmode($num_rows, $submitted, $selected_proposal) {
+	private function display_votingmode($num_rows, $submitted, $selected_proposal, $link) {
 ?>
-		<td rowspan="<?=$num_rows?>" class="center<?
+		<td rowspan="<?=$num_rows?>"<?
 
 		if ($this->votingmode_determination($submitted)) {
-			?>" title="<?
+			?> class="votingmode" title="<?
 			if (Login::$member) {
 				$entitled = Login::$member->entitled($this->area()->ngroup);
 				$votingmode_demanded = $this->votingmode_demanded_by_member();
@@ -954,37 +955,36 @@ class Issue extends Relation {
 				} else {
 					echo _("You are not entitled in this group.");
 				}
-				?>">
+			} else {
+				$entitled = false;
+				$votingmode_demanded = false;
+			}
+			?>" onClick="location.href='<?=$link?>#issue'">
 <img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
 <?
-				if ($votingmode_demanded) { ?>&#10003;<? }
-				if ($selected_proposal and $entitled) {
-					form(URI::same());
-					if ($votingmode_demanded) {
-						echo _("You demand offline voting.")?>
+			if ($votingmode_demanded) { ?>&#10003;<? }
+			if ($selected_proposal) {
+				$disabled = $entitled ? "" : " disabled";
+				form(URI::same());
+				if ($votingmode_demanded) {
+					echo _("You demand offline voting.")?>
 <input type="hidden" name="action" value="revoke_votingmode">
-<input type="submit" value="<?=_("Revoke")?>">
+<input type="submit" value="<?=_("Revoke")?>"<?=$disabled?>>
 <?
-					} else {
+				} else {
 ?>
 <input type="hidden" name="action" value="demand_votingmode">
-<input type="submit" value="<?=_("Demand offline voting")?>">
+<input type="submit" value="<?=_("Demand offline voting")?>"<?=$disabled?>>
 <?
-					}
-					form_end();
 				}
-			} else {
-				echo _("Members can demand offline voting.");
-				?>">
-<img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
-<?
+				form_end();
 			}
 		} elseif ($this->votingmode_offline()) {
-			?>" title="<?=_("offline voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
+			?> class="votingmode" title="<?=_("offline voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
 		} elseif ($this->state!="entry") {
-			?>" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
+			?> class="votingmode" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
 		} else {
-			?>"><?
+			?>><?
 		}
 
 		// offline voting by admin

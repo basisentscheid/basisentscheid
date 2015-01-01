@@ -427,24 +427,32 @@ if ($proposal->state != "draft") display_quorum($proposal, $supporters, $is_supp
 
 ?>
 
-<section class="issue">
+<section id="issue">
 <?
-if (Login::$member) {
-	if (Login::$member->entitled($ngroup) and $issue->allowed_add_alternative_proposal()) {
+if (Login::$admin) {
+	if ($proposal->allowed_move_to_issue()) {
+?>
+<div class="add"><?=_("Move this proposal to issue")?>: <?
+		form(URI::same());
+		input_select("issue", $proposal->options_move_to_issue());
+		input_hidden("action", "move_to_issue");
+		input_submit(_("move"));
+		form_end();
+		?></div>
+<?
+	}
+} else {
+	if ($issue->allowed_add_alternative_proposal()) {
+		if (Login::$member and Login::$member->entitled($ngroup)) {
 ?>
 <div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
-	}
-} elseif (Login::$admin and $proposal->allowed_move_to_issue()) {
+		} else {
 ?>
-<div class="add"><?=_("Move this proposal to issue")?>: <?
-	form(URI::same());
-	input_select("issue", $proposal->options_move_to_issue());
-	input_hidden("action", "move_to_issue");
-	input_submit(_("move"));
-	form_end();
-	?></div>
+<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not elegible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></div>
 <?
+		}
+	}
 }
 ?>
 <h2><?=_("This and alternative proposals")?></h2>
@@ -478,7 +486,6 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <p class="proposal"><?=h($issue->area()->name)?></p>
 <?
 
-	$allowed_edit_proponent = false;
 	$is_any_proponent = false;
 	if (Login::$member) {
 		foreach ( $proponents as $proponent ) {
@@ -487,13 +494,24 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 				break;
 			}
 		}
-		$allowed_edit_proponent = ( $proposal->allowed_change_proponents() and Login::$member->entitled($ngroup) );
-		if ($allowed_edit_proponent and !$is_any_proponent) {
+	}
+
+	$allowed_edit_proponent = false;
+	if ($proposal->allowed_change_proponents()) {
+		if (Login::$member and Login::$member->entitled($ngroup)) {
+			$allowed_edit_proponent = true;
+			if (!$is_any_proponent) {
 ?>
 <div class="add"><a href="<?=URI::append(['become_proponent'=>1])?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
 <?
+			}
+		} else {
+?>
+<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not elegible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></div>
+<?
 		}
 	}
+
 ?>
 <h2><?=_("Proponents")?></h2>
 <ul>
@@ -612,54 +630,59 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 	if (Login::$member or Login::$admin) {
 ?>
 <?=join(", ", $supporters);
-		if (Login::$member and Login::$member->entitled($ngroup) and $proposal->allowed_change_supporters()) {
+	} else {
+?>
+<span class="disabled"><?=_("The list of supporters is only visible for logged in users.")?></span>
+<?
+	}
+	if ($proposal->allowed_change_supporters()) {
 ?>
 <br class="clear">
 <?
-			if ($is_supporter) {
-				if ($is_valid) {
-					?><div class="support">&#10003; <?
-					if ($is_supporter==="anonymous") {
-						echo _("You support this proposal anonymously.");
-					} else {
-						echo _("You support this proposal.");
-					}
-					?></div><?
+		$disabled = (Login::$member and Login::$member->entitled($ngroup)) ? "" : " disabled";
+		if ($is_supporter) {
+			if ($is_valid) {
+				?><div class="support">&#10003; <?
+				if ($is_supporter==="anonymous") {
+					echo _("You support this proposal anonymously.");
 				} else {
-					?><div class="support_expired">&#10003; <?
-					if ($is_supporter==="anonymous") {
-						echo _("Your anonymous support for this proposal is expired.");
-					} else {
-						echo _("Your support for this proposal is expired.");
-					}
-					?></div><?
-					form(URI::same()."#supporters");
+					echo _("You support this proposal.");
+				}
+				?></div><?
+			} else {
+				?><div class="support_expired">&#10003; <?
+				if ($is_supporter==="anonymous") {
+					echo _("Your anonymous support for this proposal is expired.");
+				} else {
+					echo _("Your support for this proposal is expired.");
+				}
+				?></div><?
+				form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="renew_support">
-<input type="submit" value="<?=_("Renew your support for this proposal")?>">
-<?
-					form_end();
-				}
-				form(URI::same()."#supporters");
-?>
-<input type="hidden" name="action" value="revoke_support">
-<input type="submit" value="<?=_("Revoke your support for this proposal")?>">
-<?
-				form_end();
-			} else {
-				form(URI::same()."#supporters");
-?>
-<input type="hidden" name="action" value="add_support">
-<input type="submit" value="<?=_("Support this proposal")?>">
-<?
-				form_end();
-				form(URI::same()."#supporters");
-?>
-<input type="hidden" name="action" value="add_support_anonym">
-<input type="submit" value="<?=_("Support this proposal anonymously")?>">
+<input type="submit" value="<?=_("Renew your support for this proposal")?>"<?=$disabled?>>
 <?
 				form_end();
 			}
+			form(URI::same()."#supporters");
+?>
+<input type="hidden" name="action" value="revoke_support">
+<input type="submit" value="<?=_("Revoke your support for this proposal")?>"<?=$disabled?>>
+<?
+			form_end();
+		} else {
+			form(URI::same()."#supporters");
+?>
+<input type="hidden" name="action" value="add_support">
+<input type="submit" value="<?=_("Support this proposal")?>"<?=$disabled?>>
+<?
+			form_end();
+			form(URI::same()."#supporters");
+?>
+<input type="hidden" name="action" value="add_support_anonym">
+<input type="submit" value="<?=_("Support this proposal anonymously")?>"<?=$disabled?>>
+<?
+			form_end();
 		}
 	}
 

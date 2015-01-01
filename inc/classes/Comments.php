@@ -133,10 +133,16 @@ class Comments {
 ?>
 	<div class="comments_rubric">
 <?
-			if (Login::access_allowed("comment") and self::$proposal->allowed_add_comments("discussion")) {
+			if (self::$proposal->allowed_add_comments("discussion")) {
+				if (Login::access_allowed("comment")) {
 ?>
 		<div class="add"><a href="<?=URI::append(['discussion'=>1, 'parent'=>"discussion"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new comment")?></a></div>
 <?
+				} else {
+?>
+		<div class="add icontextlink disabled"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new comment")?></div>
+<?
+				}
 			}
 ?>
 		<h2><?=_("Discussion")?></h2>
@@ -150,10 +156,16 @@ class Comments {
 ?>
 	<div class="comments_rubric arguments_pro">
 <?
-			if (Login::access_allowed("comment") and self::$proposal->allowed_add_comments("pro")) {
+			if (self::$proposal->allowed_add_comments("pro")) {
+				if (Login::access_allowed("comment")) {
 ?>
 		<div class="add"><a href="<?=URI::append(['parent'=>"pro"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></a></div>
 <?
+				} else {
+?>
+		<div class="add icontextlink disabled"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new pro argument")?></div>
+<?
+				}
 			}
 ?>
 		<h2><?=_("Pro")?></h2>
@@ -164,10 +176,16 @@ class Comments {
 	</div>
 	<div class="comments_rubric arguments_contra">
 <?
-			if (Login::access_allowed("comment") and self::$proposal->allowed_add_comments("contra")) {
+			if (self::$proposal->allowed_add_comments("contra")) {
+				if (Login::access_allowed("comment")) {
 ?>
 		<div class="add"><a href="<?=URI::append(['parent'=>"contra"])?>#form" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></a></div>
 <?
+				} else {
+?>
+		<div class="add icontextlink disabled"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add new contra argument")?></div>
+<?
+				}
 			}
 ?>
 		<h2><?=_("Contra")?></h2>
@@ -524,24 +542,27 @@ if ( window.location.hash ) {
 
 		// reply
 		if (
-			Login::access_allowed("comment") and
 			self::$proposal->allowed_add_comments($this->rubric) and
 			self::$parent!=$comment->id and
 			!$comment->removed
 		) {
-
-			$open = self::$open;
-			$open[] = $comment->id;
-			$open = array_unique($open);
-
+			if (Login::access_allowed("comment")) {
+				$open = self::$open;
+				$open[] = $comment->id;
+				$open = array_unique($open);
 ?>
 		<div class="reply"><a href="<?=URI::append(['open'=>$open, 'parent'=>$comment->id])?>#form" class="iconlink"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></a></div>
 <?
+			} else {
+?>
+		<div class="reply iconlink disabled"><img src="img/reply.png" width="16" height="16" <?alt(_("reply"))?>></div>
+<?
+			}
 		}
 
 		// rating and remove/restore
 		if ($comment->rating) {
-			?><span class="rating">+<?=$comment->rating?></span> <?
+			?><span class="rating" title="<?=_("sum of ratings")?>">+<?=$comment->rating?></span> <?
 		}
 		if (Login::$admin) {
 			form(URI::same(), 'class="button"');
@@ -561,20 +582,25 @@ if ( window.location.hash ) {
 			}
 			form_end();
 		} elseif (
-			Login::access_allowed("rate") and
 			self::$proposal->allowed_add_comments($this->rubric) and
 			// don't allow to rate ones own comments
 			!$comment->is_author() and
 			// don't allow to rate removed comments
 			!$comment->removed
 		) {
-			$uri = URI::same()."#comment".$comment->id;
+			if (Login::access_allowed("rate")) {
+				$disabled = "";
+				$uri = URI::same()."#comment".$comment->id;
+			} else {
+				$disabled = " disabled";
+				$uri = "";
+			}
 			if ($comment->score) {
 				form($uri, 'class="button rating reset"');
 ?>
 <input type="hidden" name="comment" value="<?=$comment->id?>">
 <input type="hidden" name="action" value="reset_rating">
-<input type="submit" value="0">
+<input type="submit" value="0"<?=$disabled?>>
 <?
 				form_end();
 			}
@@ -584,7 +610,7 @@ if ( window.location.hash ) {
 <input type="hidden" name="comment" value="<?=$comment->id?>">
 <input type="hidden" name="action" value="set_rating">
 <input type="hidden" name="rating" value="<?=$score?>">
-<input type="submit" value="+<?=$score?>">
+<input type="submit" value="+<?=$score?>"<?=$disabled?>>
 <?
 				form_end();
 			}
