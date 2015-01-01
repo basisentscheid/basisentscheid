@@ -16,7 +16,7 @@ html_head(HOME_H1, true);
 <h2><?=_("Recently interesting issues")?></h2>
 <table class="proposals">
 <?
-Issue::display_proposals_th();
+Issue::display_proposals_th(false, false, true);
 $sql = "SELECT issue.* FROM issue
 	JOIN proposal ON proposal.issue = issue.id";
 if (Login::$ngroups) {
@@ -37,9 +37,9 @@ while ( $issue = DB::fetch_object($result, "Issue") ) {
 	/** @var $issue Issue */
 	list($proposals, $submitted) = $issue->proposals_list();
 ?>
-	<tr><td colspan="5" class="issue_separator"></td></tr>
+	<tr><td colspan="6" class="issue_separator"></td></tr>
 <?
-	$issue->display_proposals($proposals, $submitted, count($proposals));
+	$issue->display_proposals($proposals, $submitted, count($proposals), false, 0, [], true);
 }
 ?>
 </table>

@@ -615,10 +615,18 @@ class Issue extends Relation {
 	 *
 	 * @param boolean $show_results (optional) display the result column
 	 * @param boolean $show_score   (optional) display the score column
+	 * @param boolean $show_ngroup  (optional)
 	 */
-	public static function display_proposals_th($show_results=false, $show_score=false) {
+	public static function display_proposals_th($show_results=false, $show_score=false, $show_ngroup=false) {
 ?>
 	<tr>
+<?
+		if ($show_ngroup) {
+?>
+		<th><?=_("Group")?></th>
+<?
+		}
+?>
 		<th class="proposal"><?=_("Proposal")?></th>
 <?
 		if (BN=="vote.php") {
@@ -708,8 +716,9 @@ class Issue extends Relation {
 	 * @param boolean $show_results      (optional) display the result column
 	 * @param integer $selected_proposal (optional)
 	 * @param array   $vote              (optional)
+	 * @param boolean $show_ngroup       (optional)
 	 */
-	function display_proposals(array $proposals, $submitted, $period_rowspan, $show_results=false, $selected_proposal=0, array $vote=array()) {
+	function display_proposals(array $proposals, $submitted, $period_rowspan, $show_results=false, $selected_proposal=0, array $vote=array(), $show_ngroup=false) {
 
 		$first = true;
 		$first_admitted = true;
@@ -723,6 +732,13 @@ class Issue extends Relation {
 	<tr class="proposal"<?
 			if ($first) { ?> id="issue<?=$this->id?>"<? }
 			?>>
+<?
+			if ($show_ngroup and $first) {
+?>
+		<td rowspan="<?=$num_rows?>"><?=$proposal->issue()->area()->ngroup()->name?></td>
+<?
+			}
+?>
 		<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
 			switch ($proposal->state) {
