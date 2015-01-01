@@ -38,6 +38,9 @@ To make the webserver use the new group, we have to restart it:
 For PHP configuration and for blocking access to some directories, use the provided .htaccess files or copy their contents to the webserver config. The latter will be required if your webserver does not support .htaccess files but is also better for performance in live environment. This command will show you all the .htaccess files and their content:
 $ find . -name ".htaccess" -printf '=== %p ===\n' -exec cat {} \;
 
+In your PHP cli configuration make sure the following option is set:
+short_open_tag = on
+
 Configuration:
 $ cd inc/
 $ cp config_example.php config.php

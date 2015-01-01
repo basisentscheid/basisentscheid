@@ -1,6 +1,7 @@
 # UTF-8 for Apache and PHP
 AddDefaultCharset UTF-8
-php_value default_charset utf-8
+php_value default_charset UTF-8
+php_value mbstring.internal_encoding UTF-8
 
 # Language Options
 php_flag short_open_tag on
