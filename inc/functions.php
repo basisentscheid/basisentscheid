@@ -74,7 +74,7 @@ function notice($text) {
 function warning($text, $content2html=false) {
 	if (PHP_SAPI=="cli") {
 		// for tests
-		trigger_error($text, E_USER_WARNING);
+		echo "Warning: ".$text."\n";
 	} else {
 ?>
 <p class="warning">&#9747; <?= $content2html ? content2html($text) : h($text) ?></p>
@@ -92,7 +92,7 @@ function warning($text, $content2html=false) {
 function error($text, $content2html=false) {
 	if (PHP_SAPI=="cli") {
 		// for tests
-		trigger_error($text, E_USER_ERROR);
+		echo "Error: ".$text."\n";
 	} else {
 		if (empty($GLOBALS['html_head_issued'])) {
 			html_head(_("Error"));

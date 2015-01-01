@@ -55,9 +55,9 @@ Create first admin account:
 $ cli/create_admin.php
 
 Create test and demo data:
+If you don't want to get thousands of notifications, make sure NOTIFICATION_BCC in config.php is empty.
 $ cli/create_ngroups.php
 $ cli/test_demo.php
-$ cli/test_comments.php
 $ cli/test.php
 $ cli/test_ballots.php
 
