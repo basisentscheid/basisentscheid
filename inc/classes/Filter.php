@@ -135,7 +135,7 @@ class Filter {
 	 */
 	public function display_form() {
 ?>
-<form action="<?=BN?>" method="get" class="filter">
+<form action="<?=BN?>" method="GET" class="filter">
 <?
 		// pass on all other parameters
 		URI::hidden(['filter'=>null, 'search'=>null, 'page'=>null]);
