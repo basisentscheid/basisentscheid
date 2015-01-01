@@ -183,14 +183,13 @@ while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastlin
 
 Issue::display_proposals_th($show_results);
 
-$separator_colspan = $period_rowspan[$i] ? 4 : 5;
-if ($show_results) $separator_colspan++;
-
 // display issues and proposals
+$cols = 4;
+if ($show_results) $cols++;
 foreach ( $issues as $i => $issue ) {
 	/** @var $issue Issue */
 ?>
-	<tr><td colspan="<?=$separator_colspan?>" class="issue_separator"></td></tr>
+	<tr><td colspan="<?= $cols + ($period_rowspan[$i] > 0) ?>" class="issue_separator"></td></tr>
 <?
 	$issue->display_proposals($proposals_issue[$i], $submitted_issue[$i], $period_rowspan[$i], $show_results);
 }
