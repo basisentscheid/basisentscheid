@@ -293,6 +293,21 @@ function timeformat($time) {
 
 
 /**
+ * translate a time interval
+ *
+ * @param string  $interval
+ * @return string
+ */
+function translate_time_interval($interval) {
+	return str_ireplace(
+		['days',    'day',    'hours',    'hour',    'minutes',    'minute'   ],
+		[_("days"), _("day"), _("hours"), _("hour"), _("minutes"), _("minute")],
+		$interval
+	);
+}
+
+
+/**
  * prepare a fraction for display
  *
  * @param array   $numden

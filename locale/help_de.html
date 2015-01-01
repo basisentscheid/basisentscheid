@@ -8,7 +8,7 @@ Es gibt zwei Möglichkeiten, zu den Inhalten der <a href="manual.php#Gliederunge
 Hier sind die Anträge in der oben ausgewählten <a href="manual.php#Gliederungen">Gliederung</a> aufgelistet. Mehrere konkurrierende Anträge werden zu einem <a href="manual.php#Thema">Thema</a> zusammengefasst und stehen in der Liste enger beieinander.
 
 Anträge durchlaufen folgende <b>Phasen</b>:
- * <a href="manual.php#Entwurf">Entwurf</a>: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn REQUIRED_PROPONENTS Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
+ * <a href="manual.php#Entwurf">Entwurf</a>: Der Antrag wird erarbeitet und Mitantragsteller werden gesucht. Wenn %REQUIRED_PROPONENTS Antragsteller vorhanden sind, kann ein Antrag eingereicht werden.
  * <a href="manual.php#eingereicht">eingereicht</a>: Der Antrag sammelt nun <a href="manual.php#Unterstuetzer">Unterstützer</a>, um das <a href="manual.php#Zulassung">Quorum zur Zulassung</a> zu erreichen.
  * <a href="manual.php#zugelassen">zugelassen</a>: Der Antrag hat das Zulassungsquorum erreicht und wartet darauf, von den <a href="manual.php#Verantwortliche">Verantwortlichen</a> einer <a href="manual.php#Abstimmungsperioden">Abstimmungsperiode</a> zugeordnet zu werden, in der dann die weiteren Phasen ablaufen.
 
@@ -28,11 +28,11 @@ Um zur <a href="manual.php#Abstimmung">Abstimmung</a> zugelassen zu werden, ben�
 
 Solange ein <a href="manual.php#Thema">Thema</a> noch nicht die <a href="manual.php#Debatte">Debatte</a> erreicht hat, können <b>konkurrierende Anträge</b> eingereicht werden.
 
-Bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> kannst du eine <b><a href="manual.php#Offline-Abstimmung">geheime Offline-Abstimmung</a></b> eines Themas fordern. Wenn bis dahin QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
+Bis zur <a href="manual.php#Abstimmungsvorbereitung">Abstimmungsvorbereitung</a> kannst du eine <b><a href="manual.php#Offline-Abstimmung">geheime Offline-Abstimmung</a></b> eines Themas fordern. Wenn bis dahin %QUORUM_VOTINGMODE der Teilnehmer des Themenbereichs eine geheime Abstimmung fordern, wird der Abstimmungsblock per dezentraler Urnenabstimmung, Briefabstimmung oder geheim auf einem Parteitag abgestimmt. Ansonsten wird online abgestimmt. Sobald ein Thema die Hürde erreicht hat, wird dies angezeigt.
 
 ===proposal.php#comments
 
-Die <b>Diskussion</b> ist bei jedem Antrag von Anfang an immer verfügbar. Die Beiträge können bewertet werden und werden dann nach der Bewertung sortiert. Wenn die Beiträge etwas mehr werden, werden von den schlechter bewerteten nur noch die Titel angezeigt, weitere gar nicht mehr. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, erscheint ein Link, mit dem man diese anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt der angemeldete Benutzer noch nie angesehen hat. <i>Blau gestreift</i> sind Beiträge, auf die es momentan nicht sichbare neue Antworten gibt. <i>Rot umrandet</i> werden Beiträge, die man gerade aufgeklappt, bewertet oder bearbeitet hat. Nachdem man einen neuen Beitrag erstellt hat, ist dieser noch für eine bestimmte Zeit bearbeitbar. Ab der Einreichung eines Antrags können dann in der gleichen Art auch <b>Pro- und Kontra-Argumente</b> sowie Antworten darauf eingegeben werden.
+Die <b>Diskussion</b> ist bei jedem Antrag von Anfang an immer verfügbar. Die Beiträge können bewertet werden und werden dann nach der Bewertung sortiert. Wenn die Beiträge etwas mehr werden, werden von den schlechter bewerteten nur noch die Titel angezeigt, weitere gar nicht mehr. Ein Klick auf einen solchen Titel zeigt dann den Inhalt und Antworten darauf. Wenn noch mehr Beiträge vorhanden sind, erscheint ein Link, mit dem man diese anzeigen lassen kann. In <i>blau</i> werden neue Beiträge dargestellt, deren Inhalt der angemeldete Benutzer noch nie angesehen hat. <i>Blau gestreift</i> sind Beiträge, auf die es momentan nicht sichbare neue Antworten gibt. <i>Rot umrandet</i> werden Beiträge, die man gerade aufgeklappt, bewertet oder bearbeitet hat. Nachdem man einen neuen Beitrag erstellt hat, ist dieser noch %COMMENT_EDIT_INTERVAL bearbeitbar. Ab der Einreichung eines Antrags können dann in der gleichen Art auch <b>Pro- und Kontra-Argumente</b> sowie Antworten darauf eingegeben werden.
 
 ===proposal_edit.php
 
@@ -65,7 +65,7 @@ Anhand dieser Liste kannst du folgendes überprüfen:
 
 Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
 
-Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:MAIL_SUPPORT">MAIL_SUPPORT</a>)!
+Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:%MAIL_SUPPORT">%MAIL_SUPPORT</a>)!
 
 ===votingmode_result.php
 
@@ -79,7 +79,7 @@ Anhand dieser Liste kannst du folgendes überprüfen:
 
 Um zu zeigen, dass diese Seite nicht für verschiedene Benutzer unterschiedlich dargestellt wird, ist sie auch ohne Anmeldung aufrufbar.
 
-Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:MAIL_SUPPORT">MAIL_SUPPORT</a>)!
+Solltest dir eine Unregelmäßigkeit auffallen, dann wende dich bitte so bald wie möglich an die <a href="manual.php#Verantwortliche">Verantwortlichen</a> (<a href="mailto:%MAIL_SUPPORT">%MAIL_SUPPORT</a>)!
 
 ===periods.php
 

@@ -658,17 +658,23 @@ function help($anchor="", $h1=false) {
 		// read help content
 		$display = false;
 		$list = false;
-		// placeholders
-		$replace = array(
-			'REQUIRED_PROPONENTS' => REQUIRED_PROPONENTS,
-			'QUORUM_VOTINGMODE'   => numden([QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN]),
-			'MAIL_SUPPORT'        => MAIL_SUPPORT
-		);
 		foreach ( file("locale/help_".LANG.".html", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line ) {
 			if ($display) {
 				$line_begin = mb_substr($line, 0, 3);
 				if ($line_begin == "===") break;
-				$line = strtr($line, $replace);
+				// replace placeholders
+				if ( strpos($line, "%")!==false ) {
+					static $replace;
+					if (!$replace) {
+						$replace = array(
+							'%REQUIRED_PROPONENTS'   => REQUIRED_PROPONENTS,
+							'%QUORUM_VOTINGMODE'     => numden([QUORUM_VOTINGMODE_NUM, QUORUM_VOTINGMODE_DEN]),
+							'%MAIL_SUPPORT'          => MAIL_SUPPORT,
+							'%COMMENT_EDIT_INTERVAL' => translate_time_interval(COMMENT_EDIT_INTERVAL)
+						);
+					}
+					$line = strtr($line, $replace);
+				}
 				// list / paragraph
 				if ($line_begin == " * ") {
 					if (!$list) {
