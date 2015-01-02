@@ -31,17 +31,18 @@ $area2->create();
 // period in finished state
 
 $period = create_period($ngroup);
-
-create_vote_proposals($period);
+list($issue1, $issue2, $issue3) = create_vote_proposals($period);
 
 cron();
 // move to preparation
-time_warp($issue1, "2 weeks");
+time_warp($issue1, "2 weeks", true);
 time_warp($issue2, "2 weeks");
+time_warp($issue3, "2 weeks");
 cron();
 // move to voting
-time_warp($issue1, "3 days");
+time_warp($issue1, "3 days", true);
 time_warp($issue2, "3 days");
+time_warp($issue3, "3 days");
 cron();
 
 /** @noinspection PhpUndefinedVariableInspection */
@@ -50,25 +51,27 @@ random_votes($issue1);
 random_votes($issue2);
 
 // move to counting
-time_warp($issue1, "2 weeks");
+time_warp($issue1, "2 weeks", true);
 time_warp($issue2, "2 weeks");
+time_warp($issue3, "2 weeks");
 cron();
 
 
 // period in voting state
 
 $period = create_period($ngroup);
-
-create_vote_proposals($period);
+list($issue1, $issue2, $issue3) = create_vote_proposals($period);
 
 cron();
 // move to preparation
-time_warp($issue1, "2 weeks");
+time_warp($issue1, "2 weeks", true);
 time_warp($issue2, "2 weeks");
+time_warp($issue3, "2 weeks");
 cron();
 // move to voting
-time_warp($issue1, "3 days");
+time_warp($issue1, "3 days", true);
 time_warp($issue2, "3 days");
+time_warp($issue3, "3 days");
 cron();
 
 
@@ -82,10 +85,6 @@ $proposal10->reason = $lorem_ipsum;
 $proposal10->create(Login::$member->username, $area->id);
 
 $issue10 = $proposal10->issue();
-// assign issue to period
-$issue10->period = $period;
-/** @var $issue Issue */
-$issue10->update(['period']);
 
 for ( $i=2; $i<=5; $i++ ) {
 	login($i);
@@ -102,7 +101,10 @@ for ( $i=6; $i<=25; $i++ ) {
 }
 time_warp($issue10);
 
-$period = create_period($ngroup);
+// assign issue to period
+$issue10->period = create_period($ngroup);
+/** @var $issue Issue */
+$issue10->update(['period']);
 
 cron();
 
@@ -132,8 +134,7 @@ for ( $i=2; $i<=5; $i++ ) {
 }
 $proposal->submit();
 // time warp the proposal in the past
-time_warp($proposal->issue(), '7 months');
-//DB::query("UPDATE proposal SET submitted = now() - interval '7 months' WHERE id=".intval($proposal->id));
+time_warp($proposal->issue(), '6 months');
 $proposal->read();
 cron();
 
@@ -224,9 +225,10 @@ function create_period(Ngroup $ngroup) {
 /**
  *
  * @param integer $period
+ * @return array
  */
 function create_vote_proposals($period) {
-	global $area, $lorem_ipsum, $proposal1, $proposal2, $proposal3, $issue1, $issue2;
+	global $area, $lorem_ipsum;
 
 
 	// single proposal
@@ -389,6 +391,7 @@ function create_vote_proposals($period) {
 	time_warp($issue3);
 
 
+	return [$issue1, $issue2, $issue3];
 }
 
 
@@ -405,7 +408,8 @@ function comments(Proposal $proposal) {
 
 	for ( $i = 1; $i <= 500; $i++ ) {
 
-		login(rand(0, 999));
+		$author = rand(0, 999);
+		login($author);
 
 		$parent_id = $parents[array_rand($parents)];
 
@@ -427,7 +431,10 @@ function comments(Proposal $proposal) {
 		$parents[] = $comment->id;
 
 		for ( $j = 1; $j <= rand(0, 100); $j++ ) {
-			login(rand(0, 999));
+			$user = rand(0, 999);
+			// don't try to rate own comments
+			if ($user == $author) continue;
+			login($user);
 			$comment->set_rating(rand(0, 2));
 		}
 
@@ -441,8 +448,9 @@ function comments(Proposal $proposal) {
  *
  * @param Issue   $issue
  * @param string  $interval (optional)
+ * @param boolean $period   (optional)
  */
-function time_warp(Issue $issue, $interval="1 week") {
+function time_warp(Issue $issue, $interval="1 week", $period=false) {
 	$interval = "interval '".$interval."'";
 
 	foreach ( array('submitted', 'admitted', 'cancelled', 'revoke') as $column ) {
@@ -465,15 +473,15 @@ function time_warp(Issue $issue, $interval="1 week") {
 		DB::query($sql);
 	}
 
-	/*
-	$sql = "UPDATE period SET
-			debate      = debate      - $interval,
-			preparation = preparation - $interval,
-			voting      = voting      - $interval,
-			counting    = counting    - $interval
-		WHERE id=".intval($issue->period);
-	DB::query($sql);
-*/
+	if ($issue->period and $period) {
+		$sql = "UPDATE period SET
+				debate      = debate      - $interval,
+				preparation = preparation - $interval,
+				voting      = voting      - $interval,
+				counting    = counting    - $interval
+			WHERE id=".intval($issue->period);
+		DB::query($sql);
+	}
 
 	cron_daily();
 }

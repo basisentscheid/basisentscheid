@@ -384,7 +384,7 @@ class Issue extends Relation {
 			list($votetime) = pg_fetch_row($result);
 
 			if (!Login::$member->mail) {
-				warning(_("Your vote von the voting mode has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
+				notice(_("Your vote on the voting mode has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
 			} else {
 
 				// Since the subject can not be encrypted, we don't show which issue.
@@ -460,7 +460,7 @@ class Issue extends Relation {
 			list($votetime) = pg_fetch_row($result);
 
 			if (!Login::$member->mail) {
-				warning(_("Your vote has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
+				notice(_("Your vote has been saved, but the email receipt could not be sent, because you have no confirmed email address!"));
 			} else {
 
 				// Since the subject can not be encrypted, we don't show which issue.

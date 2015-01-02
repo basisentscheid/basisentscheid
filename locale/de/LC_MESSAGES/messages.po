@@ -2280,7 +2280,7 @@ msgid "Demands offline voting"
 msgstr "Fordert eine Offline-Abstimmung"
 #
 # File: inc/classes/Issue.php, line: 387
-msgid "Your vote von the voting mode has been saved, but the email receipt could not be sent, because you have no confirmed email address!"
+msgid "Your vote on the voting mode has been saved, but the email receipt could not be sent, because you have no confirmed email address!"
 msgstr "Deine Stimme zum Abstimmungsverfahren wurde gespeichert, aber es konnte dir kein Beleg geschickt werden, weil in deinem Account keine bestätigte E-Mail-Adresse angegeben ist."
 #
 # File: inc/classes/Issue.php, line: 391
