@@ -79,15 +79,16 @@ if (Ngroup::$active_ngroups) {
 				<td><?=datetimeformat_smart($time)?></td>
 				<td><?=$period->ngroup()->name?></td>
 				<td><?
+		$link = '<a href="periods.php?ngroup='.$period->ngroup.'&hl='.$period->id.'">'.$period->id.'</a>';
 		switch ($field) {
 		case "debate":
-			printf(_("debate in period %d starts"), $period->id);
+			printf(_("debate in period %s starts"), $link);
 			break;
 		case "voting":
-			printf(_("voting in period %d starts"), $period->id);
+			printf(_("voting in period %s starts"), $link);
 			break;
 		case "counting":
-			printf(_("voting in period %d closes"), $period->id);
+			printf(_("voting in period %s closes"), $link);
 			break;
 		}
 		?></td>
