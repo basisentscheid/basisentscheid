@@ -84,7 +84,17 @@ tr.highlight {
 
 /* links */
 a {
-	padding: 0 3px 1px 3px;
+	padding: 0 0 1px 0;
+}
+section.ngroups a,
+table.proposals a,
+section#comments li a,
+footer a,
+div.buttons a {
+	padding: 0 2px 1px 2px;
+}
+section#comments div.comment a {
+	padding: 0 0 1px 0;
 }
 a:visited {
 	color: #708;
@@ -190,7 +200,7 @@ form.button {
 
 /* links, icons */
 a.icontextlink {
-	padding-left: 0;
+	padding: 0 2px 1px 0;
 	text-decoration: none;
 }
 .icontextlink img {
@@ -341,6 +351,8 @@ div#user {
 }
 div#user a.user {
 	font-weight: bold;
+	padding-left: 1px;
+	padding-right: 1px;
 }
 div#user img {
 	vertical-align: middle;
@@ -376,9 +388,6 @@ section.help {
 	margin-bottom: 10px;
 	margin-top: 10px;
 	border-radius: 6px;
-}
-section.help a {
-	padding: 0 0 1px 0;
 }
 section.help p {
 	margin: 5px 0;
@@ -852,6 +861,9 @@ section.proposal_content {
 section.proposal_content div.add,
 section.proposal_info div.add {
 	margin-top: 0.3em;
+}
+section.proposal_content div.add {
+	margin-right: 1px;
 }
 
 section.proposal_info table.drafts {

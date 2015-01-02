@@ -590,7 +590,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		$proposal->display_drafts($proponents);
 	} else {
 ?>
-<a href="<?=URI::append(['show_drafts'=>1])?>"><?=_("Drafts")?></a>
+<h2><a href="<?=URI::append(['show_drafts'=>1])?>"><?=_("Drafts")?></a></h2>
 <?
 	}
 
