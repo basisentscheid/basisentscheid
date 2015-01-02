@@ -186,6 +186,8 @@ function html_head($title, $help=false) {
 							<optgroup label="<?=Login::$member?_("other groups"):_("groups")?>">
 <?
 	foreach ($ngroups as $ngroup) {
+		// save list of active groups
+		Ngroup::$active_ngroups[] = $ngroup->id;
 		if (Login::$member and $ngroup->member) continue;
 		// use the first ngroup as default
 		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;

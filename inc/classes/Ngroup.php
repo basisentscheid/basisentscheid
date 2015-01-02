@@ -20,6 +20,8 @@ class Ngroup extends Relation {
 	public $member;
 	public $depth;
 
+	public static $active_ngroups = array();
+
 	protected $boolean_fields = array("active");
 
 
