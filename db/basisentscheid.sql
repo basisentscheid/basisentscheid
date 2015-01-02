@@ -629,40 +629,6 @@ CREATE TABLE supporter (
 
 
 --
--- Name: test_dbtableadmin; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE test_dbtableadmin (
-    id integer NOT NULL,
-    manualorder integer DEFAULT 0 NOT NULL,
-    text text NOT NULL,
-    area text NOT NULL,
-    "int" integer NOT NULL,
-    "boolean" boolean NOT NULL,
-    dropdown integer NOT NULL
-);
-
-
---
--- Name: test_dbtableadmin_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE test_dbtableadmin_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: test_dbtableadmin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE test_dbtableadmin_id_seq OWNED BY test_dbtableadmin.id;
-
-
---
 -- Name: vote_token; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -767,13 +733,6 @@ ALTER TABLE ONLY period ALTER COLUMN id SET DEFAULT nextval('period_id_seq'::reg
 --
 
 ALTER TABLE ONLY proposal ALTER COLUMN id SET DEFAULT nextval('proposal_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_dbtableadmin ALTER COLUMN id SET DEFAULT nextval('test_dbtableadmin_id_seq'::regclass);
 
 
 --
@@ -942,14 +901,6 @@ ALTER TABLE ONLY seen
 
 ALTER TABLE ONLY supporter
     ADD CONSTRAINT supporters_pkey PRIMARY KEY (proposal, member);
-
-
---
--- Name: test_dbtableadmin_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY test_dbtableadmin
-    ADD CONSTRAINT test_dbtableadmin_pkey PRIMARY KEY (id);
 
 
 --

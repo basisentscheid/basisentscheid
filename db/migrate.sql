@@ -131,3 +131,5 @@ ALTER TABLE ngroup ADD minimum_quorum_votingmode INT DEFAULT 25 NOT NULL;
 UPDATE ngroup SET minimum_quorum_votingmode = minimum_population / 20;
 
 ALTER TABLE notify ADD new_draft boolean DEFAULT false NOT NULL;
+
+DROP TABLE test_dbtableadmin;

@@ -1,5 +1,6 @@
 <?
 /**
+ * Test for many features of DbTableAdmin
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -7,6 +8,19 @@
 
 
 require "inc/common_http.php";
+
+// You can delete the table after usage.
+DB::query('
+CREATE TABLE IF NOT EXISTS test_dbtableadmin (
+    id serial NOT NULL PRIMARY KEY,
+    manualorder integer DEFAULT 0 NOT NULL,
+    text text NOT NULL,
+    area text NOT NULL,
+    "int" integer NOT NULL,
+    "boolean" boolean NOT NULL,
+    dropdown integer NOT NULL
+);
+');
 
 $d = new DbTableAdmin_Test("Test_DbTableAdmin");
 
