@@ -19,21 +19,21 @@ html_head(HOME_H1, true);
 Issue::display_proposals_th(false, false, true);
 if (Ngroup::$active_ngroups) {
 	$sql = "SELECT issue.* FROM issue
-	JOIN proposal ON proposal.issue = issue.id
-	JOIN area ON area.id = issue.area
-	WHERE area.ngroup IN (".join(",", Ngroup::$active_ngroups).")";
+		JOIN proposal ON proposal.issue = issue.id
+		JOIN area ON area.id = issue.area
+		WHERE area.ngroup IN (".join(",", Ngroup::$active_ngroups).")
+		GROUP BY issue.id";
 	if (Login::$ngroups) {
 		// show issues in the groups of the logged in member first
-		$sql .= "
-	GROUP BY issue.id, area.ngroup
-	ORDER BY area.ngroup IN (".join(", ", Login::$ngroups).") DESC,";
+		$sql .= ", area.ngroup
+		ORDER BY area.ngroup IN (".join(", ", Login::$ngroups).") DESC,";
 	} else {
 		$sql .= "
-	GROUP BY issue.id
-	ORDER BY";
+		ORDER BY";
 	}
-	$sql .= " SUM(proposal.activity) DESC, MIN(proposal.admitted), MIN(proposal.submitted), RANDOM()
-	LIMIT 3";
+	// order by highest activity, latest admitted, latest submitted
+	$sql .= " SUM(proposal.activity) DESC, MAX(proposal.admitted) DESC NULLS LAST, MAX(proposal.submitted) DESC NULLS LAST, RANDOM()
+		LIMIT 3";
 	$result = DB::query($sql);
 	while ( $issue = DB::fetch_object($result, "Issue") ) {
 		/** @var $issue Issue */
