@@ -192,6 +192,10 @@ for ( $i=6; $i<=12; $i++ ) {
 }
 
 
+// period for other group
+create_period($ngroup2);
+
+
 /**
  * create group and areas
  *
