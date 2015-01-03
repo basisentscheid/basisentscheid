@@ -15,17 +15,9 @@ require "../inc/common_cli.php";
 require "../inc/functions_test.php";
 
 
-$ngroup = new_ngroup("Beispielgliederung", 200, 10);
-
-// create area
-$area = new Area;
-$area->ngroup = $ngroup->id;
-$area->name = "Politik";
-$area->create();
-$area2 = new Area;
-$area2->ngroup = $ngroup->id;
-$area2->name = "Innerparteiliches";
-$area2->create();
+// create groups and areas
+list($ngroup, $area) = create_ngroup("Bund");
+list($ngroup2) = create_ngroup("LV Bayern", $ngroup);
 
 
 // period in finished state
@@ -197,6 +189,37 @@ $proposal3->read();
 for ( $i=6; $i<=12; $i++ ) {
 	login($i);
 	$proposal3->add_support();
+}
+
+
+/**
+ * create group and areas
+ *
+ * @param string  $name
+ * @param object  $parent (optional)
+ * @return array
+ */
+function create_ngroup($name, Ngroup $parent=null) {
+
+	$ngroup = new Ngroup;
+	$ngroup->id = DB::fetchfield("SELECT max(id) FROM ngroup") + 1;
+	$ngroup->name = $name;
+	if ($parent) $ngroup->parent = $parent->id;
+	$ngroup->active = true;
+	$ngroup->minimum_population = 200;
+	$ngroup->minimum_quorum_votingmode = 10;
+	$ngroup->create(['id', 'name', 'parent', 'active', 'minimum_population', 'minimum_quorum_votingmode']);
+
+	$area = new Area;
+	$area->ngroup = $ngroup->id;
+	$area->name = "Politik";
+	$area->create();
+	$area2 = new Area;
+	$area2->ngroup = $ngroup->id;
+	$area2->name = "Innerparteiliches";
+	$area2->create();
+
+	return [$ngroup, $area];
 }
 
 
