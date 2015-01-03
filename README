@@ -12,21 +12,37 @@ Requirements:
   - unicode
 - Some MTA to send mails
 
-If you want to sign/encrypt emails:
-additional requirements:
+Additional requirements if you want to sign/encrypt emails:
 - gnupg PECL module http://pecl.php.net/package/gnupg
 - GnuPG
+
+The following instructions assume that your webroot is /www/. Please replace this by your webroot path.
+
+Download ZIP:
+$ cd /www/
+$ wget https://github.com/basisentscheid/basisentscheid/archive/master.zip
+$ unzip master.zip
+$ mv basisentscheid-master basisentscheid
+$ cd basisentscheid
+$ date > VERSION
+or clone repository:
+$ cd /www/
+$ git clone https://github.com/basisentscheid/basisentscheid.git
+$ cd basisentscheid
+$ git describe --always --dirty > VERSION
+
+If you want to sign/encrypt emails:
 Generate PGP keys:
-$ gpg --homedir <path>/basisentscheid/var/gnupg --gen-key
+$ gpg --homedir /www/basisentscheid/var/gnupg --gen-key
 Leave the passphrase empty.
 Send the public key to a key server:
-$ gpg --homedir <path>/basisentscheid/var/gnupg --no-permission-warning --keyserver hkp://keys.gnupg.net --send-keys <public-key-id>
+$ gpg --homedir /wwww/basisentscheid/var/gnupg --no-permission-warning --keyserver hkp://keys.gnupg.net --send-keys <public-key-id>
 
 The directory var/ and all subdirectories need write access for the users as which PHP runs for web (usually "apache", "www-data" or "httpd") and cli. You could use your login user for cli or a new dedicated user. In this example we assume the user "cmr" for cli and "apache" for the webserver.
 # groupadd basisentscheid
 # usermod -G basisentscheid -a cmr
 # usermod -G basisentscheid -a apache
-# cd <path>/basisentscheid/
+# cd /www/basisentscheid/
 # chgrp -R basisentscheid var/
 # find var/ -type d -exec chmod 770 {} \;
 # find var/ -type f -exec chmod 660 {} \;
@@ -58,6 +74,16 @@ Configuration:
 $ cd inc/
 $ cp config_example.php config.php
 $ vi config.php
+$ cd -
+
+Create the about page in your language ("en" or "de"):
+$ cd locale/
+$ vi about_en.html
+$ cd -
+
+Compile German translation if you need it:
+$ cd locale/de/LC_MESSAGES/
+$ msgfmt messages.po
 $ cd -
 
 Create database:
