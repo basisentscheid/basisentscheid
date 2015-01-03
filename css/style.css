@@ -88,9 +88,9 @@ a {
 }
 section.ngroups a,
 table.proposals a,
-section#comments li a,
 footer a,
-div.buttons a {
+div.buttons a,
+section#comments li a {
 	padding: 0 2px 1px 2px;
 }
 section#comments div.comment a {
