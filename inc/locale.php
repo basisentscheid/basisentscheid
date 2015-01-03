@@ -31,7 +31,11 @@ if ( setlocale(LC_TIME, $locale) === false ) {
 if (DEBUG) {
 	// workaround for gettext caching
 	$domains = glob(DOCROOT."locale/".LANG."/LC_MESSAGES/messages-*.mo");
-	$current = basename($domains[0], ".mo");
+	if ($domains) {
+		$current = basename($domains[0], ".mo");
+	} else {
+		$current = "messages";
+	}
 	bindtextdomain($current, DOCROOT."locale");
 	textdomain($current);
 	bind_textdomain_codeset($current, "UTF-8");

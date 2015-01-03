@@ -1,10 +1,10 @@
-
+# common file patterns
 ._*
 *~
 .DS_Store
 .AppleDouble
 
-.svn/
+# project file patterns
 *.mo
 *.chproj
 .idea/
@@ -13,14 +13,17 @@
 .settings/
 .phptidy-cache
 
+# required local configuration
+/VERSION
 /inc/config.php
 /locale/about_*.html
-/VERSION
 
-/db/basisentscheid_*.sql
-/db/tmp_*.sql
-/db/backup_data_*.sql.bz2
+# for development
 /*.sh
 /phpinfo.php
 /robots.txt
 
+# temporary
+/db/basisentscheid_*.sql
+/db/tmp_*.sql
+/db/backup_data_*.sql.bz2
