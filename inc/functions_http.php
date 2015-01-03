@@ -93,6 +93,9 @@ function html_head($title, $help=false) {
 	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
 	<meta name="msapplication-TileColor" content="#603cba">
 	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv-printshiv.js"></script>
+	<![endif]-->
 </head>
 <body>
 
@@ -592,7 +595,7 @@ function form_end() {
  * @param boolean $value
  */
 function display_checked($value) {
-	if ($value) echo "&#10003;"; else echo "&#9711;";
+	if ($value) echo "&#10003;"; else echo "-";
 }
 
 

@@ -10,24 +10,26 @@ style guide:
 /* 1. common definitions without id or class */
 
 body {
-	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+	font-family: Verdana, Tahoma, Arial Unicode MS, Lucida Sans Unicode, Arial, Helvetica, sans-serif;
 	color: #000;
 	background-color: #F4EEF7;
 	margin: 3px 20px 7px;
 	padding: 0;
 }
 
-/* fonts */
+/* narrow font */
 td, th,
 div.timebar,
 section.proposal_info ul {
-	/* narrow font */
-	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-family: Tahoma, Verdana, Arial Unicode MS, Lucida Sans Unicode, Arial, Helvetica, sans-serif;
 }
 
 /* for compatibility with older browsers */
-header, footer, nav {
+header, footer, nav, section, main {
 	display: block;
+}
+img {
+	border: 0;
 }
 
 /* block elements */
@@ -206,7 +208,6 @@ a.icontextlink {
 .icontextlink img {
 	vertical-align: middle;
 	margin-right: 5px;
-	border: 0;
 }
 a.iconlink {
 	margin: 0;
@@ -217,7 +218,6 @@ a.iconlink {
 	padding: 0;
 	display: inline-block;
 	vertical-align: bottom;
-	border: 0;
 }
 img.iconbutton {
 	/*noinspection CssOverwrittenProperties*/
@@ -276,6 +276,9 @@ header {
 	line-height: 46px;
 }
 header div#header {
+	/*noinspection CssOverwrittenProperties*/
+	background: #AAA;
+	/*noinspection CssOverwrittenProperties*/
 	background: #AAA linear-gradient(to right, #AAA 15em, #FFF 22em);
 	display: inline-block;
 	width: 100%;
@@ -743,14 +746,10 @@ form.editform div.buttons span.input {
 	/*noinspection CssOverwrittenProperties*/
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
-/*form.editform div.input input[type=text],
-form.editform div.input input[type=password],
-form.editform div.input textarea {
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}*/
+form.editform div.input input[type=text],
+form.editform div.input input[type=password] {
+	width: 15em;
+}
 form.editform div.buttons {
 	margin-top: 5px;
 }
@@ -1291,8 +1290,7 @@ form.login fieldset {
 	padding: 0;
 	border: none;
 }
-form.login label,
-form.login div {
+form.login label {
 	display: block;
 	margin: 1px 0;
 	padding: 0 5px;
@@ -1302,30 +1300,15 @@ form.login label span.input,
 form.login label span.label {
 	display: inline-block;
 	vertical-align: middle;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 2px    0 2px    5px;
-	/*noinspection CssOverwrittenProperties*/
-	margin: 0.2rem 0 0.2rem 0.5rem;
+	margin: 0.2em 0 0.2em 0.5em;
 }
 form.login label span.label {
-	/*noinspection CssOverwrittenProperties*/
-	width: 100px;
-	/*noinspection CssOverwrittenProperties*/
-	width: 10rem;
+	width: 9em;
 	text-align: right;
 }
 form.login input[type=text],
 form.login input[type=password] {
-	/*noinspection CssOverwrittenProperties*/
-	width: 140px;
-	/*noinspection CssOverwrittenProperties*/
-	width: 14rem;
-}
-form.login div {
-	margin-top: 5px;
-}
-form.login input[type=submit] {
-	margin-left: 10.9rem;
+	width: 14em;
 }
 
 
