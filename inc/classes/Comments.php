@@ -204,7 +204,7 @@ class Comments {
 		// highlight anchor
 		if ( empty($_GET['openhl']) ) {
 ?>
-<script type="text/javascript">
+<script>
 if ( window.location.hash ) {
 	var hash = window.location.hash.substring(1);
 	document.getElementById(hash).className += " anchor";

@@ -963,7 +963,7 @@ class DbTableAdmin {
 	 */
 	protected function display_list_javascript($button_js) {
 ?>
-<script type="text/javascript">
+<script>
 <?
 		if ($button_js) {
 ?>

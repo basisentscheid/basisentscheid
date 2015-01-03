@@ -17,7 +17,7 @@ html_head(_("Manual"));
 readfile("locale/manual_".LANG.".html");
 ?>
 </section>
-<script type="text/javascript">
+<script>
 // highlight anchor
 var hash;
 if ( window.location.hash ) {
