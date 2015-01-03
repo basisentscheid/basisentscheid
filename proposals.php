@@ -161,6 +161,7 @@ $proposals_issue = array();
 $submitted_issue = array();
 $period = 0;
 $period_rowspan = array();
+$separator_colspan = array();
 $i = 0;
 $i_first = 0;
 while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastline ) {
@@ -169,11 +170,13 @@ while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastlin
 	$proposals_issue[] = $proposals;
 	$submitted_issue[] = $submitted;
 	// calculate period rowspan
-	if ($period and $issue->period == $period) {
+	if ($period and $issue->period == $period and !Login::$admin) {
 		$period_rowspan[$i] = 0;
 		$period_rowspan[$i_first] += count($proposals) + 1;
+		$separator_colspan[$i] = 0;
 	} else {
 		$period_rowspan[$i] = count($proposals);
+		$separator_colspan[$i] = 1;
 		$i_first = $i;
 		$period = $issue->period;
 	}
@@ -184,12 +187,12 @@ while ( $issue = DB::fetch_object($result, "Issue") and $line <= $pager->lastlin
 Issue::display_proposals_th($show_results);
 
 // display issues and proposals
-$cols = 4;
+$cols = 3;
 if ($show_results) $cols++;
 foreach ( $issues as $i => $issue ) {
 	/** @var $issue Issue */
 ?>
-	<tr><td colspan="<?= $cols + ($period_rowspan[$i] > 0) ?>" class="issue_separator"></td></tr>
+	<tr class="issue_separator"><td colspan="<?= $cols + $separator_colspan[$i] ?>"></td><td></td></tr>
 <?
 	$issue->display_proposals($proposals_issue[$i], $submitted_issue[$i], $period_rowspan[$i], $show_results);
 }

@@ -524,7 +524,7 @@ table.proposals th.result {
 table.proposals tr.proposal {
 	background-color: #FFF;
 }
-table.proposals td.issue_separator {
+table.proposals tr.issue_separator td {
 	height: 3px;
 	padding: 0;
 }

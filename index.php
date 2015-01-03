@@ -39,7 +39,7 @@ if (Ngroup::$active_ngroups) {
 		/** @var $issue Issue */
 		list($proposals, $submitted) = $issue->proposals_list();
 ?>
-	<tr><td colspan="6" class="issue_separator"></td></tr>
+	<tr class="issue_separator"><td colspan="6"></td></tr>
 <?
 		$issue->display_proposals($proposals, $submitted, count($proposals), false, 0, [], true);
 	}
@@ -79,7 +79,7 @@ if (Ngroup::$active_ngroups) {
 				<td><?=datetimeformat_smart($time)?></td>
 				<td><?=$period->ngroup()->name?></td>
 				<td><?
-		$link = '<a href="periods.php?ngroup='.$period->ngroup.'&hl='.$period->id.'">'.$period->id.'</a>';
+		$link = '<a href="periods.php?ngroup='.$period->ngroup.'&amp;hl='.$period->id.'">'.$period->id.'</a>';
 		switch ($field) {
 		case "debate":
 			printf(_("debate in period %s starts"), $link);
