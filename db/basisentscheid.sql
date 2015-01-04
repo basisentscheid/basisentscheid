@@ -427,6 +427,25 @@ CREATE TABLE member_ngroup (
 
 
 --
+-- Name: ngroup_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE ngroup_id_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ngroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE ngroup_id_seq OWNED BY ngroup.id;
+
+
+--
 -- Name: notify; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -719,6 +738,13 @@ ALTER TABLE ONLY issue ALTER COLUMN id SET DEFAULT nextval('issue_id_seq'::regcl
 --
 
 ALTER TABLE ONLY member ALTER COLUMN id SET DEFAULT nextval('member_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ngroup ALTER COLUMN id SET DEFAULT nextval('ngroup_id_seq'::regclass);
 
 
 --

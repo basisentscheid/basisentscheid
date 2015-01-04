@@ -82,9 +82,10 @@ abstract class Relation {
 	 * save the current object as a new record in the database
 	 *
 	 * @param mixed   $fields (optional) array or false
+	 * @param array   $extra  (optional) additional SQL assignments
 	 * @return boolean
 	 */
-	public function create($fields=false) {
+	public function create($fields=false, $extra=array()) {
 
 		if (!$fields) $fields = $this->create_fields;
 
@@ -93,7 +94,7 @@ abstract class Relation {
 			$fields_values[$field] = $this->$field;
 		}
 
-		return DB::insert($this->table, $fields_values, $this->id);
+		return DB::insert($this->table, $fields_values, $this->id, $extra);
 	}
 
 

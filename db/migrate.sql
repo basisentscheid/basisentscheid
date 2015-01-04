@@ -133,3 +133,13 @@ UPDATE ngroup SET minimum_quorum_votingmode = minimum_population / 20;
 ALTER TABLE notify ADD new_draft boolean DEFAULT false NOT NULL;
 
 DROP TABLE test_dbtableadmin;
+
+CREATE SEQUENCE ngroup_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE ngroup_id_seq OWNED BY ngroup.id;
+ALTER TABLE ONLY ngroup ALTER COLUMN id SET DEFAULT nextval('ngroup_id_seq'::regclass);
+ALTER SEQUENCE ngroup_id_seq RESTART WITH 10000;

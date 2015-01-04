@@ -22,6 +22,8 @@ class Ngroup extends Relation {
 
 	public static $active_ngroups = array();
 
+	protected $create_fields = array("name");
+
 	protected $boolean_fields = array("active");
 
 

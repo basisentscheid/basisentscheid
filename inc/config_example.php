@@ -94,6 +94,9 @@ const ACTIVITY_DIVISOR = 100;
 const ACCESS_COMMENT = 4; // write a comment or reply to one
 const ACCESS_RATE    = 4; // rate comments
 
+// period after which an invite code can't be used anymore
+const INVITE_EXPIRY = "1 month";
+
 // message of the day (string, comment out to disable)
 // will be displayed once for each session and always on the home page
 //const MOTD = "";
