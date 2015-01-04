@@ -101,6 +101,9 @@ $ cli/test_ballots.php
 
 Create cronjobs as described in cli/cron.php and cli/cron_daily.php.
 
+In a live environment you should remove the script for creating test member accounts:
+$ rm create_member.php
+
 
 === License ===
 

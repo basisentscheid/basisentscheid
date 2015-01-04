@@ -41,16 +41,21 @@ if ($action) {
 
 html_head(_("Create new member"));
 
+?>
+<section class="help"><p><?=_("In this demo or test installation you can just create a member account by yourself. Next you will be forwarded to the registration, where you can register yourself with this account.")?></p></section>
+<?
+
 form(BN);
+echo _("Groups of the new member")?>:<br><?
 input_hidden("action", "create");
-$sql = "SELECT * FROM ngroup";
+$sql = "SELECT * FROM ngroup WHERE active=TRUE";
 $result = DB::query($sql);
 while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
 	input_checkbox("ngroups[]", $ngroup->id, true);
 	echo $ngroup->name;
 	?><br><?
 }
-input_submit(_("Create member"));
+input_submit(_("Create new member"));
 form_end();
 
 html_foot();
