@@ -110,8 +110,12 @@ if ($action) {
 				}
 				$proposal->issue = $issue_post->id;
 				$proposal->create($proponent);
-			} elseif (!empty($_POST['area'])) {
+			} elseif (isset($_POST['area'])) {
 				// add new proposal
+				if (!$_POST['area']) {
+					warning(_("Please select a subject area!"));
+					break;
+				}
 				$proposal->create($proponent, $_POST['area']);
 			} else {
 				error("Missing parameters");
@@ -212,7 +216,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 	} else {
 		$sql = "SELECT id, name FROM area WHERE ngroup = ".intval($ngroup_id)." ORDER BY name";
 		$result = DB::query($sql);
-		$options = array();
+		$options = array(0 => _("&mdash; please select &mdash;"));
 		while ( $row = DB::fetch_assoc($result) ) {
 			$options[$row['id']] = $row['name'];
 		}
