@@ -15,13 +15,13 @@ path=$( readlink -f $( dirname $0 ) )
 dbname=$( php -r '
 	const DOCROOT = "'$path'/../";
 	require DOCROOT."inc/config.php";
-    preg_match("/dbname=(\w+)/", DATABASE_CONNECT, $matches);
+    preg_match("/dbname=(\S+)/", DATABASE_CONNECT, $matches);
     echo $matches[1];
 ' )
 dbuser=$( php -r '
     const DOCROOT = "'$path'/../";
     require DOCROOT."inc/config.php";
-    preg_match("/user=(\w+)/",   DATABASE_CONNECT, $matches);
+    preg_match("/user=(\S+)/",   DATABASE_CONNECT, $matches);
     echo $matches[1];
 ' )
 
