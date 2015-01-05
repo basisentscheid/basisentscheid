@@ -178,8 +178,13 @@ function add_participant(Period $period, $ballot, $case, $i) {
 	Login::$member->create();
 	Login::$member->username = "t".$date."c".$case."p".(is_object($ballot)?$ballot->id:$ballot).$i;
 	Login::$member->password = $password;
-	Login::$member->mail = ERROR_MAIL;
-	Login::$member->update(['username', 'password', 'eligible', 'mail'], 'activated=now()');
+	$update_fields = array('username', 'password', 'eligible');
+
+	// Enable this only in local development environment, because it may lead to a lot if notification mails!
+	//Login::$member->mail = ERROR_MAIL;
+	//$update_fields[] = "mail";
+
+	Login::$member->update($update_fields, 'activated=now()');
 	Login::$member->update_ngroups([1]);
 	if ($ballot) {
 		if (is_object($ballot)) $period->select_ballot($ballot); else $period->select_postal();
