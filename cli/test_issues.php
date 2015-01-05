@@ -17,7 +17,7 @@ require "../inc/functions_test.php";
 
 $ngroup = new_ngroup("Test group", 500, 25);
 
-// to aviod conflicts with existing usernames
+// to avoid conflicts with existing usernames
 $date = dechex(time());
 
 // create main member

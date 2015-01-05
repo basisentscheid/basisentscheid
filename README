@@ -108,7 +108,7 @@ $ cli/create_admin.php
 Create test and demo data:
 If you don't want to get thousands of notifications, make sure NOTIFICATION_BCC in config.php is empty.
 $ cli/test_demo.php
-$ cli/test.php
+$ cli/test_issues.php
 $ cli/test_ballots.php
 
 Create cronjobs as described in cli/cron.php and cli/cron_daily.php.
