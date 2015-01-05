@@ -241,15 +241,15 @@ a.anchor {
 
 /* messages */
 section.messages {
-	/*border: 1px solid #CCC;*/
-	background: #FFF;
-	padding: 5px;
-	margin-bottom: 20px;
-	display: inline-block;
+	margin-bottom: 15px;
+}
+.success, .notice, .warning, .error, .syserror {
+	margin: 1px 0;
+	padding: 1px 4px;
+	border: 1px solid #FFF;
 }
 .success, .notice, .warning, .error {
-	margin: 1px;
-	padding: 2px 5px;
+	display: inline-block;
 }
 .success {
 	background-color: #6F6;
@@ -263,8 +263,8 @@ section.messages {
 }
 .syserror {
 	color: #900;
+	background: #FFF;
 	font-weight: normal;
-	margin: 0.4em 0;
 }
 
 
