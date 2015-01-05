@@ -13,10 +13,10 @@ Requirements:
 - Some MTA to send mails
 
 Additional requirements if you want to sign/encrypt emails:
-- gnupg PECL module http://pecl.php.net/package/gnupg
 - GnuPG
+- gnupg PECL module http://pecl.php.net/package/gnupg
 
-The following instructions assume that your webroot is /www/. Please replace this by your webroot path.
+The following instructions assume that your installation path is /www/basisentscheid/. Please replace this by your actual installation path. This can be the webroot of a virtual host or a subdirectory. When installing in a subdirectory, you have to copy the favicons to the webroot or delete them from the html head. See inc/functions_http.php.
 
 Download ZIP:
 $ cd /www/
@@ -31,29 +31,33 @@ $ git clone https://github.com/basisentscheid/basisentscheid.git
 $ cd basisentscheid
 $ git describe --always --dirty > VERSION
 
-If you want to sign/encrypt emails:
-Generate PGP keys:
-$ gpg --homedir /www/basisentscheid/var/gnupg --gen-key
-Leave the passphrase empty.
-Send the public key to a key server:
-$ gpg --homedir /wwww/basisentscheid/var/gnupg --no-permission-warning --keyserver hkp://keys.gnupg.net --send-keys <public-key-id>
-
 The directory var/ and all subdirectories need write access for the users as which PHP runs for web (usually "apache", "www-data" or "httpd") and cli. You could use your login user for cli or a new dedicated user. In this example we assume the user "cmr" for cli and "apache" for the webserver.
 # groupadd basisentscheid
 # usermod -G basisentscheid -a cmr
 # usermod -G basisentscheid -a apache
-# cd /www/basisentscheid/
-# chgrp -R basisentscheid var/
-# find var/ -type d -exec chmod 770 {} \;
-# find var/ -type f -exec chmod 660 {} \;
-Make sure that GnuPG keeps the group when replacing files:
-# chmod g+s var/gnupg/
 To make the webserver use the new group, we have to restart it:
 # /etc/init.d/apache2 restart
+Set permissions:
+$ cd /www/basisentscheid/
+$ chgrp -R basisentscheid var/
+$ find var/ -type d -exec chmod 770 {} \;
+$ find var/ -type f -exec chmod 660 {} \;
+
+If you want to sign/encrypt emails:
+Make sure that GnuPG keeps the group when creating or replacing files:
+$ chmod g+s var/gnupg/
+Generate keys:
+$ gpg --homedir /www/basisentscheid/var/gnupg --gen-key
+Leave the passphrase empty.
+Send the public key to a key server:
+$ gpg --homedir /www/basisentscheid/var/gnupg --no-permission-warning --keyserver hkp://keys.gnupg.net --send-keys <public-key-id>
+Set permissions:
+$ chmod 660 /www/basisentscheid/var/gnupg/*
+$ chmod 640 /www/basisentscheid/var/gnupg/secring.gpg
 
 For webserver and PHP configuration, use the provided .htaccess files or copy their contents to your webserver and PHP configuration. The latter will be required if your webserver does not support .htaccess files but is also better for performance in live environment. This command will show you all the .htaccess files and their content:
 $ find . -name ".htaccess" -printf '=== %p ===\n' -exec cat {} \;
-For lighttpd for example the access configuration should look like this:
+For lighttpd for example the access configuration should look like this, if installation is in the webroot:
         $HTTP["url"] =~ "^/(inc|cli|db|locale|var/gnupg)/|/\." {
                 url.access-deny = ( "" )
         }
@@ -86,9 +90,17 @@ $ cd locale/de/LC_MESSAGES/
 $ msgfmt messages.po
 $ cd -
 
-Create database:
-In Postgres create an empty database and make the role you're going to use owner of the schema "public" in that database. Enter database name, role and password if needed to config.php. Then run:
-$ db/recreate_schema.sh
+In Postgres create a role and a database:
+$ psql -U postgres
+postgres=# CREATE USER basisentscheid WITH PASSWORD 'secret';
+postgres=# CREATE DATABASE basisentscheid WITH OWNER basisentscheid;
+Make the role owner of the schema "public" in the database:
+postgres=# \c basisentscheid
+basisentscheid=# ALTER SCHEMA public OWNER TO basisentscheid;
+basisentscheid=# \q
+Enter database name, role and password if needed to config.php. Then run:
+$ db/recreate_schema.sh -
+If your role requires a password, you will have to enter the password 3 times.
 
 Create first admin account:
 $ cli/create_admin.php
