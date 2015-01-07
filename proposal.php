@@ -267,11 +267,11 @@ if ($action) {
 }
 
 
+// $is_propronent means only confirmed proponents
 list($supporters, $proponents, $is_supporter, $is_proponent, $is_valid) = $proposal->supporters();
 
 
 html_head(_("Proposal")." ".$proposal->id, true);
-
 
 
 // messages
@@ -665,6 +665,9 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 <input type="submit" value="<?=_("Renew your support for this proposal")?>"<?=$disabled?>>
 <?
 				form_end();
+			}
+			if (Login::$member and $proposal->is_proponent(Login::$member, false)) {
+				$disabled = ' disabled title="'._("You can not remove your support while you are proponent.").'"';
 			}
 			form(URI::same()."#supporters");
 ?>
