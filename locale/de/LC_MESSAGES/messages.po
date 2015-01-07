@@ -755,11 +755,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 727
+# File: inc/functions_http.php, line: 752
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 666
+# File: inc/functions_http.php, line: 691
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -2791,7 +2791,7 @@ msgstr "abmelden"
 msgid "Log in"
 msgstr "anmelden"
 #
-# File: inc/functions_http.php, line: 465
+# File: inc/functions_http.php, line: 490
 msgid "You have unsaved changes."
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Wenn du die Seite verlässt, gehen diese verloren."
 #
@@ -2851,3 +2851,7 @@ msgstr "&mdash; bitte auswählen &mdash;"
 # File: proposal.php, line: 573
 msgid "Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also your username will be shown to the other proponents."
 msgstr "Gib deinen Namen und Kontaktdaten so ein, wie du sie im Antrag stehen haben willst. Um die Vortäuschung falscher Identitäten zu vermeiden, wird auch dein Benutzername den anderen Antragstellern angezeigt."
+#
+# File: inc/functions_http.php, line: 393
+msgid "You have unsaved changes. Do you want to open the link in a new window?"
+msgstr "Das Formular enthält nicht gespeicherte Eingaben. Möchtest du den Link in einem neuen Fenster öffnen?"
