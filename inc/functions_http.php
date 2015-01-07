@@ -384,7 +384,9 @@ function html_foot() {
 ?>
 
 <footer><a href="about.php"><?=_("About")?></a></footer>
-
+<?
+	if (isset($GLOBALS['js_open_link'])) {
+?>
 <script>
 function openLink(href) {
 	var forms = document.getElementsByTagName('form');
@@ -405,7 +407,9 @@ for (var i = 0; i < elements.length; i++) {
 	}
 }
 </script>
-
+<?
+	}
+?>
 </body>
 </html>
 <?
@@ -483,6 +487,7 @@ function form($url="", $attributes="", $class="", $id="", $confirm_exit_if_modif
 ?>
 <script src="js/confirm_exit_if_modified.js"></script>
 <?
+			$GLOBALS['js_open_link'] = true;
 			$loaded = true;
 		}
 ?>
