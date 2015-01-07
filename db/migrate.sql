@@ -143,3 +143,5 @@ CREATE SEQUENCE ngroup_id_seq
 ALTER SEQUENCE ngroup_id_seq OWNED BY ngroup.id;
 ALTER TABLE ONLY ngroup ALTER COLUMN id SET DEFAULT nextval('ngroup_id_seq'::regclass);
 ALTER SEQUENCE ngroup_id_seq RESTART WITH 10000;
+
+ALTER TABLE member DROP realname;

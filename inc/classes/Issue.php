@@ -398,7 +398,7 @@ class Issue extends Relation {
 						.BASE_URL."proposal.php?id=".$proposal->id."\n\n";
 				}
 				$body .= _("You demand offline voting").": ".($demand?_("Yes"):_("No"))."\n\n"
-					._("Your user name").": ".Login::$member->username."\n"
+					._("Your username").": ".Login::$member->username."\n"
 					._("Your user ID").": ".Login::$member->id."\n"
 					._("Your voting mode token").": ".$token."\n"
 					._("Voting time").": ".date(VOTETIME_FORMAT, strtotime($votetime))."\n\n"
@@ -477,7 +477,7 @@ class Issue extends Relation {
 					if (isset($vote_proposal['score'])) $body .= ", "._("Score").": ".score($vote_proposal['score']);
 					$body .= "\n\n";
 				}
-				$body .= _("Your user name").": ".Login::$member->username."\n"
+				$body .= _("Your username").": ".Login::$member->username."\n"
 					._("Your user ID").": ".Login::$member->id."\n"
 					._("Your vote token").": ".$token."\n"
 					._("Voting time").": ".date(VOTETIME_FORMAT, strtotime($votetime))."\n\n"

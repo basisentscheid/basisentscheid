@@ -164,25 +164,25 @@ abstract class Login {
 	 */
 	public static function check_username($username) {
 		if (!$username) {
-			warning(_("Please enter a user name!"));
+			warning(_("Please enter a username!"));
 			return false;
 		}
 		$len = mb_strlen($username);
 		if ($len < 3) {
-			warning(_("The user name must have at least 3 characters!"));
+			warning(_("The username must have at least 3 characters!"));
 			return false;
 		}
 		if ($len > 32) {
-			warning(_("The user name must have not more than 32 characters!"));
+			warning(_("The username must have not more than 32 characters!"));
 			return false;
 		}
 		if (lefteq($username, "#")) {
-			warning(_("The user name must not begin with the character '#'!"));
+			warning(_("The username must not begin with the character '#'!"));
 			return false;
 		}
 		$sql = "SELECT COUNT(1) FROM member WHERE username=".DB::esc($username);
 		if ( DB::fetchfield($sql) ) {
-			warning(_("This user name is already used by someone else. Please try a different one!"));
+			warning(_("This username is already used by someone else. Please try a different one!"));
 			return false;
 		}
 		return true;

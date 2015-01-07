@@ -79,12 +79,6 @@ form(BN, "", "settings", true);
 Login::$member->display_ngroups();
 ?></span>
 	</div>
-<? if (Login::$member->realname) { ?>
-	<div class="input <?=stripes()?>">
-		<label><?=_("Real name")?></label>
-		<span class="input"><?=h(Login::$member->realname)?></span>
-	</div>
-<? } ?>
 	<div class="input <?=stripes()?>">
 		<label for="username"><?=_("Username")?></label>
 		<span class="input"><input type="text" name="username" id="username" value="<?=h(Login::$member->username)?>" size="32" maxlength="32" required></span>

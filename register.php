@@ -94,7 +94,7 @@ html_head(_("Registration"));
 form(h(BN."?invite=".$invite));
 ?>
 <fieldset class="member">
-	<div class="description td0"><?=_("Please choose a user name, i.e. your real name or your nick name. This name will be used for login and will be shown to others to identify you. The user name is case sensitive.")?></div>
+	<div class="description td0"><?=_("Please choose a username, i.e. your real name or your nick name. This name will be used for login and will be shown to others to identify you. The username is case sensitive.")?></div>
 	<div class="input td0">
 		<label for="username"><?=_("Username")?></label>
 		<span class="input"><input type="text" name="username" id="username" value="<?=h($username)?>" size="32" maxlength="32" required></span>

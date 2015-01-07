@@ -20,7 +20,6 @@ class Member extends Relation {
 	public $activated;
 	public $eligible;
 	public $verified;
-	public $realname = "";
 	public $username;
 	public $password;
 	public $mail;
@@ -115,8 +114,7 @@ class Member extends Relation {
 	 * @return string
 	 */
 	public function identity() {
-		if ($this->realname) return _("Real name").": ".$this->realname;
-		return _("User name").": ".$this->username;
+		return _("Username").": ".$this->username;
 	}
 
 
