@@ -149,7 +149,7 @@ if ($proposal->id) {
 
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
-form(URI::same(), 'class="proposal"', "proposal", true);
+form(URI::same(), "", "proposal", "proposal", true);
 
 if (isset($_GET['issue'])) {
 ?>

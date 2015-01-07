@@ -70,7 +70,7 @@ html_head(_("Member settings"));
 
 display_nav_settings();
 
-form(BN, "", "settings", true);
+form(BN, "", "", "settings", true);
 ?>
 <fieldset class="member">
 	<div class="input <?=stripes()?>">

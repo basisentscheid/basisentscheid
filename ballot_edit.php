@@ -90,7 +90,7 @@ if ($ballot->id) {
 	html_head(_("New ballot"), true);
 }
 
-form("", 'class="editform edit_ballot"', "ballot", true);
+form("", "", "editform edit_ballot", "ballot", true);
 ?>
 <fieldset>
 <div class="input <?=stripes()?>"><label for="name"><?=_("Name or location of the ballot")?></label><span class="input"><input type="text" name="name" id="name" value="<?=h($ballot->name)?>"></span></div>

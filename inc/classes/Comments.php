@@ -357,7 +357,7 @@ if ( window.location.hash ) {
 <li id="form" class="anchor">
 	<div class="comment">
 <?
-			form(URI::append(['parent'=>$parent]), 'class="comment"', "comment", true);
+			form(URI::append(['parent'=>$parent]), "", "comment", "comment", true);
 ?>
 <div class="time"><?
 			if (intval($parent)) echo _("New reply");
@@ -436,7 +436,7 @@ if ( window.location.hash ) {
 ?>
 		<div class="time"><?printf(_("This comment can be updated until %s."), datetimeformat($comment->created." + ".COMMENT_EDIT_INTERVAL))?></div>
 <?
-				form(URI::append(['comment_edit'=>$comment->id]), 'class="comment"', "comment", true);
+				form(URI::append(['comment_edit'=>$comment->id]), "", "comment", "comment", true);
 ?>
 <input id="comment<?=$comment->id?>" name="title" type="text" maxlength="<?=Comment::title_length?>" value="<?=h(!empty($_POST['title'])?$_POST['title']:$comment->title)?>" required><br>
 <textarea name="content" rows="5" maxlength="<?=Comment::content_length?>" required><?=h(!empty($_POST['content'])?$_POST['content']:$comment->content)?></textarea><br>

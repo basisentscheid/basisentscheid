@@ -384,6 +384,28 @@ function html_foot() {
 ?>
 
 <footer><a href="about.php"><?=_("About")?></a></footer>
+
+<script>
+function openLink(href) {
+	var forms = document.getElementsByTagName('form');
+	for (var i = 0; i < forms.length; i++) {
+		if (forms[i].classList.contains('check_unload') && formIsDirty(forms[i])) {
+			if (confirm('<?=_("You have unsaved changes. Do you want to open the link in a new window?")?>')) {
+				window.open(href, '_blank');
+				return false;
+			}
+		}
+	}
+	return true;
+}
+var elements = document.getElementsByTagName('a');
+for (var i = 0; i < elements.length; i++) {
+	elements[i].onclick = function () {
+		return openLink(this.href);
+	}
+}
+</script>
+
 </body>
 </html>
 <?
@@ -443,14 +465,17 @@ function action_proposal_select_period() {
  * POST form open tag with CSRF token
  *
  * @param string  $url                      (optional) leave empty to stay on same URI, set to BN to remove parameters
- * @param string  $attributes               (optional)
- * @param string  $id                       (optional)
- * @param boolean $confirm_exit_if_modified (optional)
+ * @param string  $attributes               (optional) HTML attributes
+ * @param string  $class                    (optional) HTML class attribute
+ * @param string  $id                       (optional) HTML id attribute
+ * @param boolean $confirm_exit_if_modified (optional) confirm leaving the page if the form contains unsaved data
  */
-function form($url="", $attributes="", $id="", $confirm_exit_if_modified=false) {
+function form($url="", $attributes="", $class="", $id="", $confirm_exit_if_modified=false) {
 
 	if ($attributes) $attributes = " ".$attributes;
 	if ($id) $attributes .= ' id="'.$id.'"';
+	if ($confirm_exit_if_modified) $class = ltrim($class." check_unload");
+	if ($class) $attributes .= ' class="'.$class.'"';
 
 	if ($confirm_exit_if_modified) {
 		static $loaded = false;
