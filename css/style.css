@@ -256,6 +256,7 @@ section.messages {
 }
 .notice {
 	background-color: #FAFA33;
+	font-weight: bold;
 }
 .warning, .error {
 	background-color: #F69;
