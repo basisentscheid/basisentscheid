@@ -298,7 +298,7 @@ function revoke_not_enough_proponents() {
  * @param Issue   $issue
  */
 function revoke_before_preparation(Issue $issue) {
-	$sql = "SELECT * FROM proposal WHERE issue=".intval($issue->id)." AND revoke NOTNULL";
+	$sql = "SELECT * FROM proposal WHERE issue=".intval($issue->id)." AND revoke IS NOT NULL";
 	$result = DB::query($sql);
 	while ( $proposal = DB::fetch_object($result, "Proposal") ) {
 		/** @var Proposal $proposal */

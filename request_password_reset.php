@@ -21,7 +21,7 @@ if ($action) {
 
 		$sql = "SELECT * FROM member
 	        WHERE username=".DB::esc(trim($_POST['username']))."
-			AND ( password_reset_code ISNULL OR password_reset_code_expiry < now() )";
+			AND ( password_reset_code IS NULL OR password_reset_code_expiry < now() )";
 		$result = DB::query($sql);
 		if ( $member = DB::fetch_object($result, "Member") ) {
 
