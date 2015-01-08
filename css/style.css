@@ -415,15 +415,7 @@ form.show_help.h1 {
 
 section.help#manual {
 	padding: 1em 0.7em;
-	-webkit-column-width: 50em;
-	-moz-column-width:    50em;
-	column-width:         50em;
-	-webkit-column-gap: 1.4em;
-	-moz-column-gap:    1.4em;
-	column-gap:         1.4em;
-	-webkit-column-rule: 2px dotted #F4EEF7;
-	-moz-column-rule:    2px dotted #F4EEF7;
-	column-rule:         2px dotted #F4EEF7;
+	max-width: 75em;
 }
 section.help#manual .anchor {
 	border-left: 10px solid #F00;
