@@ -84,7 +84,7 @@ class Period extends Relation {
 		// entitled members of the ngroup
 		$sql = "SELECT member.* FROM member
 			JOIN member_ngroup ON member.id = member_ngroup.member AND member_ngroup.ngroup=".intval($this->ngroup)."
-			WHERE eligible=TRUE AND verified=TRUE";
+			WHERE activated IS NOT NULL AND eligible=TRUE AND verified=TRUE";
 		$members = DB::fetchobjectarray($sql, "Member");
 
 		$personal_tokens = array();
