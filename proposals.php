@@ -52,6 +52,16 @@ $counts = array(
 );
 while ( $row = DB::fetch_row($result) ) $counts[$row[0]] = $row[1];
 
+// count issues in entry stage with proposals in different states
+foreach ( array('draft', 'submitted', 'admitted') as $state ) {
+	$sql = "SELECT count(DISTINCT issue.id)
+		FROM issue
+		JOIN area ON area.id = issue.area AND area.ngroup = ".intval($ngroup->id)."
+		JOIN proposal ON proposal.issue = issue.id
+		WHERE issue.state='entry' AND proposal.state='$state'";
+	$counts[$state] = DB::fetchfield($sql);
+}
+
 $nyvic = $ngroup->not_yet_voted_issues_count();
 
 $filters = array(
@@ -61,11 +71,33 @@ $filters = array(
 	),
 	'entry' => array(
 		_("Entry")." (".$counts['entry'].")",
-		$counts['entry']==1 ? _("1 issue in entry phase") : sprintf(_("%d issues in entry phase"), $counts['entry'])
+		$counts['entry']==1
+		? _("1 issue in entry phase")
+		: sprintf(_("%d issues in entry phase"), $counts['entry'])
+	),
+	'draft' => array(
+		_("Draft")." (".$counts['draft'].")",
+		$counts['draft']==1
+		? _("1 issue in entry phase with proposals in draft phase")
+		: sprintf(_("%d issues in entry phase with proposals in draft phase"), $counts['draft'])
+	),
+	'submitted' => array(
+		_("submitted")." (".$counts['submitted'].")",
+		$counts['submitted']==1
+		? _("1 issue in entry phase with submitted proposals")
+		: sprintf(_("%d issues in entry phase with submitted proposals"), $counts['submitted'])
+	),
+	'admitted' => array(
+		_("admitted")." (".$counts['admitted'].")",
+		$counts['admitted']==1
+		? _("1 issue in entry phase with admitted proposals")
+		: sprintf(_("%d issues in entry phase with admitted proposals"), $counts['admitted'])
 	),
 	'debate' => array(
 		_("Debate")." (".$counts['debate'].")",
-		$counts['debate']==1 ? _("1 issue in debate phase") : sprintf(_("%d issues in debate phase"), $counts['debate'])
+		$counts['debate']==1
+		? _("1 issue in debate phase")
+		: sprintf(_("%d issues in debate phase"), $counts['debate'])
 	),
 	'voting' => array(
 		_("Voting")." (".($counts['voting']+$counts['preparation']+$counts['counting'])
@@ -115,6 +147,7 @@ $pager = new Pager(10);
 $sql = "SELECT issue.*
 	FROM issue
 	JOIN area ON area.id = issue.area AND area.ngroup = ".intval($ngroup->id);
+$join_proposal = false;
 $where = array();
 $order_by = " ORDER BY issue.id DESC";
 $show_results = false;
@@ -122,6 +155,18 @@ $show_results = false;
 switch (@$_GET['filter']) {
 case "entry":
 	$where[] = "issue.state='entry'";
+	break;
+case "draft":
+	$join_proposal = true;
+	$where[] = "issue.state='entry' AND proposal.state='draft'";
+	break;
+case "submitted":
+	$join_proposal = true;
+	$where[] = "issue.state='entry' AND proposal.state='submitted'";
+	break;
+case "admitted":
+	$join_proposal = true;
+	$where[] = "issue.state='entry' AND proposal.state='admitted'";
 	break;
 case "debate":
 	$where[] = "issue.state='debate'";
@@ -140,8 +185,12 @@ default: // open
 }
 
 if ($search) {
+	$join_proposal = true;
 	$pattern = DB::esc("%".strtr($search, array('%'=>'\%', '_'=>'\_'))."%");
 	$where[] = "(title ILIKE ".$pattern." OR content ILIKE ".$pattern." OR reason ILIKE ".$pattern.")";
+}
+
+if ($join_proposal) {
 	$sql .= " JOIN proposal ON proposal.issue = issue.id"
 		.DB::where_and($where)
 		." GROUP BY issue.id";
