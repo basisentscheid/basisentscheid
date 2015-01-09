@@ -155,14 +155,14 @@ msgstr "Datensätze pro Seite"
 # File: periods.php, line: 17
 # File: proposal.php, line: 388
 # File: proposal.php, line: 391
-# File: proposals.php, line: 97
+# File: proposals.php, line: 89
 # File: inc/classes/Issue.php, line: 104
 msgid "Debate"
 msgstr "Debatte"
 #
 # File: proposal.php, line: 402
 # File: proposal.php, line: 405
-# File: proposals.php, line: 103
+# File: proposals.php, line: 93
 # File: inc/classes/Issue.php, line: 106
 # File: inc/classes/Issue.php, line: 899
 # File: inc/classes/Issue.php, line: 903
@@ -189,7 +189,7 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
-# File: proposals.php, line: 79
+# File: proposals.php, line: 77
 # File: inc/classes/Proposal.php, line: 179
 msgid "Draft"
 msgstr "Entwurf"
@@ -239,7 +239,7 @@ msgstr "Fehler"
 # File: areas.php, line: 43
 # File: ballots.php, line: 118
 msgid "Name"
-msgstr ""
+msgstr "Name"
 #
 # File: admin_areas.php, line: 19
 # File: areas.php, line: 44
@@ -307,7 +307,7 @@ msgstr "Status"
 msgid "Entry"
 msgstr "Eingang"
 #
-# File: proposals.php, line: 110
+# File: proposals.php, line: 100
 msgid "Closed"
 msgstr "Geschlossen"
 #
@@ -315,11 +315,11 @@ msgstr "Geschlossen"
 msgid "subscribe anew"
 msgstr "erneut anmelden"
 #
-# File: proposals.php, line: 136
+# File: proposals.php, line: 126
 msgid "Search"
 msgstr "Suche"
 #
-# File: proposals.php, line: 137
+# File: proposals.php, line: 127
 msgid "search"
 msgstr "suchen"
 #
@@ -389,7 +389,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Neuer Urnenantrag"
 #
-# File: proposals.php, line: 253
+# File: proposals.php, line: 243
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -399,7 +399,7 @@ msgstr "Themen pro Seite"
 # File: proposal.php, line: 547
 # File: proposal.php, line: 725
 # File: proposal.php, line: 773
-# File: inc/classes/Comments.php, line: 466
+# File: inc/classes/Comments.php, line: 446
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 846
 # File: inc/classes/Issue.php, line: 1180
@@ -429,7 +429,7 @@ msgid "Contra"
 msgstr "Kontra"
 #
 # File: proposal.php, line: 768
-# File: inc/classes/Comments.php, line: 371
+# File: inc/classes/Comments.php, line: 351
 # File: inc/classes/DbTableAdmin.php, line: 1059
 msgid "save"
 msgstr "speichern"
@@ -500,7 +500,7 @@ msgstr "duplizieren"
 #
 # File: proposal.php, line: 535
 # File: proposal.php, line: 706
-# File: inc/classes/Comments.php, line: 445
+# File: inc/classes/Comments.php, line: 425
 # File: inc/classes/DbTableAdmin.php, line: 910
 msgid "apply changes"
 msgstr "Änderungen übernehmen"
@@ -531,7 +531,7 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposals.php, line: 138
+# File: proposals.php, line: 128
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
@@ -717,20 +717,20 @@ msgstr "Passwort (2x)"
 msgid "Admins"
 msgstr "Verantwortliche"
 #
-# File: inc/classes/Comments.php, line: 437
+# File: inc/classes/Comments.php, line: 417
 #, php-format
 msgid "This comment can be updated until %s."
 msgstr "Dieser Beitrag kann bis %s bearbeitet werden."
 #
-# File: inc/classes/Comments.php, line: 451
+# File: inc/classes/Comments.php, line: 431
 msgid "This comment may not be updated any longer!"
 msgstr "Dieser Beitrag kann nicht mehr bearbeitet werden!"
 #
-# File: inc/classes/Comments.php, line: 489
+# File: inc/classes/Comments.php, line: 469
 msgid "updated"
 msgstr "bearbeitet"
 #
-# File: inc/classes/Comments.php, line: 364
+# File: inc/classes/Comments.php, line: 344
 msgid "New comment"
 msgstr "Neuer Beitrag"
 #
@@ -744,15 +744,15 @@ msgstr "angemeldet als %s"
 msgid "logged in as admin %s"
 msgstr "angemeldet als Verantwortlicher %s"
 #
-# File: inc/classes/Comments.php, line: 478
+# File: inc/classes/Comments.php, line: 458
 msgid "comment removed by admin"
 msgstr "Beitrag entfernt durch Verantwortliche"
 #
-# File: inc/classes/Comments.php, line: 575
+# File: inc/classes/Comments.php, line: 555
 msgid "restore"
 msgstr "zurücksetzen"
 #
-# File: inc/classes/Comments.php, line: 580
+# File: inc/classes/Comments.php, line: 560
 msgid "remove"
 msgstr "entfernen"
 #
@@ -763,11 +763,6 @@ msgstr "Hilfe zeigen"
 # File: inc/functions_http.php, line: 696
 msgid "hide help"
 msgstr "Hilfe ausblenden"
-#
-# File: inc/classes/Comments.php, line: 317
-#, php-format
-msgid "show remaining %d comments"
-msgstr "verbleibende %d Argumente zeigen"
 #
 # File: proposals.php, line: 69
 msgid "Open"
@@ -929,8 +924,8 @@ msgstr "Offline-Abstimmung"
 msgid "online voting"
 msgstr "Online-Abstimmung"
 #
-# File: inc/classes/Comments.php, line: 554
-# File: inc/classes/Comments.php, line: 558
+# File: inc/classes/Comments.php, line: 534
+# File: inc/classes/Comments.php, line: 538
 msgid "reply"
 msgstr "antworten"
 #
@@ -1263,7 +1258,7 @@ msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web
 msgid "proponent"
 msgstr "Antragsteller"
 #
-# File: proposals.php, line: 91
+# File: proposals.php, line: 85
 # File: inc/classes/Notification.php, line: 81
 msgid "admitted"
 msgstr "zugelassen"
@@ -1563,7 +1558,7 @@ msgstr "Logo"
 msgid "new proposal"
 msgstr "neuer Antrag"
 #
-# File: proposals.php, line: 85
+# File: proposals.php, line: 81
 # File: inc/classes/Notification.php, line: 80
 msgid "submitted"
 msgstr "eingereicht"
@@ -2325,7 +2320,7 @@ msgstr "Du hast bei %d Themen noch nicht abgestimmt."
 msgid "You have not yet voted on 1 issue."
 msgstr "Du hast bei einem Thema noch nicht abgestimmt."
 #
-# File: proposals.php, line: 104
+# File: proposals.php, line: 94
 #, php-format
 msgid "not voted on %d"
 msgstr "nicht abgestimmt %d"
@@ -2334,33 +2329,15 @@ msgstr "nicht abgestimmt %d"
 msgid "issues in entry, debate and voting phases"
 msgstr "Themen in Eingang, Debatte und Abstimmung"
 #
-# File: proposals.php, line: 76
-#, php-format
-msgid "%d issues in entry phase"
-msgstr "%d Themen in der Eingangsphase"
-#
-# File: proposals.php, line: 100
-#, php-format
-msgid "%d issues in debate phase"
-msgstr "%d Themen in der Debatte"
-#
-# File: proposals.php, line: 105
+# File: proposals.php, line: 95
 #, php-format
 msgid "%d issues in voting, %d in voting preparation and %d in counting phase"
 msgstr "%d Themen in der Abstimmung, %d in der Abstimmungsvorbereitung und %d in der Auszählung"
 #
-# File: proposals.php, line: 111
+# File: proposals.php, line: 101
 #, php-format
 msgid "%d issues are finished, %d issues are cancelled"
 msgstr "%d Themen sind abgeschlossen, %d sind abgebrochen"
-#
-# File: proposals.php, line: 75
-msgid "1 issue in entry phase"
-msgstr "1 Thema in der Eingangsphase"
-#
-# File: proposals.php, line: 99
-msgid "1 issue in debate phase"
-msgstr "1 Thema in der Debatte"
 #
 # File: admin_vote_result.php, line: 22
 msgid "This issue is not in voting preparation or finished."
@@ -2416,33 +2393,32 @@ msgstr "Offline-Abstimmung durch Verantwortliche festgelegt"
 msgid "Offline voting has been selected by admins."
 msgstr "Offline-Abstimmung wurde durch die Verantwortlichen festgelegt."
 #
-# File: inc/classes/Comments.php, line: 322
+# File: inc/classes/Comments.php, line: 316
+#, php-format
 msgid "show remaining 1 argument"
-msgstr "ein verbleibendes Argument zeigen"
+msgid_plural "show remaining %d arguments"
+msgstr[0] "ein verbleibendes Argument zeigen"
+msgstr[1] "%d verbleibende Argumente zeigen"
 #
-# File: inc/classes/Comments.php, line: 332
+# File: inc/classes/Comments.php, line: 321
+#, php-format
 msgid "show 1 reply"
-msgstr "eine Antwort zeigen"
+msgid_plural "show %d replys"
+msgstr[0] "eine Antwort zeigen"
+msgstr[1] "%d Antworten zeigen"
 #
-# File: inc/classes/Comments.php, line: 335
+# File: inc/classes/Comments.php, line: 324
+#, php-format
 msgid "show remaining 1 reply"
-msgstr "eine verbleibende Antwort zeigen"
+msgid_plural "show remaining %d replys"
+msgstr[0] "eine verbleibende Antwort zeigen"
+msgstr[1] "%d verbleibende Antworten zeigen"
 #
-# File: inc/classes/Comments.php, line: 340
-#, php-format
-msgid "show %d replys"
-msgstr "%d Antworten zeigen"
-#
-# File: inc/classes/Comments.php, line: 343
-#, php-format
-msgid "show remaining %d replys"
-msgstr "%d verbleibende Antworten zeigen"
-#
-# File: inc/classes/Comments.php, line: 510
+# File: inc/classes/Comments.php, line: 490
 msgid "show text and replys"
 msgstr "Text und Antworten zeigen"
 #
-# File: inc/classes/Comments.php, line: 363
+# File: inc/classes/Comments.php, line: 343
 msgid "New reply"
 msgstr "Neue Antwort"
 #
@@ -2455,32 +2431,26 @@ msgstr "Du kannst deine Unterstützung nicht zurückziehen solange du Antragstel
 msgid "Support for this proposal can no longer be removed."
 msgstr "Unterstützung für diesen Antrag kann nicht mehr zurückgezogen werden."
 #
-# File: inc/classes/Comments.php, line: 321
+# File: inc/classes/Comments.php, line: 315
+#, php-format
 msgid "show remaining 1 new argument"
-msgstr "ein verbleibendes neues Argument zeigen"
+msgid_plural "show remaining %d arguments, %d of them new"
+msgstr[0] "ein verbleibendes neues Argument zeigen"
+msgstr[1] "%d verbleibende Argumente zeigen, %d davon neu"
 #
-# File: inc/classes/Comments.php, line: 324
+# File: inc/classes/Comments.php, line: 320
 #, php-format
-msgid "show remaining %d arguments, %d of them new"
-msgstr "%d verbleibende Argumente zeigen, %d davon neu"
-#
-# File: inc/classes/Comments.php, line: 331
 msgid "show 1 new reply"
-msgstr "eine neue Antwort zeigen"
+msgid_plural "show %d replys, %d of them new"
+msgstr[0] "eine neue Antwort zeigen"
+msgstr[1] "%d Antworten zeigen, %d davon neu"
 #
-# File: inc/classes/Comments.php, line: 334
+# File: inc/classes/Comments.php, line: 323
+#, php-format
 msgid "show remaining 1 new reply"
-msgstr "eine verbleibende neue Antwort zeigen"
-#
-# File: inc/classes/Comments.php, line: 339
-#, php-format
-msgid "show %d replys, %d of them new"
-msgstr "%d Antworten zeigen, %d davon neu"
-#
-# File: inc/classes/Comments.php, line: 342
-#, php-format
-msgid "show remaining %d replys, %d of them new"
-msgstr "%d verbleibende Antworten zeigen, %d davon neu"
+msgid_plural "show remaining %d replys, %d of them new"
+msgstr[0] "eine verbleibende neue Antwort zeigen"
+msgstr[1] "%d verbleibende Antworten zeigen, %d davon neu"
 #
 # File: proposal.php, line: 170
 msgid "Adding or rating comments is not allowed in this phase."
@@ -2515,25 +2485,21 @@ msgstr "Argumente"
 msgid "Add new comment"
 msgstr "Neuen Beitrag hinzufügen"
 #
-# File: inc/classes/Comments.php, line: 313
+# File: inc/classes/Comments.php, line: 312
+#, php-format
 msgid "show remaining 1 new comment"
-msgstr "einen verbleibenden neuen Beitrag zeigen"
+msgid_plural "show remaining %d comments, %d of them new"
+msgstr[0] "einen verbleibenden neuen Beitrag zeigen"
+msgstr[1] "%d verbleibende Beiträge zeigen, %d davon neu"
 #
-# File: inc/classes/Comments.php, line: 314
+# File: inc/classes/Comments.php, line: 313
+#, php-format
 msgid "show remaining 1 comment"
-msgstr "einen verbleibenden Beitrag zeigen"
+msgid_plural "show remaining %d comments"
+msgstr[0] "einen verbleibenden Beitrag zeigen"
+msgstr[1] "verbleibende %d Argumente zeigen"
 #
-# File: inc/classes/Comments.php, line: 316
-#, php-format
-msgid "show remaining %d comments, %d of them new"
-msgstr "%d verbleibende Beiträge zeigen, %d davon neu"
-#
-# File: inc/classes/Comments.php, line: 325
-#, php-format
-msgid "show remaining %d arguments"
-msgstr "%d verbleibende Argumente zeigen"
-#
-# File: inc/classes/Comments.php, line: 365
+# File: inc/classes/Comments.php, line: 345
 msgid "New argument"
 msgstr "Neues Argument"
 #
@@ -2828,7 +2794,7 @@ msgstr "Minute"
 msgid "You are not logged in, not in this group, not eligible or not verified."
 msgstr "Du bist nicht angemeldet, nicht in dieser Gliederung, nicht stimmberechtigt oder nicht verifiziert."
 #
-# File: inc/classes/Comments.php, line: 565
+# File: inc/classes/Comments.php, line: 545
 msgid "sum of ratings"
 msgstr "Summe der Bewertungen"
 #
@@ -2860,29 +2826,37 @@ msgstr "Gib deinen Namen und Kontaktdaten so ein, wie du sie im Antrag stehen ha
 msgid "You have unsaved changes. Do you want to open the link in a new window?"
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Möchtest du den Link in einem neuen Fenster öffnen?"
 #
-# File: proposals.php, line: 81
-msgid "1 issue in entry phase with proposals in draft phase"
-msgstr "1 Thema in der Eingangsphase mit Anträgen in der Entwurfsphase"
+# File: proposals.php, line: 74
+#, php-format
+msgid "%d issue in entry phase"
+msgid_plural "%d issues in entry phase"
+msgstr[0] "%d Thema in der Eingangsphase"
+msgstr[1] "%d Themen in der Eingangsphase"
+#
+# File: proposals.php, line: 78
+#, php-format
+msgid "%d issue in entry phase with proposals in draft phase"
+msgid_plural "%d issues in entry phase with proposals in draft phase"
+msgstr[0] "%d Thema in der Eingangsphase mit Anträgen in der Entwurfsphase"
+msgstr[1] "%d Themen in der Eingangsphase mit Anträgen in der Entwurfsphase"
 #
 # File: proposals.php, line: 82
 #, php-format
-msgid "%d issues in entry phase with proposals in draft phase"
-msgstr "%d Themen in der Eingangsphase mit Anträgen in der Entwurfsphase"
+msgid "%d issue in entry phase with submitted proposals"
+msgid_plural "%d issues in entry phase with submitted proposals"
+msgstr[0] "%d Thema in der Eingangsphase mit eingereichten Anträgen"
+msgstr[1] "%d Themen in der Eingangsphase mit eingereichten Anträgen"
 #
-# File: proposals.php, line: 87
-msgid "1 issue in entry phase with submitted proposals"
-msgstr "1 Thema in der Eingangsphase mit eingereichten Anträgen"
-#
-# File: proposals.php, line: 88
+# File: proposals.php, line: 86
 #, php-format
-msgid "%d issues in entry phase with submitted proposals"
-msgstr "%d Themen in der Eingangsphase mit eingereichten Anträgen"
+msgid "%d issue in entry phase with admitted proposals"
+msgid_plural "%d issues in entry phase with admitted proposals"
+msgstr[0] "%d Thema in der Eingangsphase mit zugelassenen Anträgen"
+msgstr[1] "%d Themen in der Eingangsphase mit zugelassenen Anträgen"
 #
-# File: proposals.php, line: 93
-msgid "1 issue in entry phase with admitted proposals"
-msgstr "1 Thema in der Eingangsphase mit zugelassenen Anträgen"
-#
-# File: proposals.php, line: 94
+# File: proposals.php, line: 90
 #, php-format
-msgid "%d issues in entry phase with admitted proposals"
-msgstr "%d Themen in der Eingangsphase mit zugelassenen Anträgen"
+msgid "%d issue in debate phase"
+msgid_plural "%d issues in debate phase"
+msgstr[0] "%d Thema in der Debatte"
+msgstr[1] "%d Themen in der Debatte"

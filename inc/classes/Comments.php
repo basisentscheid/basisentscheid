@@ -309,39 +309,19 @@ if ( window.location.hash ) {
 			?>#openhl"><?
 			if (!intval($parent)) {
 				if ($this->rubric=="discussion") {
-					if ($remaining==1) {
-						if ($new) echo _("show remaining 1 new comment");
-						else echo _("show remaining 1 comment");
-					} else {
-						if ($new) printf(_("show remaining %d comments, %d of them new"), $remaining, $new);
-						else printf(_("show remaining %d comments"), $remaining);
-					}
+					if ($new) printf(ngettext("show remaining 1 new comment", "show remaining %d comments, %d of them new", $remaining), $remaining, $new);
+					else printf(ngettext("show remaining 1 comment", "show remaining %d comments", $remaining), $remaining);
 				} else {
-					if ($remaining==1) {
-						if ($new) echo _("show remaining 1 new argument");
-						else echo _("show remaining 1 argument");
-					} else {
-						if ($new) printf(_("show remaining %d arguments, %d of them new"), $remaining, $new);
-						else printf(_("show remaining %d arguments"), $remaining);
-					}
+					if ($new) printf(ngettext("show remaining 1 new argument", "show remaining %d arguments, %d of them new", $remaining), $remaining, $new);
+					else printf(ngettext("show remaining 1 argument", "show remaining %d arguments", $remaining), $remaining);
 				}
 			} else {
-				if ($remaining==1) {
-					if ($position==1) {
-						if ($new) echo _("show 1 new reply");
-						else echo _("show 1 reply");
-					} else {
-						if ($new) echo _("show remaining 1 new reply");
-						else echo _("show remaining 1 reply");
-					}
+				if ($position==1) {
+					if ($new) printf(ngettext("show 1 new reply", "show %d replys, %d of them new", $remaining), $remaining, $new);
+					else printf(ngettext("show 1 reply", "show %d replys", $remaining), $remaining);
 				} else {
-					if ($position==1) {
-						if ($new) printf(_("show %d replys, %d of them new"), $remaining, $new);
-						else printf(_("show %d replys"), $remaining);
-					} else {
-						if ($new) printf(_("show remaining %d replys, %d of them new"), $remaining, $new);
-						else printf(_("show remaining %d replys"), $remaining);
-					}
+					if ($new) printf(ngettext("show remaining 1 new reply", "show remaining %d replys, %d of them new", $remaining), $remaining, $new);
+					else printf(ngettext("show remaining 1 reply", "show remaining %d replys", $remaining), $remaining);
 				}
 			}
 			?></a></li>

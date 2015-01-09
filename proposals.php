@@ -71,33 +71,23 @@ $filters = array(
 	),
 	'entry' => array(
 		_("Entry")." (".$counts['entry'].")",
-		$counts['entry']==1
-		? _("1 issue in entry phase")
-		: sprintf(_("%d issues in entry phase"), $counts['entry'])
+		sprintf(ngettext("%d issue in entry phase", "%d issues in entry phase", $counts['entry']), $counts['entry'])
 	),
 	'draft' => array(
 		_("Draft")." (".$counts['draft'].")",
-		$counts['draft']==1
-		? _("1 issue in entry phase with proposals in draft phase")
-		: sprintf(_("%d issues in entry phase with proposals in draft phase"), $counts['draft'])
+		sprintf(ngettext("%d issue in entry phase with proposals in draft phase", "%d issues in entry phase with proposals in draft phase", $counts['draft']), $counts['draft'])
 	),
 	'submitted' => array(
 		_("submitted")." (".$counts['submitted'].")",
-		$counts['submitted']==1
-		? _("1 issue in entry phase with submitted proposals")
-		: sprintf(_("%d issues in entry phase with submitted proposals"), $counts['submitted'])
+		sprintf(ngettext("%d issue in entry phase with submitted proposals", "%d issues in entry phase with submitted proposals", $counts['submitted']), $counts['submitted'])
 	),
 	'admitted' => array(
 		_("admitted")." (".$counts['admitted'].")",
-		$counts['admitted']==1
-		? _("1 issue in entry phase with admitted proposals")
-		: sprintf(_("%d issues in entry phase with admitted proposals"), $counts['admitted'])
+		sprintf(ngettext("%d issue in entry phase with admitted proposals", "%d issues in entry phase with admitted proposals", $counts['admitted']), $counts['admitted'])
 	),
 	'debate' => array(
 		_("Debate")." (".$counts['debate'].")",
-		$counts['debate']==1
-		? _("1 issue in debate phase")
-		: sprintf(_("%d issues in debate phase"), $counts['debate'])
+		sprintf(ngettext("%d issue in debate phase", "%d issues in debate phase", $counts['debate']), $counts['debate'])
 	),
 	'voting' => array(
 		_("Voting")." (".($counts['voting']+$counts['preparation']+$counts['counting'])
