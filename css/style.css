@@ -480,10 +480,12 @@ div.pager div.itemsperpage {
 }
 div.filter {
 	margin-left: 2px;
+	line-height: 1.8em;
 }
 div.filter form {
 	display: inline;
 	margin-left: 20px;
+	white-space: nowrap;
 }
 div.filter.nav {
 	margin-top: 0.5em;
