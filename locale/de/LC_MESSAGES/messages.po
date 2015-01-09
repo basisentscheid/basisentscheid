@@ -308,8 +308,8 @@ msgid "Entry"
 msgstr "Eingang"
 #
 # File: proposals.php, line: 100
-msgid "Closed"
-msgstr "Geschlossen"
+msgid "closed"
+msgstr "geschlossen"
 #
 # File: areas.php, line: 86
 msgid "subscribe anew"
@@ -765,8 +765,8 @@ msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
 # File: proposals.php, line: 69
-msgid "Open"
-msgstr "Offen"
+msgid "open"
+msgstr "offen"
 #
 # File: ballots.php, line: 223
 msgid "Ballots per page"

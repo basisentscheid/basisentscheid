@@ -62,68 +62,60 @@ foreach ( array('draft', 'submitted', 'admitted') as $state ) {
 	$counts[$state] = DB::fetchfield($sql);
 }
 
-$nyvic = $ngroup->not_yet_voted_issues_count();
-
-$filters = array(
-	'' => array(
-		_("Open"),
-		_("issues in entry, debate and voting phases")
-	),
-	'entry' => array(
-		_("Entry")." (".$counts['entry'].")",
-		sprintf(ngettext("%d issue in entry phase", "%d issues in entry phase", $counts['entry']), $counts['entry'])
-	),
-	'draft' => array(
-		_("Draft")." (".$counts['draft'].")",
-		sprintf(ngettext("%d issue in entry phase with proposals in draft phase", "%d issues in entry phase with proposals in draft phase", $counts['draft']), $counts['draft'])
-	),
-	'submitted' => array(
-		_("submitted")." (".$counts['submitted'].")",
-		sprintf(ngettext("%d issue in entry phase with submitted proposals", "%d issues in entry phase with submitted proposals", $counts['submitted']), $counts['submitted'])
-	),
-	'admitted' => array(
-		_("admitted")." (".$counts['admitted'].")",
-		sprintf(ngettext("%d issue in entry phase with admitted proposals", "%d issues in entry phase with admitted proposals", $counts['admitted']), $counts['admitted'])
-	),
-	'debate' => array(
-		_("Debate")." (".$counts['debate'].")",
-		sprintf(ngettext("%d issue in debate phase", "%d issues in debate phase", $counts['debate']), $counts['debate'])
-	),
-	'voting' => array(
-		_("Voting")." (".($counts['voting']+$counts['preparation']+$counts['counting'])
-		.($nyvic?(", ".sprintf(_("not voted on %d"), $nyvic)):"").")",
-		sprintf(_("%d issues in voting, %d in voting preparation and %d in counting phase"),
-			$counts['voting'], $counts['preparation'], $counts['counting'])
-		.($nyvic?(" &mdash; ".Ngroup::not_yet_voted($nyvic)):"")
-	),
-	'closed' => array(
-		_("Closed")." (".($counts['finished']+$counts['cancelled']).")",
-		sprintf(_("%d issues are finished, %d issues are cancelled"),
-			$counts['finished'], $counts['cancelled'])
-	)
-);
-
+$params = array('ngroup'=>$ngroup->id);
+if ($search) $params['search'] = $search;
 ?>
 <div class="filter">
-<?
-foreach ( $filters as $key => $name ) {
-	$params = array('ngroup'=>$ngroup->id);
-	if ($key)    $params['filter'] = $key;
-	if ($search) $params['search'] = $search;
-?>
-<a href="<?=URI::build($params)?>"<?
-	?> title="<?=$name[1]?>"<?
-	if ($key==$filter) { ?> class="active"<? }
-	?>><?=$name[0]?></a>
-<?
-}
-?>
+<a href="<?=URI::build($params)?>" title="<?
+echo _("issues in entry, debate and voting phases");
+?>" class="top<?
+if ($filter=="") { ?> active<? }
+?>"><?=_("open")?></a>
+<a href="<?=URI::build($params + ['filter'=>"entry"])?>" title="<?
+printf(ngettext("%d issue in entry phase", "%d issues in entry phase", $counts['entry']), $counts['entry']);
+?>"<?
+if ($filter=="entry") { ?> class="active"<? }
+?>><?=_("Entry")?> (<?=$counts['entry']?>)</a>
+<a href="<?=URI::build($params + ['filter'=>"draft"])?>" title="<?
+printf(ngettext("%d issue in entry phase with proposals in draft phase", "%d issues in entry phase with proposals in draft phase", $counts['draft']), $counts['draft']);
+?>" class="sub<?
+if ($filter=="draft") { ?> active<? }
+?>"><?=_("Draft")?> (<?=$counts['draft']?>)</a>
+<a href="<?=URI::build($params + ['filter'=>"submitted"])?>" title="<?
+printf(ngettext("%d issue in entry phase with submitted proposals", "%d issues in entry phase with submitted proposals", $counts['submitted']), $counts['submitted']);
+?>" class="sub<?
+if ($filter=="submitted") { ?> active<? }
+?>"><?=_("submitted")?> (<?=$counts['submitted']?>)</a>
+<a href="<?=URI::build($params + ['filter'=>"admitted"])?>" title="<?
+printf(ngettext("%d issue in entry phase with admitted proposals", "%d issues in entry phase with admitted proposals", $counts['admitted']), $counts['admitted']);
+?>" class="sub<?
+if ($filter=="admitted") { ?> active<? }
+?>"><?=_("admitted")?> (<?=$counts['admitted']?>)</a>
+<a href="<?=URI::build($params + ['filter'=>"debate"])?>" title="<?
+printf(ngettext("%d issue in debate phase", "%d issues in debate phase", $counts['debate']), $counts['debate']);
+?>"<?
+if ($filter=="debate") { ?> class="active"<? }
+?>><?=_("Debate")?> (<?=$counts['debate']?>)</a>
+<a href="<?=URI::build($params + ['filter'=>"entry"])?>" title="<?
+printf(_("%d issues in voting, %d in voting preparation and %d in counting phase"), $counts['voting'], $counts['preparation'], $counts['counting']);
+$nyvic = $ngroup->not_yet_voted_issues_count();
+if ($nyvic) { ?> &mdash; <?=Ngroup::not_yet_voted($nyvic); }
+?>"<?
+if ($filter=="entry") { ?> class="active"<? }
+?>><?=_("Voting")?> (<?=($counts['voting']+$counts['preparation']+$counts['counting']);
+if ($nyvic) { ?>, <? printf(_("not voted on %d"), $nyvic); }
+?>)</a>
+<a href="<?=URI::build($params + ['filter'=>"closed"])?>" title="<?
+printf(_("%d issues are finished, %d issues are cancelled"), $counts['finished'], $counts['cancelled']);
+?>" class="top<?
+if ($filter=="closed") { ?> active<? }
+?>"><?=_("closed")?> (<?=($counts['finished']+$counts['cancelled'])?>)</a>
 <form id="search" action="<?=BN?>" method="GET">
 <?
 input_hidden('ngroup', $ngroup->id);
 if ($filter) input_hidden("filter", $filter);
 ?>
-<?=_("Search")?>: <input type="text" name="search" value="<?=h($search)?>">
+<?=_("Search")?>: <input type="search" name="search" value="<?=h($search)?>">
 <input type="submit" value="<?=_("search")?>">
 <a href="<?=URI::strip(['search'])?>"><?=_("reset")?></a>
 </form>

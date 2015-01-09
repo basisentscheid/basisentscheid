@@ -491,6 +491,12 @@ div.filter.nav {
 	margin-top: 0.5em;
 	margin-bottom: 1.5em;
 }
+div.filter a.top {
+	text-transform: uppercase;
+}
+div.filter a.sub {
+	font-size: 80%;
+}
 
 /* proposals table */
 
