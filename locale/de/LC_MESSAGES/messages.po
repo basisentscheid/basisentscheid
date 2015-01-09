@@ -68,7 +68,7 @@ msgstr "Abstimmungsperioden"
 msgid "Title"
 msgstr "Titel"
 #
-# File: proposal.php, line: 273
+# File: proposal.php, line: 274
 # File: inc/classes/Issue.php, line: 397
 # File: inc/classes/Issue.php, line: 474
 # File: inc/classes/Issue.php, line: 630
@@ -89,11 +89,11 @@ msgstr "Titel"
 msgid "Proposal"
 msgstr "Antrag"
 #
-# File: proposal.php, line: 672
+# File: proposal.php, line: 675
 msgid "Revoke your support for this proposal"
 msgstr "Antrag nicht mehr unterstützen"
 #
-# File: proposal.php, line: 679
+# File: proposal.php, line: 682
 msgid "Support this proposal"
 msgstr "Diesen Antrag unterstützen"
 #
@@ -155,14 +155,14 @@ msgstr "Datensätze pro Seite"
 # File: periods.php, line: 17
 # File: proposal.php, line: 388
 # File: proposal.php, line: 391
-# File: proposals.php, line: 67
+# File: proposals.php, line: 97
 # File: inc/classes/Issue.php, line: 104
 msgid "Debate"
 msgstr "Debatte"
 #
 # File: proposal.php, line: 402
 # File: proposal.php, line: 405
-# File: proposals.php, line: 71
+# File: proposals.php, line: 103
 # File: inc/classes/Issue.php, line: 106
 # File: inc/classes/Issue.php, line: 899
 # File: inc/classes/Issue.php, line: 903
@@ -189,6 +189,7 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
+# File: proposals.php, line: 79
 # File: inc/classes/Proposal.php, line: 179
 msgid "Draft"
 msgstr "Entwurf"
@@ -301,12 +302,12 @@ msgstr "Nr."
 msgid "State"
 msgstr "Status"
 #
-# File: proposals.php, line: 63
+# File: proposals.php, line: 73
 # File: inc/classes/Issue.php, line: 103
 msgid "Entry"
 msgstr "Eingang"
 #
-# File: proposals.php, line: 78
+# File: proposals.php, line: 110
 msgid "Closed"
 msgstr "Geschlossen"
 #
@@ -314,11 +315,11 @@ msgstr "Geschlossen"
 msgid "subscribe anew"
 msgstr "erneut anmelden"
 #
-# File: proposals.php, line: 104
+# File: proposals.php, line: 136
 msgid "Search"
 msgstr "Suche"
 #
-# File: proposals.php, line: 105
+# File: proposals.php, line: 137
 msgid "search"
 msgstr "suchen"
 #
@@ -388,7 +389,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Neuer Urnenantrag"
 #
-# File: proposals.php, line: 204
+# File: proposals.php, line: 253
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -396,8 +397,8 @@ msgstr "Themen pro Seite"
 # File: proposal.php, line: 328
 # File: proposal.php, line: 339
 # File: proposal.php, line: 547
-# File: proposal.php, line: 722
-# File: proposal.php, line: 770
+# File: proposal.php, line: 725
+# File: proposal.php, line: 773
 # File: inc/classes/Comments.php, line: 466
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 846
@@ -427,7 +428,7 @@ msgstr "neues Kontra-Argument hinzufügen"
 msgid "Contra"
 msgstr "Kontra"
 #
-# File: proposal.php, line: 765
+# File: proposal.php, line: 768
 # File: inc/classes/Comments.php, line: 371
 # File: inc/classes/DbTableAdmin.php, line: 1059
 msgid "save"
@@ -498,7 +499,7 @@ msgid "duplicate"
 msgstr "duplizieren"
 #
 # File: proposal.php, line: 535
-# File: proposal.php, line: 703
+# File: proposal.php, line: 706
 # File: inc/classes/Comments.php, line: 445
 # File: inc/classes/DbTableAdmin.php, line: 910
 msgid "apply changes"
@@ -530,7 +531,7 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposals.php, line: 106
+# File: proposals.php, line: 138
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
@@ -755,11 +756,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 752
+# File: inc/functions_http.php, line: 757
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 691
+# File: inc/functions_http.php, line: 696
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -768,7 +769,7 @@ msgstr "Hilfe ausblenden"
 msgid "show remaining %d comments"
 msgstr "verbleibende %d Argumente zeigen"
 #
-# File: proposals.php, line: 59
+# File: proposals.php, line: 69
 msgid "Open"
 msgstr "Offen"
 #
@@ -864,18 +865,18 @@ msgstr "Antrag einreichen"
 msgid "plus"
 msgstr "Plus"
 #
-# File: proposal.php, line: 701
-# File: proposal.php, line: 719
-# File: proposal.php, line: 735
+# File: proposal.php, line: 704
+# File: proposal.php, line: 722
+# File: proposal.php, line: 738
 msgid "Admitted by decision"
 msgstr "Zugelassen durch Beschluss"
 #
-# File: proposal.php, line: 707
-# File: proposal.php, line: 728
+# File: proposal.php, line: 710
+# File: proposal.php, line: 731
 msgid "Admit proposal due to a decision"
 msgstr "Antrag auf Grund eines Beschlusses zulassen"
 #
-# File: proposal.php, line: 709
+# File: proposal.php, line: 712
 msgid "admit proposal"
 msgstr "Antrag zulassen"
 #
@@ -1152,7 +1153,7 @@ msgstr "Dieser Antrag hat alle seine Antragsteller verloren und wird am %s oder 
 msgid "Revoke proposal at %s if it then has less than %d proponents."
 msgstr "Antrag wird am %s zurückgezogen, wenn er dann weniger als %d Antragsteller hat."
 #
-# File: proposal.php, line: 685
+# File: proposal.php, line: 688
 msgid "Support this proposal anonymously"
 msgstr "Diesen Antrag anonym unterstützen"
 #
@@ -1262,6 +1263,7 @@ msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web
 msgid "proponent"
 msgstr "Antragsteller"
 #
+# File: proposals.php, line: 91
 # File: inc/classes/Notification.php, line: 81
 msgid "admitted"
 msgstr "zugelassen"
@@ -1561,6 +1563,7 @@ msgstr "Logo"
 msgid "new proposal"
 msgstr "neuer Antrag"
 #
+# File: proposals.php, line: 85
 # File: inc/classes/Notification.php, line: 80
 msgid "submitted"
 msgstr "eingereicht"
@@ -2322,40 +2325,40 @@ msgstr "Du hast bei %d Themen noch nicht abgestimmt."
 msgid "You have not yet voted on 1 issue."
 msgstr "Du hast bei einem Thema noch nicht abgestimmt."
 #
-# File: proposals.php, line: 72
+# File: proposals.php, line: 104
 #, php-format
 msgid "not voted on %d"
 msgstr "nicht abgestimmt %d"
 #
-# File: proposals.php, line: 60
+# File: proposals.php, line: 70
 msgid "issues in entry, debate and voting phases"
 msgstr "Themen in Eingang, Debatte und Abstimmung"
 #
-# File: proposals.php, line: 64
+# File: proposals.php, line: 76
 #, php-format
 msgid "%d issues in entry phase"
 msgstr "%d Themen in der Eingangsphase"
 #
-# File: proposals.php, line: 68
+# File: proposals.php, line: 100
 #, php-format
 msgid "%d issues in debate phase"
 msgstr "%d Themen in der Debatte"
 #
-# File: proposals.php, line: 73
+# File: proposals.php, line: 105
 #, php-format
 msgid "%d issues in voting, %d in voting preparation and %d in counting phase"
 msgstr "%d Themen in der Abstimmung, %d in der Abstimmungsvorbereitung und %d in der Auszählung"
 #
-# File: proposals.php, line: 79
+# File: proposals.php, line: 111
 #, php-format
 msgid "%d issues are finished, %d issues are cancelled"
 msgstr "%d Themen sind abgeschlossen, %d sind abgebrochen"
 #
-# File: proposals.php, line: 64
+# File: proposals.php, line: 75
 msgid "1 issue in entry phase"
 msgstr "1 Thema in der Eingangsphase"
 #
-# File: proposals.php, line: 68
+# File: proposals.php, line: 99
 msgid "1 issue in debate phase"
 msgstr "1 Thema in der Debatte"
 #
@@ -2443,6 +2446,7 @@ msgstr "Text und Antworten zeigen"
 msgid "New reply"
 msgstr "Neue Antwort"
 #
+# File: proposal.php, line: 670
 # File: inc/classes/Proposal.php, line: 360
 msgid "You can not remove your support while you are proponent."
 msgstr "Du kannst deine Unterstützung nicht zurückziehen solange du Antragsteller bist."
@@ -2716,9 +2720,9 @@ msgstr "Fingerabdruck"
 msgid "Cancelled by admin at %s."
 msgstr "Abgebrochen am %s durch Verantwortliche"
 #
-# File: proposal.php, line: 759
-# File: proposal.php, line: 771
-# File: proposal.php, line: 781
+# File: proposal.php, line: 762
+# File: proposal.php, line: 774
+# File: proposal.php, line: 784
 msgid "Annotation by admins"
 msgstr "Anmerkung der Verantwortlichen"
 #
@@ -2791,7 +2795,7 @@ msgstr "abmelden"
 msgid "Log in"
 msgstr "anmelden"
 #
-# File: inc/functions_http.php, line: 490
+# File: inc/functions_http.php, line: 495
 msgid "You have unsaved changes."
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Wenn du die Seite verlässt, gehen diese verloren."
 #
@@ -2852,6 +2856,33 @@ msgstr "&mdash; bitte auswählen &mdash;"
 msgid "Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also your username will be shown to the other proponents."
 msgstr "Gib deinen Namen und Kontaktdaten so ein, wie du sie im Antrag stehen haben willst. Um die Vortäuschung falscher Identitäten zu vermeiden, wird auch dein Benutzername den anderen Antragstellern angezeigt."
 #
-# File: inc/functions_http.php, line: 393
+# File: inc/functions_http.php, line: 395
 msgid "You have unsaved changes. Do you want to open the link in a new window?"
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Möchtest du den Link in einem neuen Fenster öffnen?"
+#
+# File: proposals.php, line: 81
+msgid "1 issue in entry phase with proposals in draft phase"
+msgstr "1 Thema in der Eingangsphase mit Anträgen in der Entwurfsphase"
+#
+# File: proposals.php, line: 82
+#, php-format
+msgid "%d issues in entry phase with proposals in draft phase"
+msgstr "%d Themen in der Eingangsphase mit Anträgen in der Entwurfsphase"
+#
+# File: proposals.php, line: 87
+msgid "1 issue in entry phase with submitted proposals"
+msgstr "1 Thema in der Eingangsphase mit eingereichten Anträgen"
+#
+# File: proposals.php, line: 88
+#, php-format
+msgid "%d issues in entry phase with submitted proposals"
+msgstr "%d Themen in der Eingangsphase mit eingereichten Anträgen"
+#
+# File: proposals.php, line: 93
+msgid "1 issue in entry phase with admitted proposals"
+msgstr "1 Thema in der Eingangsphase mit zugelassenen Anträgen"
+#
+# File: proposals.php, line: 94
+#, php-format
+msgid "%d issues in entry phase with admitted proposals"
+msgstr "%d Themen in der Eingangsphase mit zugelassenen Anträgen"
