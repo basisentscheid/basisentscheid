@@ -24,14 +24,13 @@ function cron() {
 	}
 
 	$sql_period = "SELECT *,
-		debate             <= now() AS debate_now,
-		preparation        <= now() AS preparation_now,
-		voting             <= now() AS voting_now,
-		ballot_assignment  <= now() AS ballot_assignment_now,
-		ballot_preparation <= now() AS ballot_preparation_now,
-		counting           <= now() AS counting_now
-	FROM period";
-	// TODO: exclude closed
+			debate             <= now() AS debate_now,
+			preparation        <= now() AS preparation_now,
+			voting             <= now() AS voting_now,
+			ballot_assignment  <= now() AS ballot_assignment_now,
+			ballot_preparation <= now() AS ballot_preparation_now,
+			counting           <= now() AS counting_now
+		FROM period";
 	$result_period = DB::query($sql_period);
 	while ( $period = DB::fetch_object($result_period, "Period") ) {
 		/** @var Period $period */

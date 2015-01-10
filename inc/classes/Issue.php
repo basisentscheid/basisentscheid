@@ -586,7 +586,6 @@ class Issue extends Relation {
 		$notification->proposals = $admitted_proposals;
 		$notification->send();
 
-
 		/* for now admins do the selection of the periods manually
 
 		// The period has already been set by another proposal in the same issue.
@@ -602,7 +601,7 @@ class Issue extends Relation {
 		if ($this->period) {
 			$this->update(["period"]);
 		} else {
-			// TODO Error
+			// Error
 		}
 
 		*/
