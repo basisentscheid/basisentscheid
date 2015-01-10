@@ -960,7 +960,12 @@ class Issue extends Relation {
 		<td rowspan="<?=$num_rows?>"<?
 
 		if ($this->votingmode_determination($submitted)) {
-			?> class="votingmode" title="<?
+			if ($selected_proposal) {
+				?> class="votingmode"<?
+			} else {
+				?> class="votingmode link" onClick="location.href='<?=$link?>#issue'"<?
+			}
+			?> title="<?
 			if (Login::$member) {
 				$entitled = Login::$member->entitled($this->area()->ngroup);
 				$votingmode_demanded = $this->votingmode_demanded_by_member();
@@ -975,7 +980,7 @@ class Issue extends Relation {
 				$entitled = false;
 				$votingmode_demanded = false;
 			}
-			?>" onClick="location.href='<?=$link?>#issue'">
+			?>">
 <img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
 <?
 			if ($votingmode_demanded) { ?>&#10003;<? }
@@ -996,9 +1001,9 @@ class Issue extends Relation {
 				form_end();
 			}
 		} elseif ($this->votingmode_offline()) {
-			?> class="votingmode" title="<?=_("offline voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
+			?> class="votingmode link" title="<?=_("offline voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
 		} elseif ($this->state!="entry") {
-			?> class="votingmode" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
+			?> class="votingmode link" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
 		} else {
 			?>><?
 		}

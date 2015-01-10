@@ -572,7 +572,7 @@ table.proposals td.proposal_link_active:active a {
 
 table.proposals td.support,
 table.proposals td.result,
-table.proposals td.votingmode {
+table.proposals td.votingmode.link {
 	/*noinspection CssOverwrittenProperties*/
 	cursor: pointer;
 	/*noinspection CssOverwrittenProperties*/
