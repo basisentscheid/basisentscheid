@@ -29,7 +29,7 @@ or clone repository:
 $ cd /www/
 $ git clone https://github.com/basisentscheid/basisentscheid.git
 $ cd basisentscheid
-$ git describe --always --dirty > VERSION
+$ ./version.sh
 
 The directory var/ and all subdirectories need write access for the users as which PHP runs for web (usually "apache", "www-data" or "httpd") and cli. You could use your login user for cli or a new dedicated user. In this example we assume the user "cmr" for cli and "apache" for the webserver.
 # groupadd basisentscheid
