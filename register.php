@@ -106,7 +106,7 @@ form(h(BN."?invite=".$invite));
 	</div>
 	<div class="description td0"><?=_("Please enter your email address. This address will be used for automatic notifications (if you request them) and in case you've lost your password. This address will not be published. After registration you will receive an email with a confirmation link.")?></div>
 	<div class="input td0">
-		<label for="mail"><?=_("Mail address for notifications")?></label>
+		<label for="mail"><?=_("Email address for notifications")?></label>
 		<span class="input"><input type="email" name="mail" id="mail" value="<?=h($mail)?>" size="40" required></span>
 	</div>
 	<div class="button th"><input type="submit" value="<?=_("Activate account")?>"></div>

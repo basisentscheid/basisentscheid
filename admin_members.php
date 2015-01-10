@@ -19,8 +19,8 @@ $d->columns = array(
 	array("invite_expiry", _("Invite expiry"), "", "timestamp", 'nosearch'=>true),
 	array("activated", _("Activated"), "", "timestamp", 'nosearch'=>true),
 	array("username", _("Username")),
-	array("mail", _("Mail")),
-	array("mail_unconfirmed", _("Mail unconfirmed")),
+	array("mail", _("Email")),
+	array("mail_unconfirmed", _("Email unconfirmed")),
 	array("eligible", _("Eligible"), "center", "boolean", 'nosearch'=>true),
 	array("verified", _("Verified"), "center", "boolean", 'nosearch'=>true),
 	array("", _("Groups"), "", "ngroups", 'noorder'=>true)
