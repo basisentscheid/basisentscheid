@@ -50,7 +50,7 @@ function action_confirm_mail($code) {
 		$member->mail_lock_expiry = null;
 		$member->update(['mail', 'mail_unconfirmed', 'mail_code', 'mail_code_expiry', 'mail_lock_expiry']);
 		success(_("Your email address is confirmed now."));
-		redirect("index.php");
+		redirect("settings.php");
 	}
 	warning(_("The confirmation code is not valid!"));
 }
