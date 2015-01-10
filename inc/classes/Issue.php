@@ -978,10 +978,12 @@ class Issue extends Relation {
 			} else {
 				$entitled = false;
 				$votingmode_demanded = false;
+				echo _("determination if online or offline voting");
 			}
-			?>">
-<img src="img/votingmode_20.png" width="75" height="20" <?alt(_("determination if online or offline voting"))?> class="vmiddle">
-<?
+			?>"><?
+			if (!$selected_proposal) { ?><a href="<?=$link?>#issue"><? }
+			?><img src="img/votingmode_20.png" width="75" height="20" alt="<?=_("determination if online or offline voting")?>" class="vmiddle"><?
+			if (!$selected_proposal) { ?></a><? }
 			if ($votingmode_demanded) { ?>&#10003;<? }
 			if ($selected_proposal) {
 				$disabled = $entitled ? "" : " disabled";
@@ -1000,9 +1002,9 @@ class Issue extends Relation {
 				form_end();
 			}
 		} elseif ($this->votingmode_offline()) {
-			?> class="votingmode link" title="<?=_("offline voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" <?alt(_("offline voting"))?> class="vmiddle"></a><?
+			?> class="votingmode link" title="<?=_("offline voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" alt="<?=_("offline voting")?>" class="vmiddle"></a><?
 		} elseif ($this->state!="entry") {
-			?> class="votingmode link" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" <?alt(_("online voting"))?> class="vmiddle"></a><?
+			?> class="votingmode link" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" alt="<?=_("online voting")?>" class="vmiddle"></a><?
 		} else {
 			?>><?
 		}
