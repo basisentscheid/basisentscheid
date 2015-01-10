@@ -277,10 +277,7 @@ header {
 	line-height: 46px;
 }
 header div#header {
-	/*noinspection CssOverwrittenProperties*/
-	background: #AAA;
-	/*noinspection CssOverwrittenProperties*/
-	background: #AAA linear-gradient(to right, #AAA 15em, #FFF 22em);
+	background: #572B85 linear-gradient(to right, #572B85 1em, #FFF 25em);
 	display: inline-block;
 	width: 100%;
 	line-height: 1.6em;
