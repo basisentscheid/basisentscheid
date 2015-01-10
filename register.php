@@ -91,6 +91,11 @@ if ($action) {
 
 html_head(_("Registration"));
 
+// terms of use
+if ( preg_match('#<section id="terms_of_use">.*</section>#s', file_get_contents("locale/about_".LANG.".html"), $matches) ) {
+	echo $matches[0];
+}
+
 form(h(BN."?invite=".$invite));
 ?>
 <fieldset class="member">

@@ -1443,6 +1443,19 @@ td.period {
 }
 
 
+/* about.php, register.php */
+
+section#terms_of_use {
+	background-color: #D8F0EE;
+	padding: 2px 5px;
+	margin: 1em 0;
+	border-radius: 6px;
+}
+section#terms_of_use h2 {
+	margin-top: 3px;
+}
+
+
 /* about.php */
 
 p.version span {
