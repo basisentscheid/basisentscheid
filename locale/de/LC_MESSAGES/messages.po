@@ -73,7 +73,7 @@ msgstr "Titel"
 # File: inc/classes/Issue.php, line: 474
 # File: inc/classes/Issue.php, line: 630
 # File: inc/classes/Issue.php, line: 758
-# File: inc/classes/Issue.php, line: 1209
+# File: inc/classes/Issue.php, line: 1214
 # File: inc/classes/Notification.php, line: 251
 # File: inc/classes/Notification.php, line: 274
 # File: inc/classes/Notification.php, line: 341
@@ -155,14 +155,14 @@ msgstr "Datensätze pro Seite"
 # File: periods.php, line: 17
 # File: proposal.php, line: 388
 # File: proposal.php, line: 391
-# File: proposals.php, line: 89
+# File: proposals.php, line: 98
 # File: inc/classes/Issue.php, line: 104
 msgid "Debate"
 msgstr "Debatte"
 #
 # File: proposal.php, line: 402
 # File: proposal.php, line: 405
-# File: proposals.php, line: 93
+# File: proposals.php, line: 105
 # File: inc/classes/Issue.php, line: 106
 # File: inc/classes/Issue.php, line: 899
 # File: inc/classes/Issue.php, line: 903
@@ -189,7 +189,7 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
-# File: proposals.php, line: 77
+# File: proposals.php, line: 83
 # File: inc/classes/Proposal.php, line: 179
 msgid "Draft"
 msgstr "Entwurf"
@@ -266,7 +266,7 @@ msgstr "Unterstützer"
 #
 # File: proposal_edit.php, line: 145
 msgid "New alternative proposal"
-msgstr "Neuer konkurrierender Antrag"
+msgstr "Neuer konkurrierender Alternativantrag"
 #
 # File: proposal_edit.php, line: 147
 msgid "New proposal"
@@ -288,7 +288,7 @@ msgstr "Dieser und dazu konkurrierende Anträge"
 # File: proposal.php, line: 450
 # File: proposal.php, line: 454
 msgid "Add alternative proposal"
-msgstr "Konkurrierenden Antrag hinzufügen"
+msgstr "Konkurrierenden Alternativantrag hinzufügen"
 #
 # File: admin_areas.php, line: 17
 # File: admin_members.php, line: 16
@@ -302,12 +302,12 @@ msgstr "Nr."
 msgid "State"
 msgstr "Status"
 #
-# File: proposals.php, line: 73
+# File: proposals.php, line: 78
 # File: inc/classes/Issue.php, line: 103
 msgid "Entry"
 msgstr "Eingang"
 #
-# File: proposals.php, line: 100
+# File: proposals.php, line: 112
 msgid "closed"
 msgstr "geschlossen"
 #
@@ -315,11 +315,11 @@ msgstr "geschlossen"
 msgid "subscribe anew"
 msgstr "erneut anmelden"
 #
-# File: proposals.php, line: 126
+# File: proposals.php, line: 118
 msgid "Search"
 msgstr "Suche"
 #
-# File: proposals.php, line: 127
+# File: proposals.php, line: 119
 msgid "search"
 msgstr "suchen"
 #
@@ -389,7 +389,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Neuer Urnenantrag"
 #
-# File: proposals.php, line: 243
+# File: proposals.php, line: 235
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -402,7 +402,7 @@ msgstr "Themen pro Seite"
 # File: inc/classes/Comments.php, line: 446
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 846
-# File: inc/classes/Issue.php, line: 1180
+# File: inc/classes/Issue.php, line: 1185
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -531,7 +531,7 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposals.php, line: 128
+# File: proposals.php, line: 120
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
@@ -547,8 +547,8 @@ msgstr "Ergebnis"
 msgid "until %s"
 msgstr "bis %s"
 #
-# File: inc/classes/Issue.php, line: 1016
-# File: inc/classes/Issue.php, line: 1173
+# File: inc/classes/Issue.php, line: 1021
+# File: inc/classes/Issue.php, line: 1178
 msgid "apply"
 msgstr "übernehmen"
 #
@@ -764,7 +764,7 @@ msgstr "Hilfe zeigen"
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
-# File: proposals.php, line: 69
+# File: proposals.php, line: 73
 msgid "open"
 msgstr "offen"
 #
@@ -814,7 +814,7 @@ msgstr "Das angegebene Thema existiert nicht."
 #
 # File: proposal_edit.php, line: 107
 msgid "In this phase it is not allowed to create an alternative proposal. Thus a new proposal has been created instead."
-msgstr "In dieser Phase ist es nicht erlaubt, einen konkurrierenden Antrag hinzuzufügen. Deshalb wurde statt dessen ein neuer Antrag erstellt."
+msgstr "In dieser Phase ist es nicht erlaubt, einen konkurrierenden Alternativantrag hinzuzufügen. Deshalb wurde statt dessen ein neuer Antrag erstellt."
 #
 # File: proposal_edit.php, line: 143
 #, php-format
@@ -875,7 +875,7 @@ msgstr "Antrag auf Grund eines Beschlusses zulassen"
 msgid "admit proposal"
 msgstr "Antrag zulassen"
 #
-# File: inc/classes/Issue.php, line: 1180
+# File: inc/classes/Issue.php, line: 1185
 msgid "select voting period"
 msgstr "Abstimmungsperiode auswählen"
 #
@@ -916,11 +916,11 @@ msgstr "Zugriff verweigert"
 msgid "Ballot voting"
 msgstr "Urnen&shy;abstimmung"
 #
-# File: inc/classes/Issue.php, line: 999
+# File: inc/classes/Issue.php, line: 1004
 msgid "offline voting"
 msgstr "Offline-Abstimmung"
 #
-# File: inc/classes/Issue.php, line: 1001
+# File: inc/classes/Issue.php, line: 1006
 msgid "online voting"
 msgstr "Online-Abstimmung"
 #
@@ -982,7 +982,7 @@ msgstr "Willst du dich wirklich auch der Liste der Antragsteller löschen?"
 # File: inc/functions.php, line: 203
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 650
-# File: inc/classes/Issue.php, line: 1040
+# File: inc/classes/Issue.php, line: 1045
 # File: inc/classes/Notification.php, line: 424
 msgid "Yes"
 msgstr "Ja"
@@ -991,7 +991,7 @@ msgstr "Ja"
 # File: inc/functions.php, line: 204
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 651
-# File: inc/classes/Issue.php, line: 1043
+# File: inc/classes/Issue.php, line: 1048
 # File: inc/classes/Notification.php, line: 424
 msgid "No"
 msgstr "Nein"
@@ -1111,21 +1111,21 @@ msgstr "Dieser Beitrag kann nicht mehr bearbeitet werden."
 msgid "The comment has been removed."
 msgstr "Der Beitrag wurde entfernt."
 #
-# File: inc/classes/Issue.php, line: 970
+# File: inc/classes/Issue.php, line: 975
 msgid "You can demand offline voting."
 msgstr "Du kannst eine Offline-Abstimmung fordern."
 #
-# File: inc/classes/Issue.php, line: 968
-# File: inc/classes/Issue.php, line: 986
+# File: inc/classes/Issue.php, line: 973
+# File: inc/classes/Issue.php, line: 991
 msgid "You demand offline voting."
 msgstr "Du forderst eine Offline-Abstimmung."
 #
 # File: proposal.php, line: 365
-# File: inc/classes/Issue.php, line: 988
+# File: inc/classes/Issue.php, line: 993
 msgid "Revoke"
 msgstr "zurückziehen"
 #
-# File: inc/classes/Issue.php, line: 993
+# File: inc/classes/Issue.php, line: 998
 msgid "Demand offline voting"
 msgstr "Offline-Abstimmung fordern"
 #
@@ -1258,7 +1258,7 @@ msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web
 msgid "proponent"
 msgstr "Antragsteller"
 #
-# File: proposals.php, line: 85
+# File: proposals.php, line: 93
 # File: inc/classes/Notification.php, line: 81
 msgid "admitted"
 msgstr "zugelassen"
@@ -1493,7 +1493,7 @@ msgstr ""
 msgid "Preparation"
 msgstr "Vorbereitung"
 #
-# File: inc/classes/Issue.php, line: 979
+# File: inc/classes/Issue.php, line: 984
 msgid "determination if online or offline voting"
 msgstr "Entscheidung ob Online- oder Offline-Abstimmung"
 #
@@ -1558,7 +1558,7 @@ msgstr "Logo"
 msgid "new proposal"
 msgstr "neuer Antrag"
 #
-# File: proposals.php, line: 81
+# File: proposals.php, line: 88
 # File: inc/classes/Notification.php, line: 80
 msgid "submitted"
 msgstr "eingereicht"
@@ -1728,15 +1728,15 @@ msgstr "Die Rohdaten wurden am %s gelöscht."
 #
 # File: inc/classes/Issue.php, line: 476
 # File: inc/classes/Issue.php, line: 634
-# File: inc/classes/Issue.php, line: 1202
-# File: inc/classes/Issue.php, line: 1215
+# File: inc/classes/Issue.php, line: 1207
+# File: inc/classes/Issue.php, line: 1220
 msgid "Acceptance"
 msgstr "Zustimmung"
 #
 # File: inc/classes/Issue.php, line: 477
 # File: inc/classes/Issue.php, line: 638
 # File: inc/classes/Issue.php, line: 656
-# File: inc/classes/Issue.php, line: 1215
+# File: inc/classes/Issue.php, line: 1220
 # File: inc/classes/Notification.php, line: 426
 msgid "Score"
 msgstr "Bewertung"
@@ -1744,7 +1744,7 @@ msgstr "Bewertung"
 # File: inc/functions.php, line: 205
 # File: inc/functions.php, line: 217
 # File: inc/classes/Issue.php, line: 652
-# File: inc/classes/Issue.php, line: 1046
+# File: inc/classes/Issue.php, line: 1051
 # File: inc/classes/Notification.php, line: 424
 msgid "Abstention"
 msgstr "Enthaltung"
@@ -1926,9 +1926,9 @@ msgstr "Deine Abstimmungskennung"
 #
 # File: inc/classes/Issue.php, line: 404
 # File: inc/classes/Issue.php, line: 483
-# File: inc/classes/Issue.php, line: 1202
 # File: inc/classes/Issue.php, line: 1207
-# File: inc/classes/Issue.php, line: 1271
+# File: inc/classes/Issue.php, line: 1212
+# File: inc/classes/Issue.php, line: 1276
 msgid "Voting time"
 msgstr "Abstimmungszeitpunkt"
 #
@@ -2170,9 +2170,9 @@ msgstr "öffentlichen PGP-Schlüssel hochladen"
 msgid "Your submitted votes on this issue:"
 msgstr "Deine abgegebenen Stimmen zu diesem Thema:"
 #
-# File: inc/classes/Issue.php, line: 1202
 # File: inc/classes/Issue.php, line: 1207
-# File: inc/classes/Issue.php, line: 1271
+# File: inc/classes/Issue.php, line: 1212
+# File: inc/classes/Issue.php, line: 1276
 msgid "Vote token"
 msgstr "Abstimmungskennung"
 #
@@ -2251,7 +2251,7 @@ msgstr "Du kannst deine Wahl auch wieder ändern:"
 msgid "Voting mode"
 msgstr "Verfahren"
 #
-# File: inc/classes/Issue.php, line: 1271
+# File: inc/classes/Issue.php, line: 1276
 msgid "Demands offline voting"
 msgstr "Fordert eine Offline-Abstimmung"
 #
@@ -2320,7 +2320,7 @@ msgstr "Du hast bei %d Themen noch nicht abgestimmt."
 msgid "You have not yet voted on 1 issue."
 msgstr "Du hast bei einem Thema noch nicht abgestimmt."
 #
-# File: proposals.php, line: 94
+# File: proposals.php, line: 106
 #, php-format
 msgid "not voted on %d"
 msgstr "nicht abgestimmt %d"
@@ -2329,12 +2329,12 @@ msgstr "nicht abgestimmt %d"
 msgid "issues in entry, debate and voting phases"
 msgstr "Themen in Eingang, Debatte und Abstimmung"
 #
-# File: proposals.php, line: 95
+# File: proposals.php, line: 100
 #, php-format
 msgid "%d issues in voting, %d in voting preparation and %d in counting phase"
 msgstr "%d Themen in der Abstimmung, %d in der Abstimmungsvorbereitung und %d in der Auszählung"
 #
-# File: proposals.php, line: 101
+# File: proposals.php, line: 109
 #, php-format
 msgid "%d issues are finished, %d issues are cancelled"
 msgstr "%d Themen sind abgeschlossen, %d sind abgebrochen"
@@ -2384,8 +2384,8 @@ msgstr "Die Online-Abstimmung zu den folgenden Anträgen hat begonnen"
 msgid "This issue does not use offline voting."
 msgstr "Dieses Thema verwendet keine Offline-Abstimmung."
 #
-# File: inc/classes/Issue.php, line: 1014
 # File: inc/classes/Issue.php, line: 1019
+# File: inc/classes/Issue.php, line: 1024
 msgid "offline voting by admin"
 msgstr "Offline-Abstimmung durch Verantwortliche festgelegt"
 #
@@ -2605,7 +2605,7 @@ msgstr "Du kannst zu diesem Thema nicht abstimmen, weil du in der Gliederung nic
 msgid "You can not vote in this voting period, because you were not yet entitled when the voting started."
 msgstr "Du kannst in dieser Abstimmungsperiode nicht abstimmen, weil du noch nicht stimmberechtigt warst als die Abstimmung begann."
 #
-# File: inc/classes/Issue.php, line: 972
+# File: inc/classes/Issue.php, line: 977
 msgid "You are not entitled in this group."
 msgstr "Du bist nicht in dieser Gliederung nicht stimmberechtigt."
 #
@@ -2826,35 +2826,35 @@ msgstr "Gib deinen Namen und Kontaktdaten so ein, wie du sie im Antrag stehen ha
 msgid "You have unsaved changes. Do you want to open the link in a new window?"
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Möchtest du den Link in einem neuen Fenster öffnen?"
 #
-# File: proposals.php, line: 74
+# File: proposals.php, line: 75
 #, php-format
 msgid "%d issue in entry phase"
 msgid_plural "%d issues in entry phase"
 msgstr[0] "%d Thema in der Eingangsphase"
 msgstr[1] "%d Themen in der Eingangsphase"
 #
-# File: proposals.php, line: 78
+# File: proposals.php, line: 80
 #, php-format
 msgid "%d issue in entry phase with proposals in draft phase"
 msgid_plural "%d issues in entry phase with proposals in draft phase"
 msgstr[0] "%d Thema in der Eingangsphase mit Anträgen in der Entwurfsphase"
 msgstr[1] "%d Themen in der Eingangsphase mit Anträgen in der Entwurfsphase"
 #
-# File: proposals.php, line: 82
+# File: proposals.php, line: 85
 #, php-format
 msgid "%d issue in entry phase with submitted proposals"
 msgid_plural "%d issues in entry phase with submitted proposals"
 msgstr[0] "%d Thema in der Eingangsphase mit eingereichten Anträgen"
 msgstr[1] "%d Themen in der Eingangsphase mit eingereichten Anträgen"
 #
-# File: proposals.php, line: 86
+# File: proposals.php, line: 90
 #, php-format
 msgid "%d issue in entry phase with admitted proposals"
 msgid_plural "%d issues in entry phase with admitted proposals"
 msgstr[0] "%d Thema in der Eingangsphase mit zugelassenen Anträgen"
 msgstr[1] "%d Themen in der Eingangsphase mit zugelassenen Anträgen"
 #
-# File: proposals.php, line: 90
+# File: proposals.php, line: 95
 #, php-format
 msgid "%d issue in debate phase"
 msgid_plural "%d issues in debate phase"
