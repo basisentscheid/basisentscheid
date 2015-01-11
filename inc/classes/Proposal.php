@@ -1020,6 +1020,7 @@ class Proposal extends Relation {
 	 * @param integer $no
 	 * @param integer $abstention
 	 * @param boolean $accepted
+	 * @return string
 	 */
 	public function bargraph_acceptance($yes, $no, $abstention, $accepted) {
 
@@ -1059,6 +1060,7 @@ class Proposal extends Relation {
 		?><div class="clear"></div><?
 		?></div><?
 
+		return $title;
 	}
 
 

@@ -818,9 +818,12 @@ class Issue extends Relation {
 			}
 		}
 		if ( $proposal->yes !== null ) { // skip cancelled proposals
-			$proposal->bargraph_acceptance($proposal->yes, $proposal->no, $proposal->abstention, $proposal->accepted);
+			$title = $proposal->bargraph_acceptance($proposal->yes, $proposal->no, $proposal->abstention, $proposal->accepted);
 			if ( $options_count > 1 ) {
 				$proposal->bargraph_score($proposal->score, $score_max);
+			}
+			if (BN=="vote_result.php") {
+				?><br><?=$title;
 			}
 		}
 		?></td>
