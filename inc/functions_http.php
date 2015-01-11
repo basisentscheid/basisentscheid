@@ -254,7 +254,16 @@ function html_head($title, $help=false) {
 <?
 
 	// show MOTD once for each session and always on the home page
-	if ( defined("MOTD") and (empty($_SESSION['motd_seen']) or BN=="index.php") ) {
+	if (
+		defined("MOTD") and
+		// display it always on the home page
+		(empty($_SESSION['motd_seen']) or BN=="index.php") and
+		// never display it on these pages
+		BN != "register.php" and
+		BN != "reset_password.php" and
+		BN != "request_password_reset.php" and
+		BN != "confirm_mail.php"
+	) {
 ?>
 <section class="motd"><?=MOTD?></section>
 <?
