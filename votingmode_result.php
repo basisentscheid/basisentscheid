@@ -28,9 +28,10 @@ if ($issue->votingmode_admin) {
 ?>
 <table class="proposals">
 <?
-	Issue::display_proposals_th(true);
+	$show_result = ($issue->state == "finished");
+	Issue::display_proposals_th($show_result);
 	list($proposals, $submitted) = $issue->proposals_list(true);
-	$issue->display_proposals($proposals, $submitted, count($proposals), true);
+	$issue->display_proposals($proposals, $submitted, count($proposals), $show_result);
 ?>
 </table>
 
