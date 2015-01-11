@@ -96,12 +96,12 @@ printf(ngettext("%d issue in debate phase", "%d issues in debate phase", $counts
 ?>"<?
 if ($filter=="debate") { ?> class="active"<? }
 ?>><?=_("Debate")?> (<?=$counts['debate']?>)</a>
-<a href="<?=URI::build($params + ['filter'=>"entry"])?>" title="<?
+<a href="<?=URI::build($params + ['filter'=>"voting"])?>" title="<?
 printf(_("%d issues in voting, %d in voting preparation and %d in counting phase"), $counts['voting'], $counts['preparation'], $counts['counting']);
 $nyvic = $ngroup->not_yet_voted_issues_count();
 if ($nyvic) { ?> &mdash; <?=Ngroup::not_yet_voted($nyvic); }
 ?>"<?
-if ($filter=="entry") { ?> class="active"<? }
+if ($filter=="voting") { ?> class="active"<? }
 ?>><?=_("Voting")?> (<?=($counts['voting']+$counts['preparation']+$counts['counting']);
 if ($nyvic) { ?>, <? printf(_("not voted on %d"), $nyvic); }
 ?>)</a>
