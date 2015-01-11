@@ -438,6 +438,23 @@ section.help#manual main h3:before {
     content: counter(level1) "." counter(level2) ". ";
     counter-increment: level2;
 }
+section.help#manual main h2,
+section.help#manual main h3 {
+	clear: both;
+}
+section.help#manual img {
+	border: 1px solid #666;
+	float: right;
+	margin: 0.2em 0 0.5em 1em;
+}
+section.help#manual img.left {
+	float: left;
+	margin: 0.2em 1em 0.5em 0;
+}
+section.help#manual img.icon {
+	padding: 4px;
+	background-color: #FFF;
+}
 
 section.motd {
 	background-color: #FFEBE6;
