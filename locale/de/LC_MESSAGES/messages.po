@@ -155,14 +155,14 @@ msgstr "Datensätze pro Seite"
 # File: periods.php, line: 17
 # File: proposal.php, line: 388
 # File: proposal.php, line: 391
-# File: proposals.php, line: 98
+# File: proposals.php, line: 102
 # File: inc/classes/Issue.php, line: 104
 msgid "Debate"
 msgstr "Debatte"
 #
 # File: proposal.php, line: 402
 # File: proposal.php, line: 405
-# File: proposals.php, line: 105
+# File: proposals.php, line: 111
 # File: inc/classes/Issue.php, line: 106
 # File: inc/classes/Issue.php, line: 901
 # File: inc/classes/Issue.php, line: 905
@@ -189,7 +189,7 @@ msgstr "Themenbereich"
 msgid "Test"
 msgstr "Test"
 #
-# File: proposals.php, line: 83
+# File: proposals.php, line: 85
 # File: inc/classes/Proposal.php, line: 179
 msgid "Draft"
 msgstr "Entwurf"
@@ -302,12 +302,12 @@ msgstr "Nr."
 msgid "State"
 msgstr "Status"
 #
-# File: proposals.php, line: 78
+# File: proposals.php, line: 80
 # File: inc/classes/Issue.php, line: 103
 msgid "Entry"
 msgstr "Eingang"
 #
-# File: proposals.php, line: 112
+# File: proposals.php, line: 122
 msgid "closed"
 msgstr "geschlossen"
 #
@@ -315,11 +315,11 @@ msgstr "geschlossen"
 msgid "subscribe anew"
 msgstr "erneut anmelden"
 #
-# File: proposals.php, line: 118
+# File: proposals.php, line: 130
 msgid "Search"
 msgstr "Suche"
 #
-# File: proposals.php, line: 119
+# File: proposals.php, line: 131
 msgid "search"
 msgstr "suchen"
 #
@@ -389,7 +389,7 @@ msgstr "Änderungen an genehmigten Urnen übernehmen"
 msgid "Apply to operate a ballot"
 msgstr "Neuer Urnenantrag"
 #
-# File: proposals.php, line: 235
+# File: proposals.php, line: 247
 msgid "Issues per page"
 msgstr "Themen pro Seite"
 #
@@ -531,7 +531,7 @@ msgstr "suchen/filtern"
 msgid "filter"
 msgstr "filtern"
 #
-# File: proposals.php, line: 120
+# File: proposals.php, line: 132
 # File: inc/classes/Filter.php, line: 160
 msgid "reset"
 msgstr "zurücksetzen"
@@ -764,7 +764,7 @@ msgstr "Hilfe zeigen"
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
-# File: proposals.php, line: 73
+# File: proposals.php, line: 74
 msgid "open"
 msgstr "offen"
 #
@@ -1259,7 +1259,7 @@ msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web
 msgid "proponent"
 msgstr "Antragsteller"
 #
-# File: proposals.php, line: 93
+# File: proposals.php, line: 95
 # File: inc/classes/Notification.php, line: 81
 msgid "admitted"
 msgstr "zugelassen"
@@ -1560,7 +1560,7 @@ msgstr "Logo"
 msgid "new proposal"
 msgstr "neuer Antrag"
 #
-# File: proposals.php, line: 88
+# File: proposals.php, line: 90
 # File: inc/classes/Notification.php, line: 80
 msgid "submitted"
 msgstr "eingereicht"
@@ -2318,21 +2318,21 @@ msgstr "Du hast bei %d Themen noch nicht abgestimmt."
 msgid "You have not yet voted on 1 issue."
 msgstr "Du hast bei einem Thema noch nicht abgestimmt."
 #
-# File: proposals.php, line: 106
+# File: proposals.php, line: 112
 #, php-format
 msgid "not voted on %d"
 msgstr "nicht abgestimmt %d"
 #
-# File: proposals.php, line: 70
+# File: proposals.php, line: 71
 msgid "issues in entry, debate and voting phases"
 msgstr "Themen in Eingang, Debatte und Abstimmung"
 #
-# File: proposals.php, line: 100
+# File: proposals.php, line: 106
 #, php-format
 msgid "%d issues in voting, %d in voting preparation and %d in counting phase"
 msgstr "%d Themen in der Abstimmung, %d in der Abstimmungsvorbereitung und %d in der Auszählung"
 #
-# File: proposals.php, line: 109
+# File: proposals.php, line: 119
 #, php-format
 msgid "%d issues are finished, %d issues are cancelled"
 msgstr "%d Themen sind abgeschlossen, %d sind abgebrochen"
@@ -2824,35 +2824,35 @@ msgstr "Gib deinen Namen und Kontaktdaten so ein, wie du sie im Antrag stehen ha
 msgid "You have unsaved changes. Do you want to open the link in a new window?"
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Möchtest du den Link in einem neuen Fenster öffnen?"
 #
-# File: proposals.php, line: 75
+# File: proposals.php, line: 77
 #, php-format
 msgid "%d issue in entry phase"
 msgid_plural "%d issues in entry phase"
 msgstr[0] "%d Thema in der Eingangsphase"
 msgstr[1] "%d Themen in der Eingangsphase"
 #
-# File: proposals.php, line: 80
+# File: proposals.php, line: 82
 #, php-format
 msgid "%d issue in entry phase with proposals in draft phase"
 msgid_plural "%d issues in entry phase with proposals in draft phase"
 msgstr[0] "%d Thema in der Eingangsphase mit Anträgen in der Entwurfsphase"
 msgstr[1] "%d Themen in der Eingangsphase mit Anträgen in der Entwurfsphase"
 #
-# File: proposals.php, line: 85
+# File: proposals.php, line: 87
 #, php-format
 msgid "%d issue in entry phase with submitted proposals"
 msgid_plural "%d issues in entry phase with submitted proposals"
 msgstr[0] "%d Thema in der Eingangsphase mit eingereichten Anträgen"
 msgstr[1] "%d Themen in der Eingangsphase mit eingereichten Anträgen"
 #
-# File: proposals.php, line: 90
+# File: proposals.php, line: 92
 #, php-format
 msgid "%d issue in entry phase with admitted proposals"
 msgid_plural "%d issues in entry phase with admitted proposals"
 msgstr[0] "%d Thema in der Eingangsphase mit zugelassenen Anträgen"
 msgstr[1] "%d Themen in der Eingangsphase mit zugelassenen Anträgen"
 #
-# File: proposals.php, line: 95
+# File: proposals.php, line: 99
 #, php-format
 msgid "%d issue in debate phase"
 msgid_plural "%d issues in debate phase"
