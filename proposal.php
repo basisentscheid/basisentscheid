@@ -86,22 +86,22 @@ if ($action) {
 	case "add_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->add_support();
-		redirect(URI::same(true)."#supporters");
+		redirect("#supporters");
 		break;
 	case "add_support_anonym":
 		Login::access_action("entitled", $ngroup);
 		$proposal->add_support(true);
-		redirect(URI::same(true)."#supporters");
+		redirect("#supporters");
 		break;
 	case "renew_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->renew_support();
-		redirect(URI::same(true)."#supporters");
+		redirect("#supporters");
 		break;
 	case "revoke_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->revoke_support();
-		redirect(URI::same(true)."#supporters");
+		redirect("#supporters");
 		break;
 	case "demand_votingmode":
 		Login::access_action("entitled", $ngroup);
@@ -117,7 +117,7 @@ if ($action) {
 	case "save_votingmode_admin":
 		Login::access_action("admin");
 		$issue->save_votingmode_admin(!empty($_POST['votingmode_admin']));
-		redirect(URI::same(true)."#votingmode");
+		redirect("#votingmode");
 		break;
 
 	case "select_period":
@@ -129,7 +129,7 @@ if ($action) {
 		Login::access_action("admin");
 		action_required_parameters("admission_decision");
 		$proposal->set_admission_decision(trim($_POST['admission_decision']));
-		redirect(URI::same(true)."#admission_decision");
+		redirect("#admission_decision");
 		break;
 
 	case "save_annotation":
@@ -137,7 +137,7 @@ if ($action) {
 		action_required_parameters("annotation");
 		$proposal->annotation = trim($_POST['annotation']);
 		$proposal->update(["annotation"]);
-		redirect(URI::same(true)."#annotation");
+		redirect("#annotation");
 		break;
 
 	case "move_to_issue":
@@ -225,7 +225,7 @@ if ($action) {
 			redirect();
 		}
 		if ( !$comment->set_rating(intval($_POST['rating'])) ) redirect();
-		redirect(URI::same(true)."#comment".$comment->id);
+		redirect("#comment".$comment->id);
 		break;
 	case "reset_rating":
 		if ( !Login::access_allowed("rate") ) {
@@ -243,7 +243,7 @@ if ($action) {
 			redirect();
 		}
 		if ( !$comment->delete_rating() ) redirect();
-		redirect(URI::same(true)."#comment".$comment->id);
+		redirect("#comment".$comment->id);
 		break;
 
 	case "remove_comment":
@@ -257,7 +257,7 @@ if ($action) {
 		}
 		$comment->removed = ($action=="remove_comment");
 		$comment->update(["removed"]);
-		redirect(URI::same(true)."#comment".$comment->id);
+		redirect("#comment".$comment->id);
 		break;
 
 	default:

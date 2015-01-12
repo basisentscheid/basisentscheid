@@ -11,7 +11,9 @@
 /**
  * http redirect
  *
- * @param string  $target (optional) relative or absolute URI
+ * To make fragments work with all browsers, the fragment has to be provided here *and* in the link or form leading to the redirect.
+ *
+ * @param string  $target (optional) relative or absolute URI with fragment or only fragment
  */
 function redirect($target="") {
 
@@ -19,7 +21,13 @@ function redirect($target="") {
 		if (!lefteq($target, "/") and !lefteq($target, "http")) {
 			// make relative paths absolute
 			$dirname = dirname($_SERVER['PHP_SELF']);
-			if ($dirname=="/") $target = "/".$target; else $target = $dirname."/".$target;
+			if ($dirname=="/") {
+				$target = "/".$target;
+			} elseif (lefteq($target, "#")) {
+				$target = $dirname."/".URI::same(true).$target;
+			} else {
+				$target = $dirname."/".$target;
+			}
 		}
 	} else {
 		// reload the page to get rid of POST data
@@ -471,7 +479,7 @@ function action_proposal_select_period() {
 	$issue->period = $period->id;
 	$issue->update(["period"]);
 
-	redirect(URI::same(true)."#issue".$issue->id);
+	redirect("#issue".$issue->id);
 }
 
 
