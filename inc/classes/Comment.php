@@ -183,6 +183,7 @@ class Comment extends Relation {
 		}
 		DB::insert_or_update("rating", $fields_values, $keys);
 		$this->update_ratings_cache();
+		return true;
 	}
 
 
@@ -206,6 +207,7 @@ class Comment extends Relation {
 		}
 		DB::delete("rating", $where);
 		$this->update_ratings_cache();
+		return true;
 	}
 
 

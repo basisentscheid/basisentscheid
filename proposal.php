@@ -86,22 +86,22 @@ if ($action) {
 	case "add_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->add_support();
-		redirect();
+		redirect(URI::same(true)."#supporters");
 		break;
 	case "add_support_anonym":
 		Login::access_action("entitled", $ngroup);
 		$proposal->add_support(true);
-		redirect();
+		redirect(URI::same(true)."#supporters");
 		break;
 	case "renew_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->renew_support();
-		redirect();
+		redirect(URI::same(true)."#supporters");
 		break;
 	case "revoke_support":
 		Login::access_action("entitled", $ngroup);
 		$proposal->revoke_support();
-		redirect();
+		redirect(URI::same(true)."#supporters");
 		break;
 	case "demand_votingmode":
 		Login::access_action("entitled", $ngroup);
@@ -129,7 +129,7 @@ if ($action) {
 		Login::access_action("admin");
 		action_required_parameters("admission_decision");
 		$proposal->set_admission_decision(trim($_POST['admission_decision']));
-		redirect();
+		redirect(URI::same(true)."#admission_decision");
 		break;
 
 	case "save_annotation":
@@ -137,7 +137,7 @@ if ($action) {
 		action_required_parameters("annotation");
 		$proposal->annotation = trim($_POST['annotation']);
 		$proposal->update(["annotation"]);
-		redirect();
+		redirect(URI::same(true)."#annotation");
 		break;
 
 	case "move_to_issue":

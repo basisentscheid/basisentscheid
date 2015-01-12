@@ -30,6 +30,7 @@ function redirect($target="") {
 		// save page infos to show them in the debug output on the next page
 		if (!isset($_SESSION['redirects'])) $_SESSION['redirects'] = array();
 		$_SESSION['redirects'][] = array(
+			'target'      => $target,
 			'BN'          => BN,
 			'REQUEST_URI' => $_SERVER['REQUEST_URI'],
 			'GET'         => $_GET,
@@ -470,7 +471,7 @@ function action_proposal_select_period() {
 	$issue->period = $period->id;
 	$issue->update(["period"]);
 
-	redirect();
+	redirect(URI::same(true)."#issue".$issue->id);
 }
 
 
