@@ -961,6 +961,8 @@ class Issue extends Relation {
 ?>
 		<td rowspan="<?=$num_rows?>"<?
 
+		$admin_form = (Login::$admin and $selected_proposal and $this->votingmode_determination_admin());
+
 		if ($this->votingmode_determination($submitted)) {
 			if ($selected_proposal) {
 				?> class="votingmode"<?
@@ -1005,16 +1007,21 @@ class Issue extends Relation {
 				form_end();
 			}
 		} elseif ($this->votingmode_offline()) {
-			?> class="votingmode link" title="<?=_("offline voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" alt="<?=_("offline voting")?>" class="vmiddle"></a><?
+			if ($admin_form) {
+				?> class="votingmode"<?
+			} else {
+				?> class="votingmode link" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"<?
+			}
+			?> title="<?=_("offline voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" alt="<?=_("offline voting")?>" class="vmiddle"></a><?
 		} elseif ($this->state!="entry") {
-			?> class="votingmode link" title="<?=_("online voting")?>" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" alt="<?=_("online voting")?>" class="vmiddle"></a><?
+			?> class="votingmode link" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" alt="<?=_("online voting")?>" class="vmiddle"></a><?
 		} else {
 			?>><?
 		}
 
 		// offline voting by admin
 		if (Login::$admin) {
-			if ($selected_proposal and $this->votingmode_determination_admin()) {
+			if ($admin_form) {
 				form(URI::same()."#votingmode", 'id="votingmode"');
 				input_hidden("action", "save_votingmode_admin");
 ?>
