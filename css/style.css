@@ -498,18 +498,12 @@ div.filter {
 }
 div.filter form {
 	display: inline;
-	margin-left: 20px;
+	margin-left: 1em;
 	white-space: nowrap;
 }
 div.filter.nav {
 	margin-top: 0.5em;
 	margin-bottom: 1.5em;
-}
-div.filter a.top {
-	text-transform: uppercase;
-}
-div.filter a.sub {
-	font-size: 80%;
 }
 
 /* proposals table */
@@ -798,6 +792,43 @@ section.dates tr.own,
 section.ngroups tr.own td.name,
 section.ngroups tr.own td.proposals {
 	font-weight: bold;
+}
+
+
+/* proposals.php */
+
+div.filter.proposals {
+	line-height: normal;
+	margin-bottom: 0.2em;
+}
+div.filter.proposals div.top,
+div.filter.proposals form {
+	margin-bottom: 0.2em;
+}
+div.filter.proposals div.top {
+	display: inline-block;
+	background-color: #FFF;
+	padding: 2px;
+	vertical-align: middle;
+}
+div.filter.proposals div.mid,
+div.filter.proposals div.mid_dummy {
+	display: inline-block;
+	padding-bottom: 2px;
+}
+div.filter.proposals div.mid {
+	background-color: #F3F3F3;
+}
+div.filter.proposals div.top,
+div.filter.proposals div.mid {
+	border-radius: 6px;
+}
+div.filter.proposals a.top {
+	text-transform: uppercase;
+}
+div.filter.proposals a.sub {
+	font-size: 80%;
+	padding: 2px 2px 1px 2px;
 }
 
 
