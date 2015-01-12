@@ -1135,7 +1135,7 @@ class Issue extends Relation {
 			static $options_admission = false;
 			if ($options_all===false) {
 				$sql_period = "SELECT *, debate > now() AS debate_not_started FROM period
-					WHERE ngroup=".intval($this->period()->ngroup)."
+					WHERE ngroup=".intval($this->area()->ngroup)."
 						AND voting > now()
 					ORDER BY id";
 				$result_period = DB::query($sql_period);
