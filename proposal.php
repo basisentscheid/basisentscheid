@@ -117,7 +117,7 @@ if ($action) {
 	case "save_votingmode_admin":
 		Login::access_action("admin");
 		$issue->save_votingmode_admin(!empty($_POST['votingmode_admin']));
-		redirect();
+		redirect(URI::same(true)."#votingmode");
 		break;
 
 	case "select_period":
