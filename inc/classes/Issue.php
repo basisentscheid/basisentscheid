@@ -734,7 +734,7 @@ class Issue extends Relation {
 <?
 			if ($show_ngroup and $first) {
 ?>
-		<td rowspan="<?=$num_rows?>"><?=$proposal->issue()->area()->ngroup()->name?></td>
+		<td rowspan="<?=$num_rows?>" scope="row"><?=$proposal->issue()->area()->ngroup()->name?></td>
 <?
 			}
 ?>
