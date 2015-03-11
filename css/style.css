@@ -993,6 +993,13 @@ section.timebar div.part {
 	white-space: nowrap;
 	margin-bottom: 0.1em;
 }
+section.timebar div.part ul,
+section.timebar div.part ul li {
+	display: inline;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
 section.timebar div.months {
 	margin-bottom: 0.1em;
 }

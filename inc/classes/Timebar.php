@@ -134,7 +134,7 @@ abstract class Timebar {
 		}
 		?></div>
 	<div class="beam" style="width:calc(<?=round(self::day_width * $days, self::round_precision)."em"?> + 1px)"></div>
-	<div class="datespace" style="width:<?=round(($times[0][0] - $from_time) * $second_width - self::tick_width, self::round_precision)?>em"></div><?
+	<ul><li><div class="datespace" style="width:<?=round(($times[0][0] - $from_time) * $second_width - self::tick_width, self::round_precision)?>em"></div></li><?
 		$line = 0;
 		foreach ( $times as $index => $time ) {
 			if (isset($times[$index+1])) {
@@ -143,15 +143,15 @@ abstract class Timebar {
 				// last one
 				$width = 0;
 			}
-			?><div
+			?><li><div
 		class="datebar<?=$time['class']?>" style="height:<?=$line+1?>em"><div class="mark"></div></div><div class="datespace<?=$time['class']?>" style="width:<?=$width?>em<?
 			if ($line) { ?>;margin-top:<?=$line?>em<? }
 			?>"
-		title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></div><?
+		title="<?=sprintf($time[2], date(DATETIMEYEAR_FORMAT, $time[0]))?>"><?=$time[1]?></div></li><?
 			$line++;
 			if ($width > 7) $line = 0;
 		}
-		?></div>
+		?></ul></div>
 <?
 	}
 
