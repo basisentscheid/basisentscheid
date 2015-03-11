@@ -133,7 +133,7 @@ function html_head($title, $help=false) {
 ?>
 
 <header>
-	<a href="index.php" id="logo"><img src="img/logo.png" width="58" height="50" alt="<?=_("Logo")?>"></a>
+	<a href="index.php" id="logo"><img src="img/logo.png" width="58" height="50" alt=""></a>
 	<div id="header">
 		<div id="user">
 			<? html_user(); ?>

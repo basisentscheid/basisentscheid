@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2015-01-12 09:09+0200\n"
+"PO-Revision-Date: 2015-03-11 12:20+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -1551,10 +1551,6 @@ msgstr "<a%s>Antrag %d</a>, Versionsunterschiede"
 #, php-format
 msgid "Voting for issue %d could not be started, because the determined voting mode is not available in the current and all further voting periods!"
 msgstr "Die Abstimmung für Thema %d konnte nicht gestartet werden, weil das ermittelte Abstimmungsverfahren in der aktuellen und allen zukünftigen Abstimmungsperioden nicht verfügbar ist!"
-#
-# File: inc/functions_http.php, line: 136
-msgid "Logo"
-msgstr "Logo"
 #
 # File: inc/classes/Notification.php, line: 78
 msgid "new proposal"
