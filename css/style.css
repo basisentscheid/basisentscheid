@@ -112,8 +112,13 @@ div.comments_rubric a:link {
 a:hover,
 a:focus {
 	color: #000;
-	outline: 1px solid #DDD;
 	background-color: #F8F8F8;
+}
+a:hover {
+	outline: 1px solid #DDD;
+}
+a:focus {
+	outline: 1px solid #AAA;
 }
 a:active {
 	background-color: #F3F3F3;
@@ -301,29 +306,6 @@ nav ul {
 nav ul li {
 	padding: 3px 0;
 }
-nav ul li a {
-	font-size: 110%;
-	padding: 1px 4px;
-	text-decoration: none;
-	background-color: #FFF;
-}
-nav ul.manual li a {
-	background-color: #FFE;
-}
-nav ul li a:hover,
-nav ul li a:focus {
-	outline: 1px solid #EEE;
-}
-nav ul li a.active,
-nav ul li a.active:hover,
-nav ul li a.active:focus {
-	outline: 1px solid #999;
-}
-nav form {
-	display: inline-block;
-	padding: 0.1em 0.5em 0 0;
-	vertical-align: top;
-}
 
 a#logo {
 	position: absolute;
@@ -344,6 +326,36 @@ a#home {
 	background-color: transparent;
 	outline: none;
 	padding: 0;
+}
+
+nav ul li a {
+	font-size: 110%;
+	padding: 1px 4px;
+	text-decoration: none;
+	background-color: #FFF;
+}
+nav ul.manual li a {
+	background-color: #FFE;
+}
+nav ul li a:hover,
+nav ul li a#home:hover {
+	outline: 1px solid #EEE;
+}
+nav ul li a:focus {
+	outline: 1px solid #AAA;
+}
+nav ul li a#home:focus {
+	outline: 1px solid #EEE;
+}
+nav ul li a.active,
+nav ul li a.active:hover,
+nav ul li a.active:focus {
+	outline: 1px solid #999;
+}
+nav form {
+	display: inline-block;
+	padding: 0.1em 0.5em 0 0;
+	vertical-align: top;
 }
 
 div#user {
@@ -551,8 +563,7 @@ table.proposals td.proposal_link_active {
 	font-weight: bold;
 	border-color: #999;
 }
-table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link:focus {
+table.proposals td.proposal_link:hover {
 	border-color: #DDD;
 }
 table.proposals td.proposal_link a,
@@ -561,13 +572,9 @@ table.proposals td.proposal_link_active a {
 	outline: none;
 }
 table.proposals td.proposal_link:hover,
-table.proposals td.proposal_link:focus,
 table.proposals td.proposal_link_active:hover,
-table.proposals td.proposal_link_active:focus,
 table.proposals td.proposal_link:hover a,
-table.proposals td.proposal_link:focus a,
-table.proposals td.proposal_link_active:hover a,
-table.proposals td.proposal_link_active:focus a {
+table.proposals td.proposal_link_active:hover a {
 	color: #000;
 	background-color: #F8F8F8;
 }
@@ -576,6 +583,10 @@ table.proposals td.proposal_link_active:active,
 table.proposals td.proposal_link:active a,
 table.proposals td.proposal_link_active:active a {
 	background-color: #F3F3F3;
+}
+table.proposals td.proposal_link a:focus,
+table.proposals td.proposal_link_active a:focus {
+	outline: 1px solid #AAA;
 }
 
 table.proposals td.support,
@@ -950,9 +961,7 @@ section.proposal_info tr td.content {
 	cursor: hand;
 }
 section.proposal_info tr td.content:hover,
-section.proposal_info tr td.content:focus,
-section.proposal_info tr td.content:hover a,
-section.proposal_info tr td.content:focus a {
+section.proposal_info tr td.content:hover a {
 	background-color: #F8F8F8;
 	color: #000;
 }

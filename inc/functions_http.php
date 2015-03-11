@@ -133,14 +133,14 @@ function html_head($title, $help=false) {
 ?>
 
 <header>
-	<a href="index.php" id="logo"><img src="img/logo.png" width="58" height="50" alt=""></a>
+	<a href="index.php" id="logo" tabindex="-1"><img src="img/logo.png" width="58" height="50" alt=""></a>
 	<div id="header">
 		<div id="user">
 			<? html_user(); ?>
 		</div>
 		<nav>
 			<ul>
-				<li><a href="index.php" id="home">Basisentscheid</a></li>
+				<li><a href="index.php" id="home" tabindex="1">Basisentscheid</a></li>
 				<li>
 					<form method="GET" action="<?
 	switch (BN) {
@@ -161,7 +161,7 @@ function html_head($title, $help=false) {
 		);
 	}
 	?>">
-						<select name="ngroup" onchange="this.form.submit()">
+						<select name="ngroup" onchange="this.form.submit()" tabindex="2">
 <?
 	if (Login::$member) {
 		$sql = "SELECT ngroup.*, member FROM ngroup
@@ -315,7 +315,8 @@ function navlink($file, $title, $add_ngroup=false) {
 ?>
 				<li><a href="<?=$file;
 	if ($add_ngroup) { ?>?ngroup=<?=$_SESSION['ngroup']; }
-	?>"<? if (BN==$file) { ?> class="active"<? } ?>><?=$title?></a></li>
+	?>"<? if (BN==$file) { ?> class="active"<? }
+	?> tabindex="3"><?=$title?></a></li>
 <?
 }
 
