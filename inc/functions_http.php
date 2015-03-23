@@ -21,12 +21,11 @@ function redirect($target="") {
 		if (!lefteq($target, "/") and !lefteq($target, "http")) {
 			// make relative paths absolute
 			$dirname = dirname($_SERVER['PHP_SELF']);
-			if ($dirname=="/") {
-				$target = "/".$target;
-			} elseif (lefteq($target, "#")) {
-				$target = $dirname."/".URI::same(true).$target;
+			if ($dirname!="/") $dirname .= "/";
+			if (lefteq($target, "#")) {
+				$target = $dirname.URI::same(true).$target;
 			} else {
-				$target = $dirname."/".$target;
+				$target = $dirname.$target;
 			}
 		}
 	} else {
