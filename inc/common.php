@@ -4,6 +4,7 @@
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see vvvote_check_token.php
  * @see inc/common_cli.php
  * @see inc/common_http.php
  */

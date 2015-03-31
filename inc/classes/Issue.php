@@ -905,18 +905,28 @@ class Issue extends Relation {
 			?><span title="<?=_("You can not vote on this issue, because you are are not entitled in the group.")?>"><?=_("Voting")?></span><?
 			return;
 		}
-		$sql = "SELECT vote_vote.token FROM vote_token
-			LEFT JOIN vote_vote USING (token)
-			WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
-		$result = DB::query($sql);
-		if ( list($token) = DB::fetch_row($result) ) {
-			?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
-			if ($token) {
-				?><span title="<?=_("You have voted on this issue.")?>">&#10003;</span><?
-			}
+
+		if ($this->period()->vvvote) {
+
+			?><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("Voting")?></a><?
+
 		} else {
-			?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
+
+			$sql = "SELECT vote_vote.token FROM vote_token
+				LEFT JOIN vote_vote USING (token)
+				WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
+			$result = DB::query($sql);
+			if ( list($token) = DB::fetch_row($result) ) {
+				?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
+				if ($token) {
+					?><span title="<?=_("You have voted on this issue.")?>">&#10003;</span><?
+				}
+			} else {
+				?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
+			}
+
 		}
+
 	}
 
 
@@ -1066,7 +1076,7 @@ class Issue extends Relation {
 ?>
 		<td class="vote nowrap">
 <?
-			if ($num_rows > 3) $max_score = 9; else $max_score = 3;
+			$max_score = max_score($num_rows);
 			for ( $score = 0; $score <= $max_score; $score++ ) {
 ?>
 			<label><input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?

@@ -4,6 +4,7 @@
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see vvvote_check_token.php
  * @see inc/common_cli.php
  * @see inc/common_http.php
  */
@@ -220,6 +221,20 @@ function score($value) {
 
 
 /**
+ * maximum selectable score depending on number of options
+ *
+ * @param integer $options_count
+ * @return integer
+ */
+function max_score($options_count) {
+	if ( $options_count > 1 ) {
+		if ( $options_count >= 5 ) return 9; else return 3;
+	}
+	return 0;
+}
+
+
+/**
  * format a date human friendly from Postgres (YYYY-dd-mm)
  *
  * @param string  $date
@@ -331,6 +346,17 @@ function numden(array $numden) {
 function explode_no_empty($delimiter, $string) {
 	if ($string) return explode($delimiter, $string);
 	return array();
+}
+
+
+/**
+ * split a comma separated string into an array
+ *
+ * @param string  $string
+ * @return array
+ */
+function split_csa($string) {
+	return preg_split('/\s*,\s*/', trim($string), -1, PREG_SPLIT_NO_EMPTY);
 }
 
 

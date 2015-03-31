@@ -36,6 +36,7 @@
  * @see test_redirect_errors.php
  * @see vote.php
  * @see vote_result.php
+ * @see vote_vvvote.php
  * @see votingmode_result.php
  */
 

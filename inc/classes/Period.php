@@ -20,6 +20,8 @@ class Period extends Relation {
 	public $ballot_voting;
 	public $state;
 	public $postage;
+	public $vvvote;
+	public $vvvote_configurl;
 
 	public $debate_now;
 	public $preparation_now;
@@ -30,7 +32,7 @@ class Period extends Relation {
 
 	private $ngroup_obj;
 
-	protected $boolean_fields = array("ballot_voting", "postage");
+	protected $boolean_fields = array("ballot_voting", "postage", "vvvote");
 
 
 	/**
@@ -87,6 +89,23 @@ class Period extends Relation {
 			WHERE activated IS NOT NULL AND eligible=TRUE AND verified=TRUE";
 		$members = DB::fetchobjectarray($sql, "Member");
 
+		if ($this->vvvote) {
+			$this->start_voting_vvvote($issues, $members);
+		} else {
+			$this->start_voting_default($issues, $members);
+		}
+
+	}
+
+
+	/**
+	 * start online voting with default voting method
+	 *
+	 * @param array   $issues
+	 * @param array   $members
+	 */
+	private function start_voting_default(array $issues, array $members) {
+
 		$personal_tokens = array();
 		$all_tokens      = array();
 		foreach ($issues as $issue) {
@@ -138,6 +157,166 @@ class Period extends Relation {
 					._("Your vote token").": ".$personal_tokens[$member->id][$issue->id]."\n";
 			}
 			$body .= $body_lists;
+			send_mail($member->mail, $subject, $body, array(), $member->fingerprint);
+		}
+
+	}
+
+
+	/**
+	 * start online voting with vvvote
+	 *
+	 * @param array   $issues
+	 * @param array   $members
+	 */
+	public function start_voting_vvvote(array $issues, array $members) {
+
+		$post = array(
+			'electionId' => sprintf(_("Voting period %d"), $this->id),
+			'auth' => "externalToken",
+			'authData' => array(
+				'configId' => VVVOTE_CONFIG_ID,
+				'RegistrationStartDate' => date("c", strtotime($this->voting)),
+				'RegistrationEndDate'   => date("c", strtotime($this->counting)),
+				'VotingStart'           => date("c", strtotime($this->voting)),
+				'VotingEnd'             => date("c", strtotime($this->counting))
+			),
+			'tally' => "configurableTally",
+			'questions' => array()
+		);
+
+		foreach ($issues as $issue) {
+			/** @var $issue Issue */
+
+			$options = array();
+			$question_wording = _("Issue")." ".$issue->id;
+			foreach ($issue->proposals() as $proposal) {
+				/** @var $proposal Proposal */
+				$options[] = array(
+					'optionID'    => $proposal->id,
+					'optionTitle' => $proposal->title,
+					'optionDesc'  => $proposal->content
+				);
+				$question_wording .= "\n * "._("Proposal")." ".$proposal->id.": ".$proposal->title;
+			}
+
+			$scheme = array(
+				array(
+					'name' => "yesNo",
+					'abstention' => true,
+					'quorum' => "1+",
+					'abstentionAsNo' => false,
+					'mode' => "quorum"
+				)
+			);
+			$max_score = max_score(count($options));
+			if ($max_score) {
+				$scheme[] = array(
+					'name' => "score",
+					'minScore' => 0,
+					'maxScore' => $max_score
+				);
+			}
+
+			$post['questions'][] = array(
+				'questionID' => $issue->id,
+				'questionWording' => $question_wording,
+				'scheme' => $scheme,
+				'findWinner' => array("yesNo", "score"),
+				'options' => $options
+			);
+
+		}
+
+		$post_json = json_encode($post);
+
+		$all_servers_already_used = true;
+		foreach ( split_csa(VVVOTE_SERVERS) as $server ) {
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_URL, $server."backend/newelection.php");
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+			$result = curl_exec($ch);
+			$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			curl_close($ch);
+
+			// try again later if a server is not reachable
+			if (!$result) {
+				trigger_error(curl_error($ch), E_USER_NOTICE);
+				return;
+			}
+			if ($http_code!=200) {
+				trigger_error("HTTP code '".$http_code."'", E_USER_NOTICE);
+				return;
+			}
+
+			$result = json_decode($result);
+
+			if ( isset($result->cmd) and $result->cmd == "saveElectionUrl" and !empty($result->configUrl) ) {
+				if (!$this->vvvote_configurl) {
+					// save configUrl from the frist server
+					$this->vvvote_configurl = $result->configUrl;
+					$this->update(['vvvote_configurl']);
+				} else {
+					// check configUrl from the second and following servers
+					if ( strstr($result->configUrl, "confighash=") != strstr($this->vvvote_configurl, "confighash=") ) {
+						trigger_error("Confighash in received and saved configUrl are different", E_USER_WARNING);
+						return;
+					}
+				}
+				$all_servers_already_used = false;
+				continue;
+			}
+
+			// election ID is already used
+			if ( isset($result->cmd) and $result->cmd == "error" and isset($result->errorNo) and $result->errorNo == 2120 ) {
+				if (!$this->vvvote_configurl) {
+					trigger_error("Server says, election ID is already used, but no configUrl has been saved", E_USER_WARNING);
+					return;
+				}
+				continue;
+			}
+
+			trigger_error("Fetching configUrl from vvvote server failed", E_USER_WARNING);
+			return;
+
+		}
+
+		if ($all_servers_already_used) {
+			trigger_error("Election ID is already used by all servers", E_USER_WARNING);
+			return;
+		}
+
+		foreach ($issues as $issue) {
+			/** @var $issue Issue */
+			$issue->state = "voting";
+			$issue->update(["state"], 'voting_started=now()');
+		}
+
+		// notification mails
+		$subject = sprintf(_("Voting started in period %d"), $this->id);
+		$body_top = _("Group").": ".$this->ngroup()->name."\n\n"
+			._("Online voting has started on the following proposals").":\n";
+		$body_bottom = _("Vote").": ".BASE_URL."vote_vvvote.php?period=".$this->id."\n"
+			._("Voting end").": ".datetimeformat($this->counting)."\n";
+		$issues_blocks = array();
+		foreach ( $issues as $issue ) {
+			$issues_blocks[$issue->id] = "\n"._("Issue")." ".$issue->id."\n";
+			foreach ( $issue->proposals(true) as $proposal ) {
+				$issues_blocks[$issue->id] .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
+					.BASE_URL."proposal.php?id=".$proposal->id."\n";
+			}
+		}
+		foreach ( $members as $member ) {
+			if (!$member->mail) continue;
+			$body = $body_top;
+			foreach ( $issues as $issue ) {
+				$body .= $issues_blocks[$issue->id]."\n";
+			}
+			$body .= $body_bottom;
 			send_mail($member->mail, $subject, $body, array(), $member->fingerprint);
 		}
 

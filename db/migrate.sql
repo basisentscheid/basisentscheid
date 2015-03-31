@@ -145,3 +145,14 @@ ALTER TABLE ONLY ngroup ALTER COLUMN id SET DEFAULT nextval('ngroup_id_seq'::reg
 ALTER SEQUENCE ngroup_id_seq RESTART WITH 10000;
 
 ALTER TABLE member DROP realname;
+
+ALTER TABLE period
+  ADD vvvote BOOL DEFAULT FALSE NOT NULL,
+  ADD vvvote_configurl TEXT NULL;
+CREATE TABLE vvvote_token (
+    member INT NOT NULL,
+    period INT NOT NULL,
+    token CHAR(24) NOT NULL,
+    PRIMARY KEY (member, period)
+);
+CREATE UNIQUE INDEX vvvote_token_token_key ON vvvote_token USING BTREE (token);

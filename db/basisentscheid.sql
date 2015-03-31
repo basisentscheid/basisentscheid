@@ -507,7 +507,9 @@ CREATE TABLE period (
     ballot_assignment timestamp with time zone,
     ballot_preparation timestamp with time zone,
     state period_state DEFAULT 'ballot_application'::period_state NOT NULL,
-    postage boolean DEFAULT false NOT NULL
+    postage boolean DEFAULT false NOT NULL,
+    vvvote boolean DEFAULT false NOT NULL,
+    vvvote_configurl text
 );
 
 
@@ -687,6 +689,17 @@ CREATE TABLE votingmode_vote (
     token character(8) NOT NULL,
     demand boolean NOT NULL,
     votetime timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: vvvote_token; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vvvote_token (
+    member integer NOT NULL,
+    period integer NOT NULL,
+    token character(24) NOT NULL
 );
 
 
@@ -929,6 +942,14 @@ ALTER TABLE ONLY supporter
 
 
 --
+-- Name: unique_token; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vvvote_token
+    ADD CONSTRAINT unique_token UNIQUE (token);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -966,6 +987,14 @@ ALTER TABLE ONLY offlinevoter
 
 ALTER TABLE ONLY offlinevoter
     ADD CONSTRAINT voters_pkey PRIMARY KEY (period, member);
+
+
+--
+-- Name: vvvote_token_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vvvote_token
+    ADD CONSTRAINT vvvote_token_pkey PRIMARY KEY (member, period);
 
 
 --

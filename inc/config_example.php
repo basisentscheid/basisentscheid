@@ -101,6 +101,14 @@ const INVITE_EXPIRY = "1 month";
 // will be displayed once for each session and always on the home page
 //const MOTD = "";
 
+// --- Options for vvvote ---
+// comma separated list of servers with trailing slash
+const VVVOTE_SERVERS = "";
+// configId to be sent to vvvote to identify configuration
+const VVVOTE_CONFIG_ID = "";
+// comma separated list of passwords to access vvvote_check_token.php
+const VVVOTE_CHECK_TOKEN_PASSWORDS = "";
+
 // --- Options for development and testing ---
 // display system informations in the HTML code of every page and disable gettext caching
 const DEBUG = false;

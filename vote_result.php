@@ -16,6 +16,9 @@ if (!$issue->id) {
 if ($issue->state != 'finished') {
 	error(_("This issue is not finished."));
 }
+if ($issue->period()->vvvote) {
+	error(_("This period used vvvote for voting."));
+}
 
 html_head(_("Vote result"), true);
 

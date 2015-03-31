@@ -16,6 +16,9 @@ Additional requirements if you want to sign/encrypt emails:
 - GnuPG
 - gnupg PECL module http://pecl.php.net/package/gnupg
 
+Additional requirements if you want to use vvvote for voting:
+- curl PHP module
+
 The following instructions assume that your installation path is /www/basisentscheid/. Please replace this by your actual installation path. This can be the webroot of a virtual host or a subdirectory. When installing in a subdirectory, you have to copy the favicons to the webroot or delete them from the html head. See inc/functions_http.php.
 
 Download ZIP:
