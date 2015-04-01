@@ -56,7 +56,7 @@ if ( ! preg_match('/\d+/', $post->electionId, $periodmatches) or count($periodma
 	return_error("Period could not be extracted from electionId");
 }
 
-$sql = "SELECT count(*) FROM vote_vvvote WHERE token=".DB::esc($post->token)." AND period=".intval($periodmatches[0]);
+$sql = "SELECT count(*) FROM vvvote_token WHERE token=".DB::esc($post->token)." AND period=".intval($periodmatches[0]);
 if ( DB::fetchfield($sql) ) {
 	echo json_encode(['allowed'=>true]);
 } else {
