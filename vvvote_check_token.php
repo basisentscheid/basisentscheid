@@ -36,27 +36,27 @@ if (!$post) {
 	return_error("No valid JSON POST data");
 }
 
-if (empty($post['verifierPassw'])) {
+if (empty($post->verifierPassw)) {
 	return_error("Password parameter missing");
 }
 
-if ( !in_array($post['verifierPassw'], split_csa(VVVOTE_CHECK_TOKEN_PASSWORDS)) ) {
+if ( !in_array($post->verifierPassw, split_csa(VVVOTE_CHECK_TOKEN_PASSWORDS)) ) {
 	return_error("Wrong password");
 }
 
-if (empty($post['token'])) {
+if (empty($post->token)) {
 	return_error("Token parameter missing");
 }
 
-if (empty($post['electionId'])) {
+if (empty($post->electionId)) {
 	return_error("ElectionId parameter missing");
 }
 
-if ( ! preg_match('/\d+/', $post['electionId'], $periodmatches) or count($periodmatches) != 1 ) {
+if ( ! preg_match('/\d+/', $post->electionId, $periodmatches) or count($periodmatches) != 1 ) {
 	return_error("Period could not be extracted from electionId");
 }
 
-$sql = "SELECT count(*) FROM vote_vvvote WHERE token=".DB::esc($post['token'])." AND period=".intval($periodmatches[0]);
+$sql = "SELECT count(*) FROM vote_vvvote WHERE token=".DB::esc($post->token)." AND period=".intval($periodmatches[0]);
 if ( DB::fetchfield($sql) ) {
 	echo json_encode(['allowed'=>true]);
 } else {
