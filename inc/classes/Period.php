@@ -189,15 +189,16 @@ class Period extends Relation {
 			/** @var $issue Issue */
 
 			$options = array();
-			$question_wording = _("Issue")." ".$issue->id;
+			$question_wording = "";
 			foreach ($issue->proposals() as $proposal) {
 				/** @var $proposal Proposal */
 				$options[] = array(
-					'optionID'    => $proposal->id,
+					'optionID'    => (int) $proposal->id,
 					'optionTitle' => $proposal->title,
 					'optionDesc'  => $proposal->content
 				);
-				$question_wording .= "\n * "._("Proposal")." ".$proposal->id.": ".$proposal->title;
+				if ($question_wording) $question_wording .= "\n";
+				$question_wording .= "* "._("Proposal")." ".$proposal->id.": ".$proposal->title;
 			}
 
 			$scheme = array(
@@ -219,7 +220,7 @@ class Period extends Relation {
 			}
 
 			$post['questions'][] = array(
-				'questionID' => $issue->id,
+				'questionID' => (int) $issue->id,
 				'questionWording' => $question_wording,
 				'scheme' => $scheme,
 				'findWinner' => array("yesNo", "score"),
