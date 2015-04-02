@@ -571,7 +571,7 @@ class Issue extends Relation {
 		foreach ( $this->proposals() as $proposal ) {
 			/** @var $proposal Proposal */
 			if ($proposal->id==$admitted_proposal->id) continue;
-			if ( !$proposal->quorum_reached and $proposal->supporters >= $proposal->quorum_required() ) {
+			if ( $proposal->submitted and !$proposal->quorum_reached and $proposal->supporters >= $proposal->quorum_required() ) {
 				// admit proposal
 				$proposal->quorum_reached = true;
 				$proposal->state = "admitted";
