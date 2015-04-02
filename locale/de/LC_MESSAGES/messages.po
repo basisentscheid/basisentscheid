@@ -53,7 +53,7 @@ msgstr "Speichern"
 #
 # File: index.php, line: 138
 # File: periods.php, line: 53
-# File: inc/functions_http.php, line: 227
+# File: inc/functions_http.php, line: 226
 msgid "Periods"
 msgstr "Abstimmungsperioden"
 #
@@ -120,7 +120,7 @@ msgstr "Begründung"
 #
 # File: index.php, line: 133
 # File: proposals.php, line: 27
-# File: inc/functions_http.php, line: 226
+# File: inc/functions_http.php, line: 225
 msgid "Proposals"
 msgstr "Anträge"
 #
@@ -129,8 +129,8 @@ msgid "Add proposal"
 msgstr "Antrag hinzufügen"
 #
 # File: index.php, line: 139
-# File: inc/functions_http.php, line: 229
-# File: inc/functions_http.php, line: 231
+# File: inc/functions_http.php, line: 228
+# File: inc/functions_http.php, line: 230
 msgid "Areas"
 msgstr "Themenbereiche"
 #
@@ -713,7 +713,7 @@ msgid "Password (2x)"
 msgstr "Passwort (2x)"
 #
 # File: admins.php, line: 31
-# File: inc/functions_http.php, line: 246
+# File: inc/functions_http.php, line: 245
 msgid "Admins"
 msgstr "Verantwortliche"
 #
@@ -781,7 +781,7 @@ msgid "You support this proposal anonymously."
 msgstr "Du unterstützt diesen Antrag anonym."
 #
 # File: admin_members.php, line: 60
-# File: inc/functions_http.php, line: 245
+# File: inc/functions_http.php, line: 244
 msgid "Members"
 msgstr "Mitglieder"
 #
@@ -1332,7 +1332,7 @@ msgstr "Nr."
 # File: admin_ngroups.php, line: 30
 # File: index.php, line: 105
 # File: settings.php, line: 77
-# File: inc/functions_http.php, line: 247
+# File: inc/functions_http.php, line: 246
 msgid "Groups"
 msgstr "Gliederungen"
 #
@@ -2170,27 +2170,27 @@ msgstr "Deine abgegebenen Stimmen zu diesem Thema:"
 msgid "Vote token"
 msgstr "Abstimmungskennung"
 #
-# File: inc/classes/Member.php, line: 283
+# File: inc/classes/Member.php, line: 288
 msgid "This key is disabled."
 msgstr "Dieser Schlüssel ist deaktiviert."
 #
-# File: inc/classes/Member.php, line: 287
+# File: inc/classes/Member.php, line: 292
 msgid "This key is expired."
 msgstr "Dieser Schlüssel ist abgelaufen."
 #
-# File: inc/classes/Member.php, line: 291
+# File: inc/classes/Member.php, line: 296
 msgid "This key is revoked."
 msgstr "Dieser Schlüssel ist widerrufen."
 #
-# File: inc/classes/Member.php, line: 295
+# File: inc/classes/Member.php, line: 300
 msgid "This key is a secret key."
 msgstr "Dieser Schlüssel ist ein geheimer Schlüssel."
 #
-# File: inc/classes/Member.php, line: 299
+# File: inc/classes/Member.php, line: 304
 msgid "This key can not encrypt."
 msgstr "Dieser Schlüssel kann nicht verschlüsseln."
 #
-# File: inc/classes/Member.php, line: 303
+# File: inc/classes/Member.php, line: 308
 msgid "The key was found and is usable."
 msgstr "Der Schlüssel wurde gefunden und ist verwendbar."
 #
@@ -2297,7 +2297,7 @@ msgstr "Anträge im alten Thema %d:"
 msgid "Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!"
 msgstr "Beachte, dass die Stimmen für eine Offline-Abstimmung bei dem alten Thema nicht automatisch in das neue Thema übernommen werden. Falls du immer noch eine Offline-Abstimmung möchtest, solltest du das im neuen Thema noch einmal fordern!"
 #
-# File: inc/classes/Member.php, line: 278
+# File: inc/classes/Member.php, line: 283
 msgid "No key matching fingerprint and email address was found."
 msgstr "Kein zum Fingerabdruck und zur E-Mail-Adresse passender Schlüssel gefunden."
 #
@@ -2612,15 +2612,15 @@ msgstr "Du hast nicht die Berechtigung, Beiträge zu schreiben."
 msgid "This group does not participate."
 msgstr "Diese Gliederung nimmt nicht teil."
 #
-# File: inc/functions_http.php, line: 182
+# File: inc/functions_http.php, line: 181
 msgid "own groups"
 msgstr "eigene Gliederungen"
 #
-# File: inc/functions_http.php, line: 202
+# File: inc/functions_http.php, line: 201
 msgid "other groups"
 msgstr "andere Gliederungen"
 #
-# File: inc/functions_http.php, line: 202
+# File: inc/functions_http.php, line: 201
 msgid "groups"
 msgstr "Gliederungen"
 #
@@ -2735,7 +2735,7 @@ msgid "Version"
 msgstr "Version"
 #
 # File: manual.php, line: 12
-# File: inc/functions_http.php, line: 237
+# File: inc/functions_http.php, line: 236
 msgid "Manual"
 msgstr "Anleitung"
 #
@@ -2854,3 +2854,7 @@ msgid "%d issue in debate phase"
 msgid_plural "%d issues in debate phase"
 msgstr[0] "%d Thema in der Debatte"
 msgstr[1] "%d Themen in der Debatte"
+#
+# File: inc/classes/Member.php, line: 273
+msgid "Please confirm your email address and then reload this page!"
+msgstr "Bitte bestätige deine E-Mail-Adresse und lade diese Seite dann neu!"

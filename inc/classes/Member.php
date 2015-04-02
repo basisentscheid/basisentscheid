@@ -269,6 +269,11 @@ class Member extends Relation {
 
 		if (!Login::$member->fingerprint) return;
 
+		if (!$this->mail) {
+			?><p class="problem"><?=_("Please confirm your email address and then reload this page!")?></p><?
+			return;
+		}
+
 		$gnupg = new_gnupg();
 
 		$info = $gnupg->keyinfo($this->fingerprint());
