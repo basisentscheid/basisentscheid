@@ -653,8 +653,13 @@ class Proposal extends Relation {
 	function set_admission_decision($text) {
 		DB::transaction_start();
 		$this->read();
+		if ($this->state=="draft") {
+			warning(_("You can't admit this proposal, because it is not yet submitted!"));
+			DB::transaction_rollback();
+			return;
+		}
 		$this->admission_decision = $text;
-		if ($this->state=="draft" or $this->state=="submitted") {
+		if ($this->state=="submitted") {
 			$this->state = "admitted";
 			$this->update(["admission_decision", "state"], 'admitted=now()');
 			DB::transaction_commit();

@@ -168,9 +168,9 @@ class Issue extends Relation {
 		DB::transaction_start();
 		do {
 			$token = Login::generate_token(8);
-			$sql = "SELECT token FROM ".$table." WHERE token=".DB::esc($token);
+			$sql = "SELECT token FROM $table WHERE token=".DB::esc($token);
 		} while ( DB::numrows($sql) );
-		$sql = "INSERT INTO ".$table." (member, issue, token) VALUES (".intval($member->id).", ".intval($this->id).", ".DB::esc($token).")";
+		$sql = "INSERT INTO $table (member, issue, token) VALUES (".intval($member->id).", ".intval($this->id).", ".DB::esc($token).")";
 		DB::query($sql);
 		DB::transaction_commit();
 		return $token;
