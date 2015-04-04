@@ -14,10 +14,10 @@ if (!$period->id) {
 	error(_("The requested period does not exist."));
 }
 if (strtotime($period->voting) > time()) {
-	notice(_("The voting in this period has not yet started."));
+	error(_("The voting in this period has not yet started."));
 }
 if (strtotime($period->counting) < time()) {
-	notice(_("The voting in this period is already closed."));
+	error(_("The voting in this period is already closed."));
 }
 
 $ngroup = $period->ngroup();
