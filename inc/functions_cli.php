@@ -399,9 +399,8 @@ function update_activity() {
  */
 function vvvote_curl_post_json($url, $post_json) {
 
-	$ch = curl_init();
+	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
