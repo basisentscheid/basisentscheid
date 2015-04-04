@@ -25,7 +25,7 @@ $d->columns = array(
 	array(false, _("Ballots"), "center", "ballots", false)
 );
 if (Login::$admin) {
-	$d->columns[] = array("vvvote", _("vvvote"), "center", "boolean", "boolean", 'type'=>"boolean");
+	$d->columns[] = array("vvvote", "vvvote", "center", "boolean", "boolean", 'type'=>"boolean");
 }
 $d->enable_filter = false;
 
