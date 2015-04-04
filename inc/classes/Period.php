@@ -172,7 +172,8 @@ class Period extends Relation {
 	public function start_voting_vvvote(array $issues, array $members) {
 
 		$post = array(
-			'electionId' => sprintf(_("Voting period %d"), $this->id),
+			'electionId' => $this->vvvote_election_id(),
+			'electionTitle' => sprintf(_("Voting period %d in group %s"), $this->id, $this->ngroup()->name),
 			'auth' => "externalToken",
 			'authData' => array(
 				'configId' => VVVOTE_CONFIG_ID,
@@ -234,36 +235,17 @@ class Period extends Relation {
 		$all_servers_already_used = true;
 		foreach ( split_csa(VVVOTE_SERVERS) as $server ) {
 
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_URL, $server."backend/newelection.php");
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-			$result = curl_exec($ch);
-			$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			curl_close($ch);
+			$result = vvvote_curl_post_json($server."backend/newelection.php", $post_json);
+			if ($result === false) return;
 
-			// try again later if a server is not reachable
-			if (!$result) {
-				trigger_error(curl_error($ch), E_USER_NOTICE);
-				return;
-			}
-			if ($http_code!=200) {
-				trigger_error("HTTP code '".$http_code."'", E_USER_NOTICE);
-				return;
-			}
-
-			$result = json_decode($result);
-
-			if ( isset($result->cmd) and $result->cmd == "saveElectionUrl" and !empty($result->configUrl) ) {
+			if ( isset($result['cmd']) and $result['cmd'] == "saveElectionUrl" and !empty($result['configUrl']) ) {
 				if (!$this->vvvote_configurl) {
 					// save configUrl from the frist server
-					$this->vvvote_configurl = $result->configUrl;
+					$this->vvvote_configurl = $result['configUrl'];
 					$this->update(['vvvote_configurl']);
 				} else {
 					// check configUrl from the second and following servers
-					if ( strstr($result->configUrl, "confighash=") != strstr($this->vvvote_configurl, "confighash=") ) {
+					if ( strstr($result['configUrl'], "confighash=") != strstr($this->vvvote_configurl, "confighash=") ) {
 						trigger_error("Confighash in received and saved configUrl are different", E_USER_WARNING);
 						return;
 					}
@@ -273,7 +255,7 @@ class Period extends Relation {
 			}
 
 			// election ID is already used
-			if ( isset($result->cmd) and $result->cmd == "error" and isset($result->errorNo) and $result->errorNo == 2120 ) {
+			if ( isset($result['cmd']) and $result['cmd'] == "error" and isset($result['errorNo']) and $result['errorNo'] == 2120 ) {
 				if (!$this->vvvote_configurl) {
 					trigger_error("Server says, election ID is already used, but no configUrl has been saved", E_USER_WARNING);
 					return;
@@ -321,6 +303,16 @@ class Period extends Relation {
 			send_mail($member->mail, $subject, $body, array(), $member->fingerprint);
 		}
 
+	}
+
+
+	/**
+	 * unique string to identify one voting period
+	 *
+	 * @return string
+	 */
+	public function vvvote_election_id() {
+		return VVVOTE_CONFIG_ID."/".$this->id;
 	}
 
 

@@ -197,7 +197,9 @@ function cron() {
 				$issue->state = "counting";
 				$issue->update(["state"], 'counting_started=now()');
 
-				$issue->counting();
+			case "counting":
+
+				if ( !$issue->counting() ) break;
 				$issue->finish();
 
 				$issues_finished_voting[] = $issue;
@@ -385,6 +387,39 @@ function update_activity() {
 		$sql = "UPDATE proposal SET activity=".intval($activity)." WHERE id=".intval($proposal->id);
 		DB::query($sql);
 	}
+}
+
+
+/**
+ * POST request to a vvvote server
+ *
+ * @param string  $url
+ * @param string  $post_json
+ * @return boolean|mixed null if json could not be decoded
+ */
+function vvvote_curl_post_json($url, $post_json) {
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+	$result = curl_exec($ch);
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
+
+	// try again later if a server is not reachable
+	if (!$result) {
+		trigger_error(curl_error($ch), E_USER_NOTICE);
+		return false;
+	}
+	if ($http_code!=200) {
+		trigger_error("HTTP code '".$http_code."'", E_USER_NOTICE);
+		return false;
+	}
+
+	return json_decode($result, true);
 }
 
 

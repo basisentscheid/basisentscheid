@@ -503,9 +503,25 @@ class Issue extends Relation {
 
 
 	/**
-	 * counting of votes
+	 * counting/download of votes
+	 *
+	 * @return boolean
 	 */
 	public function counting() {
+		if ($this->period()->vvvote) {
+			return $this->counting_vvvote();
+		} else {
+			return $this->counting_default();
+		}
+	}
+
+
+	/**
+	 * counting of votes
+	 *
+	 * @return boolean
+	 */
+	public function counting_default() {
 
 		$proposals = $this->proposals(true);
 
@@ -554,6 +570,54 @@ class Issue extends Relation {
 			$proposal->accepted = ( $proposal->yes > $proposal->no );
 			$proposal->update(['yes', 'no', 'abstention', 'score', 'accepted']);
 		}
+
+		return true;
+	}
+
+
+	/**
+	 * fetch voting result from vvvote server
+	 *
+	 * @return boolean
+	 */
+	public function counting_vvvote() {
+
+		$servers = split_csa(VVVOTE_SERVERS);
+		$post = array(
+			'cmd' => "getStatistic",
+			'electionId' => $this->period()->vvvote_election_id(),
+			'questionID' => (int) $this->id
+		);
+		$post_json = json_encode($post);
+
+		$result = vvvote_curl_post_json($servers[0]."backend/getresult.php", $post_json);
+		if ($result === false) return false;
+
+		if ( isset($result['cmd']) and $result['cmd'] == "showStatistic" and !empty($result['data'][$this->id]) ) {
+
+			foreach ( $result['data'][$this->id] as $proposal_id => $proposal_result ) {
+
+				$proposal = new Proposal($proposal_id);
+				if ($proposal->issue != $this->id) {
+					trigger_error("Proposal is not in the expected issue", E_USER_WARNING);
+					continue;
+				}
+				$proposal->yes        = $proposal_result['yesNo']['numYes'];
+				$proposal->no         = $proposal_result['yesNo']['numNo'];
+				$proposal->abstention = $proposal_result['yesNo']['numAbstention'];
+				if (isset($proposal_result['score'])) {
+					$proposal->score  = $proposal_result['score']['sum'];
+				}
+				$proposal->accepted = ( $proposal->yes > $proposal->no );
+				$proposal->update(['yes', 'no', 'abstention', 'score', 'accepted']);
+
+			}
+
+			return true;
+		}
+
+		trigger_error("Fetching vote result from vvvote server failed", E_USER_WARNING);
+		return false;
 
 	}
 
