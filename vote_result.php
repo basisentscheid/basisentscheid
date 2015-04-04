@@ -16,9 +16,6 @@ if (!$issue->id) {
 if ($issue->state != 'finished') {
 	error(_("This issue is not finished."));
 }
-if ($issue->period()->vvvote) {
-	error(_("This period used vvvote for voting."));
-}
 
 html_head(_("Vote result"), true);
 
@@ -31,22 +28,30 @@ $issue->display_proposals($proposals, $submitted, count($proposals), true);
 ?>
 </table>
 
-<h2><?=_("Votes")?></h2>
 <?
 
-if ($issue->cleared) {
+if ($issue->period()->vvvote) {
+?>
+<p><?=_("This period used vvvote for voting.")?></p>
+<?
+} else {
+?>
+<h2><?=_("Votes")?></h2>
+<?
+	if ($issue->cleared) {
 ?>
 <p><? printf(_("Raw data has been cleared at %s."), datetimeformat($issue->cleared)); ?></p>
 <?
-} else {
-	// display list of votes
-	$sql = "SELECT token, vote, votetime FROM vote_token
- 		LEFT JOIN vote_vote USING (token)
- 		WHERE issue=".intval($issue->id)."
- 		ORDER BY token ASC, votetime DESC";
-	$result = DB::query($sql);
-	if (Login::$member) $token = $issue->vote_token(); else $token = null;
-	Issue::display_votes($proposals, $result, $token);
+	} else {
+		// display list of votes
+		$sql = "SELECT token, vote, votetime FROM vote_token
+	        LEFT JOIN vote_vote USING (token)
+	        WHERE issue=".intval($issue->id)."
+	        ORDER BY token ASC, votetime DESC";
+		$result = DB::query($sql);
+		if (Login::$member) $token = $issue->vote_token(); else $token = null;
+		Issue::display_votes($proposals, $result, $token);
+	}
 }
 
 ?>
