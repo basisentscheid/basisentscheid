@@ -588,8 +588,21 @@ class Proposal extends Relation {
 	 */
 	public function proponents() {
 		$sql = "SELECT member FROM supporter
-		  WHERE proposal=".intval($this->id)."
-		    AND proponent_confirmed=TRUE";
+			WHERE proposal=".intval($this->id)."
+				AND proponent_confirmed=TRUE";
+		return DB::fetchfieldarray($sql);
+	}
+
+
+	/**
+	 * names of all (confirmed) proponents
+	 *
+	 * @return array
+	 */
+	public function proponents_names() {
+		$sql = "SELECT proponent FROM supporter
+			WHERE proposal=".intval($this->id)."
+				AND proponent_confirmed=TRUE";
 		return DB::fetchfieldarray($sql);
 	}
 

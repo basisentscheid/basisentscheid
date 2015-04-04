@@ -191,12 +191,14 @@ class Period extends Relation {
 
 			$options = array();
 			$question_wording = "";
-			foreach ($issue->proposals() as $proposal) {
+			foreach ($issue->proposals(true) as $proposal) {
 				/** @var $proposal Proposal */
 				$options[] = array(
+					'proponents'  => $proposal->proponents_names(),
 					'optionID'    => (int) $proposal->id,
 					'optionTitle' => $proposal->title,
-					'optionDesc'  => $proposal->content
+					'optionDesc'  => $proposal->content,
+					'reasons'     => $proposal->reason
 				);
 				if ($question_wording) $question_wording .= "\n";
 				$question_wording .= "* "._("Proposal")." ".$proposal->id.": ".$proposal->title;
