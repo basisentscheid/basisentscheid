@@ -7,46 +7,8 @@
  */
 
 
-const DOCROOT = "";
+require "inc/common_http_vvvote.php";
 
-require "inc/config.php";
-require "inc/errors.php";
-require "inc/common.php";
-require "inc/functions.php";
-
-
-/**
- * return an error message
- *
- * @param string  $text
- */
-function return_error($text) {
-	echo json_encode([
-			'errorText' => $text,
-			'errorType' => "adminNeeded"
-		]);
-	exit;
-}
-
-
-// read JSON POST data
-$post = json_decode(file_get_contents("php://input"));
-
-if (!$post) {
-	return_error("No valid JSON POST data");
-}
-
-if (empty($post->verifierPassw)) {
-	return_error("Password parameter missing");
-}
-
-if ( !in_array($post->verifierPassw, split_csa(VVVOTE_CHECK_TOKEN_PASSWORDS)) ) {
-	return_error("Wrong password");
-}
-
-if (empty($post->token)) {
-	return_error("Token parameter missing");
-}
 
 if (empty($post->electionId)) {
 	return_error("ElectionId parameter missing");

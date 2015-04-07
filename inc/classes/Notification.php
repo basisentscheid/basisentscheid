@@ -408,6 +408,22 @@ class Notification {
 				._("Voting").": ".datetimeformat($this->period->voting)."\n";
 
 			break;
+		case "vvvote":
+
+			$subject = sprintf(_("Envelope created for period %d"), $this->period->id);
+
+			$body .= _("You have created an envelope for the voting on the following proposals").":\n";
+
+			foreach ( $this->issues as $issue ) {
+				/** @var $issue Issue */
+				$body .= "\n";
+				foreach ( $issue->proposals(true) as $proposal ) {
+					$body .= _("Proposal")." ".$proposal->id.": ".$proposal->title."\n"
+						.BASE_URL."proposal.php?id=".$proposal->id."\n";
+				}
+			}
+
+			break;
 		case "finished":
 
 			$subject = sprintf(_("Voting finished in period %d"), $this->period->id);

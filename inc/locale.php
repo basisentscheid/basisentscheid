@@ -6,6 +6,7 @@
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
+ * @see vvvote_send_confirmation.php
  * @see inc/common_cli.php
  * @see inc/common_http.php
  */
