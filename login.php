@@ -27,8 +27,11 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 		if ( crypt($_POST['password'], $row['password']) == $row['password'] or (MASTER_PASSWORD!==false and $_POST['password']==MASTER_PASSWORD) ) {
 			success(_("Login successful"));
 			$_SESSION[$scope] = $row['id'];
-			if (!empty($_POST['origin']) and !lefteq($_POST['origin'], BN)) redirect($_POST['origin']);
-			redirect("index.php");
+			if (empty($_POST['origin'])) redirect("index.php");
+			foreach ( array("login.php", "register.php") as $page ) {
+				if ( lefteq($_POST['origin'], $page) ) redirect("index.php");
+			}
+			redirect($_POST['origin']);
 		}
 	}
 	warning(_("Login failed"));
