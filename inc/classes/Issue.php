@@ -1107,7 +1107,7 @@ class Issue extends Relation {
 	 * @return boolean
 	 */
 	public function allowed_add_alternative_proposal() {
-		return (bool) $this->state=="entry";
+		return $this->state=="entry";
 	}
 
 
