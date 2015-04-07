@@ -16,7 +16,7 @@
  * Values for <eligible> and <verified> are 1 for true and 0 for false.
  * Groups have to be listed in hierarchical order from top to subgroups. Any number of groups is allowed, even no groups at all.
  * Fields may be enclosed in double quotes ("), but this is only required if a field contains the column delimiter (;).
- * No delimiter is allowed at the end each line.
+ * No delimiter is allowed at the end of each line.
  * Charset: UTF-8
  * Line breaks: Unix (LF)
  *
