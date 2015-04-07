@@ -1066,7 +1066,7 @@ class Issue extends Relation {
 ?>
 		<td class="vote nowrap">
 <?
-			if ($num_rows > 3) $max_score = 9; else $max_score = 3;
+			if ($num_rows > 5) $max_score = 9; else $max_score = 3;
 			for ( $score = 0; $score <= $max_score; $score++ ) {
 ?>
 			<label><input type="radio" name="vote[<?=$proposal->id?>][score]" value="<?=$score?>"<?
