@@ -94,7 +94,7 @@ class Notification {
 	 * @param array   $exclude (optional) array of member IDs to send no mail
 	 * @return bool
 	 */
-	public function send($members=array(), $exclude=array()) {
+	public function send(array $members=array(), array $exclude=array()) {
 
 		$recipients = $this->recipients($members, $exclude);
 
@@ -135,7 +135,7 @@ class Notification {
 	 * @param array   $exclude array of member IDs to send no mail
 	 * @return array
 	 */
-	private function recipients($members, $exclude) {
+	private function recipients(array $members, array $exclude) {
 
 		$sql = "SELECT DISTINCT mail FROM member";
 		$or = array();
