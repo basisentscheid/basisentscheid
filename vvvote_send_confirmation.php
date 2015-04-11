@@ -16,16 +16,31 @@ if ( ! $row = DB::fetchassoc($sql) ) {
 	return_error("Token not found");
 }
 
+$period = new Period($row['period']);
+if (!$period->id) {
+	return_error("Period does not exist");
+}
+
 // get issues for online voting, cp. Issue::votingmode_offline()
-$sql_issues = "SELECT id FROM issue
-	WHERE period=".intval($row['period'])."
+$sql_issue = "SELECT * FROM issue
+	WHERE period=".intval($period->id)."
 		AND votingmode_reached=FALSE
 		AND votingmode_admin=FALSE";
-$issues = DB::fetchfieldarray($sql_issues);
+$result_issue = DB::query($sql_issue);
+$issues = array();
+while ( $issue = DB::fetch_object($result_issue, "Issue") ) {
+	/** @var Issue $issue */
+	$issues[] = $issue;
+}
+if (!$issues) {
+	return_error("No issues found");
+}
 
 $notification = new Notification("vvvote");
-$notification->period = $row['period'];
+$notification->period = $period;
 $notification->issues = $issues;
-if ( $notification->send($row['member']) ) echo json_encode(['sent'=>true]);
-
-return_error("Mail could not be sent");
+if ( $notification->send([$row['member']]) ) {
+	echo json_encode(['sent'=>true]);
+} else {
+	echo json_encode(['sent'=>false]);
+}
