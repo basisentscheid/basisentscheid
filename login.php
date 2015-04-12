@@ -13,6 +13,7 @@ require "inc/common_http.php";
 
 Login::logout();
 
+
 if ( isset($_POST['username']) and isset($_POST['password']) ) {
 	$username = trim($_POST['username']);
 	if (lefteq($username, "#")) {
@@ -39,6 +40,7 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 } else {
 	$username = "";
 }
+
 
 html_head(_("Login"));
 

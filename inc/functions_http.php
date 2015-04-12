@@ -143,15 +143,18 @@ function html_head($title, $help=false) {
 				<li>
 					<form method="GET" action="<?
 	switch (BN) {
-		// jump to different page if the same page doesn't show the equivalent content in other groups
+		// jump to proposals list if the same page doesn't show the equivalent content in other groups
 	case "proposal.php":
 	case "proposal_edit.php":
 	case "draft.php":
+	case "vote.php":
+	case "vote_result.php":
 		echo "proposals.php";
 		$hidden = false;
 		break;
 	default:
 		echo BN;
+		// pages with list and edit mode and content depending on the group
 	case "periods.php":
 	case "admin_areas.php":
 		$hidden = array(

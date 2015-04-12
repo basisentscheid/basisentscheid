@@ -9,27 +9,38 @@
 
 require "inc/common_http.php";
 
-if ($action) {
-	if ($action!="confirm") error(_("Unknown action"));
-	action_required_parameters('code');
-	action_confirm_mail($_POST['code']);
-}
 
-// link in confirmation request mail clicked
-if (isset($_GET['code'])) {
-	action_confirm_mail($_GET['code']);
+if (Login::$member) {
+
+	if ($action) {
+		if ($action!="confirm") error(_("Unknown action"));
+		action_required_parameters('code');
+		action_confirm_mail($_POST['code']);
+	}
+
+	// link in confirmation request mail clicked
+	if (isset($_GET['code'])) {
+		action_confirm_mail($_GET['code']);
+	}
+
 }
 
 
 html_head(_("Email address confirmation"));
 
-form(BN);
+if (Login::$member) {
+
+	form(BN);
 ?>
 <label><?=_("Code")?>: <input type="text" name="code" size="20" value="<?=trim(@$_REQUEST['code'])?>"></label>
 <input type="hidden" name="action" value="confirm">
 <input type="submit" value="<?=_("confirm")?>">
 <?
-form_end();
+	form_end();
+
+} else {
+	notice(_("Please log in to confirm your email address!"));
+}
 
 html_foot();
 
@@ -40,15 +51,16 @@ html_foot();
  * @param string  $code
  */
 function action_confirm_mail($code) {
-	$sql = "SELECT * FROM member WHERE mail_code = ".DB::esc(trim($code))." AND mail_code_expiry > now()";
-	$result = DB::query($sql);
-	if ( $member = DB::fetch_object($result, "Member") ) {
-		$member->mail = $member->mail_unconfirmed;
-		$member->mail_unconfirmed = null;
-		$member->mail_code        = null;
-		$member->mail_code_expiry = null;
-		$member->mail_lock_expiry = null;
-		$member->update(['mail', 'mail_unconfirmed', 'mail_code', 'mail_code_expiry', 'mail_lock_expiry']);
+	if (
+		Login::$member->mail_code == trim($code) and
+		strtotime(Login::$member->mail_code_expiry) > time()
+	) {
+		Login::$member->mail = Login::$member->mail_unconfirmed;
+		Login::$member->mail_unconfirmed = null;
+		Login::$member->mail_code        = null;
+		Login::$member->mail_code_expiry = null;
+		Login::$member->mail_lock_expiry = null;
+		Login::$member->update(['mail', 'mail_unconfirmed', 'mail_code', 'mail_code_expiry', 'mail_lock_expiry']);
 		success(_("Your email address is confirmed now."));
 		redirect("settings.php");
 	}

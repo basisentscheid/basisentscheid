@@ -60,7 +60,7 @@ abstract class Login {
 
 
 	/**
-	 *
+	 * called on log out and on pages, where being already logged in does not make sense
 	 */
 	public static function logout() {
 		self::$member = false;
