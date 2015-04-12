@@ -9,6 +9,9 @@
 
 require "inc/common_http.php";
 
+Login::logout();
+
+
 $invite = trim(@$_GET['invite']);
 
 if ($invite) {
@@ -27,6 +30,7 @@ if ($invite) {
 } else {
 	$member = false;
 }
+
 
 if (!$member) {
 

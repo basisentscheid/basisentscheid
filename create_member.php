@@ -13,6 +13,7 @@ require "inc/common_http.php";
 
 Login::logout();
 
+
 if ($action) {
 	switch ($action) {
 	case "create":
