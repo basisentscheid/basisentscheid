@@ -412,7 +412,7 @@ class Notification {
 
 			$subject = sprintf(_("Envelope created for period %d"), $this->period->id);
 
-			$body .= _("You have created an envelope for the voting on the following proposals").":\n";
+			$body .= _("You have created an envelope for the anonymous online voting on the following proposals").":\n";
 
 			foreach ( $this->issues as $issue ) {
 				/** @var $issue Issue */
@@ -422,6 +422,8 @@ class Notification {
 						.BASE_URL."proposal.php?id=".$proposal->id."\n";
 				}
 			}
+
+			$body .= "\n".sprintf(_("If you have not created this envelope, please contact the admins (%s) as soon as possible!"), MAIL_SUPPORT)."\n";
 
 			break;
 		case "finished":

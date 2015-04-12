@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2015-04-07 15:05+0200\n"
+"PO-Revision-Date: 2015-04-12 02:49+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -82,10 +82,10 @@ msgstr "Titel"
 # File: inc/classes/Notification.php, line: 381
 # File: inc/classes/Notification.php, line: 402
 # File: inc/classes/Notification.php, line: 421
-# File: inc/classes/Notification.php, line: 438
-# File: inc/classes/Notification.php, line: 455
-# File: inc/classes/Notification.php, line: 459
-# File: inc/classes/Notification.php, line: 466
+# File: inc/classes/Notification.php, line: 440
+# File: inc/classes/Notification.php, line: 457
+# File: inc/classes/Notification.php, line: 461
+# File: inc/classes/Notification.php, line: 468
 # File: inc/classes/Period.php, line: 147
 # File: inc/classes/Period.php, line: 204
 # File: inc/classes/Period.php, line: 294
@@ -987,7 +987,7 @@ msgstr "Willst du dich wirklich auch der Liste der Antragsteller löschen?"
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 713
 # File: inc/classes/Issue.php, line: 1130
-# File: inc/classes/Notification.php, line: 440
+# File: inc/classes/Notification.php, line: 442
 msgid "Yes"
 msgstr "Ja"
 #
@@ -996,7 +996,7 @@ msgstr "Ja"
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 714
 # File: inc/classes/Issue.php, line: 1133
-# File: inc/classes/Notification.php, line: 440
+# File: inc/classes/Notification.php, line: 442
 msgid "No"
 msgstr "Nein"
 #
@@ -1452,34 +1452,34 @@ msgstr "Urnenbeauftragte:  "
 msgid "Postage has started, choice for postal voting can not be changed any longer. Also this option itself can not be deactivated anymore once it has been activated."
 msgstr "Versand der Briefabstimmungsunterlagen hat bereits begonnen, die Auswahl der Briefabstimmung kann nicht mehr rückgängig gemacht werden. Auch diese Option selbst kann nicht mehr deaktiviert werden, nachdem sie einmal aktiviert wurde."
 #
-# File: inc/classes/Notification.php, line: 474
+# File: inc/classes/Notification.php, line: 476
 #, php-format
 msgid "Ballot approved in period %d"
 msgstr "Urne genehmigt in Abstimmungsperiode %d"
 #
-# File: inc/classes/Notification.php, line: 476
+# File: inc/classes/Notification.php, line: 478
 msgid "Your ballot application has been approved:"
 msgstr "Dein Urnenantrag wurde genehmigt:"
 #
-# File: inc/classes/Notification.php, line: 482
+# File: inc/classes/Notification.php, line: 484
 #, php-format
 msgid "Ballot not approved in period %d"
 msgstr "Urne nicht genehmigt in Abstimmungsperiode %d"
 #
-# File: inc/classes/Notification.php, line: 484
+# File: inc/classes/Notification.php, line: 486
 msgid "Your ballot application has NOT been approved:"
 msgstr "Dein Urnenantrag wurde NICHT genehmigt:"
 #
-# File: inc/classes/Notification.php, line: 490
+# File: inc/classes/Notification.php, line: 492
 #, php-format
 msgid "Ballot assigned in period %d"
 msgstr "Einer Urne zugeordnet in Abstimmungsperiode %d"
 #
-# File: inc/classes/Notification.php, line: 492
+# File: inc/classes/Notification.php, line: 494
 msgid "Ballot assignment has been started. You have been assigned to the following ballot:"
 msgstr "Die Urnenzuordnung hat begonnen. Du wurdest folgender Urne zugeordnet:"
 #
-# File: inc/classes/Notification.php, line: 494
+# File: inc/classes/Notification.php, line: 496
 #, php-format
 msgid "This ballot has been selected, either because you selected it yourself and it was approved or because it looks like it's the nearest one to where you live. You can change the selected ballot here until ballot preparation starts at %s:"
 msgstr "Diese Urne wurde ausgewählt, entweder weil du sie selbst ausgewählt hast oder weil sie die nächste Urne zu deinem Wohnort zu sein scheint. Du kannst hier zu einer anderen Urne oder zu Briefabstimmung wechseln bis die Urnenvorbereitung am %s startet:"
@@ -1716,16 +1716,17 @@ msgid "Profile"
 msgstr "Profil"
 #
 # File: vote_result.php, line: 20
-# File: inc/classes/Notification.php, line: 446
+# File: inc/classes/Notification.php, line: 448
 msgid "Vote result"
 msgstr "Abstimmungsergebnis"
 #
-# File: vote_result.php, line: 39
+# File: vote_result.php, line: 35
+# File: vote_result.php, line: 43
 # File: votingmode_result.php, line: 38
 msgid "Votes"
 msgstr "Abgegebene Stimmen"
 #
-# File: vote_result.php, line: 43
+# File: vote_result.php, line: 48
 # File: votingmode_result.php, line: 43
 #, php-format
 msgid "Raw data has been cleared at %s."
@@ -1742,7 +1743,7 @@ msgstr "Zustimmung"
 # File: inc/classes/Issue.php, line: 701
 # File: inc/classes/Issue.php, line: 719
 # File: inc/classes/Issue.php, line: 1305
-# File: inc/classes/Notification.php, line: 442
+# File: inc/classes/Notification.php, line: 444
 msgid "Score"
 msgstr "Bewertung"
 #
@@ -1750,7 +1751,7 @@ msgstr "Bewertung"
 # File: inc/functions.php, line: 218
 # File: inc/classes/Issue.php, line: 715
 # File: inc/classes/Issue.php, line: 1136
-# File: inc/classes/Notification.php, line: 440
+# File: inc/classes/Notification.php, line: 442
 msgid "Abstention"
 msgstr "Enthaltung"
 #
@@ -2004,12 +2005,12 @@ msgstr "Thema"
 msgid "Lists of all vote tokens"
 msgstr "Listen aller Abstimmungskennungen"
 #
-# File: inc/classes/Notification.php, line: 429
+# File: inc/classes/Notification.php, line: 431
 #, php-format
 msgid "Voting finished in period %d"
 msgstr "Abstimmung abgeschlossen in Periode %d"
 #
-# File: inc/classes/Notification.php, line: 431
+# File: inc/classes/Notification.php, line: 433
 msgid "Voting has finished on the following proposals"
 msgstr "Die Abstimmung zu den folgenden Anträgen wurde abgeschlossen"
 #
@@ -2287,22 +2288,22 @@ msgstr "Deine Stimme zum Abstimmungsverfahren wurde gespeichert, aber der Beleg 
 msgid "Your vote on the voting mode could not be saved!"
 msgstr "Deine Stimme zum Abstimmungsverfahren konnte nicht gespeichert werden!"
 #
-# File: inc/classes/Notification.php, line: 452
+# File: inc/classes/Notification.php, line: 454
 #, php-format
 msgid "Proposal %d moved to a different issue"
 msgstr "Antrag %d in ein anderes Thema verschoben"
 #
-# File: inc/classes/Notification.php, line: 454
+# File: inc/classes/Notification.php, line: 456
 #, php-format
 msgid "An administrator moved the following proposal from issue %d to issue %d:"
 msgstr "Ein Verantwortlicher hat den folgenden Antrag vom Thema %d in das Thema %d verschoben:"
 #
-# File: inc/classes/Notification.php, line: 457
+# File: inc/classes/Notification.php, line: 459
 #, php-format
 msgid "Proposals in the old issue %d:"
 msgstr "Anträge im alten Thema %d:"
 #
-# File: inc/classes/Notification.php, line: 469
+# File: inc/classes/Notification.php, line: 471
 msgid "Notice that if you demanded offline voting for the old issue, this was not automatically transferred to the new issue. If you still want offline voting, you should demand it again on the new issue!"
 msgstr "Beachte, dass die Stimmen für eine Offline-Abstimmung bei dem alten Thema nicht automatisch in das neue Thema übernommen werden. Falls du immer noch eine Offline-Abstimmung möchtest, solltest du das im neuen Thema noch einmal fordern!"
 #
@@ -2660,7 +2661,7 @@ msgstr "Mitglied '%s' schrieb folgenden Beitrag:"
 msgid "Sorry, but the connection to the database failed. Please try again in a few minutes."
 msgstr "Leider konnte die Datenbank nicht erreicht werden. Bitte versuche es in ein paar Minuten noch einmal."
 #
-# File: inc/classes/Notification.php, line: 463
+# File: inc/classes/Notification.php, line: 465
 #, php-format
 msgid "Other proposals in the new issue %d:"
 msgstr "Weitere Anträge im neuen Thema %d:"
@@ -2869,7 +2870,6 @@ msgstr[1] "%d Themen in der Debatte"
 msgid "Please confirm your email address and then reload this page!"
 msgstr "Bitte bestätige deine E-Mail-Adresse und lade diese Seite dann neu!"
 #
-# File: vote_result.php, line: 35
 msgid "This period used vvvote for voting."
 msgstr "Diese Abstimmungsperiode verwendete vvvote."
 #
@@ -2900,5 +2900,14 @@ msgid "Envelope created for period %d"
 msgstr "Wahlschein für Abstimmungsperiode %d erstellt"
 #
 # File: inc/classes/Notification.php, line: 415
-msgid "You have created an envelope for the voting on the following proposals"
-msgstr "Du hast einen Wahlschein für die Abstimmung über folgende Anträge erstellt"
+msgid "You have created an envelope for the anonymous online voting on the following proposals"
+msgstr "Du hast einen Wahlschein für die anonyme Online-Abstimmung über folgende Anträge erstellt"
+#
+# File: inc/classes/Notification.php, line: 426
+#, php-format
+msgid "If you have not created this envelope, please contact the admins (%s) as soon as possible!"
+msgstr "Falls Du diesen Wahlschein nicht erstellt haben solltest, dann wende dich bitte so bald wie möglich an die Verantwortlichen (%s)!"
+#
+# File: vote_result.php, line: 39
+msgid "Tokens and votes"
+msgstr "Abstimmungskennungen und abgegebene Stimmen"

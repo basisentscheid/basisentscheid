@@ -677,7 +677,7 @@ function stripes($change=false, $suffix="") {
  *
  * This function should not be used on pages with forms, because users will lose their already filled in data if they click on the help buttons.
  *
- * @param string  $anchor (optional) for additional help messages on the same page
+ * @param string  $anchor (optional) for additional help messages on the same page - may contain only [a-z_]
  * @param boolean $h1     (optional)
  */
 function help($anchor="", $h1=false) {
@@ -783,7 +783,7 @@ function help($anchor="", $h1=false) {
  * hide help on a page
  */
 function hide_help() {
-	if ( !empty($_POST['anchor']) and preg_match("/^[a-z]+$/", $_POST['anchor']) ) {
+	if ( !empty($_POST['anchor']) and preg_match("/^[a-z_]+$/", $_POST['anchor']) ) {
 		$identifier = BN."#".$_POST['anchor'];
 	} else {
 		$identifier = BN;
@@ -804,7 +804,7 @@ function hide_help() {
  * show help on a page
  */
 function show_help() {
-	if ( !empty($_POST['anchor']) and preg_match("/^[a-z]+$/", $_POST['anchor']) ) {
+	if ( !empty($_POST['anchor']) and preg_match("/^[a-z_]+$/", $_POST['anchor']) ) {
 		$identifier = BN."#".$_POST['anchor'];
 	} else {
 		$identifier = BN;

@@ -17,7 +17,7 @@ if ($issue->state != 'finished') {
 	error(_("This issue is not finished."));
 }
 
-html_head(_("Vote result"), true);
+html_head(_("Vote result"));
 
 ?>
 <table class="proposals">
@@ -32,12 +32,17 @@ $issue->display_proposals($proposals, $submitted, count($proposals), true);
 
 if ($issue->period()->vvvote) {
 ?>
-<p><?=_("This period used vvvote for voting.")?></p>
+<h2><?=_("Votes")?></h2>
+<?
+	help("votes_vvvote");
+?>
+<a href="<?=$issue->period()->vvvote_configurl?>&amp;showresult"><?=_("Tokens and votes")?></a>
 <?
 } else {
 ?>
 <h2><?=_("Votes")?></h2>
 <?
+	help("votes");
 	if ($issue->cleared) {
 ?>
 <p><? printf(_("Raw data has been cleared at %s."), datetimeformat($issue->cleared)); ?></p>
