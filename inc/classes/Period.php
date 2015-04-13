@@ -171,16 +171,26 @@ class Period extends Relation {
 	 */
 	public function start_voting_vvvote(array $issues, array $members) {
 
+		// calculate times
+		$time_voting   = strtotime($this->voting);
+		$time_counting = strtotime($this->counting);
+		$time_till = strtotime("-2 hours", $time_counting);
+		$delay_till = array();
+		do {
+			$delay_till[] = gmdate("c", $time_till);
+		} while ( ($time_till = strtotime("-1 day", $time_till)) > $time_voting );
+
 		$post = array(
 			'electionId' => $this->vvvote_election_id(),
 			'electionTitle' => sprintf(_("Voting period %d in group %s"), $this->id, $this->ngroup()->name),
 			'auth' => "externalToken",
 			'authData' => array(
 				'configId' => VVVOTE_CONFIG_ID,
-				'RegistrationStartDate' => date("c", strtotime($this->voting)),
-				'RegistrationEndDate'   => date("c", strtotime($this->counting)),
-				'VotingStart'           => date("c", strtotime($this->voting)),
-				'VotingEnd'             => date("c", strtotime($this->counting))
+				'RegistrationStartDate' => gmdate("c", $time_voting),
+				'RegistrationEndDate'   => $delay_till[0],
+				'VotingStart'           => gmdate("c", $time_voting),
+				'VotingEnd'             => gmdate("c", $time_counting),
+				'DelayTill'             => array_reverse($delay_till)
 			),
 			'tally' => "configurableTally",
 			'questions' => array()
