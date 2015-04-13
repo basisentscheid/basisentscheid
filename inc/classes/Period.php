@@ -174,11 +174,13 @@ class Period extends Relation {
 		// calculate times
 		$time_voting   = strtotime($this->voting);
 		$time_counting = strtotime($this->counting);
-		$time_till = strtotime("-2 hours", $time_counting);
-		$delay_till = array();
-		do {
-			$delay_till[] = gmdate("c", $time_till);
-		} while ( ($time_till = strtotime("-1 day", $time_till)) > $time_voting );
+		$time_until = strtotime("-1 hour", $time_counting);
+		$registration_end = $time_until;
+		$delay_until = array();
+		while ( $time_until > $time_voting ) {
+			$delay_until[] = gmdate("c", $time_until);
+			$time_until = strtotime("-1 day", $time_until);
+		}
 
 		$post = array(
 			'electionId' => $this->vvvote_election_id(),
@@ -187,10 +189,10 @@ class Period extends Relation {
 			'authData' => array(
 				'configId' => VVVOTE_CONFIG_ID,
 				'RegistrationStartDate' => gmdate("c", $time_voting),
-				'RegistrationEndDate'   => $delay_till[0],
+				'RegistrationEndDate'   => gmdate("c", $registration_end),
 				'VotingStart'           => gmdate("c", $time_voting),
 				'VotingEnd'             => gmdate("c", $time_counting),
-				'DelayTill'             => array_reverse($delay_till)
+				'DelayUntil'            => array_reverse($delay_until)
 			),
 			'tally' => "configurableTally",
 			'questions' => array()
