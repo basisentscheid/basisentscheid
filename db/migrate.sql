@@ -156,3 +156,5 @@ CREATE TABLE vvvote_token (
     PRIMARY KEY (member, period)
 );
 CREATE UNIQUE INDEX vvvote_token_token_key ON vvvote_token USING BTREE (token);
+
+ALTER TABLE vvvote_token ADD generated BOOL DEFAULT FALSE NOT NULL;

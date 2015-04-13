@@ -972,7 +972,15 @@ class Issue extends Relation {
 
 		if ($this->period()->vvvote) {
 
-			?><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("Voting")?></a><?
+			$sql = "SELECT count(*) FROM vvvote_token
+				WHERE member=".intval(Login::$member->id)."
+					AND period=".intval($this->period)."
+					AND generated=TRUE";
+			if ( DB::fetchfield($sql) ) {
+				?><span title="<?=_("You have already generated an envelope. Open the envelope in your browser to vote.")?>"><?=_("Voting")?> &#10003;</span><?
+			} else {
+				?><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("Voting")?></a><?
+			}
 
 		} else {
 

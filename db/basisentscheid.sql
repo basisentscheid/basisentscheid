@@ -699,7 +699,8 @@ CREATE TABLE votingmode_vote (
 CREATE TABLE vvvote_token (
     member integer NOT NULL,
     period integer NOT NULL,
-    token character(24) NOT NULL
+    token character(24) NOT NULL,
+    generated boolean DEFAULT false NOT NULL
 );
 
 

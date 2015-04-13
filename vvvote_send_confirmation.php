@@ -16,6 +16,10 @@ if ( ! $row = DB::fetchassoc($sql) ) {
 	return_error("Token not found");
 }
 
+// mark the token as used for envelope generation
+$sql = "UPDATE vvvote_token SET generated=TRUE WHERE token=".DB::esc($post->token);
+DB::query($sql);
+
 $period = new Period($row['period']);
 if (!$period->id) {
 	return_error("Period does not exist");

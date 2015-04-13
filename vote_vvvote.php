@@ -23,9 +23,23 @@ if (strtotime($period->counting) < time()) {
 $ngroup = $period->ngroup();
 Login::access("entitled", $ngroup->id);
 
-// generate token if it does not exist
-$sql = "SELECT token FROM vvvote_token WHERE period=".intval($period->id)." AND member=".intval(Login::$member->id);
-if ( ! $token = DB::fetchfield($sql) ) {
+$sql = "SELECT token, generated FROM vvvote_token WHERE period=".intval($period->id)." AND member=".intval(Login::$member->id);
+if ( $row = DB::fetchassoc($sql) ) {
+
+	DB::to_bool($row['generated']);
+	if ($row['generated']) {
+		html_head(_("Voting with vvvote"));
+		notice(_("You have already generated an envelope for this voting. Open the envelope in your browser to vote."));
+		html_foot();
+		exit;
+	}
+
+	// use existing token
+	$token = $row['token'];
+
+} else {
+
+	// generate token
 	DB::transaction_start();
 	do {
 		$token = Login::generate_token(24);
@@ -34,6 +48,7 @@ if ( ! $token = DB::fetchfield($sql) ) {
 	$sql = "INSERT INTO vvvote_token (member, period, token) VALUES (".intval(Login::$member->id).", ".intval($period->id).", ".DB::esc($token).")";
 	DB::query($sql);
 	DB::transaction_commit();
+
 }
 
 // redirect to vvvote
