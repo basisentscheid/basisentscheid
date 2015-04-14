@@ -174,12 +174,12 @@ class Period extends Relation {
 		// calculate times
 		$time_voting   = strtotime($this->voting);
 		$time_counting = strtotime($this->counting);
-		$time_until = strtotime("-1 hour", $time_counting);
+		$time_until = strtotime("-".VVVOTE_LAST_VOTING_INTERVAL, $time_counting);
 		$registration_end = $time_until;
 		$delay_until = array();
 		while ( $time_until > $time_voting ) {
 			$delay_until[] = gmdate("c", $time_until);
-			$time_until = strtotime("-1 day", $time_until);
+			$time_until = strtotime("-".VVVOTE_VOTING_START_INTERVAL, $time_until);
 		}
 
 		$post = array(
