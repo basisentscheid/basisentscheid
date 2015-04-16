@@ -943,6 +943,7 @@ class Issue extends Relation {
 				if ( $state_info = $this->state_info() ) {
 					?><br><span class="stateinfo"><?=$state_info?></span><?
 				}
+				if ($this->state=="voting" and $this->period()->vvvote) $this->display_vvvote_envelope();
 				if (Login::$admin and $this->votingmode_offline() and BN!="admin_vote_result.php") {
 					if ($this->state=="preparation") {
 						?><br><a href="admin_vote_result.php?issue=<?=$this->id?>"><?=_("enter result")?></a><?
@@ -969,34 +970,51 @@ class Issue extends Relation {
 			?><span title="<?=_("You can not vote on this issue, because you are are not entitled in the group.")?>"><?=_("Voting")?></span><?
 			return;
 		}
-
 		if ($this->period()->vvvote) {
+			echo _("Voting");
+			return;
+		}
 
-			$sql = "SELECT count(*) FROM vvvote_token
-				WHERE member=".intval(Login::$member->id)."
-					AND period=".intval($this->period)."
-					AND generated=TRUE";
-			if ( DB::fetchfield($sql) ) {
-				?><span title="<?=_("You have already generated an envelope. Open the envelope in your browser to vote.")?>"><?=_("Voting")?> &#10003;</span><?
-			} else {
-				?><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("Voting")?></a><?
+		$sql = "SELECT vote_vote.token FROM vote_token
+			LEFT JOIN vote_vote USING (token)
+			WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
+		$result = DB::query($sql);
+		if ( list($token) = DB::fetch_row($result) ) {
+			?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
+			if ($token) {
+				?><span title="<?=_("You have voted on this issue.")?>">&#10003;</span><?
 			}
-
 		} else {
+			?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
+		}
 
-			$sql = "SELECT vote_vote.token FROM vote_token
-				LEFT JOIN vote_vote USING (token)
-				WHERE member=".intval(Login::$member->id)." AND issue=".intval($this->id);
-			$result = DB::query($sql);
-			if ( list($token) = DB::fetch_row($result) ) {
-				?><a href="vote.php?issue=<?=$this->id?>"><?=_("Voting")?></a><?
-				if ($token) {
-					?><span title="<?=_("You have voted on this issue.")?>">&#10003;</span><?
-				}
-			} else {
-				?><span title="<?=_("You can not vote in this voting period, because you were not yet entitled when the voting started.")?>"><?=_("Voting")?></span><?
-			}
+	}
 
+
+	/**
+	 * display voting in state column
+	 */
+	private function display_vvvote_envelope() {
+		if ( !Login::$member ) {
+			return;
+		}
+		if ( !Login::$member->entitled($this->area()->ngroup) ) {
+			return;
+		}
+
+		$sql = "SELECT count(*) FROM vvvote_token
+			WHERE member=".intval(Login::$member->id)."
+				AND period=".intval($this->period)."
+				AND generated=TRUE";
+		if ( DB::fetchfield($sql) ) {
+			?><br><span title="<?=_("You have already generated an envelope. Open the envelope in your browser to vote.")?>"><?=_("envelope")?> &#10003;</span><?
+		} else {
+			?><br><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("envelope")?></a><br><span class="stateinfo"><?
+			printf(
+				_("until %s"),
+				'<span class="datetime">'.datetimeformat_smart($this->period()->counting." -".VVVOTE_LAST_VOTING_INTERVAL).'</span>'
+			);
+			?></span><?
 		}
 
 	}
