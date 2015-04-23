@@ -145,22 +145,37 @@ class Notification {
 			$or[] = "member.id IN (".join(",", $members).")";
 		}
 
-		// members who enabled notification settings
-		if ( isset(self::$default_settings['all'][$this->type]) ) {
+		// from notification settings
+		if ( isset(self::$default_settings['all'][$this->type]) ) { // check if type exists
+
 			$sql .= "
 				LEFT JOIN notify        ON        notify.member = member.id
 				LEFT JOIN member_ngroup ON member_ngroup.member = member.id
 				LEFT JOIN participant   ON   participant.member = member.id
 				LEFT JOIN supporter     ON     supporter.member = member.id";
 
+			// members who saved their notification settings
 			$where_notify = "
-					notify.".$this->type."=TRUE
-					AND (
-						notify.interest='all'";
+							notify.".$this->type."=TRUE
+							AND (
+								notify.interest='all'";
+
+			// members with default notification settings
+			$where_default = "
+							notify.member IS NULL";
+			if ( !self::$default_settings['all'][$this->type] ) {
+				$where_default .= "
+							AND (
+								FALSE";
+			}
 
 			if ($this->period) {
 				$where_notify .= "
-						OR (notify.interest='ngroups' AND member_ngroup.ngroup=".intval($this->period->id).")";
+								OR (notify.interest='ngroups' AND member_ngroup.ngroup=".intval($this->period->ngroup).")";
+				if ( !self::$default_settings['all'][$this->type] and self::$default_settings['ngroups'][$this->type] ) {
+					$where_default .= "
+								OR member_ngroup.ngroup=".intval($this->period->ngroup);
+				}
 			}
 
 			$areas     = array();
@@ -186,26 +201,48 @@ class Notification {
 			if ($areas) {
 				$areas = join(",", array_unique($areas));
 				$where_notify .= "
-						OR (notify.interest='participant' AND participant.area IN (".$areas."))";
+								OR (notify.interest='participant' AND participant.area IN (".$areas."))";
+				if ( !self::$default_settings['all'][$this->type] and self::$default_settings['participant'][$this->type] ) {
+					$where_default .= "
+								OR participant.area IN (".$areas.")";
+				}
 			}
 
 			if ($proposals) {
 				$proposals = join(",", $proposals);
 				$where_notify .= "
-						OR (notify.interest='supporter' AND supporter.proposal IN (".$proposals."))
-						OR (notify.interest='proponent' AND supporter.proposal IN (".$proposals.") AND supporter.proponent_confirmed=TRUE)";
+								OR (notify.interest='supporter' AND supporter.proposal IN (".$proposals."))
+								OR (notify.interest='proponent' AND supporter.proposal IN (".$proposals.") AND supporter.proponent_confirmed=TRUE)";
+				if ( !self::$default_settings['all'][$this->type] ) {
+					if ( self::$default_settings['supporter'][$this->type] ) {
+						$where_default .= "
+								OR supporter.proposal IN (".$proposals.")";
+					}
+					if ( self::$default_settings['proponent'][$this->type] ) {
+						$where_default .= "
+								OR (supporter.proposal IN (".$proposals.") AND supporter.proponent_confirmed=TRUE)";
+					}
+				}
 			}
 
 			$where_notify .= "
-					)";
+							)";
+			$where_default .= "
+							)";
 
-			$or[] = "(".$where_notify.")";
+			$or[] = "(".$where_notify."
+						)";
+			$or[] = "(".$where_default."
+						)";
+
 		}
 
 		if (!$or) return array();
 		$sql .= "
 				WHERE member.mail IS NOT NULL
-					AND (".join(" OR ", $or).")";
+					AND (
+						".join(" OR ", $or)."
+					)";
 
 		// don't notify a member about his own actions
 		if (Login::$member) $exclude[] = intval(Login::$member->id);
