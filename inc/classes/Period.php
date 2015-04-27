@@ -297,7 +297,7 @@ class Period extends Relation {
 		$subject = sprintf(_("Voting started in period %d"), $this->id);
 		$body_top = _("Group").": ".$this->ngroup()->name."\n\n"
 			._("Online voting has started on the following proposals").":\n";
-		$body_bottom = _("Vote").": ".BASE_URL."vote_vvvote.php?period=".$this->id."\n"
+		$body_bottom = "\n"._("Vote").": ".BASE_URL."vote_vvvote.php?period=".$this->id."\n"
 			._("Voting end").": ".datetimeformat($this->counting)."\n";
 		$issues_blocks = array();
 		foreach ( $issues as $issue ) {
@@ -311,10 +311,10 @@ class Period extends Relation {
 			if (!$member->mail) continue;
 			$body = $body_top;
 			foreach ( $issues as $issue ) {
-				$body .= $issues_blocks[$issue->id]."\n";
+				$body .= $issues_blocks[$issue->id];
 			}
 			$body .= $body_bottom;
-			send_mail($member->mail, $subject, $body, array(), $member->fingerprint);
+			send_mail($member->mail, $subject, $body);
 		}
 
 	}
