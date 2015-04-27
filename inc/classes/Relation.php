@@ -65,7 +65,7 @@ abstract class Relation {
 
 		if (!$id) $id = $this->id;
 
-		$sql = "SELECT * FROM ".$this->table." WHERE id=".intval($id);
+		$sql = "SELECT * FROM $this->table WHERE id=".intval($id);
 		if ( ! $row = DB::fetchassoc($sql) ) return;
 
 		foreach ( $row as $key => $value ) $this->$key = $value;

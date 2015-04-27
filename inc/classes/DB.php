@@ -320,7 +320,7 @@ abstract class DB {
 		$fields_values = array_map("self::value_to_sql", $fields_values);
 		if ($extra) $fields_values += $extra;
 
-		$sql = "INSERT INTO ".$table." (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
+		$sql = "INSERT INTO $table (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
 
 		if ($insert_id!==false) {
 			$sql .= " RETURNING id";
@@ -370,7 +370,7 @@ abstract class DB {
 	 */
 	public static function delete($table, $where=false) {
 
-		$sql = "DELETE FROM ".$table.self::where_and($where);
+		$sql = "DELETE FROM $table".self::where_and($where);
 
 		return self::query($sql);
 	}
