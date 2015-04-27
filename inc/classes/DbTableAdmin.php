@@ -639,7 +639,7 @@ class DbTableAdmin {
 <div id="dbtableadmin">
 <?
 
-		if (!empty($_GET['order'])) {
+		if ( !empty($_GET['order']) and $this->column_name_exists($_GET['order']) ) {
 			$this->order = $_GET['order'];
 			$this->orderdesc = !empty($_GET['orderdesc']);
 		} else {
@@ -656,6 +656,20 @@ class DbTableAdmin {
 ?>
 </div>
 <?
+	}
+
+
+	/**
+	 * check, if a column name exists
+	 *
+	 * @param string  $name
+	 * @return boolean
+	 */
+	protected function column_name_exists($name) {
+		foreach ( $this->columns as $column ) {
+			if ( $column[0] == $name ) return true;
+		}
+		return false;
 	}
 
 
