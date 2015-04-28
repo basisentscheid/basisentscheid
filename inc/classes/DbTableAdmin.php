@@ -476,7 +476,7 @@ class DbTableAdmin {
 	protected function action_manualorder($action, $id, $where="", $colname="manualorder") {
 
 		// renumber records
-		$sql = "SELECT ".$this->dbtable.".id FROM ".$this->dbtable." ".$where." ORDER BY ".$this->dbtable.".".$colname;
+		$sql = "SELECT ".$this->dbtable.".id FROM ".$this->dbtable." ".$where." ORDER BY ".$this->dbtable.".".DB::ident($colname);
 		$renumids = DB::fetchfieldarray($sql);
 
 		$aktindex = array_search($id, $renumids);
@@ -1219,7 +1219,7 @@ function submit_delete_checked() {
 	 * @return string
 	 */
 	protected function sql_order_by() {
-		$sql = "ORDER BY ".$this->dbtable.".".$this->order;
+		$sql = "ORDER BY ".$this->dbtable.".".DB::ident($this->order);
 		if ($this->orderdesc) $sql .= " DESC";
 		return $sql;
 	}

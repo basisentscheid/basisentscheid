@@ -44,6 +44,17 @@ abstract class DB {
 
 
 	/**
+	 * escape identifiers for SQL statements
+	 *
+	 * @param string  $str
+	 * @return string
+	 */
+	public static function ident($str) {
+		return pg_escape_identifier($str);
+	}
+
+
+	/**
 	 * escape strings for SQL statements, add singlequotes and handle boolean and NULL values
 	 *
 	 * @param mixed   $value
