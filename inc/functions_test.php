@@ -131,10 +131,11 @@ function login($id) {
  */
 function new_ngroup($name, $minimum_population, $minimum_quorum_votingmode) {
 	$ngroup = new Ngroup;
+	$ngroup->id = DB::fetchfield("SELECT max(id) FROM ngroup") + 1;
 	$ngroup->name = $name." ".$ngroup->id;
 	$ngroup->active = true;
 	$ngroup->minimum_population = $minimum_population;
 	$ngroup->minimum_quorum_votingmode = $minimum_quorum_votingmode;
-	$ngroup->create(['name', 'active', 'minimum_population', 'minimum_quorum_votingmode']);
+	$ngroup->create(['id', 'name', 'active', 'minimum_population', 'minimum_quorum_votingmode']);
 	return $ngroup;
 }
