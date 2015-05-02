@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2015-05-02 15:57+0200\n"
+"PO-Revision-Date: 2015-05-02 17:00+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "Mitglied"
 #
 # File: admin_members.php, line: 21
 # File: admins.php, line: 16
-# File: login.php, line: 51
+# File: login.php, line: 50
 # File: register.php, line: 108
 # File: request_password_reset.php, line: 77
 # File: settings.php, line: 83
@@ -134,7 +134,7 @@ msgstr "Antrag hinzufügen"
 msgid "Areas"
 msgstr "Themenbereiche"
 #
-# File: login.php, line: 45
+# File: login.php, line: 44
 msgid "Login"
 msgstr "Anmeldung"
 #
@@ -331,7 +331,7 @@ msgstr "Anmeldung erfolgreich"
 msgid "Login failed"
 msgstr "Anmeldung fehlgeschlagen"
 #
-# File: login.php, line: 52
+# File: login.php, line: 51
 # File: register.php, line: 113
 # File: reset_password.php, line: 81
 msgid "Password"
@@ -907,8 +907,7 @@ msgstr "Unbekannte Aktion"
 msgid "The ballot could not be created!"
 msgstr "Die Urne konnte nicht angelegt werden!"
 #
-# File: inc/classes/Login.php, line: 104
-# File: inc/classes/Login.php, line: 107
+# File: inc/classes/Login.php, line: 118
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 #
@@ -1202,7 +1201,7 @@ msgstr "Abstimmung in Periode %s startet"
 msgid "voting in period %s closes"
 msgstr "Abstimmung in Periode %s endet"
 #
-# File: inc/classes/Login.php, line: 231
+# File: inc/classes/Login.php, line: 254
 msgid "This email address is not valid!"
 msgstr "Diese E-Mail-Adresse ist ungültig!"
 #
@@ -1342,7 +1341,7 @@ msgstr "Gliederungen"
 msgid "eligible"
 msgstr "stimmberechtigt"
 #
-# File: login.php, line: 53
+# File: login.php, line: 52
 msgid "login"
 msgstr "anmelden"
 #
@@ -1762,7 +1761,7 @@ msgstr "Code"
 msgid "Create new member"
 msgstr "Neues Mitglied anlegen"
 #
-# File: login.php, line: 52
+# File: login.php, line: 51
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 #
@@ -1946,35 +1945,35 @@ msgstr "Deine Stimme wurde gespeichert, aber der Beleg konnte nicht verschickt w
 msgid "Your vote could not be saved!"
 msgstr "Deine Stimme konnte nicht gespeichert werden!"
 #
-# File: inc/classes/Login.php, line: 167
+# File: inc/classes/Login.php, line: 190
 msgid "Please enter a username!"
 msgstr "Bitte gib einen Benutzernamen ein!"
 #
-# File: inc/classes/Login.php, line: 172
+# File: inc/classes/Login.php, line: 195
 msgid "The username must have at least 3 characters!"
 msgstr "Der Benutzername muss mindestens 3 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 176
+# File: inc/classes/Login.php, line: 199
 msgid "The username must have not more than 32 characters!"
 msgstr "Der Benutzername darf nicht mehr als 32 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 185
+# File: inc/classes/Login.php, line: 208
 msgid "This username is already used by someone else. Please try a different one!"
 msgstr "Dieser Benutzername wird bereits von jemand anderem verwendet. Bitte versuche es mit einem anderen!"
 #
-# File: inc/classes/Login.php, line: 201
+# File: inc/classes/Login.php, line: 224
 msgid "Please enter a password!"
 msgstr "Bitte gib ein Passwort ein!"
 #
-# File: inc/classes/Login.php, line: 206
+# File: inc/classes/Login.php, line: 229
 msgid "The two password fields do not match!"
 msgstr "Die beiden Passwörter stimmen nicht überein!"
 #
-# File: inc/classes/Login.php, line: 211
+# File: inc/classes/Login.php, line: 234
 msgid "The password name must have at least 8 characters!"
 msgstr "Das Passwort muss mindestens acht Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 227
+# File: inc/classes/Login.php, line: 250
 msgid "Please enter an email address!"
 msgstr "Bitte gib eine E-Mail-Adresse ein!"
 #
@@ -2366,7 +2365,7 @@ msgstr "Ergebnis eingeben"
 msgid "edit result"
 msgstr "Ergebnis bearbeiten"
 #
-# File: inc/classes/Login.php, line: 180
+# File: inc/classes/Login.php, line: 203
 msgid "The username must not begin with the character '#'!"
 msgstr "Der Benutzername darf nicht mit dem Zeichen '#' beginnen!"
 #
@@ -2878,3 +2877,21 @@ msgstr "Alle Anträge in der Debatte in dieser Gliederung"
 # File: inc/classes/Notification.php, line: 475
 msgid "All finished proposals in this group"
 msgstr "Alle abgeschlossenen Anträge in dieser Gliederung"
+#
+# File: inc/classes/Login.php, line: 87
+msgid "You can't access this page, because you are not eligible, not verified or not member of the group."
+msgstr "Du kannst auf diese Seite nicht zugreifen, weil du nicht stimmberechtigt, nicht verifiziert oder nicht Mitglied der Gliederung bist."
+#
+# File: inc/classes/Login.php, line: 89
+# File: inc/classes/Login.php, line: 94
+# File: inc/classes/Login.php, line: 101
+msgid "Please log in to access this page!"
+msgstr "Bitte melde dich an, um auf diese Seite zugreifen zu können!"
+#
+# File: inc/classes/Login.php, line: 113
+msgid "Access to action denied"
+msgstr "Zugriff auf Aktion verweigert"
+#
+# File: inc/classes/Login.php, line: 126
+msgid "Access to this page was denied."
+msgstr "Der Zugriff auf diese Seite wurde verweigert."
