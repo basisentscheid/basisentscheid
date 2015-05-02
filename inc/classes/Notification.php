@@ -280,7 +280,7 @@ class Notification {
 		switch ($this->type) {
 		case "comment":
 
-			$subject = sprintf(_("New comment in proposal %d"), $this->proposal->id);
+			$subject = sprintf(_("New comment in proposal %d - %s"), $this->proposal->id, $this->comment->title);
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
@@ -303,7 +303,7 @@ class Notification {
 			break;
 		case "reply":
 
-			$subject = sprintf(_("New reply to your comment in proposal %d"), $this->proposal->id);
+			$subject = sprintf(_("New reply to your comment in proposal %d - %s"), $this->proposal->id, $this->comment->title);
 
 			$uri = BASE_URL."proposal.php?id=".$this->proposal->id;
 			if ($this->comment->rubric == "discussion") $uri .= "&discussion=1";
@@ -326,7 +326,7 @@ class Notification {
 			break;
 		case "new_proposal":
 
-			$subject = sprintf(_("New proposal %d in area %s"), $this->proposal->id, $this->proposal->issue()->area()->name);
+			$subject = sprintf(_("New proposal %d in area %s - %s"), $this->proposal->id, $this->proposal->issue()->area()->name, $this->proposal->title);
 
 			$body .= sprintf(_("Proponent '%s' added a new proposal:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
@@ -340,7 +340,7 @@ class Notification {
 			break;
 		case "new_draft":
 
-			$subject = sprintf(_("New draft for proposal %d"), $this->proposal->id);
+			$subject = sprintf(_("New draft for proposal %d - %s"), $this->proposal->id, $this->proposal->title);
 
 			if ($this->proponent !== false) {
 				$body .= sprintf(_("Proponent '%s' added a new draft:"), $this->proponent);
@@ -359,7 +359,7 @@ class Notification {
 			break;
 		case "submitted":
 
-			$subject = sprintf(_("Proposal %d submitted"), $this->proposal->id);
+			$subject = sprintf(_("Proposal %d submitted - %s"), $this->proposal->id, $this->proposal->title);
 
 			$body .= sprintf(_("Proponent '%s' submitted this proposal:"), $this->proponent)."\n"
 				.BASE_URL."proposal.php?id=".$this->proposal->id."\n\n"
