@@ -28,27 +28,46 @@ class Ngroup extends Relation {
 
 
 	/**
-	 * get the current Ngroup object from GET or redirect to the default Ngroup
-	 *
-	 * $_SESSION['ngroup'] must be used for navigation only, not for actual content or action!
+	 * set the current Ngroup from $_GET['ngroup']
+	 */
+	public static function init() {
+		if (!empty($_GET['ngroup'])) {
+			$_SESSION['ngroup'] = intval($_GET['ngroup']);
+			switch (BN) {
+				// pages which use the ngroup parameter
+			case "proposals.php":
+			case "periods.php":
+			case "areas.php":
+			case "admin_areas.php":
+				break;
+				// jump to different page if the same page doesn't show the equivalent content in other groups
+			case "proposal_edit.php":
+				if (!isset($_GET['id']) and !isset($_GET['issue'])) break; // new (not alternative) proposal needs ngroup
+			case "proposal.php":
+			case "draft.php":
+				redirect("proposals.php?ngroup=".$_SESSION['ngroup']);
+			default:
+				// remove ngroup parameter from URLs of ngroup-independent pages
+				redirect(URI::strip(['ngroup'], true));
+			}
+		} elseif (!isset($_SESSION['ngroup'])) {
+			$_SESSION['ngroup'] = 0;
+		}
+	}
+
+
+	/**
+	 * get the current Ngroup object or redirect to the default Ngroup
 	 *
 	 * @return object
 	 */
 	public static function get() {
 
-		if (!empty($_GET['ngroup'])) {
-			$ngroup = new Ngroup($_GET['ngroup']);
-			if ($ngroup->active) {
-				// override differing GET parameter
-				$_SESSION['ngroup'] = $ngroup->id;
-				return $ngroup;
-			}
-		}
-
-		// redirect to ngroup from session
-		if (!empty($_SESSION['ngroup'])) {
+		if ($_SESSION['ngroup']) {
 			$ngroup = new Ngroup($_SESSION['ngroup']);
 			if ($ngroup->active) {
+				if (!empty($_GET['ngroup'])) return $ngroup;
+				// redirect if the ngroup is not yet in the URI
 				redirect(BN."?ngroup=".$ngroup->id);
 			}
 		}
@@ -95,7 +114,7 @@ class Ngroup extends Relation {
 	 * @param integer $parent  (optional) starting parent ID
 	 * @return array           output
 	 */
-	public static function parent_sort_active(array $ngroups, $parent=0) {
+	private static function parent_sort_active(array $ngroups, $parent=0) {
 		$result = array();
 		foreach ($ngroups as $key => $ngroup) {
 			if ($ngroup->parent == $parent) {
@@ -235,6 +254,97 @@ class Ngroup extends Relation {
 	public static function not_yet_voted($count) {
 		if ($count == 1) return _("You have not yet voted on 1 issue.");
 		return sprintf(_("You have not yet voted on %d issues."), $count);
+	}
+
+
+	/**
+	 * display Ngroup drop down menu
+	 */
+	public static function display_switch() {
+?>
+					<form method="GET" action="<?
+		switch (BN) {
+			// jump to proposals list if the same page doesn't show the equivalent content in other groups
+		case "proposal.php":
+		case "proposal_edit.php":
+		case "draft.php":
+		case "vote.php":
+		case "vote_result.php":
+			echo "proposals.php";
+			$hidden = false;
+			break;
+		default:
+			echo BN;
+			// pages with list and edit mode and content depending on the group
+		case "periods.php":
+		case "admin_areas.php":
+			$hidden = array(
+				'ngroup' => null, // remove ngroup, because the new ngroup comes from the drop down menu
+				'id'     => null  // remove id to go back from edit to list mode
+			);
+		}
+		?>">
+						<select name="ngroup" onchange="this.form.submit()" tabindex="2">
+<?
+		if (Login::$member) {
+			$sql = "SELECT ngroup.*, member FROM ngroup
+			LEFT JOIN member_ngroup ON member_ngroup.ngroup = ngroup.id AND member_ngroup.member = ".intval(Login::$member->id);
+		} else {
+			$sql = "SELECT * FROM ngroup";
+		}
+		$sql .= " ORDER BY name";
+		$result = DB::query($sql);
+		$ngroups = array();
+		while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
+			$ngroups[] = $ngroup;
+		}
+		$ngroups = Ngroup::parent_sort_active($ngroups);
+		// own ngroups
+		if (Login::$member) {
+?>
+							<optgroup label="<?=_("own groups")?>">
+<?
+			foreach ($ngroups as $ngroup) {
+				if (!$ngroup->member) continue;
+				// save groups list of the logged in member
+				Login::$ngroups[] = $ngroup->id;
+				// use the first ngroup as default
+				if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
+?>
+								<option value="<?=$ngroup->id?>"<?
+				if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
+				?>>&#9670; <?=$ngroup->name?></option>
+<?
+			}
+?>
+							</optgroup>
+<?
+		}
+		// other ngroups
+?>
+							<optgroup label="<?=Login::$member?_("other groups"):_("groups")?>">
+<?
+		foreach ($ngroups as $ngroup) {
+			// save list of active groups
+			Ngroup::$active_ngroups[] = $ngroup->id;
+			if (Login::$member and $ngroup->member) continue;
+			// use the first ngroup as default
+			if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
+?>
+								<option value="<?=$ngroup->id?>"<?
+			if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
+			?>>&#9671; <?=$ngroup->name?></option>
+<?
+		}
+?>
+							</optgroup>
+						</select>
+<?
+		// add the hidden fields after the drop down menu to have ngroup always in the first place of the GET parameters
+		if ($hidden) URI::hidden($hidden);
+?>
+					</form>
+<?
 	}
 
 

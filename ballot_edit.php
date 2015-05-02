@@ -38,6 +38,8 @@ if (!empty($_GET['id'])) {
 	$ballot->period = $period->id;
 }
 
+$_SESSION['ngroup'] = $period->ngroup;
+
 
 if ($action) {
 	switch ($action) {

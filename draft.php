@@ -18,6 +18,8 @@ $proposal = new Proposal($draft->proposal);
 
 $issue = $proposal->issue();
 
+$_SESSION['ngroup'] = $issue->area()->ngroup;
+
 list($supporters, $proponents, $is_supporter, $is_proponent) = $proposal->supporters();
 
 if (!$is_proponent and !Login::$admin) {

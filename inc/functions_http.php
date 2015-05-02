@@ -141,88 +141,9 @@ function html_head($title, $help=false) {
 			<ul>
 				<li><a href="index.php" id="home" tabindex="1">Basisentscheid</a></li>
 				<li>
-					<form method="GET" action="<?
-	switch (BN) {
-		// jump to proposals list if the same page doesn't show the equivalent content in other groups
-	case "proposal.php":
-	case "proposal_edit.php":
-	case "draft.php":
-	case "vote.php":
-	case "vote_result.php":
-		echo "proposals.php";
-		$hidden = false;
-		break;
-	default:
-		echo BN;
-		// pages with list and edit mode and content depending on the group
-	case "periods.php":
-	case "admin_areas.php":
-		$hidden = array(
-			'ngroup' => null, // remove ngroup, because the new ngroup comes from the drop down menu
-			'id'     => null  // remove id to go back from edit to list mode
-		);
-	}
-	?>">
-						<select name="ngroup" onchange="this.form.submit()" tabindex="2">
 <?
-	if (Login::$member) {
-		$sql = "SELECT ngroup.*, member FROM ngroup
-			LEFT JOIN member_ngroup ON member_ngroup.ngroup = ngroup.id AND member_ngroup.member = ".intval(Login::$member->id);
-	} else {
-		$sql = "SELECT * FROM ngroup";
-	}
-	$sql .= " ORDER BY name";
-	$result = DB::query($sql);
-	$ngroups = array();
-	while ( $ngroup = DB::fetch_object($result, "Ngroup") ) {
-		$ngroups[] = $ngroup;
-	}
-	$ngroups = Ngroup::parent_sort_active($ngroups);
-	// own ngroups
-	if (Login::$member) {
+	Ngroup::display_switch();
 ?>
-							<optgroup label="<?=_("own groups")?>">
-<?
-		foreach ($ngroups as $ngroup) {
-			if (!$ngroup->member) continue;
-			// save groups list of the logged in member
-			Login::$ngroups[] = $ngroup->id;
-			// use the first ngroup as default
-			if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
-?>
-								<option value="<?=$ngroup->id?>"<?
-			if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-			?>>&#9670; <?=$ngroup->name?></option>
-<?
-		}
-?>
-							</optgroup>
-<?
-	}
-	// other ngroups
-?>
-							<optgroup label="<?=Login::$member?_("other groups"):_("groups")?>">
-<?
-	foreach ($ngroups as $ngroup) {
-		// save list of active groups
-		Ngroup::$active_ngroups[] = $ngroup->id;
-		if (Login::$member and $ngroup->member) continue;
-		// use the first ngroup as default
-		if ($_SESSION['ngroup']==0) $_SESSION['ngroup'] = $ngroup->id;
-?>
-								<option value="<?=$ngroup->id?>"<?
-		if ($ngroup->id==$_SESSION['ngroup']) { ?> selected class="selected"<? }
-		?>>&#9671; <?=$ngroup->name?></option>
-<?
-	}
-?>
-							</optgroup>
-						</select>
-<?
-	// add the hidden fields after the drop down menu to have ngroup always in the first place of the GET parameters
-	if ($hidden) URI::hidden($hidden);
-?>
-					</form>
 				</li>
 <?
 	navlink('proposals.php', _("Proposals"), true);

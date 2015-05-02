@@ -28,7 +28,7 @@ if (!empty($_GET['id'])) {
 		redirect("proposal.php?id=".$proposal->id);
 	}
 	$issue = $proposal->issue();
-	$ngroup_id = $issue->area()->ngroup;
+	$_SESSION['ngroup'] = $issue->area()->ngroup;
 } elseif (!empty($_GET['issue'])) {
 	Login::access("member");
 	$issue = new Issue($_GET['issue']);
@@ -37,17 +37,16 @@ if (!empty($_GET['id'])) {
 	}
 	$proposal = new Proposal;
 	$edit_content = true;
-	$ngroup_id = $issue->area()->ngroup;
+	$_SESSION['ngroup'] = $issue->area()->ngroup;
 } else {
 	Login::access("member");
 	$proposal = new Proposal;
 	$edit_content = true;
 	$issue = false;
-	$ngroup = Ngroup::get();
-	$ngroup_id = $ngroup->id;
+	Ngroup::get();
 }
 
-Login::access(["entitled", "admin"], $ngroup_id);
+Login::access(["entitled", "admin"], $_SESSION['ngroup']);
 
 if ($action) {
 	switch ($action) {
@@ -206,7 +205,6 @@ html_foot();
  * @param array   $proponents
  */
 function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
-	global $ngroup_id;
 ?>
 <h2><?=_("Area")?></h2>
 <div class="proposal">
@@ -214,7 +212,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 	if ($issue) {
 		echo h($issue->area()->name);
 	} else {
-		$sql = "SELECT id, name FROM area WHERE ngroup = ".intval($ngroup_id)." ORDER BY name";
+		$sql = "SELECT id, name FROM area WHERE ngroup = ".intval($_SESSION['ngroup'])." ORDER BY name";
 		$result = DB::query($sql);
 		$options = array(0 => _("&mdash; please select &mdash;"));
 		while ( $row = DB::fetch_assoc($result) ) {

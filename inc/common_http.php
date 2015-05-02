@@ -55,33 +55,7 @@ require "inc/locale.php";
 
 Login::init(); // start session
 
-/*
- * The ngroup can be selected by the GET parameter or by other parameters selecting a period, area, issue or proposal
- * which reference a ngroup. This makes it possible to navigate in different ngroups in multiple browser windows. The
- * session must be used only for navigation!
- */
-if (!empty($_GET['ngroup'])) {
-	$_SESSION['ngroup'] = intval($_GET['ngroup']);
-	switch (BN) {
-		// pages which use the ngroup parameter
-	case "proposals.php":
-	case "periods.php":
-	case "areas.php":
-	case "admin_areas.php":
-		break;
-		// jump to different page if the same page doesn't show the equivalent content in other groups
-	case "proposal_edit.php":
-		if (!isset($_GET['id']) and !isset($_GET['issue'])) break; // new (not alternative) proposal needs ngroup
-	case "proposal.php":
-	case "draft.php":
-		redirect("proposals.php?ngroup=".$_SESSION['ngroup']);
-	default:
-		// remove ngroup parameter from URLs of ngroup-independent pages
-		redirect(URI::strip(['ngroup'], true));
-	}
-} elseif (!isset($_SESSION['ngroup'])) {
-	$_SESSION['ngroup'] = 0;
-}
+Ngroup::init(); // get current Ngroup
 
 // all actions use this global variable
 if (isset($_POST['action'])) $action = $_POST['action']; else $action = null;

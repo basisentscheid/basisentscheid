@@ -13,14 +13,15 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error(_("The requested issue does not exist."));
 }
+
+$_SESSION['ngroup'] = $issue->area()->ngroup;
+Login::access("entitled", $_SESSION['ngroup']);
+
 if ($issue->state == 'finished') {
 	error(_("The voting on this issue is already closed."));
 } elseif ($issue->state != 'voting') {
 	error(_("The issue is not in voting state."));
 }
-
-$ngroup = $issue->area()->ngroup();
-Login::access("entitled", $ngroup->id);
 
 $token = $issue->vote_token();
 if (!$token) {

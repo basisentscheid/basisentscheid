@@ -15,6 +15,9 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error(_("The requested issue does not exist."));
 }
+
+$_SESSION['ngroup'] = $issue->area()->ngroup;
+
 if (!$issue->votingmode_offline()) {
 	error(_("This issue does not use offline voting."));
 }
