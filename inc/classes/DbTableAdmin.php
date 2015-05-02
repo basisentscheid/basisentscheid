@@ -1290,7 +1290,7 @@ function submit_delete_checked() {
 	 * @param Relation $object
 	 * @param array   $column
 	 */
-	protected function print_text_limit($content, Relation $object, array $column) {
+	protected function print_text_limit($content, /** @noinspection PhpUnusedParameterInspection */ Relation $object, array $column) {
 		if (!empty($column['print_limit'])) $limit = $column['print_limit']; else $limit = 50;
 		$content = ltrim($content);
 		if (mb_strlen($content) > $limit) {
@@ -1333,7 +1333,7 @@ function submit_delete_checked() {
 	 * @param Relation $object
 	 * @param array   $column
 	 */
-	protected function print_select($content, Relation $object, array $column) {
+	protected function print_select($content, /** @noinspection PhpUnusedParameterInspection */ Relation $object, array $column) {
 		echo h(@$column['options'][$content]);
 	}
 
@@ -1360,7 +1360,7 @@ function submit_delete_checked() {
 	 * @param integer $line
 	 * @param integer $linescount
 	 */
-	protected function print_manualorder($content, Relation $object, array $column, $line, $linescount) {
+	protected function print_manualorder(/** @noinspection PhpUnusedParameterInspection */ $content, Relation $object, array $column, $line, $linescount) {
 
 		// show arrows only if order is by manualorder ascending
 		if ( $this->order!=$column[0] or $this->orderdesc ) return;
@@ -1405,7 +1405,7 @@ function submit_delete_checked() {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	protected function edit_text($colname, $default, $id, $disabled, array $column) {
+	protected function edit_text($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
 		$attributes = array();
 		if (isset($column['size'])) {
 			$attributes[] = 'size="'.$column['size'].'"';
@@ -1432,7 +1432,7 @@ function submit_delete_checked() {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	protected function edit_area($colname, $default, $id, $disabled, array $column) {
+	protected function edit_area($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
 		$attributes = array();
 		if (isset($column['cols'])) {
 			$attributes[] = 'cols="'.$column['cols'].'"';
@@ -1458,7 +1458,7 @@ function submit_delete_checked() {
 	 * @param integer $id
 	 * @param boolean $disabled
 	 */
-	protected function edit_boolean($colname, $default, $id, $disabled) {
+	protected function edit_boolean($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled) {
 		input_checkbox($colname, "1", $default, $disabled);
 	}
 
@@ -1472,7 +1472,7 @@ function submit_delete_checked() {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	protected function edit_select($colname, $default, $id, $disabled, array $column) {
+	protected function edit_select($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
 		input_select($colname, $column['options'], $default, $disabled, @$column['attributes']);
 	}
 
@@ -1483,7 +1483,7 @@ function submit_delete_checked() {
 	 * @param string  $colname
 	 * @param mixed   $default
 	 */
-	protected function edit_display($colname, $default) {
+	protected function edit_display(/** @noinspection PhpUnusedParameterInspection */ $colname, $default) {
 		echo h($default);
 	}
 

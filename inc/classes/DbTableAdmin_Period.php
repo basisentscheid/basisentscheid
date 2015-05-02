@@ -129,7 +129,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 * @param mixed   $content
 	 * @param object  $object
 	 */
-	protected function print_ballots($content, $object) {
+	protected function print_ballots(/** @noinspection PhpUnusedParameterInspection */ $content, $object) {
 		if (!$object->ballot_voting) return;
 		?><a href="ballots.php?period=<?=$object->id?>"><?=_("Ballots")?></a><?
 	}
