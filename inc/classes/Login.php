@@ -78,19 +78,27 @@ abstract class Login {
 	 */
 	public static function access($allowed_users, $ngroup=0, $redirect=false) {
 		if (!is_array($allowed_users)) $allowed_users = array($allowed_users);
+		$message = false;
 		foreach ( $allowed_users as $keyword) {
 			switch ($keyword) {
 			case "entitled":
-				if (Login::$member and Login::$member->entitled($ngroup)) return;
+				if (Login::$member) {
+					if (Login::$member->entitled($ngroup)) return;
+					$message = _("You can't access this page, because you are not eligible, not verified or not member of the group.");
+				} else {
+					$message = _("Please log in to access this page!");
+				}
 				break;
 			case "member":
 				if (Login::$member) return;
+				$message = _("Please log in to access this page!");
 				break;
 			case "admin":
 				if (Login::$admin) return;
 				break;
 			case "user":
 				if (Login::$member or Login::$admin) return;
+				$message = _("Please log in to access this page!");
 				break;
 			default:
 				trigger_error("Unknown allowed users keyword", E_USER_ERROR);
@@ -100,11 +108,18 @@ abstract class Login {
 		if ( isset($_SESSION['redirects'][0]['POST']['action']) and $_SESSION['redirects'][0]['POST']['action'] == "logout" ) {
 			redirect("index.php");
 		}
+		// not allowed action
 		if ($redirect) {
-			warning(_("Access denied"));
+			warning(_("Access to action denied"));
 			redirect();
 		}
-		error(_("Access denied"));
+		// not allowed page
+		if (empty($GLOBALS['html_head_issued'])) {
+			html_head(_("Access denied"));
+		}
+		if ($message) notice($message);
+		html_foot();
+		exit;
 	}
 
 
