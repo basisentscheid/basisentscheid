@@ -36,7 +36,6 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 		}
 	}
 	warning(_("Login failed"));
-	redirect();
 } else {
 	$username = "";
 }
