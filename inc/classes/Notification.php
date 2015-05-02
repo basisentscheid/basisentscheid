@@ -425,6 +425,9 @@ class Notification {
 				$subject = sprintf(_("Proposal %d admitted"), $ids[0]);
 			}
 
+			$body .= "\n"._("All admitted proposals in this group").":\n"
+				.BASE_URL."proposals.php?ngroup=".$ngroup->id."&filter=admitted\n";
+
 			break;
 		case "debate":
 
@@ -441,7 +444,9 @@ class Notification {
 				}
 			}
 
-			$body .= "\n"._("Voting preparation").": ".datetimeformat($this->period->preparation)."\n"
+			$body .= "\n"._("All proposals in debate in this group").":\n"
+				.BASE_URL."proposals.php?ngroup=".$ngroup->id."&filter=debate\n\n"
+				._("Voting preparation").": ".datetimeformat($this->period->preparation)."\n"
 				._("Voting").": ".datetimeformat($this->period->voting)."\n";
 
 			break;
@@ -466,6 +471,9 @@ class Notification {
 				}
 				$body .= _("Vote result").": ".BASE_URL."vote_result.php?issue=".$issue->id."\n";
 			}
+
+			$body .= "\n"._("All finished proposals in this group").":\n"
+				.BASE_URL."proposals.php?ngroup=".$ngroup->id."&filter=closed\n";
 
 			break;
 		case "proposal_moved":
