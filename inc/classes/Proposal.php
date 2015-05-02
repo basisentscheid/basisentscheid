@@ -919,7 +919,7 @@ class Proposal extends Relation {
 				if ($row['proponent_confirmed']) {
 					$is_proponent = true;
 					$is_supporter = true;
-					$supporters[] = '<span class="self'.$expired.'">'.$row['proponent'].' <i>('._("proponent").')</i></span>';
+					$supporters[] = '<span class="self'.$expired.'">'.content2html($row['proponent']).' <i>('._("proponent").')</i></span>';
 				} elseif ($row['anonymous']===DB::value_true) {
 					$is_supporter = "anonymous";
 					$supporters[] = '<span class="self'.$expired.'">'._("anonymous").'</span>';
@@ -931,7 +931,7 @@ class Proposal extends Relation {
 			} else {
 				if ($row['proponent_confirmed']) {
 					if ($row['valid']) $supporters[] = $row['proponent'].' <i>('._("proponent").')</i>';
-					else               $supporters[] = '<span class="expired">'.$row['proponent'].' <i>('._("proponent").')</i></span>';
+					else               $supporters[] = '<span class="expired">'.content2html($row['proponent']).' <i>('._("proponent").')</i></span>';
 				} elseif ($row['anonymous']===DB::value_true) {
 					if ($row['valid']) $supporters[] = _("anonymous");
 					else               $supporters[] = '<span class="expired">'._("anonymous").'</span>';
