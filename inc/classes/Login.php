@@ -36,8 +36,20 @@ abstract class Login {
 	 */
 	public static function init() {
 
+		// start session
 		require "inc/pgsql_session_handler.php";
+		ini_set("session.gc_maxlifetime", SESSION_LIFETIME);
+		if ( ! preg_match('#^http(s?)://([^/]+)(/.*)$#', BASE_URL, $matches) ) {
+			trigger_error("Invalid BASE_URL", E_USER_ERROR);
+		};
+		$path     = $matches[3];
+		$domain   = $matches[2];
+		$secure   = (boolean) $matches[1];
+		$httponly = true;
+		session_set_cookie_params(SESSION_LIFETIME, $path, $domain, $secure, $httponly);
 		session_start();
+		// update cookie
+		setcookie(session_name(), session_id(), time()+SESSION_LIFETIME, $path, $domain, $secure, $httponly);
 
 		if (!isset($_SESSION['csrf'])) $_SESSION['csrf'] = self::generate_token(32);
 
