@@ -740,21 +740,24 @@ class Issue extends Relation {
 ?>
 		<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
+			$tooltip = "";
 			switch ($proposal->state) {
 			case "revoked":
 				?> revoked<?
+				$tooltip = ' title="'._("revoked proposal").'"';
 				break;
 			case "cancelled_interval":
 			case "cancelled_debate":
 			case "cancelled_admin":
 				?> cancelled<?
+				$tooltip = ' title="'._("cancelled proposal").'"';
 				break;
 			}
 			?>" onClick="location.href='<?=$link?>'"><?
 			if ($proposal->activity >= ACTIVITY_THRESHOLD) {
 				?><img src="img/activity.png" width="31" height="16" class="activity" style="opacity:<?=min($proposal->activity / ACTIVITY_DIVISOR, 1)?>" <?alt(_("Recent activity"))?>><?
 			}
-			echo _("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
+			echo _("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"<?=$tooltip?>><?=h($proposal->title)?></a></td>
 <?
 			if (BN=="vote.php") {
 				$this->display_column_vote($proposal, $vote, $num_rows);
