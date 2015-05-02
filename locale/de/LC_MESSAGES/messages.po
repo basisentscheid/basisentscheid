@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2015-05-02 17:00+0200\n"
+"PO-Revision-Date: 2015-05-02 20:22+0200\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -72,8 +72,8 @@ msgstr "Titel"
 # File: inc/classes/Issue.php, line: 397
 # File: inc/classes/Issue.php, line: 474
 # File: inc/classes/Issue.php, line: 629
-# File: inc/classes/Issue.php, line: 757
-# File: inc/classes/Issue.php, line: 1225
+# File: inc/classes/Issue.php, line: 760
+# File: inc/classes/Issue.php, line: 1228
 # File: inc/classes/Notification.php, line: 288
 # File: inc/classes/Notification.php, line: 311
 # File: inc/classes/Notification.php, line: 378
@@ -164,10 +164,10 @@ msgstr "Debatte"
 # File: proposal.php, line: 404
 # File: proposals.php, line: 111
 # File: inc/classes/Issue.php, line: 106
-# File: inc/classes/Issue.php, line: 901
-# File: inc/classes/Issue.php, line: 905
-# File: inc/classes/Issue.php, line: 913
-# File: inc/classes/Issue.php, line: 918
+# File: inc/classes/Issue.php, line: 904
+# File: inc/classes/Issue.php, line: 908
+# File: inc/classes/Issue.php, line: 916
+# File: inc/classes/Issue.php, line: 921
 # File: inc/classes/Notification.php, line: 450
 msgid "Voting"
 msgstr "Abstimmung"
@@ -402,7 +402,7 @@ msgstr "Themen pro Seite"
 # File: inc/classes/Comments.php, line: 446
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 860
-# File: inc/classes/Issue.php, line: 1196
+# File: inc/classes/Issue.php, line: 1199
 msgid "edit"
 msgstr "bearbeiten"
 #
@@ -547,12 +547,12 @@ msgstr "Ergebnis"
 msgid "until %s"
 msgstr "bis %s"
 #
-# File: inc/classes/Issue.php, line: 1032
-# File: inc/classes/Issue.php, line: 1189
+# File: inc/classes/Issue.php, line: 1035
+# File: inc/classes/Issue.php, line: 1192
 msgid "apply"
 msgstr "übernehmen"
 #
-# File: inc/classes/Issue.php, line: 858
+# File: inc/classes/Issue.php, line: 861
 # File: inc/classes/Period.php, line: 71
 #, php-format
 msgid "Debate starts at %s"
@@ -875,7 +875,7 @@ msgstr "Antrag auf Grund eines Beschlusses zulassen"
 msgid "admit proposal"
 msgstr "Antrag zulassen"
 #
-# File: inc/classes/Issue.php, line: 1196
+# File: inc/classes/Issue.php, line: 1199
 msgid "select voting period"
 msgstr "Abstimmungsperiode auswählen"
 #
@@ -907,7 +907,7 @@ msgstr "Unbekannte Aktion"
 msgid "The ballot could not be created!"
 msgstr "Die Urne konnte nicht angelegt werden!"
 #
-# File: inc/classes/Login.php, line: 118
+# File: inc/classes/Login.php, line: 130
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 #
@@ -915,11 +915,11 @@ msgstr "Zugriff verweigert"
 msgid "Ballot voting"
 msgstr "Urnen&shy;abstimmung"
 #
-# File: inc/classes/Issue.php, line: 1015
+# File: inc/classes/Issue.php, line: 1018
 msgid "offline voting"
 msgstr "Offline-Abstimmung"
 #
-# File: inc/classes/Issue.php, line: 1017
+# File: inc/classes/Issue.php, line: 1020
 msgid "online voting"
 msgstr "Online-Abstimmung"
 #
@@ -981,7 +981,7 @@ msgstr "Willst du dich wirklich auch der Liste der Antragsteller löschen?"
 # File: inc/functions.php, line: 203
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 649
-# File: inc/classes/Issue.php, line: 1056
+# File: inc/classes/Issue.php, line: 1059
 # File: inc/classes/Notification.php, line: 466
 msgid "Yes"
 msgstr "Ja"
@@ -990,7 +990,7 @@ msgstr "Ja"
 # File: inc/functions.php, line: 204
 # File: inc/classes/Issue.php, line: 400
 # File: inc/classes/Issue.php, line: 650
-# File: inc/classes/Issue.php, line: 1059
+# File: inc/classes/Issue.php, line: 1062
 # File: inc/classes/Notification.php, line: 466
 msgid "No"
 msgstr "Nein"
@@ -1111,21 +1111,21 @@ msgstr "Dieser Beitrag kann nicht mehr bearbeitet werden."
 msgid "The comment has been removed."
 msgstr "Der Beitrag wurde entfernt."
 #
-# File: inc/classes/Issue.php, line: 979
+# File: inc/classes/Issue.php, line: 982
 msgid "You can demand offline voting."
 msgstr "Du kannst eine Offline-Abstimmung fordern."
 #
-# File: inc/classes/Issue.php, line: 977
-# File: inc/classes/Issue.php, line: 997
+# File: inc/classes/Issue.php, line: 980
+# File: inc/classes/Issue.php, line: 1000
 msgid "You demand offline voting."
 msgstr "Du forderst eine Offline-Abstimmung."
 #
 # File: proposal.php, line: 364
-# File: inc/classes/Issue.php, line: 999
+# File: inc/classes/Issue.php, line: 1002
 msgid "Revoke"
 msgstr "zurückziehen"
 #
-# File: inc/classes/Issue.php, line: 1004
+# File: inc/classes/Issue.php, line: 1007
 msgid "Demand offline voting"
 msgstr "Offline-Abstimmung fordern"
 #
@@ -1201,7 +1201,7 @@ msgstr "Abstimmung in Periode %s startet"
 msgid "voting in period %s closes"
 msgstr "Abstimmung in Periode %s endet"
 #
-# File: inc/classes/Login.php, line: 254
+# File: inc/classes/Login.php, line: 258
 msgid "This email address is not valid!"
 msgstr "Diese E-Mail-Adresse ist ungültig!"
 #
@@ -1493,8 +1493,8 @@ msgstr ""
 msgid "Preparation"
 msgstr "Vorbereitung"
 #
-# File: inc/classes/Issue.php, line: 986
-# File: inc/classes/Issue.php, line: 990
+# File: inc/classes/Issue.php, line: 989
+# File: inc/classes/Issue.php, line: 993
 msgid "determination if online or offline voting"
 msgstr "Entscheidung ob Online- oder Offline-Abstimmung"
 #
@@ -1560,20 +1560,10 @@ msgstr "neuer Antrag"
 msgid "submitted"
 msgstr "eingereicht"
 #
-# File: inc/classes/Notification.php, line: 329
-#, php-format
-msgid "New proposal %d in area %s"
-msgstr "Neuer Antrag %d in Themenbereich %s"
-#
 # File: inc/classes/Notification.php, line: 331
 #, php-format
 msgid "Proponent '%s' added a new proposal:"
 msgstr "Antragsteller '%s' hat einen neuen Antrag erstellt:"
-#
-# File: inc/classes/Notification.php, line: 362
-#, php-format
-msgid "Proposal %d submitted"
-msgstr "Antrag %d eingereicht"
 #
 # File: inc/classes/Notification.php, line: 364
 #, php-format
@@ -1610,11 +1600,6 @@ msgstr "Antragsteller hat sich von Antrag %d zurückgezogen"
 # File: inc/classes/Notification.php, line: 403
 msgid "The following proponent removed himself:"
 msgstr "Der folgende Antragsteller hat sich zurückgezogen:"
-#
-# File: inc/classes/Notification.php, line: 306
-#, php-format
-msgid "New reply to your comment in proposal %d"
-msgstr "Neue Antwort auf deinen Beitrag in Antrag %d"
 #
 # File: inc/classes/Notification.php, line: 313
 #, php-format
@@ -1725,15 +1710,15 @@ msgstr "Die Rohdaten wurden am %s gelöscht."
 #
 # File: inc/classes/Issue.php, line: 476
 # File: inc/classes/Issue.php, line: 633
-# File: inc/classes/Issue.php, line: 1218
-# File: inc/classes/Issue.php, line: 1231
+# File: inc/classes/Issue.php, line: 1221
+# File: inc/classes/Issue.php, line: 1234
 msgid "Acceptance"
 msgstr "Zustimmung"
 #
 # File: inc/classes/Issue.php, line: 477
 # File: inc/classes/Issue.php, line: 637
 # File: inc/classes/Issue.php, line: 655
-# File: inc/classes/Issue.php, line: 1231
+# File: inc/classes/Issue.php, line: 1234
 # File: inc/classes/Notification.php, line: 468
 msgid "Score"
 msgstr "Bewertung"
@@ -1741,7 +1726,7 @@ msgstr "Bewertung"
 # File: inc/functions.php, line: 205
 # File: inc/functions.php, line: 217
 # File: inc/classes/Issue.php, line: 651
-# File: inc/classes/Issue.php, line: 1062
+# File: inc/classes/Issue.php, line: 1065
 # File: inc/classes/Notification.php, line: 466
 msgid "Abstention"
 msgstr "Enthaltung"
@@ -1923,9 +1908,9 @@ msgstr "Deine Abstimmungskennung"
 #
 # File: inc/classes/Issue.php, line: 404
 # File: inc/classes/Issue.php, line: 483
-# File: inc/classes/Issue.php, line: 1218
-# File: inc/classes/Issue.php, line: 1223
-# File: inc/classes/Issue.php, line: 1287
+# File: inc/classes/Issue.php, line: 1221
+# File: inc/classes/Issue.php, line: 1226
+# File: inc/classes/Issue.php, line: 1290
 msgid "Voting time"
 msgstr "Abstimmungszeitpunkt"
 #
@@ -1945,35 +1930,35 @@ msgstr "Deine Stimme wurde gespeichert, aber der Beleg konnte nicht verschickt w
 msgid "Your vote could not be saved!"
 msgstr "Deine Stimme konnte nicht gespeichert werden!"
 #
-# File: inc/classes/Login.php, line: 190
+# File: inc/classes/Login.php, line: 194
 msgid "Please enter a username!"
 msgstr "Bitte gib einen Benutzernamen ein!"
 #
-# File: inc/classes/Login.php, line: 195
+# File: inc/classes/Login.php, line: 199
 msgid "The username must have at least 3 characters!"
 msgstr "Der Benutzername muss mindestens 3 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 199
+# File: inc/classes/Login.php, line: 203
 msgid "The username must have not more than 32 characters!"
 msgstr "Der Benutzername darf nicht mehr als 32 Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 208
+# File: inc/classes/Login.php, line: 212
 msgid "This username is already used by someone else. Please try a different one!"
 msgstr "Dieser Benutzername wird bereits von jemand anderem verwendet. Bitte versuche es mit einem anderen!"
 #
-# File: inc/classes/Login.php, line: 224
+# File: inc/classes/Login.php, line: 228
 msgid "Please enter a password!"
 msgstr "Bitte gib ein Passwort ein!"
 #
-# File: inc/classes/Login.php, line: 229
+# File: inc/classes/Login.php, line: 233
 msgid "The two password fields do not match!"
 msgstr "Die beiden Passwörter stimmen nicht überein!"
 #
-# File: inc/classes/Login.php, line: 234
+# File: inc/classes/Login.php, line: 238
 msgid "The password name must have at least 8 characters!"
 msgstr "Das Passwort muss mindestens acht Zeichen lang sein!"
 #
-# File: inc/classes/Login.php, line: 250
+# File: inc/classes/Login.php, line: 254
 msgid "Please enter an email address!"
 msgstr "Bitte gib eine E-Mail-Adresse ein!"
 #
@@ -2033,7 +2018,7 @@ msgstr "Dein Benutzername"
 msgid "Your user ID"
 msgstr "Deine Benutzer-ID"
 #
-# File: inc/classes/Issue.php, line: 915
+# File: inc/classes/Issue.php, line: 918
 msgid "You have voted on this issue."
 msgstr "Du hast zu diesem Thema abgestimmt."
 #
@@ -2163,9 +2148,9 @@ msgstr "öffentlichen PGP-Schlüssel hochladen"
 msgid "Your submitted votes on this issue:"
 msgstr "Deine abgegebenen Stimmen zu diesem Thema:"
 #
-# File: inc/classes/Issue.php, line: 1218
-# File: inc/classes/Issue.php, line: 1223
-# File: inc/classes/Issue.php, line: 1287
+# File: inc/classes/Issue.php, line: 1221
+# File: inc/classes/Issue.php, line: 1226
+# File: inc/classes/Issue.php, line: 1290
 msgid "Vote token"
 msgstr "Abstimmungskennung"
 #
@@ -2244,7 +2229,7 @@ msgstr "Du kannst deine Wahl auch wieder ändern:"
 msgid "Voting mode"
 msgstr "Verfahren"
 #
-# File: inc/classes/Issue.php, line: 1287
+# File: inc/classes/Issue.php, line: 1290
 msgid "Demands offline voting"
 msgstr "Fordert eine Offline-Abstimmung"
 #
@@ -2357,15 +2342,15 @@ msgstr "Abgeschlossen am %s."
 msgid "This issue is not finished."
 msgstr "Dieses Thema ist nicht abgeschlossen."
 #
-# File: inc/classes/Issue.php, line: 884
+# File: inc/classes/Issue.php, line: 887
 msgid "enter result"
 msgstr "Ergebnis eingeben"
 #
-# File: inc/classes/Issue.php, line: 886
+# File: inc/classes/Issue.php, line: 889
 msgid "edit result"
 msgstr "Ergebnis bearbeiten"
 #
-# File: inc/classes/Login.php, line: 203
+# File: inc/classes/Login.php, line: 207
 msgid "The username must not begin with the character '#'!"
 msgstr "Der Benutzername darf nicht mit dem Zeichen '#' beginnen!"
 #
@@ -2377,8 +2362,8 @@ msgstr "Die Online-Abstimmung zu den folgenden Anträgen hat begonnen"
 msgid "This issue does not use offline voting."
 msgstr "Dieses Thema verwendet keine Offline-Abstimmung."
 #
-# File: inc/classes/Issue.php, line: 1030
-# File: inc/classes/Issue.php, line: 1035
+# File: inc/classes/Issue.php, line: 1033
+# File: inc/classes/Issue.php, line: 1038
 msgid "offline voting by admin"
 msgstr "Offline-Abstimmung durch Verantwortliche festgelegt"
 #
@@ -2589,16 +2574,16 @@ msgstr "Du bist nicht verifiziert."
 msgid "Account"
 msgstr "Mitgliedskonto"
 #
-# File: inc/classes/Issue.php, line: 905
+# File: inc/classes/Issue.php, line: 908
 msgid "You can not vote on this issue, because you are are not entitled in the group."
 msgstr "Du kannst zu diesem Thema nicht abstimmen, weil du in der Gliederung nicht stimmberechtigt bist."
 #
 # File: vote.php, line: 28
-# File: inc/classes/Issue.php, line: 918
+# File: inc/classes/Issue.php, line: 921
 msgid "You can not vote in this voting period, because you were not yet entitled when the voting started."
 msgstr "Du kannst in dieser Abstimmungsperiode nicht abstimmen, weil du noch nicht stimmberechtigt warst als die Abstimmung begann."
 #
-# File: inc/classes/Issue.php, line: 981
+# File: inc/classes/Issue.php, line: 984
 msgid "You are not entitled in this group."
 msgstr "Du bist nicht in dieser Gliederung nicht stimmberechtigt."
 #
@@ -2627,18 +2612,13 @@ msgstr "Gliederungen"
 msgid "Recently interesting issues"
 msgstr "Aktuell interessante Themen"
 #
-# File: inc/classes/Issue.php, line: 755
+# File: inc/classes/Issue.php, line: 758
 msgid "Recent activity"
 msgstr "kürzliche Aktivität"
 #
 # File: inc/classes/Notification.php, line: 77
 msgid "new comment"
 msgstr "neuer Beitrag"
-#
-# File: inc/classes/Notification.php, line: 283
-#, php-format
-msgid "New comment in proposal %d"
-msgstr "Neuer Beitrag in Antrag %d"
 #
 # File: inc/classes/Notification.php, line: 290
 #, php-format
@@ -2718,11 +2698,6 @@ msgstr "Unterstützung erneuern"
 # File: inc/classes/Notification.php, line: 79
 msgid "new draft"
 msgstr "neuer Entwurf"
-#
-# File: inc/classes/Notification.php, line: 343
-#, php-format
-msgid "New draft for proposal %d"
-msgstr "Neuer Entwurf für Antrag %d"
 #
 # File: inc/classes/Notification.php, line: 346
 #, php-format
@@ -2878,20 +2853,49 @@ msgstr "Alle Anträge in der Debatte in dieser Gliederung"
 msgid "All finished proposals in this group"
 msgstr "Alle abgeschlossenen Anträge in dieser Gliederung"
 #
-# File: inc/classes/Login.php, line: 87
+# File: inc/classes/Login.php, line: 99
 msgid "You can't access this page, because you are not eligible, not verified or not member of the group."
 msgstr "Du kannst auf diese Seite nicht zugreifen, weil du nicht stimmberechtigt, nicht verifiziert oder nicht Mitglied der Gliederung bist."
 #
-# File: inc/classes/Login.php, line: 89
-# File: inc/classes/Login.php, line: 94
 # File: inc/classes/Login.php, line: 101
+# File: inc/classes/Login.php, line: 106
+# File: inc/classes/Login.php, line: 113
 msgid "Please log in to access this page!"
 msgstr "Bitte melde dich an, um auf diese Seite zugreifen zu können!"
 #
-# File: inc/classes/Login.php, line: 113
+# File: inc/classes/Login.php, line: 125
 msgid "Access to action denied"
 msgstr "Zugriff auf Aktion verweigert"
 #
-# File: inc/classes/Login.php, line: 126
-msgid "Access to this page was denied."
-msgstr "Der Zugriff auf diese Seite wurde verweigert."
+# File: inc/classes/Issue.php, line: 747
+msgid "revoked proposal"
+msgstr "zurückgezogener Antrag"
+#
+# File: inc/classes/Issue.php, line: 753
+msgid "cancelled proposal"
+msgstr "abgebrochener Antrag"
+#
+# File: inc/classes/Notification.php, line: 283
+#, php-format
+msgid "New comment in proposal %d - %s"
+msgstr "Neuer Beitrag in Antrag %d - %s"
+#
+# File: inc/classes/Notification.php, line: 306
+#, php-format
+msgid "New reply to your comment in proposal %d - %s"
+msgstr "Neue Antwort auf deinen Beitrag in Antrag %d - %s"
+#
+# File: inc/classes/Notification.php, line: 329
+#, php-format
+msgid "New proposal %d in area %s - %s"
+msgstr "Neuer Antrag %d in Themenbereich %s - %s"
+#
+# File: inc/classes/Notification.php, line: 343
+#, php-format
+msgid "New draft for proposal %d - %s"
+msgstr "Neuer Entwurf für Antrag %d - %s"
+#
+# File: inc/classes/Notification.php, line: 362
+#, php-format
+msgid "Proposal %d submitted - %s"
+msgstr "Antrag %d eingereicht - %s"
