@@ -514,6 +514,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 
 ?>
 <h2><?=_("Proponents")?></h2>
+<div class="proponents">
 <ul>
 <?
 	$confirmed_proponents = 0;
@@ -581,6 +582,29 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 </ul>
 <?
 
+	// submit proposal
+	if ($proposal->state=="draft") {
+		$needed = REQUIRED_PROPONENTS - $confirmed_proponents;
+		if ($needed > 0) {
+?>
+<p class="more_proponents"><?
+			printf(ngettext("One more proponent is needed for submission.", "%d more proponents are needed for submission.", $needed), $needed);
+			?></p>
+<?
+		} elseif ($is_proponent) {
+			form(URI::same(), "", "submit_proposal");
+?>
+<input type="hidden" name="action" value="submit_proposal">
+<input type="submit" value="<?=_("submit proposal")?>">
+<?
+			form_end();
+		}
+	}
+
+?>
+</div>
+<?
+
 	// show drafts only to the proponents
 	if (!$is_proponent and !Login::$admin) return;
 
@@ -590,18 +614,6 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 ?>
 <h2><a href="<?=URI::append(['show_drafts'=>1])?>"><?=_("Drafts")?></a></h2>
 <?
-	}
-
-	if ($proposal->state=="draft" and $confirmed_proponents >= REQUIRED_PROPONENTS) {
-?>
-<h2><?=_("Actions")?></h2>
-<?
-		form(URI::same());
-?>
-<input type="hidden" name="action" value="submit_proposal">
-<input type="submit" value="<?=_("submit proposal")?>">
-<?
-		form_end();
 	}
 
 }

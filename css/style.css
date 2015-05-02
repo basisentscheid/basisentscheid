@@ -887,17 +887,21 @@ section.proposal_info {
 		margin-left: 0;
 	}
 }
-section.proposal_info ul {
+section.proposal_info div.proponents {
 	background-color: #FFF;
 	margin: 0;
 	padding: 3px 2px 3px 5px;
+}
+section.proposal_info div.proponents ul {
+	margin: 0;
+	padding: 0;
 	list-style: square inside;
 }
-section.proposal_info ul li span.unconfirmed {
+section.proposal_info div.proponents ul li span.unconfirmed {
 	color: #AAA;
 }
-section.proposal_info ul li form,
-section.proposal_info ul li div.form {
+section.proposal_info div.proponents ul li form,
+section.proposal_info div.proponents ul li div.form {
 	display: inline-block;
 	vertical-align: top;
 	/*noinspection CssOverwrittenProperties*/
@@ -906,14 +910,21 @@ section.proposal_info ul li div.form {
 	width: 19.4rem;
 	margin-top: 2px;
 }
-section.proposal_info ul li form div.explain {
+section.proposal_info div.proponents ul li form div.explain {
 	margin: 0 0 2px 0;
 }
-section.proposal_info ul li form input[type=text] {
+section.proposal_info div.proponents ul li form input[type=text] {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+}
+section.proposal_info div.proponents form.submit_proposal {
+    margin: 5px 0 1px 0;
+}
+section.proposal_info div.proponents p.more_proponents {
+    margin: 2px 0;
+    font-style: italic;
 }
 section.proposal_content {
 	overflow: hidden;
