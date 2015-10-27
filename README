@@ -117,6 +117,19 @@ In a live environment you should remove the script for creating test member acco
 $ rm create_member.php
 
 
+=== Update ===
+
+In this example we update to the release/tag "v1.0.0".
+
+$ cd /www/basisentscheid
+$ git fetch
+Update the database structure by executing the new statements from migrate.sql:
+$ git diff v1.0.0 -- db/migrate.sql
+$ psql --username=basisentscheid basisentscheid
+Update the files:
+$ git checkout --force v1.0.0
+
+
 === License ===
 
 Copyright 2014-2015 Magnus Rosenbaum <dev@cmr.cx>
