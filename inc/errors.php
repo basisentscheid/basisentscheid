@@ -312,7 +312,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 		// display backtrace
 		if (PHP_SAPI!="cli") {
 			// display as HTML
-			if ($show) {
+			if ($show and !$repeated) {
 				if (ERROR_BACKTRACE_DISPLAY) {
 ?>
 <br>
