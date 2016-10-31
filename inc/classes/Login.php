@@ -41,7 +41,7 @@ abstract class Login {
 		ini_set("session.gc_maxlifetime", SESSION_LIFETIME);
 		if ( ! preg_match('#^http(s?)://([^/]+)(/.*)$#', BASE_URL, $matches) ) {
 			trigger_error("Invalid BASE_URL", E_USER_ERROR);
-		};
+		}
 		$path     = $matches[3];
 		$domain   = $matches[2];
 		$secure   = (boolean) $matches[1];
