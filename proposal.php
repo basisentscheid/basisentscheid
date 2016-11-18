@@ -476,9 +476,9 @@ html_foot();
  * display the right column with area and proponents
  *
  * @param Proposal $proposal
- * @param Issue   $issue
- * @param array   $proponents
- * @param boolean $is_proponent
+ * @param Issue    $issue
+ * @param array    $proponents
+ * @param boolean  $is_proponent
  */
 function display_proposal_info(Proposal $proposal, Issue $issue, array $proponents, $is_proponent) {
 ?>
@@ -623,9 +623,9 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
  * display supporters and offline voting demanders
  *
  * @param Proposal $proposal
- * @param array   $supporters
- * @param mixed   $is_supporter
- * @param boolean $is_valid
+ * @param array    $supporters
+ * @param mixed    $is_supporter
+ * @param boolean  $is_valid
  */
 function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $is_valid) {
 ?>

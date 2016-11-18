@@ -85,8 +85,8 @@ abstract class Login {
 	 * make sure that only allowed users access a page
 	 *
 	 * @param string|array $allowed_users
-	 * @param integer $ngroup        (optional) required if only entitled members are allowed
-	 * @param boolean $redirect      (optional)
+	 * @param integer      $ngroup        (optional) required if only entitled members are allowed
+	 * @param boolean      $redirect      (optional)
 	 */
 	public static function access($allowed_users, $ngroup=0, $redirect=false) {
 		if (!is_array($allowed_users)) $allowed_users = array($allowed_users);

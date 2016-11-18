@@ -201,8 +201,8 @@ html_foot();
  * display the right column with area and proponents
  *
  * @param Proposal $proposal
- * @param object  $issue      Issue or empty
- * @param array   $proponents
+ * @param object   $issue      Issue or empty
+ * @param array    $proponents
  */
 function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 ?>

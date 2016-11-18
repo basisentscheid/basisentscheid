@@ -16,9 +16,9 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 * overload method for line highlighting
 	 *
 	 * @param resource $result
-	 * @param boolean $direct_edit
-	 * @param boolean $show_edit_column
-	 * @param integer $linescount
+	 * @param boolean  $direct_edit
+	 * @param boolean  $show_edit_column
+	 * @param integer  $linescount
 	 */
 	protected function display_list_tbody($result, $direct_edit, $show_edit_column, $linescount) {
 ?>

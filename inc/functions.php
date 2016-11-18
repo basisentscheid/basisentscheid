@@ -363,9 +363,9 @@ function limitstr($string, $length) {
  * replacement for wordwrap(), which is not multi byte safe
  *
  * @param string  $str
- * @param integer $width
- * @param string  $break
- * @param boolean $cut
+ * @param integer $width (optional)
+ * @param string  $break (optional)
+ * @param boolean $cut   (optional)
  * @return string
  */
 function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {

@@ -797,8 +797,8 @@ class Issue extends Relation {
 	 * column "results"
 	 *
 	 * @param Proposal $proposal
-	 * @param array   $proposals
-	 * @param boolean $first
+	 * @param array    $proposals
+	 * @param boolean  $first
 	 */
 	private function display_results(Proposal $proposal, array $proposals, $first) {
 		if ($this->state != 'finished') {
@@ -838,10 +838,10 @@ class Issue extends Relation {
 	 * column "state"
 	 *
 	 * @param Proposal $proposal
-	 * @param array   $proposals
-	 * @param boolean $first
-	 * @param boolean $first_admitted
-	 * @param integer $num_rows
+	 * @param array    $proposals
+	 * @param boolean  $first
+	 * @param boolean  $first_admitted (reference)
+	 * @param integer  $num_rows
 	 */
 	private function display_column_state(Proposal $proposal, array $proposals, $first, &$first_admitted, $num_rows) {
 		if ($this->state=="entry" or $this->state=="cancelled") {
@@ -1046,8 +1046,8 @@ class Issue extends Relation {
 	 * column "vote" on vote.php
 	 *
 	 * @param Proposal $proposal
-	 * @param array   $vote
-	 * @param integer $num_rows
+	 * @param array    $vote
+	 * @param integer  $num_rows
 	 */
 	private function display_column_vote(Proposal $proposal, array $vote, $num_rows) {
 ?>
@@ -1086,7 +1086,7 @@ class Issue extends Relation {
 	 * vote result form on page admin_vote_result.php
 	 *
 	 * @param Proposal $proposal
-	 * @param integer $num_rows
+	 * @param integer  $num_rows
 	 */
 	private function display_column_admin_vote_result(Proposal $proposal, $num_rows) {
 ?>
@@ -1209,9 +1209,9 @@ class Issue extends Relation {
 	/**
 	 * display a list of votes
 	 *
-	 * @param array   $proposals
+	 * @param array    $proposals
 	 * @param resource $result
-	 * @param string  $token     (optional) token of the logged in member for highlighting
+	 * @param string   $token     (optional) token of the logged in member for highlighting
 	 */
 	public static function display_votes(array $proposals, $result, $token="") {
 ?>
@@ -1285,7 +1285,7 @@ class Issue extends Relation {
 	 * display a list of voting mode votes
 	 *
 	 * @param resource $result
-	 * @param string  $token  (optional) token of the logged in member for highlighting
+	 * @param string   $token  (optional) token of the logged in member for highlighting
 	 */
 	public static function display_votingmode_votes($result, $token="") {
 ?>

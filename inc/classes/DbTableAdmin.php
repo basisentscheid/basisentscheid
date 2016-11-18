@@ -795,9 +795,9 @@ class DbTableAdmin {
 	 * table body
 	 *
 	 * @param resource $result
-	 * @param boolean $direct_edit
-	 * @param boolean $show_edit_column
-	 * @param integer $linescount
+	 * @param boolean  $direct_edit
+	 * @param boolean  $show_edit_column
+	 * @param integer  $linescount
 	 */
 	protected function display_list_tbody($result, $direct_edit, $show_edit_column, $linescount) {
 ?>
@@ -1286,9 +1286,9 @@ function submit_delete_checked() {
 	/**
 	 * first part of a longer text
 	 *
-	 * @param mixed   $content
+	 * @param mixed    $content
 	 * @param Relation $object
-	 * @param array   $column
+	 * @param array    $column
 	 */
 	protected function print_text_limit($content, /** @noinspection PhpUnusedParameterInspection */ Relation $object, array $column) {
 		if (!empty($column['print_limit'])) $limit = $column['print_limit']; else $limit = 50;
@@ -1329,9 +1329,9 @@ function submit_delete_checked() {
 	/**
 	 * selected value from a drop down menu
 	 *
-	 * @param mixed   $content
+	 * @param mixed    $content
 	 * @param Relation $object
-	 * @param array   $column
+	 * @param array    $column
 	 */
 	protected function print_select($content, /** @noinspection PhpUnusedParameterInspection */ Relation $object, array $column) {
 		echo h(@$column['options'][$content]);
@@ -1354,11 +1354,11 @@ function submit_delete_checked() {
 	/**
 	 * arrows to change the manual order
 	 *
-	 * @param mixed   $content
+	 * @param mixed    $content
 	 * @param Relation $object
-	 * @param array   $column
-	 * @param integer $line
-	 * @param integer $linescount
+	 * @param array    $column
+	 * @param integer  $line
+	 * @param integer  $linescount
 	 */
 	protected function print_manualorder(/** @noinspection PhpUnusedParameterInspection */ $content, Relation $object, array $column, $line, $linescount) {
 

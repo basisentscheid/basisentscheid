@@ -170,7 +170,7 @@ abstract class DB {
 	/**
 	 *
 	 * @param resource $result
-	 * @param integer $line
+	 * @param integer  $line
 	 * @return boolean
 	 */
 	static function result_seek($result, $line) {
@@ -232,7 +232,7 @@ abstract class DB {
 	 * call the constructor with $from_fetch_object
 	 *
 	 * @param resource $result
-	 * @param string  $classname
+	 * @param string   $classname
 	 * @return object
 	 */
 	static function fetch_object($result, $classname) {
