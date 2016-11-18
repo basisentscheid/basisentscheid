@@ -45,9 +45,9 @@ msgstr "Benutzername"
 #
 # File: ballot_edit.php, line: 138
 # File: proposal_edit.php, line: 189
-# File: settings.php, line: 109
 # File: settings_encryption.php, line: 91
 # File: settings_notifications.php, line: 74
+# File: settings.php, line: 109
 msgid "Save"
 msgstr "Speichern"
 #
@@ -59,9 +59,9 @@ msgstr "Abstimmungsperioden"
 #
 # File: diff.php, line: 45
 # File: draft.php, line: 39
-# File: proposal.php, line: 331
 # File: proposal_edit.php, line: 169
 # File: proposal_edit.php, line: 176
+# File: proposal.php, line: 331
 # File: inc/classes/Notification.php, line: 333
 # File: inc/classes/Notification.php, line: 352
 # File: inc/classes/Notification.php, line: 366
@@ -99,9 +99,9 @@ msgstr "Diesen Antrag unterstützen"
 #
 # File: diff.php, line: 47
 # File: draft.php, line: 41
-# File: proposal.php, line: 333
 # File: proposal_edit.php, line: 171
 # File: proposal_edit.php, line: 178
+# File: proposal.php, line: 333
 # File: inc/classes/Notification.php, line: 335
 # File: inc/classes/Notification.php, line: 354
 # File: inc/classes/Notification.php, line: 368
@@ -110,8 +110,8 @@ msgstr "Antragstext"
 #
 # File: diff.php, line: 49
 # File: draft.php, line: 43
-# File: proposal.php, line: 342
 # File: proposal_edit.php, line: 184
+# File: proposal.php, line: 342
 # File: inc/classes/Notification.php, line: 337
 # File: inc/classes/Notification.php, line: 356
 # File: inc/classes/Notification.php, line: 370
@@ -179,8 +179,8 @@ msgid "Counting"
 msgstr "Auszählung"
 #
 # File: admin_areas.php, line: 32
-# File: proposal.php, line: 485
 # File: proposal_edit.php, line: 209
+# File: proposal.php, line: 485
 # File: inc/classes/Proposal.php, line: 1081
 msgid "Area"
 msgstr "Themenbereich"
@@ -254,8 +254,8 @@ msgstr "Teilnahme"
 msgid "last time activated"
 msgstr "zuletzt aktiviert"
 #
-# File: proposal.php, line: 516
 # File: proposal_edit.php, line: 226
+# File: proposal.php, line: 516
 # File: inc/classes/Proposal.php, line: 1083
 msgid "Proponents"
 msgstr "Antragsteller"
@@ -400,8 +400,8 @@ msgstr "Themen pro Seite"
 # File: proposal.php, line: 734
 # File: proposal.php, line: 782
 # File: inc/classes/Comments.php, line: 446
-# File: inc/classes/DbTableAdmin.php, line: 860
 # File: inc/classes/DbTableAdmin_Period.php, line: 96
+# File: inc/classes/DbTableAdmin.php, line: 860
 # File: inc/classes/Issue.php, line: 1200
 # File: inc/classes/Issue.php, line: 1203
 msgid "edit"
@@ -494,8 +494,8 @@ msgstr "Der zu duplizierende Datensatz existiert nicht."
 msgid "The record %d has been duplicated. ID of the copy: %d"
 msgstr "Der Datensatz %d wurde dupliziert. ID der Kopie: %d"
 #
-# File: inc/classes/DbTableAdmin.php, line: 866
 # File: inc/classes/DbTableAdmin_Period.php, line: 102
+# File: inc/classes/DbTableAdmin.php, line: 866
 msgid "duplicate"
 msgstr "duplizieren"
 #
@@ -757,11 +757,11 @@ msgstr "zurücksetzen"
 msgid "remove"
 msgstr "entfernen"
 #
-# File: inc/functions_http.php, line: 699
+# File: inc/functions_http.php, line: 702
 msgid "show help"
 msgstr "Hilfe zeigen"
 #
-# File: inc/functions_http.php, line: 638
+# File: inc/functions_http.php, line: 641
 msgid "hide help"
 msgstr "Hilfe ausblenden"
 #
@@ -803,9 +803,9 @@ msgstr "Der Inhalt wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt
 msgid "The reason has been truncated to the maximum allowed length of %d characters!"
 msgstr "Die Begründung wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
 #
+# File: proposal_edit.php, line: 27
 # File: proposal.php, line: 45
 # File: proposal.php, line: 68
-# File: proposal_edit.php, line: 27
 msgid "Your are not a proponent of this proposal."
 msgstr "Du bist kein Antragsteller dieses Antrags."
 #
@@ -889,15 +889,15 @@ msgstr "Aktionen"
 # File: ballots.php, line: 81
 # File: confirm_mail.php, line: 16
 # File: create_member.php, line: 39
-# File: proposal.php, line: 263
 # File: proposal_edit.php, line: 135
+# File: proposal.php, line: 263
 # File: proposals.php, line: 21
 # File: register.php, line: 90
 # File: request_password_reset.php, line: 61
 # File: reset_password.php, line: 54
-# File: settings.php, line: 63
 # File: settings_encryption.php, line: 60
 # File: settings_notifications.php, line: 27
+# File: settings.php, line: 63
 # File: vote.php, line: 40
 # File: inc/classes/DbTableAdmin.php, line: 386
 msgid "Unknown action"
@@ -2178,9 +2178,9 @@ msgstr "Dieser Schlüssel kann nicht verschlüsseln."
 msgid "The key was found and is usable."
 msgstr "Der Schlüssel wurde gefunden und ist verwendbar."
 #
-# File: settings.php, line: 69
 # File: settings_encryption.php, line: 66
 # File: settings_notifications.php, line: 33
+# File: settings.php, line: 69
 msgid "Member settings"
 msgstr "Mitglieds-Einstellungen"
 #
@@ -2729,7 +2729,7 @@ msgstr "abmelden"
 msgid "Log in"
 msgstr "anmelden"
 #
-# File: inc/functions_http.php, line: 437
+# File: inc/functions_http.php, line: 440
 msgid "You have unsaved changes."
 msgstr "Das Formular enthält nicht gespeicherte Eingaben. Wenn du die Seite verlässt, gehen diese verloren."
 #
@@ -2907,18 +2907,18 @@ msgid_plural "%d more proponents are needed for submission."
 msgstr[0] "Ein weiterer Antragsteller wird benötigt, um den Antrag einreichen zu können."
 msgstr[1] "%d weitere Antragsteller werden benötigt, um den Antrag einreichen zu können."
 #
-# File: inc/classes/Issue.php, line: 1135
+# File: inc/classes/Issue.php, line: 1136
 msgid "The issue can be assigned to a voting period when at least one proposal is admitted."
 msgstr "Das Thema kann erst einer Abstimmungsperiode zugeordnet werden, wenn mindestens ein Antrag zugelassen ist."
 #
-# File: inc/classes/Issue.php, line: 1164
+# File: inc/classes/Issue.php, line: 1166
 msgid "There are no voting periods available, in which the debate has not yet started."
 msgstr "Es gibt keine Abstimmungsperioden, in denen die Debatte noch nicht begonnen hat."
 #
-# File: inc/classes/Issue.php, line: 1167
+# File: inc/classes/Issue.php, line: 1169
 msgid "There are no voting periods available, in which the voting has not yet started."
 msgstr "Es gibt keine Abstimmungsperioden, in denen die Abstimmung noch nicht begonnen hat."
 #
-# File: inc/classes/Issue.php, line: 1173
-msgid "The period of this issue may not be changed anymore, because voting has already begun."
-msgstr "Die Abstimmungsperiode dieses Themas kann nicht mehr geändert werden, weil die Abstimmung bereits begonnen hat."
+# File: inc/classes/Issue.php, line: 1154
+msgid "no voting period"
+msgstr "keine Abstimmungsperiode"
