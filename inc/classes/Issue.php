@@ -933,9 +933,7 @@ class Issue extends Relation {
 		if (Login::$admin and BN!="admin_vote_result.php") {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
-			if ( !$this->display_edit_period() ) {
-				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
-			}
+			$this->display_edit_period();
 			?></td>
 <?
 		} elseif ($period_rowspan) {
@@ -1124,7 +1122,7 @@ class Issue extends Relation {
 	 *
 	 * This function may not be used in tests with time_warp(), because it uses static variables!
 	 *
-	 * @return array list of options for drop down menu or false
+	 * @return array list of options for drop down menu or string with explanation
 	 */
 	public function available_periods() {
 
@@ -1133,11 +1131,12 @@ class Issue extends Relation {
 		case "entry":
 			// At least one proposal has to be admitted.
 			$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
-			if ( !DB::fetchfield($sql) ) return false;
+			if ( !DB::fetchfield($sql) ) {
+				return _("The issue can be assigned to a voting period when at least one proposal is admitted.");
+			}
 		case "debate":
 		case "preparation":
 
-			// Issues, on which the voting already started, may not be postponed anymore.
 			// Issues, which were not started debating, may only be moved into periods where the debate has not yet started. Otherwise the debate time would be shorter than for other issues.
 
 			// read options once from the database
@@ -1161,28 +1160,28 @@ class Issue extends Relation {
 			}
 
 			if ($this->state=="entry") {
-				return $options_admission;
+				if ($options_admission) return $options_admission;
+				return _("There are no voting periods available, in which the debate has not yet started.");
 			} else {
-				return $options_all;
+				if ($options_all) return $options_all;
+				return _("There are no voting periods available, in which the voting has not yet started.");
 			}
 
 		}
 
-		return false;
+		// Issues, on which the voting already started, may not be postponed anymore.
+		return _("The period of this issue may not be changed anymore, because voting has already begun.");
 	}
 
 
 	/**
 	 * admins select a voting period
-	 *
-	 * @return boolean true if the period may be changed
 	 */
 	private function display_edit_period() {
 
 		$options =& $this->available_periods();
-		if (!$options) return false;
 
-		if (@$_GET['edit_period']==$this->id) {
+		if (@$_GET['edit_period']==$this->id and is_array($options) and $options) {
 			form(URI::strip(['edit_period'])."#issue".$this->id);
 			input_select("period", $options, $this->period);
 			?><br><?
@@ -1196,10 +1195,14 @@ class Issue extends Relation {
 			if ($this->period) {
 				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 			}
+			if (!$options) return;
+			if (is_string($options)) {
+				?><span class="iconlink disabled"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=$options?>"></span><?
+				return;
+			}
 			?><a href="<?=URI::append(['edit_period'=>$this->id])?>#issue<?=$this->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}
 
-		return true;
 	}
 
 
