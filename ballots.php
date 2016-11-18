@@ -14,12 +14,11 @@ if (!$period->id) {
 	error("The requested period does not exist!");
 }
 
-$ngroup = $period->ngroup;
-$_SESSION['ngroup'] = $ngroup;
+$_SESSION['ngroup'] = $period->ngroup;
 
 if (!$period->ballot_voting) {
 	warning("There is no ballot voting available in this period!");
-	redirect("periods.php?ngroup=".$ngroup."&hl=".$period->id);
+	redirect("periods.php?ngroup=".$_SESSION['ngroup']."&hl=".$period->id);
 }
 
 if (Login::$member) {
@@ -32,7 +31,7 @@ if (Login::$member) {
 if ($action) {
 	switch ($action) {
 	case "select":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		action_required_parameters('ballot');
 		$ballot = new Ballot($_POST['ballot']);
 		if (!$ballot->id) {
@@ -51,7 +50,7 @@ if ($action) {
 		redirect();
 		break;
 	case "select_postal":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		if ($period->state=="ballot_preparation") {
 			warning(_("In ballot preparation phase it is not allowed anymore to select postal voting."));
 			redirect();
@@ -60,7 +59,7 @@ if ($action) {
 		redirect();
 		break;
 	case "unselect":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		if ($period->state=="ballot_preparation") {
 			warning(_("In ballot preparation phase it is not allowed anymore to change the ballot choice."));
 			redirect();
@@ -85,9 +84,9 @@ if ($action) {
 }
 
 
-html_head( sprintf(_("Ballots for <a%s>voting period %d</a>"), ' href="periods.php?ngroup='.$ngroup.'&amp;hl='.$period->id.'"', $period->id), true );
+html_head( sprintf(_("Ballots for <a%s>voting period %d</a>"), ' href="periods.php?ngroup='.$_SESSION['ngroup'].'&amp;hl='.$period->id.'"', $period->id), true );
 
-$entitled = ( Login::$member and Login::$member->entitled($ngroup) );
+$entitled = ( Login::$member and Login::$member->entitled($_SESSION['ngroup']) );
 ?>
 
 <p><?=$period->ballot_phase_info()?></p>

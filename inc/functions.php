@@ -389,9 +389,9 @@ function limitstr($string, $length) {
  * replacement for wordwrap(), which is not multi byte safe
  *
  * @param string  $str
- * @param integer $width
- * @param string  $break
- * @param boolean $cut
+ * @param integer $width (optional)
+ * @param string  $break (optional)
+ * @param boolean $cut   (optional)
  * @return string
  */
 function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
@@ -435,7 +435,7 @@ function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
  */
 function send_mail($to, $subject, $body, array $headers=array(), $fingerprint="") {
 
-	$subject = MAIL_SUBJECT_PREFIX.$subject;
+	$subject = mb_encode_mimeheader( limitstr(MAIL_SUBJECT_PREFIX.$subject, 125) );
 
 	$headers[] = "Content-Type: text/plain; charset=UTF-8";
 	$headers[] = "Content-Transfer-Encoding: 8bit";

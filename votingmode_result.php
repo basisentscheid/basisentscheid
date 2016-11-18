@@ -13,6 +13,9 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error("The requested issue does not exist.");
 }
+
+$_SESSION['ngroup'] = $issue->area()->ngroup;
+
 if (!$issue->votingmode_determination_finished()) {
 	error("Voting mode determination is not finished yet.");
 }

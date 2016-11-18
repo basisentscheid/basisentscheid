@@ -34,14 +34,13 @@ if (!$proposal->id) {
 
 $issue = $proposal->issue();
 
-$ngroup = $issue->area()->ngroup;
-$_SESSION['ngroup'] = $ngroup;
+$_SESSION['ngroup'] = $issue->area()->ngroup;
 
 if ($action) {
 	switch ($action) {
 
 	case "submit_proposal":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
 			redirect();
@@ -51,19 +50,19 @@ if ($action) {
 		break;
 
 	case "apply_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		action_required_parameters('proponent');
 		$proposal->update_proponent(trim($_POST['proponent']));
 		redirect();
 		break;
 	case "become_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		action_required_parameters('proponent');
 		$proposal->add_proponent(trim($_POST['proponent']));
 		redirect();
 		break;
 	case "confirm_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		action_required_parameters('member');
 		if (!$proposal->is_proponent(Login::$member)) {
 			warning(_("Your are not a proponent of this proposal."));
@@ -78,38 +77,38 @@ if ($action) {
 		redirect();
 		break;
 	case "confirm_remove_proponent":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$proposal->remove_proponent(Login::$member);
 		redirect();
 		break;
 
 	case "add_support":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$proposal->add_support();
 		redirect("#supporters");
 		break;
 	case "add_support_anonym":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$proposal->add_support(true);
 		redirect("#supporters");
 		break;
 	case "renew_support":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$proposal->renew_support();
 		redirect("#supporters");
 		break;
 	case "revoke_support":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$proposal->revoke_support();
 		redirect("#supporters");
 		break;
 	case "demand_votingmode":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$issue->demand_votingmode();
 		redirect();
 		break;
 	case "revoke_votingmode":
-		Login::access_action("entitled", $ngroup);
+		Login::access_action("entitled", $_SESSION['ngroup']);
 		$issue->revoke_votingmode();
 		redirect();
 		break;
@@ -445,7 +444,7 @@ if (Login::$admin) {
 	}
 } else {
 	if ($issue->allowed_add_alternative_proposal()) {
-		if (Login::$member and Login::$member->entitled($ngroup)) {
+		if (Login::$member and Login::$member->entitled($_SESSION['ngroup'])) {
 ?>
 <div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
@@ -477,12 +476,11 @@ html_foot();
  * display the right column with area and proponents
  *
  * @param Proposal $proposal
- * @param Issue   $issue
- * @param array   $proponents
- * @param boolean $is_proponent
+ * @param Issue    $issue
+ * @param array    $proponents
+ * @param boolean  $is_proponent
  */
 function display_proposal_info(Proposal $proposal, Issue $issue, array $proponents, $is_proponent) {
-	global $ngroup;
 ?>
 <h2><?=_("Area")?></h2>
 <p class="proposal"><?=h($issue->area()->name)?></p>
@@ -500,7 +498,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 
 	$allowed_edit_proponent = false;
 	if ($proposal->allowed_change_proponents()) {
-		if (Login::$member and Login::$member->entitled($ngroup)) {
+		if (Login::$member and Login::$member->entitled($_SESSION['ngroup'])) {
 			$allowed_edit_proponent = true;
 			if (!$is_any_proponent) {
 ?>
@@ -516,6 +514,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 
 ?>
 <h2><?=_("Proponents")?></h2>
+<div class="proponents">
 <ul>
 <?
 	$confirmed_proponents = 0;
@@ -583,6 +582,29 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 </ul>
 <?
 
+	// submit proposal
+	if ($proposal->state=="draft") {
+		$needed = REQUIRED_PROPONENTS - $confirmed_proponents;
+		if ($needed > 0) {
+?>
+<p class="more_proponents"><?
+			printf(ngettext("One more proponent is needed for submission.", "%d more proponents are needed for submission.", $needed), $needed);
+			?></p>
+<?
+		} elseif ($is_proponent) {
+			form(URI::same(), "", "submit_proposal");
+?>
+<input type="hidden" name="action" value="submit_proposal">
+<input type="submit" value="<?=_("submit proposal")?>">
+<?
+			form_end();
+		}
+	}
+
+?>
+</div>
+<?
+
 	// show drafts only to the proponents
 	if (!$is_proponent and !Login::$admin) return;
 
@@ -594,18 +616,6 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 <?
 	}
 
-	if ($proposal->state=="draft" and $confirmed_proponents >= REQUIRED_PROPONENTS) {
-?>
-<h2><?=_("Actions")?></h2>
-<?
-		form(URI::same());
-?>
-<input type="hidden" name="action" value="submit_proposal">
-<input type="submit" value="<?=_("submit proposal")?>">
-<?
-		form_end();
-	}
-
 }
 
 
@@ -613,12 +623,11 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
  * display supporters and offline voting demanders
  *
  * @param Proposal $proposal
- * @param array   $supporters
- * @param mixed   $is_supporter
- * @param boolean $is_valid
+ * @param array    $supporters
+ * @param mixed    $is_supporter
+ * @param boolean  $is_valid
  */
 function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $is_valid) {
-	global $ngroup;
 ?>
 <section class="quorum">
 <h2 id="supporters"><?=_("Supporters")?>:</h2>
@@ -641,7 +650,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 ?>
 <br class="clear">
 <?
-		$disabled = (Login::$member and Login::$member->entitled($ngroup)) ? "" : " disabled";
+		$disabled = (Login::$member and Login::$member->entitled($_SESSION['ngroup'])) ? "" : " disabled";
 		if ($is_supporter) {
 			if ($is_valid) {
 				?><div class="support">&#10003; <?

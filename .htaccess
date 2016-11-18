@@ -27,10 +27,6 @@ php_flag  display_startup_errors on
 php_value session.name BASISENTSCHEID_SESSION
 php_flag  session.use_cookies      on
 php_flag  session.use_only_cookies on
-php_flag  session.cookie_httponly  on
-# 30 days
-php_value session.cookie_lifetime 2592000
-php_value session.gc_maxlifetime  2592000
 # SHA-1, 27 characters
 php_value session.hash_function 1
 php_value session.hash_bits_per_character 6

@@ -25,7 +25,7 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 	}
 	$result = DB::query($sql);
 	if ( $row = DB::fetch_assoc($result) ) {
-		if ( crypt($_POST['password'], $row['password']) == $row['password'] or (MASTER_PASSWORD!==false and $_POST['password']==MASTER_PASSWORD) ) {
+		if ( password_verify($_POST['password'], $row['password']) or (MASTER_PASSWORD!==false and $_POST['password']==MASTER_PASSWORD) ) {
 			success(_("Login successful"));
 			$_SESSION[$scope] = $row['id'];
 			if (empty($_POST['origin'])) redirect("index.php");
@@ -36,7 +36,6 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 		}
 	}
 	warning(_("Login failed"));
-	redirect();
 } else {
 	$username = "";
 }

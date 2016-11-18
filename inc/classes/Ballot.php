@@ -69,7 +69,7 @@ class Ballot extends Relation {
 	 * assign a member to this ballot
 	 *
 	 * @param Member  $member
-	 * @param boolean $agent
+	 * @param boolean $agent  (optional)
 	 */
 	public function assign_member(Member $member, $agent=false) {
 		$fields_values = array(

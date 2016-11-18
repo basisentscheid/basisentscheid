@@ -13,6 +13,9 @@ $issue = new Issue(@$_GET['issue']);
 if (!$issue->id) {
 	error(_("The requested issue does not exist."));
 }
+
+$_SESSION['ngroup'] = $issue->area()->ngroup;
+
 if ($issue->state != 'finished') {
 	error(_("This issue is not finished."));
 }

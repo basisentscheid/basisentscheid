@@ -14,5 +14,5 @@ require "../inc/common_cli.php";
 
 $a = new Admin;
 $a->username = "test";
-$a->password = crypt("test");
+$a->password = password_hash("test", PASSWORD_DEFAULT);
 $a->create();

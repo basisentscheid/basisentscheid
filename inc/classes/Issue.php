@@ -804,21 +804,24 @@ class Issue extends Relation {
 ?>
 		<td class="proposal_link<?
 			if ($selected_proposal==$proposal->id) { ?>_active<? }
+			$tooltip = "";
 			switch ($proposal->state) {
 			case "revoked":
 				?> revoked<?
+				$tooltip = ' title="'._("revoked proposal").'"';
 				break;
 			case "cancelled_interval":
 			case "cancelled_debate":
 			case "cancelled_admin":
 				?> cancelled<?
+				$tooltip = ' title="'._("cancelled proposal").'"';
 				break;
 			}
 			?>" onClick="location.href='<?=$link?>'"><?
 			if ($proposal->activity >= ACTIVITY_THRESHOLD) {
 				?><img src="img/activity.png" width="31" height="16" class="activity" style="opacity:<?=min($proposal->activity / ACTIVITY_DIVISOR, 1)?>" <?alt(_("Recent activity"))?>><?
 			}
-			echo _("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"><?=h($proposal->title)?></a></td>
+			echo _("Proposal")?> <?=$proposal->id?>: <a href="<?=$link?>"<?=$tooltip?>><?=h($proposal->title)?></a></td>
 <?
 			if (BN=="vote.php") {
 				$this->display_column_vote($proposal, $vote, $num_rows);
@@ -858,8 +861,8 @@ class Issue extends Relation {
 	 * column "results"
 	 *
 	 * @param Proposal $proposal
-	 * @param array   $proposals
-	 * @param boolean $first
+	 * @param array    $proposals
+	 * @param boolean  $first
 	 */
 	private function display_results(Proposal $proposal, array $proposals, $first) {
 		if ($this->state != 'finished') {
@@ -899,10 +902,10 @@ class Issue extends Relation {
 	 * column "state"
 	 *
 	 * @param Proposal $proposal
-	 * @param array   $proposals
-	 * @param boolean $first
-	 * @param boolean $first_admitted
-	 * @param integer $num_rows
+	 * @param array    $proposals
+	 * @param boolean  $first
+	 * @param boolean  $first_admitted (reference)
+	 * @param integer  $num_rows
 	 */
 	private function display_column_state(Proposal $proposal, array $proposals, $first, &$first_admitted, $num_rows) {
 		if ($this->state=="entry" or $this->state=="cancelled") {
@@ -1030,9 +1033,7 @@ class Issue extends Relation {
 		if (Login::$admin and BN!="admin_vote_result.php") {
 ?>
 		<td rowspan="<?=$num_rows?>" class="center nowrap"><?
-			if ( !$this->display_edit_period() ) {
-				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
-			}
+			$this->display_edit_period();
 			?></td>
 <?
 		} elseif ($period_rowspan) {
@@ -1145,8 +1146,8 @@ class Issue extends Relation {
 	 * column "vote" on vote.php
 	 *
 	 * @param Proposal $proposal
-	 * @param array   $vote
-	 * @param integer $num_rows
+	 * @param array    $vote
+	 * @param integer  $num_rows
 	 */
 	private function display_column_vote(Proposal $proposal, array $vote, $num_rows) {
 ?>
@@ -1185,7 +1186,7 @@ class Issue extends Relation {
 	 * vote result form on page admin_vote_result.php
 	 *
 	 * @param Proposal $proposal
-	 * @param integer $num_rows
+	 * @param integer  $num_rows
 	 */
 	private function display_column_admin_vote_result(Proposal $proposal, $num_rows) {
 ?>
@@ -1221,20 +1222,23 @@ class Issue extends Relation {
 	 *
 	 * This function may not be used in tests with time_warp(), because it uses static variables!
 	 *
-	 * @return array list of options for drop down menu or false
+	 * @return array list of options for drop down menu or string with explanation
 	 */
 	public function available_periods() {
 
 		// find out if the state may be changed
 		switch ($this->state) {
 		case "entry":
-			// At least one proposal has to be admitted.
-			$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
-			if ( !DB::fetchfield($sql) ) return false;
+			if (!$this->period) {
+				// At least one proposal has to be admitted.
+				$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
+				if ( !DB::fetchfield($sql) ) {
+					return _("The issue can be assigned to a voting period when at least one proposal is admitted.");
+				}
+			}
 		case "debate":
 		case "preparation":
 
-			// Issues, on which the voting already started, may not be postponed anymore.
 			// Issues, which were not started debating, may only be moved into periods where the debate has not yet started. Otherwise the debate time would be shorter than for other issues.
 
 			// read options once from the database
@@ -1247,7 +1251,7 @@ class Issue extends Relation {
 					ORDER BY id";
 				$result_period = DB::query($sql_period);
 				$options_all = array();
-				$options_admission = array();
+				$options_admission = array(0 => _("no voting period"));
 				while ( $period = DB::fetch_object($result_period, "Period") ) {
 					DB::to_bool($period->debate_not_started);
 					$options_all[$period->id] = $period->id.": ".$period->current_phase();
@@ -1258,28 +1262,26 @@ class Issue extends Relation {
 			}
 
 			if ($this->state=="entry") {
-				return $options_admission;
+				if ($options_admission) return $options_admission;
+				return _("There are no voting periods available, in which the debate has not yet started.");
 			} else {
-				return $options_all;
+				if ($options_all) return $options_all;
+				return _("There are no voting periods available, in which the voting has not yet started.");
 			}
 
 		}
 
-		return false;
 	}
 
 
 	/**
 	 * admins select a voting period
-	 *
-	 * @return boolean true if the period may be changed
 	 */
 	private function display_edit_period() {
 
 		$options =& $this->available_periods();
-		if (!$options) return false;
 
-		if (@$_GET['edit_period']==$this->id) {
+		if (@$_GET['edit_period']==$this->id and is_array($options) and $options) {
 			form(URI::strip(['edit_period'])."#issue".$this->id);
 			input_select("period", $options, $this->period);
 			?><br><?
@@ -1293,19 +1295,23 @@ class Issue extends Relation {
 			if ($this->period) {
 				?><a href="periods.php?ngroup=<?=$this->area()->ngroup?>&amp;hl=<?=$this->period?>"><?=$this->period?></a><?
 			}
+			if (!$options) return;
+			if (is_string($options)) {
+				?><span class="iconlink disabled"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=$options?>"></span><?
+				return;
+			}
 			?><a href="<?=URI::append(['edit_period'=>$this->id])?>#issue<?=$this->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}
 
-		return true;
 	}
 
 
 	/**
 	 * display a list of votes
 	 *
-	 * @param array   $proposals
+	 * @param array    $proposals
 	 * @param resource $result
-	 * @param string  $token     (optional) token of the logged in member for highlighting
+	 * @param string   $token     (optional) token of the logged in member for highlighting
 	 */
 	public static function display_votes(array $proposals, $result, $token="") {
 ?>
@@ -1379,7 +1385,7 @@ class Issue extends Relation {
 	 * display a list of voting mode votes
 	 *
 	 * @param resource $result
-	 * @param string  $token  (optional) token of the logged in member for highlighting
+	 * @param string   $token  (optional) token of the logged in member for highlighting
 	 */
 	public static function display_votingmode_votes($result, $token="") {
 ?>

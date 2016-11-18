@@ -16,9 +16,9 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 * overload method for line highlighting
 	 *
 	 * @param resource $result
-	 * @param boolean $direct_edit
-	 * @param boolean $show_edit_column
-	 * @param integer $linescount
+	 * @param boolean  $direct_edit
+	 * @param boolean  $show_edit_column
+	 * @param integer  $linescount
 	 */
 	protected function display_list_tbody($result, $direct_edit, $show_edit_column, $linescount) {
 ?>
@@ -129,7 +129,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 	 * @param mixed   $content
 	 * @param object  $object
 	 */
-	protected function print_ballots($content, $object) {
+	protected function print_ballots(/** @noinspection PhpUnusedParameterInspection */ $content, $object) {
 		if (!$object->ballot_voting) return;
 		?><a href="ballots.php?period=<?=$object->id?>"><?=_("Ballots")?></a><?
 	}

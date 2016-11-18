@@ -65,7 +65,7 @@ abstract class Relation {
 
 		if (!$id) $id = $this->id;
 
-		$sql = "SELECT * FROM ".$this->table." WHERE id=".intval($id);
+		$sql = "SELECT * FROM $this->table WHERE id=".intval($id);
 		if ( ! $row = DB::fetchassoc($sql) ) return;
 
 		foreach ( $row as $key => $value ) $this->$key = $value;
@@ -102,7 +102,7 @@ abstract class Relation {
 	 * save the changed values to the record in the database
 	 *
 	 * @param array|boolean $fields (optional) array or false - save only these fields
-	 * @param string  $extra  (optional) additional SQL assignments
+	 * @param string        $extra  (optional) additional SQL assignments
 	 * @return resource
 	 */
 	function update($fields=false, $extra="") {

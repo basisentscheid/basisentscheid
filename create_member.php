@@ -27,7 +27,9 @@ if ($action) {
 		// become member of ngroups
 		if (!empty($_POST['ngroups'])) {
 			foreach ( $_POST['ngroups'] as $ngroup ) {
-				DB::insert("member_ngroup", array('member'=>$member->id, 'ngroup'=>$ngroup));
+				$ngroup_int = intval($ngroup);
+				if (!$ngroup_int or $ngroup_int!=$ngroup) continue;
+				DB::insert("member_ngroup", array('member'=>$member->id, 'ngroup'=>$ngroup_int));
 			}
 		}
 

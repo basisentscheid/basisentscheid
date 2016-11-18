@@ -44,6 +44,17 @@ abstract class DB {
 
 
 	/**
+	 * escape identifiers for SQL statements
+	 *
+	 * @param string  $str
+	 * @return string
+	 */
+	public static function ident($str) {
+		return pg_escape_identifier($str);
+	}
+
+
+	/**
 	 * escape strings for SQL statements, add singlequotes and handle boolean and NULL values
 	 *
 	 * @param mixed   $value
@@ -159,7 +170,7 @@ abstract class DB {
 	/**
 	 *
 	 * @param resource $result
-	 * @param integer $line
+	 * @param integer  $line
 	 * @return boolean
 	 */
 	static function result_seek($result, $line) {
@@ -221,7 +232,7 @@ abstract class DB {
 	 * call the constructor with $from_fetch_object
 	 *
 	 * @param resource $result
-	 * @param string  $classname
+	 * @param string   $classname
 	 * @return object
 	 */
 	static function fetch_object($result, $classname) {
@@ -320,7 +331,7 @@ abstract class DB {
 		$fields_values = array_map("self::value_to_sql", $fields_values);
 		if ($extra) $fields_values += $extra;
 
-		$sql = "INSERT INTO ".$table." (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
+		$sql = "INSERT INTO $table (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
 
 		if ($insert_id!==false) {
 			$sql .= " RETURNING id";
@@ -370,7 +381,7 @@ abstract class DB {
 	 */
 	public static function delete($table, $where=false) {
 
-		$sql = "DELETE FROM ".$table.self::where_and($where);
+		$sql = "DELETE FROM $table".self::where_and($where);
 
 		return self::query($sql);
 	}

@@ -10,7 +10,7 @@ require "inc/common_http.php";
 
 Login::access("admin");
 
-$ngroup = Ngroup::get();
+Ngroup::get();
 
 $d = new DbTableAdmin("Area");
 $d->columns = array(
@@ -20,7 +20,7 @@ $d->columns = array(
 );
 $d->enable_filter = false;
 
-$d->global_where = array('ngroup' => $ngroup->id);
+$d->global_where = array('ngroup' => $_SESSION['ngroup']);
 
 $d->reference_check = array("SELECT id FROM issue WHERE area=%d");
 

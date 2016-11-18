@@ -9,7 +9,7 @@
 
 require "inc/common_http.php";
 
-$ngroup = Ngroup::get();
+Ngroup::get();
 
 $d = new DbTableAdmin_Period("Period");
 $d->columns = array(
@@ -29,7 +29,7 @@ if (Login::$admin) {
 }
 $d->enable_filter = false;
 
-$d->global_where = array('ngroup' => $ngroup->id);
+$d->global_where = array('ngroup' => $_SESSION['ngroup']);
 
 $d->reference_check = array(
 	"SELECT id FROM issue  WHERE period=%d",

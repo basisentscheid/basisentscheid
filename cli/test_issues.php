@@ -400,7 +400,7 @@ function no_branch_skip($branch, array $bcase, array $exclude_branches=array()) 
  * create a new member and let it support the supplied proposal
  *
  * @param Proposal $proposal
- * @param string  $i
+ * @param string   $i
  */
 function add_supporter(Proposal $proposal, $i) {
 	create_member("user".$i);
@@ -412,7 +412,7 @@ function add_supporter(Proposal $proposal, $i) {
  * create a new member and let it support the supplied proposal
  *
  * @param Proposal $proposal
- * @param string  $i
+ * @param string   $i
  */
 function add_proponent(Proposal $proposal, $i) {
 	create_member("user".$i);
@@ -424,7 +424,7 @@ function add_proponent(Proposal $proposal, $i) {
  * create a new member and let it demand offline voting for the supplied proposal
  *
  * @param Proposal $proposal
- * @param string  $i
+ * @param string   $i
  */
 function add_votingmode_demander(Proposal $proposal, $i) {
 	create_member("user".$i);

@@ -617,7 +617,7 @@ class Period extends Relation {
 	 * @param boolean $disabled
 	 * @param array   $column
 	 */
-	public function dbtableadmin_edit_timestamp($colname, $default, $id, $disabled, array $column) {
+	public function dbtableadmin_edit_timestamp($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
 		if ($default) {
 			// adjust time format if it is a valid time
 			$time = strtotime($default);

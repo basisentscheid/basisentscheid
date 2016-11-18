@@ -19,6 +19,8 @@ const TITLE = "Basisentscheid";
 const HOME_H1 = "Basisentscheid example heading";
 // with trailing slash
 const BASE_URL = "http://example.com/basisentscheid/";
+// session lifetime in seconds
+const SESSION_LIFETIME = 2592000; // 30 days
 
 // This email address will be shown in some error messages to contact the support.
 const MAIL_SUPPORT = "example@example.com";
