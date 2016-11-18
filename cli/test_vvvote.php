@@ -41,7 +41,7 @@ cron();
  * create group and areas
  *
  * @param string  $name
- * @param object  $parent (optional)
+ * @param Ngroup  $parent (optional)
  * @return array
  */
 function create_ngroup($name, Ngroup $parent=null) {
