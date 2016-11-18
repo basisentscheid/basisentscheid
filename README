@@ -3,7 +3,7 @@
 Requirements:
 - PostgreSQL, works at least with 9.1 and 9.3
 - Some webserver, tested with apache and lighttpd
-- PHP >= 5.4 with modules:
+- PHP 5.5 or 5.6, with modules:
   - apache2, cgi or whatever you like to use to connect to the webserver
   - cli
   - postgres

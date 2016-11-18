@@ -162,7 +162,7 @@ class Member extends Relation {
 	 */
 	public function set_new_password($password) {
 
-		$this->password = crypt($password);
+		$this->password = password_hash($password, PASSWORD_DEFAULT);
 
 		// notification
 		if ($this->mail) {

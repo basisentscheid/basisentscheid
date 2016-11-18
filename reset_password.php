@@ -43,7 +43,7 @@ if ($action) {
 		$password2 = trim($_POST['password2']);
 		if ( ! Login::check_password($password, $password2) ) break;
 
-		$member->password = crypt($password);
+		$member->password = password_hash($password, PASSWORD_DEFAULT);
 		if ( ! $member->update(['password'], 'password_reset_code=NULL, password_reset_code_expiry=NULL') ) break;
 		success(_("Password has been reset successfully. You can log in with the new password now:"));
 

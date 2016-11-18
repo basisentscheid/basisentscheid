@@ -50,7 +50,7 @@ class Admin extends Relation {
 			return false;
 		}
 
-		$this->password = crypt($_POST['password']);
+		$this->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 		return true;
 	}

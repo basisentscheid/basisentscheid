@@ -76,7 +76,7 @@ if ($action) {
 		Login::$member = $member;
 
 		Login::$member->username = $username;
-		Login::$member->password = crypt($password);
+		Login::$member->password = password_hash($password, PASSWORD_DEFAULT);
 		if ( ! Login::$member->update(['username', 'password'], 'activated=now()') ) break;
 		success(_("Your account has been activated."));
 
