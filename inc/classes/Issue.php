@@ -1129,10 +1129,12 @@ class Issue extends Relation {
 		// find out if the state may be changed
 		switch ($this->state) {
 		case "entry":
-			// At least one proposal has to be admitted.
-			$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
-			if ( !DB::fetchfield($sql) ) {
-				return _("The issue can be assigned to a voting period when at least one proposal is admitted.");
+			if (!$this->period) {
+				// At least one proposal has to be admitted.
+				$sql = "SELECT COUNT(1) FROM proposal WHERE issue=".intval($this->id)." AND state='admitted'::proposal_state";
+				if ( !DB::fetchfield($sql) ) {
+					return _("The issue can be assigned to a voting period when at least one proposal is admitted.");
+				}
 			}
 		case "debate":
 		case "preparation":
@@ -1149,7 +1151,7 @@ class Issue extends Relation {
 					ORDER BY id";
 				$result_period = DB::query($sql_period);
 				$options_all = array();
-				$options_admission = array();
+				$options_admission = array(0 => _("no voting period"));
 				while ( $period = DB::fetch_object($result_period, "Period") ) {
 					DB::to_bool($period->debate_not_started);
 					$options_all[$period->id] = $period->id.": ".$period->current_phase();
@@ -1169,8 +1171,6 @@ class Issue extends Relation {
 
 		}
 
-		// Issues, on which the voting already started, may not be postponed anymore.
-		return _("The period of this issue may not be changed anymore, because voting has already begun.");
 	}
 
 

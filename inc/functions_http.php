@@ -388,19 +388,22 @@ function action_proposal_select_period() {
 		redirect();
 	}
 
-	$period = new Period($_POST['period']);
-	if (!$period) {
-		warning("The selected period does not exist!");
-		redirect();
+	if ($_POST['period']) {
+		$period = new Period($_POST['period']);
+		if (!$period) {
+			warning("The selected period does not exist!");
+			redirect();
+		}
+		$available =& $issue->available_periods();
+		if (!isset($available[$period->id])) {
+			warning("The selected period is not available for the issue!");
+			redirect();
+		}
+		$issue->period = $period->id;
+	} else {
+		$issue->period = null;
 	}
 
-	$available =& $issue->available_periods();
-	if (!isset($available[$period->id])) {
-		warning("The selected period is not available for the issue!");
-		redirect();
-	}
-
-	$issue->period = $period->id;
 	$issue->update(["period"]);
 
 	redirect("#issue".$issue->id);
