@@ -2,7 +2,7 @@
 
 Requirements:
 - PostgreSQL, works at least with 9.1 and 9.3
-- Some webserver, tested with apache and lighttpd
+- Some webserver, tested with apache 2.2 and lighttpd
 - PHP 5.5 or 5.6, with modules:
   - apache2, cgi or whatever you like to use to connect to the webserver
   - cli
@@ -55,7 +55,7 @@ Set permissions:
 $ chmod 660 /www/basisentscheid/var/gnupg/*
 $ chmod 640 /www/basisentscheid/var/gnupg/secring.gpg
 
-For webserver and PHP configuration, use the provided .htaccess files or copy their contents to your webserver and PHP configuration. The latter will be required if your webserver does not support .htaccess files but is also better for performance in live environment. This command will show you all the .htaccess files and their content:
+For webserver and PHP configuration, use the provided .htaccess files in apache 2.2 format or copy their contents to your webserver and PHP configuration. The latter will be required if your webserver does not support .htaccess files but is also better for performance in live environment. This command will show you all the .htaccess files and their content:
 $ find . -name ".htaccess" -printf '=== %p ===\n' -exec cat {} \;
 For lighttpd for example the access configuration should look like this, if installation is in the webroot:
         $HTTP["url"] =~ "^/(inc|cli|db|locale|var/gnupg)/|/\." {
