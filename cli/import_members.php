@@ -33,6 +33,11 @@ const DOCROOT = "../";
 require "../inc/common_cli.php";
 
 
+if (!IMPORT_MEMBERS) {
+	echo "Import of members is disabled in configuration!\n";
+	exit(1);
+}
+
 // number of members
 $before = DB::fetchfield("SELECT COUNT(*) FROM member");
 
@@ -108,7 +113,7 @@ while ( ($data = fgetcsv($handle, 256, ";")) !== false ) {
 		$member->invite = $invite;
 		$member->eligible = (bool) $data[1];
 		$member->verified = (bool) $data[2];
-		$member->create(['invite', 'eligible', 'verified'], ['invite_expiry'=>"now() + ".DB::esc(INVITE_EXPIRY)]);
+		$member->create();
 		++$inserted;
 	}
 	DB::transaction_commit();

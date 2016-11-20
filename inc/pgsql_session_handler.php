@@ -158,6 +158,9 @@ function pgsql_session_read($session_id) {
  */
 function pgsql_session_write($session_id, $data) {
 
+	// make sure the session can be written, even if there is an open transaction with errors
+	DB::reset_after_errors();
+
 	$sql = "UPDATE session SET last_active=now(), data=".DB::esc($data)." WHERE session_id=".DB::esc($session_id)."; COMMIT;";
 	$result = DB::query($sql);
 

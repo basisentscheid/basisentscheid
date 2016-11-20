@@ -1,7 +1,19 @@
 <?
-
 /**
  * Member
+ *
+ * There are two methods to manage members and groups:
+ *
+ * 1) manual administration (config.php: IMPORT_MEMBERS=false)
+ * - Members are identified by the "identity" column, where you can enter e.g. the real name or a member number. Of course this method offers no anonymity at all.
+ * - If an invitation code expired, a new member account should be created.
+ * - If a member forgets his password and has no working confirmed email address, an admin can set a new unconfirmed email address to which a confirmation request will be sent.
+ *
+ * 2) import CSV files (config.php: IMPORT_MEMBERS=true)
+ * - Members are identified by their invite code. The identity column stays empty. If the admin of the Basisentscheid and the admin of the member source database are different persons, the members can only be identified if both bring their data together.
+ * - If a member forgets his password and has no working confirmed email address, or if an invite code expired, the member should get a new member account by setting a new invite code in the member source database and sending the member a new invitation.
+ *
+ * Members can not be deleted. If they are no longer allowed to vote, switch off the "eligible" flag.
  *
  * @author Magnus Rosenbaum <dev@cmr.cx>
  * @package Basisentscheid
@@ -20,6 +32,7 @@ class Member extends Relation {
 	public $activated;
 	public $eligible;
 	public $verified;
+	public $identity;
 	public $username;
 	public $password;
 	public $mail;
@@ -39,6 +52,8 @@ class Member extends Relation {
 
 	private $ngroups;
 
+	private $mail_unconfirmed_changed = false;
+
 
 	/**
 	 * create a new member
@@ -46,12 +61,22 @@ class Member extends Relation {
 	 * @return boolean
 	 */
 	public function create() {
+
 		$fields_values = array(
-			'invite' => $this->invite,
 			'eligible' => $this->eligible,
 			'verified' => $this->verified
 		);
-		$extra = array('invite_expiry' => "now() + interval '1 month'");
+
+		// create a new member manually
+		if (BN=="admin_members.php") {
+			if (IMPORT_MEMBERS) return; // just to be sure
+			$this->invite = Login::generate_token(24);
+			$fields_values['mail_unconfirmed'] = $this->mail_unconfirmed;
+		}
+
+		$fields_values['invite'] = $this->invite;
+
+		$extra = array('invite_expiry' => "now() + ".DB::esc(INVITE_EXPIRY));
 		return DB::insert("member", $fields_values, $this->id, $extra);
 	}
 
@@ -176,13 +201,14 @@ class Member extends Relation {
 
 
 	/**
-	 * save not yet confirmed mail address and send confirmation request
+	 * save not yet confirmed email address and send confirmation request
 	 *
 	 * @param string  $mail
+	 * @param boolean $admin (optional) an admin sets the new email address
 	 */
-	public function set_mail($mail) {
+	public function set_mail($mail, $admin=false) {
 
-		if ( strtotime($this->mail_lock_expiry) > time() ) {
+		if ( !$admin and strtotime($this->mail_lock_expiry) > time() ) {
 			warning(_("We have sent an email with a confirmation code already in the last hour. Please try again later!"));
 			redirect();
 		}
@@ -206,20 +232,35 @@ class Member extends Relation {
 			._("On that page enter the code:")."\n"
 			.$this->mail_code;
 		if ( send_mail($mail, $subject, $body) ) {
-			$this->update(array(), "mail_lock_expiry = now() + interval '1 hour'");
-			success(_("Your email address has been saved. An email with a confirmation code has been sent."));
+			if ($admin) {
+				$this->update(array());
+				success(_("A confirmation request email has been sent."));
+			} else {
+				$this->update(array(), "mail_lock_expiry = now() + interval '1 hour'");
+				success(_("Your email address has been saved. An email with a confirmation code has been sent."));
+			}
 		} else {
-			warning(sprintf(_("Your email address has been saved, but the email with the confirmation code could not be sent. Try again later or contact %s.")), MAIL_SUPPORT);
+			if ($admin) {
+				warning(_("The confirmation request email could not be sent."));
+			} else {
+				warning(sprintf(_("Your email address has been saved, but the email with the confirmation code could not be sent. Try again later or contact %s.")), MAIL_SUPPORT);
+			}
 		}
 
 		// notification to old mail address
 		if ($this->mail) {
 			$subject = _("Change of your email address");
-			$body = _("Someone, probably you, changed your email address to:")."\n"
-				.$this->mail_unconfirmed."\n\n"
-				._("If this was not you, somebody else got access to your account. In this case please log in as soon as possible and change your password:")."\n"
-				.BASE_URL."settings.php\n"
-				.sprintf(_("Then try to set the email address back to your one and contact %s!"), MAIL_SUPPORT);
+			if ($admin) {
+				$body = _("An administrator changed your email address to:")."\n"
+					.$this->mail_unconfirmed."\n\n"
+					.sprintf(_("If this was not arranged with you, please contact %s!"), MAIL_SUPPORT);
+			} else {
+				$body = _("Someone, probably you, changed your email address to:")."\n"
+					.$this->mail_unconfirmed."\n\n"
+					._("If this was not you, somebody else got access to your account. In this case please log in as soon as possible and change your password:")."\n"
+					.BASE_URL."settings.php\n"
+					.sprintf(_("Then try to set the email address back to your one and contact %s!"), MAIL_SUPPORT);
+			}
 			send_mail($this->mail, $subject, $body);
 		}
 
@@ -387,10 +428,153 @@ class Member extends Relation {
 
 
 	/**
+	 * edit a timestamp
+	 *
+	 * @param string  $colname
+	 * @param mixed   $default
+	 */
+	public function dbtableadmin_edit_timestamp($colname, $default) {
+		echo datetimeformat($default);
+	}
+
+
+	/**
+	 * edit the unconfirmed email address
+	 */
+	public function dbtableadmin_edit_mail() {
+?>
+<input type="email" name="mail_unconfirmed" value="<?=h($this->mail_unconfirmed)?>">
+<?
+		if ($this->mail_unconfirmed) {
+?>
+<input type="submit" name="submit_mail" value="<?=_("send the confirmation email again")?>">
+<?
+		}
+	}
+
+
+	/**
 	 * display the list of groups
 	 */
 	public function dbtableadmin_print_ngroups() {
 		$this->display_ngroups();
+	}
+
+
+	/**
+	 * edit the list of groups
+	 */
+	public function dbtableadmin_edit_ngroups() {
+?>
+<table>
+	<tr>
+		<th></th>
+		<th><?=_("ID")?></th>
+		<th><?=_("Name")?></th>
+		<th><?=_("active")?></th>
+	</tr>
+<?
+		$sql = "SELECT id, name, active, member_ngroup.member FROM ngroup
+			LEFT JOIN member_ngroup ON ngroup.id = member_ngroup.ngroup AND member_ngroup.member=".intval($this->id)."
+			ORDER BY id";
+		$result = DB::query($sql);
+		while ( $row = DB::fetch_assoc($result) ) {
+?>
+	<tr>
+		<td><? input_checkbox("ngroups[]", $row['id'], boolval($row['member'])); ?></td>
+		<td class="right"><?=$row['id']?></td>
+		<td><?=$row['name']?></td>
+		<td class="center"><? display_checked($row['active']); ?></td>
+	</tr>
+<?
+		}
+?>
+</table>
+<?
+	}
+
+
+	/**
+	 * check email address
+	 *
+	 * @return boolean
+	 */
+	public function dbtableadmin_beforesave() {
+
+		if (!isset($_POST['mail_unconfirmed'])) {
+			warning("Parameter missing.");
+			return false;
+		}
+
+		$mail = trim($_POST['mail_unconfirmed']);
+
+		if ( !$mail ) {
+			warning(_("Please enter an email address!"));
+			return false;
+		}
+
+		if ( ! filter_var($mail, FILTER_VALIDATE_EMAIL) ) {
+			warning(_("The entered email address is not valid!"));
+			return false;
+		}
+
+		if ($mail != $this->mail_unconfirmed) $this->mail_unconfirmed_changed = true;
+
+		$this->mail_unconfirmed = $mail;
+
+		return true;
+	}
+
+
+	/**
+	 * save selection of ngroups
+	 */
+	private function save_ngroups() {
+		if (isset($_POST['ngroups'])) $ngroups = $_POST['ngroups']; else $ngroups = array();
+		if (is_array($ngroups)) {
+			$this->update_ngroups($ngroups);
+		} else {
+			warning("Invalid value for groups");
+		}
+	}
+
+
+	/**
+	 * called after a member was created
+	 */
+	public function dbtableadmin_after_create() {
+
+		$this->save_ngroups();
+
+		// send invitation
+		$subject = _("Invitation to Basisentscheid");
+		$body = _("You are invited to Basisentscheid. Please click the following link to register:")."\n"
+			.BASE_URL."register.php?invite=".$this->invite."\n\n"
+			._("If this link does not work, please open the following URL in your web browser:")."\n"
+			.BASE_URL."register.php\n"
+			._("On that page enter the code:")."\n"
+			.$this->invite;
+		if ( send_mail($this->mail_unconfirmed, $subject, $body) ) {
+			success(_("An invitation email has been sent to the new member."));
+		} else {
+			warning(_("The new member was not created, because the invitation email could not be sent!"));
+		}
+
+	}
+
+
+	/**
+	 * called after a member was edited
+	 */
+	public function dbtableadmin_after_edit() {
+
+		$this->save_ngroups();
+
+		// send email confirmation request
+		if ($this->mail_unconfirmed_changed or isset($_POST['submit_mail'])) {
+			$this->set_mail($this->mail_unconfirmed, true);
+		}
+
 	}
 
 

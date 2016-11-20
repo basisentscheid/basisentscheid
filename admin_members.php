@@ -14,16 +14,17 @@ Login::access("admin");
 $d = new DbTableAdmin("Member");
 $d->columns = array(
 	array("id", _("No."), "right", "", false, 'type'=>"integer"),
-	array("invite", _("Invite code")),
-	array("created", _("Created"), "", "timestamp", 'nosearch'=>true),
-	array("invite_expiry", _("Invite expiry"), "", "timestamp", 'nosearch'=>true),
-	array("activated", _("Activated"), "", "timestamp", 'nosearch'=>true),
-	array("username", _("Username")),
-	array("mail", _("Email")),
-	array("mail_unconfirmed", _("Email unconfirmed")),
-	array("eligible", _("Eligible"), "center", "boolean", 'nosearch'=>true),
-	array("verified", _("Verified"), "center", "boolean", 'nosearch'=>true),
-	array("", _("Groups"), "", "ngroups", 'noorder'=>true)
+	array("invite", _("Invite code"), "", "", "display",                     'disabled'=>true),
+	array("created",       _("Created"),       "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
+	array("invite_expiry", _("Invite expiry"), "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
+	array("activated",     _("Activated"),     "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
+	array("identity", _("Identity")),
+	array("username", _("Username"), "", "", "display", 'disabled'=>true),
+	array("mail",     _("Email"),    "", "", "display", 'disabled'=>true),
+	array("mail_unconfirmed", _("Email unconfirmed"), "", "", "mail", 'disabled'=>true, 'required'=>true),
+	array("eligible", _("Eligible"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
+	array("verified", _("Verified"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
+	array(false, _("Groups"), "", "ngroups", "ngroups", 'noorder'=>true)
 );
 
 $d->enable_filter = true;
@@ -45,13 +46,13 @@ $d->filter->filters = array(
 	)
 );
 
-$d->enable_edit           = false;
-$d->enable_insert         = false;
-$d->enable_delete_single  = false;
+if (IMPORT_MEMBERS) {
+	$d->enable_edit   = false;
+	$d->enable_insert = false;
+}
+$d->enable_delete_single = false;
 
 $d->msg_edit_record             = _("Edit member %id%");
-$d->msg_really_delete           = _("Do you really want to delete the member %id%?");
-$d->msg_record_deleted          = _("The member %id% has been deleted.");
 $d->msg_record                  = _("Member");
 $d->msg_no_record_available     = _("no member available for this view");
 

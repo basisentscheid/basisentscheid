@@ -158,3 +158,5 @@ CREATE TABLE vvvote_token (
 CREATE UNIQUE INDEX vvvote_token_token_key ON vvvote_token USING BTREE (token);
 
 ALTER TABLE vvvote_token ADD generated BOOL DEFAULT FALSE NOT NULL;
+
+ALTER TABLE member ADD identity TEXT DEFAULT '' NOT NULL;

@@ -771,8 +771,9 @@ form.editform div.buttons span.input {
 	margin: 0.2rem 0.3rem 0.2rem 0.5rem;
 }
 form.editform div.input input[type=text],
-form.editform div.input input[type=password] {
-	width: 15em;
+form.editform div.input input[type=password],
+form.editform div.input input[type=email] {
+	width: 20em;
 }
 form.editform div.buttons {
 	margin-top: 5px;

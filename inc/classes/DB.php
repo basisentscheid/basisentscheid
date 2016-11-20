@@ -13,6 +13,9 @@ abstract class DB {
 	const value_true  = "t";
 	const value_false = "f";
 
+	private static $connection;
+	private static $error_occurred = false;
+
 	/**
 	 * number of levels into transaction - to avoid nested transactions
 	 *
@@ -26,8 +29,20 @@ abstract class DB {
 	 */
 	public static function __static() {
 		// don't continue if the database is not reachable
-		if ( pg_connect(DATABASE_CONNECT) === false ) {
+		self::$connection = pg_connect(DATABASE_CONNECT);
+		if ( self::$connection === false ) {
 			error(_("Sorry, but the connection to the database failed. Please try again in a few minutes."));
+		}
+	}
+
+
+	/**
+	 * reset connection after errors
+	 */
+	public static function reset_after_errors() {
+		if (self::$error_occurred) {
+			pg_connection_reset(self::$connection);
+			self::$error_occurred = false;
 		}
 	}
 
@@ -133,6 +148,7 @@ abstract class DB {
 			// echo "SQL statement (successful):\n".$sql."\n";
 			// self::sql_error($sql, "SQL statement (successful): <i>".pg_last_error()."</i>");
 		} else {
+			self::$error_occurred = true;
 			self::sql_error($sql, "Postgres Error <i>".pg_last_error()."</i>");
 		}
 

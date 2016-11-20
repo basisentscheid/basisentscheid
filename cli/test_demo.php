@@ -206,13 +206,12 @@ create_period($ngroup2);
 function create_ngroup($name, Ngroup $parent=null) {
 
 	$ngroup = new Ngroup;
-	$ngroup->id = DB::fetchfield("SELECT max(id) FROM ngroup") + 1;
 	$ngroup->name = $name;
 	if ($parent) $ngroup->parent = $parent->id;
 	$ngroup->active = true;
 	$ngroup->minimum_population = 200;
 	$ngroup->minimum_quorum_votingmode = 10;
-	$ngroup->create(['id', 'name', 'parent', 'active', 'minimum_population', 'minimum_quorum_votingmode']);
+	$ngroup->create(['name', 'parent', 'active', 'minimum_population', 'minimum_quorum_votingmode']);
 
 	$area = new Area;
 	$area->ngroup = $ngroup->id;

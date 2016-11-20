@@ -321,12 +321,18 @@ function display_nav_settings() {
 
 /**
  * foot part of the page
+ *
+ * @param boolean $display_footer (optional)
  */
-function html_foot() {
+function html_foot($display_footer=true) {
 ?>
 
+<?
+	if ($display_footer) {
+?>
 <footer><a href="about.php"><?=_("About")?></a></footer>
 <?
+	}
 	if (isset($GLOBALS['js_open_link'])) {
 ?>
 <script>
