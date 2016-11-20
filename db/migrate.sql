@@ -145,3 +145,5 @@ ALTER TABLE ONLY ngroup ALTER COLUMN id SET DEFAULT nextval('ngroup_id_seq'::reg
 ALTER SEQUENCE ngroup_id_seq RESTART WITH 10000;
 
 ALTER TABLE member DROP realname;
+
+ALTER TABLE member ADD identity TEXT DEFAULT '' NOT NULL;

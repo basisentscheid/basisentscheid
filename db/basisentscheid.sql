@@ -374,6 +374,7 @@ CREATE TABLE member (
     activated timestamp with time zone,
     eligible boolean DEFAULT false NOT NULL,
     verified boolean DEFAULT false NOT NULL,
+    identity text DEFAULT ''::text NOT NULL,
     username character varying(32),
     password character varying(123),
     password_reset_code character(24),

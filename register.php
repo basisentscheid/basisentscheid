@@ -57,7 +57,7 @@ if (!$member) {
 
 $username = "";
 $password = "";
-$mail     = "";
+if (IMPORT_MEMBERS) $mail = ""; else $mail = $member->mail_unconfirmed;
 
 if ($action) {
 	switch ($action) {

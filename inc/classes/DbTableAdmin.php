@@ -269,6 +269,9 @@ class DbTableAdmin {
 
 				if ( $this->object->update($columns) ) {
 					success(_("The changes have been saved."));
+					if ($this->object->id and method_exists($this->object, "dbtableadmin_after_edit") ) {
+						$this->object->dbtableadmin_after_edit($this->object);
+					}
 				}
 
 				$this->redirect_to_list();
@@ -292,8 +295,8 @@ class DbTableAdmin {
 
 			if ( $this->object->create($columns) ) {
 				success($this->msg_strtr($this->msg_record_saved, array('id'=>$this->object->id)));
-				if ($this->object->id and method_exists($this, "after_create") ) {
-					$this->after_create($this->object);
+				if ($this->object->id and method_exists($this->object, "dbtableadmin_after_create") ) {
+					$this->object->dbtableadmin_after_create($this->object);
 				}
 			}
 
@@ -544,7 +547,7 @@ class DbTableAdmin {
 			if (!$column[0]) continue;
 
 			// skip columns which are not in the edit form
-			if (isset($column[4]) and $column[4]===false) continue;
+			if (isset($column[4]) and ($column[4]===false or $column[4]==="display")) continue;
 
 			// skip disabled columns
 			if (!empty($column['disabled'])) continue;
@@ -589,7 +592,7 @@ class DbTableAdmin {
 				}
 				$return = $callee->$method(
 					// parameters for column beforesave methods:
-					$object->$column[0], // column name
+					$object->$column[0], // content
 					$column,             // column description (array)
 					$msg_prefix          // prefix to show at direct edit
 				);
@@ -1105,14 +1108,18 @@ function submit_delete_checked() {
 				$callee = $this->object;
 				$method = "dbtableadmin_".$method;
 			}
-			$callee->$method(
-				// parameters for edit functions:
-				$column[0],                  // 1 column/attribute name
-				$this->object->$column[0],   // 2 default
-				$this->object->id,           // 3 ID
-				!empty($column['disabled']), // 4 disabled (not editable)
-				$column                      // 5 (array) column description
-			);
+			if ($column[0]) {
+				$callee->$method(
+					// parameters for edit functions:
+					$column[0],                  // 1 column/attribute name
+					$this->object->$column[0],   // 2 default
+					$this->object->id,           // 3 ID
+					!empty($column['disabled']), // 4 disabled (not editable)
+					$column                      // 5 (array) column description
+				);
+			} else {
+				$callee->$method();
+			}
 			?></span></div>
 <?
 		}

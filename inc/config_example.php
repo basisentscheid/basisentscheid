@@ -96,6 +96,8 @@ const ACTIVITY_DIVISOR = 100;
 const ACCESS_COMMENT = 4; // write a comment or reply to one
 const ACCESS_RATE    = 4; // rate comments
 
+// import members and groups instead of manual administration
+const IMPORT_MEMBERS = false;
 // period after which an invite code can't be used anymore
 const INVITE_EXPIRY = "1 month";
 
