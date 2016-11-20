@@ -117,6 +117,11 @@ function fatal_error_handler() {
 	// The script terminated without an error.
 	if ( $error === NULL) return;
 
+	// change back to the normal working directory if the webserver changed when calling the shutdown function
+	if ( PHP_SAPI!="cli" and getcwd()=="/" and isset($_SERVER['SCRIPT_FILENAME']) ) {
+		chdir(dirname($_SERVER['SCRIPT_FILENAME']));
+	}
+
 	error_common($error['type'], $error['message'], $error['file'], $error['line'], array(), true);
 }
 
@@ -174,14 +179,6 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 
 	// backtrace
 	if ((ERROR_MAIL or ERROR_BACKTRACE_FILES or ERROR_BACKTRACE_DISPLAY) and !$repeated) {
-
-		// We prefer SCRIPT_FILENAME because webservers often change the working directory when calling a shutdown function.
-		if ( PHP_SAPI!="cli" and isset($_SERVER['SCRIPT_FILENAME']) ) {
-			$absolute_path = dirname($_SERVER['SCRIPT_FILENAME'])."/";
-		} else {
-			$absolute_path = getcwd()."/";
-		}
-		if (defined('DOCROOT')) $absolute_path .= DOCROOT;
 
 		$backtrace = date("r")."\n\n";
 
@@ -288,7 +285,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 		if (ERROR_BACKTRACE_FILES) {
 			$microtime = microtime();
 			$filename = "var/errors/backtrace_".substr($microtime, 11)."_".substr($microtime, 2, 8)."_".rand(100, 999).".txt";
-			file_put_contents($absolute_path.$filename, $backtrace);
+			file_put_contents(DOCROOT.$filename, $backtrace);
 			if (ERROR_MAIL) {
 				/** @noinspection PhpUndefinedVariableInspection */
 				$mailbody .= "\ncomplete backtrace:\n";
@@ -306,7 +303,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 				$subject .= $errstr;
 			}
 			/** @noinspection PhpUndefinedVariableInspection */
-			error_send_mail($subject, $mailbody, $absolute_path);
+			error_send_mail($subject, $mailbody);
 		}
 
 		// display backtrace
@@ -319,9 +316,6 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 <pre><?=htmlspecialchars($backtrace)?></pre>
 <?
 				}
-?>
-</div>
-<?
 			}
 		} else {
 			// display as Text
@@ -330,6 +324,12 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 			}
 		}
 
+	}
+
+	if (PHP_SAPI!="cli" and $show and !$repeated) {
+?>
+</div>
+<?
 	}
 
 	// abort at fatal errors
@@ -349,7 +349,7 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
 <?
 			}
 			if (function_exists("html_foot")) {
-				html_foot();
+				html_foot(false);
 			}
 		} else {
 			// display as text
@@ -366,9 +366,8 @@ in <b><?=$errfile?></b> on line <b><?=$errline?></b>
  *
  * @param string  $subject
  * @param string  $mailbody
- * @param string  $absolute_path
  */
-function error_send_mail($subject, $mailbody, $absolute_path) {
+function error_send_mail($subject, $mailbody) {
 
 	// counter
 	$count = 0;
@@ -380,7 +379,7 @@ function error_send_mail($subject, $mailbody, $absolute_path) {
 	if (PHP_SAPI=="cli") {
 		$file .= "_cli_".getenv('USER');
 	}
-	if ( $fh = fopen($absolute_path.$file, 'a+') ) {
+	if ( $fh = fopen(DOCROOT.$file, 'a+') ) {
 		if ( flock($fh, LOCK_EX) ) {
 			rewind($fh);
 			$count = intval(fgets($fh)) + 1;
