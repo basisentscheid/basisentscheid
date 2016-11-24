@@ -83,6 +83,7 @@ class Issue extends Relation {
 	public function proposals($open=false) {
 		$sql = "SELECT * FROM proposal WHERE issue=".intval($this->id);
 		if ($open) $sql .= " AND state IN ('draft', 'submitted', 'admitted')";
+		$sql .= " ORDER BY id";
 		$result = DB::query($sql);
 		$proposals = array();
 		while ( $proposal = DB::fetch_object($result, "Proposal") ) {
