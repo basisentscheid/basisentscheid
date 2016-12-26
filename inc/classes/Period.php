@@ -22,6 +22,8 @@ class Period extends Relation {
 	public $postage;
 	public $vvvote;
 	public $vvvote_configurl;
+	public $vvvote_vote_delay;
+	public $vvvote_last_reg;
 
 	public $debate_now;
 	public $preparation_now;
@@ -34,28 +36,64 @@ class Period extends Relation {
 
 	protected $boolean_fields = array("ballot_voting", "postage", "vvvote");
 
-
+	private function getVoting_method() {
+		$default = 'pseudonymous';
+		if ($this->vvvote === true)        {$default = 'vvvote';}
+		if ($this->ballot_voting === true) {$default = 'ballot_voting';}
+		return $default;
+	}
 	
 	public function dbtableadmin_edit_voting_method() {
 		$options = array('vvvote' => _('Anonymous online voting'), 
 				'pseudonymous'    => _('Pseudonymous online voting'), 
 				'ballot_voting'   => _('Ballot voting'));
-		$default = 'pseudonymous';
-		if ($this->vvvote === true)        {$default = 'vvvote';}
-		if ($this->ballot_voting === true) {$default = 'ballot_voting';}
-		
-		input_select('voting_method', $options, $default);
+		$selected = $this->getVoting_method();
+		$onClick = 'onChange="votingMethodChanged(this)"';
+		input_select('voting_method', $options, $selected, $onClick);
+		?>
+		<script> function votingMethodChanged(source) {
+			function displayBallotElements(display) {
+				document.getElementsByName('ballot_assignment')[0].parentElement.parentElement.style.display=display;
+				document.getElementsByName('ballot_preparation')[0].parentElement.parentElement.style.display=display;
+				document.getElementsByName('postage')[0].parentElement.parentElement.style.display=display;
+			}
+			function displayVvvoteElements(display) {
+				document.getElementsByName('vvvote_vote_delay')[0].parentElement.parentElement.style.display=display;
+				document.getElementsByName('vvvote_last_reg')[0].parentElement.parentElement.style.display=display;
+			}
+			
+			switch (source.value) {
+			case "pseudonymous":
+				displayBallotElements('none');
+				displayVvvoteElements('none')
+				break;
+			case "vvvote":
+				displayBallotElements('none');
+				displayVvvoteElements('')
+				break;
+			case "ballot_voting":
+				displayBallotElements('');
+				displayVvvoteElements('none')
+				break;
+			}
 		}
-
+		// wait for the rest of the document is loaded then hide/show the elements needed
+		var readyStateCheckInterval = setInterval(function() {
+		    if (document.readyState === "complete") {
+		        clearInterval(readyStateCheckInterval);
+				votingMethodChanged(document.getElementsByName('voting_method')[0]);
+		    }
+		}, 10);
+		</script>
+		<?
+	}
 		public function dbtableadmin_print_voting_method() {
 			$options = array('vvvote' => _('Anonymous online voting'),
 					'pseudonymous'    => _('Pseudonymous online voting'),
 					'ballot_voting'   => _('Ballot voting'));
-			$default = 'pseudonymous';
-			if ($this->vvvote === true)        {$default = 'vvvote';}
-			if ($this->ballot_voting === true) {$default = 'ballot_voting';}
-		
-			?> <?=$options[$default]?> <?
+			$selected = $this->getVoting_method();
+			
+			?> <?=$options[$selected]?> <?
 		}
 		
 				
@@ -655,5 +693,9 @@ class Period extends Relation {
 		?> <?=sprintf(_("date and time, format e.g. %s"), date(DATETIMEYEAR_FORMAT, 2117003400));
 	}
 
+	public function dbtableadmin_edit_interval($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
+	    input_text($colname, $default);
+		echo _('Examples: "1 day", "10 minutes" or "3 hours"');
+	}
 
 }
