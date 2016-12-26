@@ -13,14 +13,15 @@ Ngroup::get();
 
 $d = new DbTableAdmin_Period("Period");
 $d->columns = array(
-	array("id", _("No."), "right", "", false),
-	array("debate",             _("Debate"),                 "period", "timestamp", "timestamp", 'required'=>true), // 4 weeks before counting
-	array("preparation",        _("Voting preparation"),     "period", "timestamp", "timestamp", 'required'=>true), // 1 week before voting
-	array("voting",             _("Online voting"),          "period", "timestamp", "timestamp", 'required'=>true), // 2 weeks before counting
-	array("counting",           _("Counting/End of period"), "period", "timestamp", "timestamp", 'required'=>true), // "Stichtag"
-	array("ballot_voting", _("Ballot voting"), "center", "boolean", "boolean", 'type'=>"boolean"),
-	array("ballot_assignment",  _("Ballot assignment"),      "period", "timestamp", "timestamp", 'null'=>true), // 3 weeks before counting
-	array("ballot_preparation", _("Ballot preparation"),     "period", "timestamp", "timestamp", 'null'=>true), // 1 week before counting
+		/* column name,         column head                       css-class, method print_... edit_... used to display/edit the content */
+	array("id", 				_("No."), 						  "right", "", false),
+	array("debate",             _("Debate from"),                 "period", "timestamp", "timestamp", 'required'=>true), // 4 weeks before counting
+	array("preparation",        _("Voting preparation from"),     "period", "timestamp", "timestamp", 'required'=>true), // 1 week before voting
+	array("voting",             _("Online voting from"),          "period", "timestamp", "timestamp", 'required'=>true), // 2 weeks before counting
+	array("counting",           _("Counting/End of period from"), "period", "timestamp", "timestamp", 'required'=>true), // "Stichtag"
+	array("ballot_voting",      _("Ballot voting"),               "center", "boolean",   "boolean", 'type'=>"boolean"),
+	array("ballot_assignment",  _("Ballot assignment from"),      "period", "timestamp", "timestamp", 'null'=>true), // 3 weeks before counting
+	array("ballot_preparation", _("Ballot preparation from"),     "period", "timestamp", "timestamp", 'null'=>true), // 1 week before counting
 	array("postage", _("Postage"), "center", "boolean", "postage", 'type'=>"boolean"),
 	array(false, _("Ballots"), "center", "ballots", false)
 );
