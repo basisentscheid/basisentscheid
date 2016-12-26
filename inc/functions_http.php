@@ -477,14 +477,24 @@ function input_hidden($name, $value) {
  * @param boolean $disabled   (optional)
  * @param string  $attributes (optional)
  */
-function input_text($name, $value, $disabled=false, $attributes="") {
+function input_freetype($name, $value, $disabled=false, $attributes="") {
 ?>
-<input type="text" name="<?=$name?>" value="<?=h($value)?>"<?
+<input name="<?=$name?>" value="<?=h($value)?>"<?
 	if ($disabled) { ?> disabled<? }
 	if ($attributes) { ?> <?=$attributes; }
 	?>>
 <?
 }
+
+function input_text($name, $value, $disabled=false, $attributes="")
+	{
+		input_freetype($name, $value, $disabled, $attributes . ' type="text"');
+	}
+	
+function input_datetime($name, $value, $disabled=false, $attributes="")
+	{
+		input_freetype($name, $value, $disabled, $attributes . ' type="datetime-local"');
+	}
 
 
 /**
