@@ -28,9 +28,11 @@ $d->columns = array(
 	array("postage", _("Postage"), "center", "boolean", "postage", 'type'=>"boolean"),
 	array(false, _("Ballots"), "center", "ballots", false)
 );
+/*
 if (Login::$admin) {
 	$d->columns[] = array("vvvote", "vvvote", "center", "boolean", "boolean", 'type'=>"boolean");
 }
+*/
 
 $d->enable_filter = false;
 

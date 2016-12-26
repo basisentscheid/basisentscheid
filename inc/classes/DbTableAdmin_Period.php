@@ -213,9 +213,9 @@ class DbTableAdmin_Period extends DbTableAdmin {
 		}
 		
 		switch ($voting_method) {
-			case 'vvvote':        $this->object->vvvote = true; break;
-			case 'ballot_voting': $this->object->ballot_voting = true; break;
-			case 'pseudonymous': ; break;
+			case 'vvvote':        $this->object->vvvote = true;  $this->object->ballot_voting = false; break;
+			case 'ballot_voting': $this->object->vvvote = false; $this->object->ballot_voting = true; break;
+			case 'pseudonymous':  $this->object->vvvote = false; $this->object->ballot_voting = false; break;
 			default: 	warning(_("Voting method not supported"));
 			return false;
 			break;
