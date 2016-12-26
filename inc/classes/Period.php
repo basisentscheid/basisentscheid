@@ -35,6 +35,30 @@ class Period extends Relation {
 	protected $boolean_fields = array("ballot_voting", "postage", "vvvote");
 
 
+	
+	public function dbtableadmin_edit_voting_method() {
+		$options = array('vvvote' => _('Anonymous online voting'), 
+				'pseudonymous'    => _('Pseudonymous online voting'), 
+				'ballot_voting'   => _('Ballot voting'));
+		$default = 'pseudonymous';
+		if ($this->vvvote === true)        {$default = 'vvvote';}
+		if ($this->ballot_voting === true) {$default = 'ballot_voting';}
+		
+		input_select('voting_method', $options, $default);
+		}
+
+		public function dbtableadmin_print_voting_method() {
+			$options = array('vvvote' => _('Anonymous online voting'),
+					'pseudonymous'    => _('Pseudonymous online voting'),
+					'ballot_voting'   => _('Ballot voting'));
+			$default = 'pseudonymous';
+			if ($this->vvvote === true)        {$default = 'vvvote';}
+			if ($this->ballot_voting === true) {$default = 'ballot_voting';}
+		
+			?> <?=$options[$default]?> <?
+		}
+		
+				
 	/**
 	 * get the ngroup this period belongs to
 	 *
@@ -621,7 +645,7 @@ class Period extends Relation {
 		if ($default) {
 			// adjust time format if it is a valid time
 			$time = strtotime($default);
-			if ($time) $default = date(DATETIMEYEAR_FORMAT, $time);
+			if ($time) $default = date(DATETIMEYEAR_INPUT_FORMAT, $time);
 		}
 		$attributes = array('size="30"');
 		if (!empty($column['required'])) {

@@ -13,18 +13,18 @@ Login::access("admin");
 
 $d = new DbTableAdmin("Member");
 $d->columns = array(
-	array("id", _("No."), "right", "", false, 'type'=>"integer"),
-	array("invite", _("Invite code"), "", "", "display",                     'disabled'=>true),
-	array("created",       _("Created"),       "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
-	array("invite_expiry", _("Invite expiry"), "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
-	array("activated",     _("Activated"),     "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
-	array("identity", _("Identity")),
-	array("username", _("Username"), "", "", "display", 'disabled'=>true),
-	array("mail",     _("Email"),    "", "", "display", 'disabled'=>true),
+	array("id",               _("No."), "right", "", false, 'type'=>"integer"),
+	array("invite",           _("Invite code"), "", "", "display",                     'disabled'=>true),
+	array("created",          _("Created"),       "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
+	array("invite_expiry",    _("Invite expiry"), "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
+	array("activated",        _("Activated"),     "", "timestamp", "timestamp", 'disabled'=>true, 'nosearch'=>true),
+	array("identity",         _("Identity")),
+	array("username",         _("Username"), "", "", "display", 'disabled'=>true),
+	array("mail",             _("Email"),    "", "", "display", 'disabled'=>true),
 	array("mail_unconfirmed", _("Email unconfirmed"), "", "", "mail", 'disabled'=>true, 'required'=>true),
-	array("eligible", _("Eligible"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
-	array("verified", _("Verified"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
-	array(false, _("Groups"), "", "ngroups", "ngroups", 'noorder'=>true)
+	array("eligible",         _("Eligible"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
+	array("verified",         _("Verified"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
+	array(false,              _("Groups"), "", "ngroups", "ngroups", 'noorder'=>true)
 );
 
 $d->enable_filter = true;

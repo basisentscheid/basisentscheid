@@ -121,7 +121,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 </tbody>
 <?
 	}
-
+	
 
 	/**
 	 * link to ballots page
@@ -200,6 +200,28 @@ class DbTableAdmin_Period extends DbTableAdmin {
 			return false;
 		}
 
+		if (!isset($_POST['voting_method'])) {
+			warning("Parameter >voting_method< missing.");
+			return false;
+		}
+		
+		$voting_method = trim($_POST['voting_method']);
+		
+		if ( !$voting_method ) {
+			warning(_("Please enter a voting method!"));
+			return false;
+		}
+		
+		switch ($voting_method) {
+			case 'vvvote':        $this->object->vvvote = true; break;
+			case 'ballot_voting': $this->object->ballot_voting = true; break;
+			case 'pseudonymous': ; break;
+			default: 	warning(_("Voting method not supported"));
+			return false;
+			break;
+		}
+		
+		
 		$ballot_assignment  = $this->object->ballot_assignment;
 		$ballot_preparation = $this->object->ballot_preparation;
 		if ($ballot_assignment) {
@@ -244,6 +266,5 @@ class DbTableAdmin_Period extends DbTableAdmin {
 
 		return true;
 	}
-
-
+	
 }
