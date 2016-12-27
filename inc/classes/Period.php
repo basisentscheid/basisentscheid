@@ -704,5 +704,17 @@ class Period extends Relation {
 	    input_text($colname, $default);
 		echo _('Examples: "1 day", "10 minutes" or "3 hours"');
 	}
+	
+	
+	public function create($fields=false, $extra=array()) {
+		if (!in_array('vvvote', $fields)) {
+			$fields[] = 'vvvote';
+		}
+		if (!in_array('ballot_voting', $fields)) {
+		$fields[] = 'ballot_voting';
+		}
+		return parent::create($fields, $extra);
+	}
+	
 
 }

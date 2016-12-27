@@ -201,20 +201,20 @@ class DbTableAdmin_Period extends DbTableAdmin {
 		}
 
 		if (!isset($_POST['voting_method'])) {
-			warning("Parameter >voting_method< missing.");
+			warning( _("Parameter >voting_method< missing!"));
 			return false;
 		}
 		
 		$voting_method = trim($_POST['voting_method']);
 		
 		if ( !$voting_method ) {
-			warning(_("Please enter a voting method!"));
+			warning( _("Please enter a voting method!"));
 			return false;
 		}
 		
 		switch ($voting_method) {
 			case 'vvvote':        $this->object->vvvote = true;  $this->object->ballot_voting = false; break;
-			case 'ballot_voting': $this->object->vvvote = false; $this->object->ballot_voting = true; break;
+			case 'ballot_voting': $this->object->vvvote = false; $this->object->ballot_voting = true;  break;
 			case 'pseudonymous':  $this->object->vvvote = false; $this->object->ballot_voting = false; break;
 			default: 	warning(_("Voting method not supported"));
 			return false;
@@ -279,8 +279,8 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				return false;
 			}
 			$this->object->vvvote_last_reg = date ( "c", $vvvote_last_reg );
-			if ($vvvote_last_reg >= $counting) {
-				warning ( _ ("The time until it is allowed to generate a voting certificate must be before the counting starts!" ) );
+			if ($vvvote_last_reg > $counting) {
+				warning ( _("The time until it is allowed to generate a voting certificate must be before the counting starts!" ) );
 				return false;
 			}
 			

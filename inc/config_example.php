@@ -107,7 +107,7 @@ const INVITE_EXPIRY = "1 month";
 //const MOTD = "";
 
 // --- Options for vvvote ---
-// comma separated list of servers with trailing slash
+// comma separated list of servers without "backend" with trailing slash
 const VVVOTE_SERVERS = "";
 // configId to be sent to vvvote to identify configuration
 const VVVOTE_CONFIG_ID = "";
