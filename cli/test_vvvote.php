@@ -8,7 +8,8 @@
  */
 
 
-if ( $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
+if ( isset($_SERVER['argv'][0]) && $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
+                                                                    else chdir(__DIR__);
 const DOCROOT = "../";
 require "../inc/common_cli.php";
 
@@ -71,7 +72,7 @@ function create_ngroup($name, Ngroup $parent=null) {
  */
 function create_period(Ngroup $ngroup) {
 	$now = date("Y-m-d H:i:s");
-	$sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting, vvvote, ngroup)
+	$sql = "INSERT INTO period (debate, preparation, voting, counting, ballot_voting, vvvote, vvvote_last_reg, vvvote_vote_delay, ngroup)
 	VALUES (
 		timestamp '$now',
 		timestamp '$now' + interval '2 weeks',
@@ -79,6 +80,8 @@ function create_period(Ngroup $ngroup) {
 		timestamp '$now' + interval '2 weeks 3 days 10 minutes',
 		false,
 		true,
+		timestamp '$now' + interval '2 weeks 3 days 9 minutes',
+		'1 minute',
 		".$ngroup->id."
 	) RETURNING id";
 	$result = DB::query($sql);

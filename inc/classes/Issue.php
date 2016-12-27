@@ -1016,7 +1016,7 @@ class Issue extends Relation {
 			?><br><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("envelope")?></a><br><span class="stateinfo"><?
 			printf(
 				_("until %s"),
-				'<span class="datetime">'.datetimeformat_smart($this->period()->counting." -".VVVOTE_LAST_VOTING_INTERVAL).'</span>'
+				'<span class="datetime">'.datetimeformat_smart($this->period()->vvvote_last_reg).'</span>'
 			);
 			?></span><?
 		}
