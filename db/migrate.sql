@@ -160,3 +160,7 @@ CREATE UNIQUE INDEX vvvote_token_token_key ON vvvote_token USING BTREE (token);
 ALTER TABLE vvvote_token ADD generated BOOL DEFAULT FALSE NOT NULL;
 
 ALTER TABLE member ADD identity TEXT DEFAULT '' NOT NULL;
+
+ALTER TABLE period
+  ADD vvvote_vote_delay TEXT,
+  ADD vvvote_last_reg timestamp with time zone;

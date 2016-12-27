@@ -27,7 +27,7 @@ $d->columns = array(
 	array("postage",            _("Postage"),                     "center", "boolean",   "postage", 'type'=>"boolean"),
 	array(false,                _("Ballots"),                     "center", "ballots",   false),
 	array("vvvote_vote_delay",  _("Delay voting intervall"),      "period", "text", "interval", 'null'=>true), // each day
-	array("vvvote_last_reg",    _("Last moment to generate a voting certificate"),   "period", "timestamp", "timestamp", 'null'=>true) // 1 hour before counting
+	array("vvvote_last_reg",    _("Allow the generation of voting certificates until"),   "period", "timestamp", "timestamp", 'null'=>true) // 1 hour before counting
 );
 /*
 if (Login::$admin) {

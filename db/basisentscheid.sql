@@ -510,7 +510,10 @@ CREATE TABLE period (
     state period_state DEFAULT 'ballot_application'::period_state NOT NULL,
     postage boolean DEFAULT false NOT NULL,
     vvvote boolean DEFAULT false NOT NULL,
-    vvvote_configurl text
+    vvvote_configurl text,
+    vvvote_vote_delay TEXT,
+    vvvote_last_reg timestamp with time zone;
+    
 );
 
 

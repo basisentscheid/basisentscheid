@@ -51,6 +51,7 @@ const LANG = "en";
 const DATEYEAR_FORMAT     = "j.n.Y";
 const DATETIMEYEAR_FORMAT = "j.n.Y G:i";
 const DATE_FORMAT         = "j.n.";
+const DATETIMEYEAR_INPUT_FORMAT = "Y-m-d\TG:i";
 const DATETIME_FORMAT     = "j.n. G:i";
 const TIME_FORMAT         =      "G:i";
 const VOTETIME_FORMAT     = "d.m.Y H:i:s";
@@ -112,10 +113,6 @@ const VVVOTE_SERVERS = "";
 const VVVOTE_CONFIG_ID = "";
 // comma separated list of passwords to access vvvote_check_token.php
 const VVVOTE_CHECK_TOKEN_PASSWORDS = "";
-// time interval between voting start times
-const VVVOTE_VOTING_START_INTERVAL = "1 day";
-// time interval between last voting start time and voting end
-const VVVOTE_LAST_VOTING_INTERVAL = "1 hour";
 
 // --- Options for development and testing ---
 // display system informations in the HTML code of every page and disable gettext caching

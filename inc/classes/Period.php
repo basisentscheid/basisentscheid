@@ -236,12 +236,12 @@ class Period extends Relation {
 		// calculate times
 		$time_voting   = strtotime($this->voting);
 		$time_counting = strtotime($this->counting);
-		$time_until = strtotime("-".VVVOTE_LAST_VOTING_INTERVAL, $time_counting);
+		$time_until = strtotime($this->vvvote_last_reg); // strtotime("-".VVVOTE_LAST_VOTING_INTERVAL, $time_counting);
 		$registration_end = $time_until;
 		$delay_until = array();
 		while ( $time_until > $time_voting ) {
 			$delay_until[] = gmdate("c", $time_until);
-			$time_until = strtotime("-".VVVOTE_VOTING_START_INTERVAL, $time_until);
+			$time_until = strtotime("-".$this->vvvote_vote_delay, $time_until);
 		}
 
 		$post = array(
@@ -659,6 +659,13 @@ class Period extends Relation {
 				break;
 			case "counting":
 				?> class="over"<?
+				break;
+			case "vvvote_last_reg":
+				if (strtotime($this->vvvote_last_reg) <= time()) {
+					?> class="over"<?
+				} else {
+					?> class="current"<?
+				}
 				break;
 			default:
 				trigger_error("invalid column name".$column[0], E_USER_NOTICE);
