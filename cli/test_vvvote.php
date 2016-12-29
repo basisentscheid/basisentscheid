@@ -9,7 +9,7 @@
 
 
 if ( isset($_SERVER['argv'][0]) && $dir = dirname($_SERVER['argv'][0]) ) chdir($dir);
-                                                                    else chdir(__DIR__);
+else chdir(__DIR__);
 const DOCROOT = "../";
 require "../inc/common_cli.php";
 

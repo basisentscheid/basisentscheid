@@ -121,7 +121,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 </tbody>
 <?
 	}
-	
+
 
 	/**
 	 * link to ballots page
@@ -204,24 +204,24 @@ class DbTableAdmin_Period extends DbTableAdmin {
 			warning( _("Parameter >voting_method< missing!"));
 			return false;
 		}
-		
+
 		$voting_method = trim($_POST['voting_method']);
-		
+
 		if ( !$voting_method ) {
 			warning( _("Please enter a voting method!"));
 			return false;
 		}
-		
+
 		switch ($voting_method) {
-			case 'vvvote':        $this->object->vvvote = true;  $this->object->ballot_voting = false; break;
-			case 'ballot_voting': $this->object->vvvote = false; $this->object->ballot_voting = true;  break;
-			case 'pseudonymous':  $this->object->vvvote = false; $this->object->ballot_voting = false; break;
-			default: 	warning(_("Voting method not supported"));
+		case 'vvvote':        $this->object->vvvote = true;  $this->object->ballot_voting = false; break;
+		case 'ballot_voting': $this->object->vvvote = false; $this->object->ballot_voting = true;  break;
+		case 'pseudonymous':  $this->object->vvvote = false; $this->object->ballot_voting = false; break;
+		default:  warning(_("Voting method not supported"));
 			return false;
 			break;
 		}
-		
-		
+
+
 		$ballot_assignment  = $this->object->ballot_assignment;
 		$ballot_preparation = $this->object->ballot_preparation;
 		if ($ballot_assignment) {
@@ -263,37 +263,37 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				return false;
 			}
 		}
-		
-		
+
+
 		if ($this->object->vvvote) {
 			$vvvote_vote_delay = $this->object->vvvote_vote_delay;
 			$vvvote_last_reg = $this->object->vvvote_last_reg;
 			if (!$vvvote_last_reg) {
-				warning ( _ ( "The time until it is allowed to generate a voting envelope is requiered!" ) );
+				warning ( _( "The time until it is allowed to generate a voting envelope is requiered!" ) );
 				return false;
 			}
-			
-			$vvvote_last_reg = strtotime ( $vvvote_last_reg );
+
+			$vvvote_last_reg = strtotime( $vvvote_last_reg );
 			if ($vvvote_last_reg === false or $vvvote_last_reg <= 0) {
 				warning ( _("The time until it is allowed to generate a voting envelope is not valid!" ) );
 				return false;
 			}
-			$this->object->vvvote_last_reg = date ( "c", $vvvote_last_reg );
+			$this->object->vvvote_last_reg = date( "c", $vvvote_last_reg );
 			if ($vvvote_last_reg > $counting) {
 				warning ( _("The time until it is allowed to generate a voting envelope must be before the counting starts!" ) );
 				return false;
 			}
-			
+
 			if ($vvvote_last_reg < $voting) {
 				warning ( _("The time until it is allowed to generate a voting envelope must be after the voting phase started!" ) );
 				return false;
 			}
-			
+
 			if (!$vvvote_vote_delay) {
 				warning ( _("The voting delay interval is required for online anonymous voting!") );
 				return false;
-				}
-			$time_tmp = strtotime ( "-" . $vvvote_vote_delay, $vvvote_last_reg );
+			}
+			$time_tmp = strtotime( "-" . $vvvote_vote_delay, $vvvote_last_reg );
 			if (! $time_tmp) {
 				warning ( _("The voting delay interval is not valid!" ) );
 				return false;
@@ -301,5 +301,6 @@ class DbTableAdmin_Period extends DbTableAdmin {
 		}
 		return true;
 	}
-	
+
+
 }
