@@ -29,7 +29,7 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 			success(_("Login successful"));
 			$_SESSION[$scope] = $row['id'];
 			if (empty($_POST['origin'])) redirect("index.php");
-			foreach ( array("login.php", "register.php") as $page ) {
+			foreach ( array("login.php", "reset_password.php", "register.php") as $page ) {
 				if ( lefteq($_POST['origin'], $page) ) redirect("index.php");
 			}
 			redirect($_POST['origin']);
