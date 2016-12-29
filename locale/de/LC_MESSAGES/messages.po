@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Basisentscheid\n"
 "Report-Msgid-Bugs-To: Magnus Rosenbaum <dev@cmr.cx>\n"
 "POT-Creation-Date: 2014-07-20 11:24+0200\n"
-"PO-Revision-Date: 2016-11-20 14:47+0100\n"
+"PO-Revision-Date: 2016-12-29 20:13+0100\n"
 "Last-Translator: Magnus Rosenbaum <dev@cmr.cx>\n"
 "Language-Team: Magnus Rosenbaum <dev@cmr.cx>\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgstr "Mitglied"
 # File: admins.php, line: 16
 # File: login.php, line: 50
 # File: register.php, line: 108
-# File: request_password_reset.php, line: 77
+# File: request_password_reset.php, line: 87
 # File: settings.php, line: 83
 # File: inc/classes/Member.php, line: 142
 msgid "Username"
@@ -45,9 +45,9 @@ msgstr "Benutzername"
 #
 # File: ballot_edit.php, line: 138
 # File: proposal_edit.php, line: 189
+# File: settings.php, line: 109
 # File: settings_encryption.php, line: 91
 # File: settings_notifications.php, line: 74
-# File: settings.php, line: 109
 msgid "Save"
 msgstr "Speichern"
 #
@@ -59,9 +59,9 @@ msgstr "Abstimmungsperioden"
 #
 # File: diff.php, line: 45
 # File: draft.php, line: 39
+# File: proposal.php, line: 331
 # File: proposal_edit.php, line: 169
 # File: proposal_edit.php, line: 176
-# File: proposal.php, line: 331
 # File: inc/classes/Notification.php, line: 333
 # File: inc/classes/Notification.php, line: 352
 # File: inc/classes/Notification.php, line: 366
@@ -99,9 +99,9 @@ msgstr "Diesen Antrag unterstützen"
 #
 # File: diff.php, line: 47
 # File: draft.php, line: 41
+# File: proposal.php, line: 333
 # File: proposal_edit.php, line: 171
 # File: proposal_edit.php, line: 178
-# File: proposal.php, line: 333
 # File: inc/classes/Notification.php, line: 335
 # File: inc/classes/Notification.php, line: 354
 # File: inc/classes/Notification.php, line: 368
@@ -110,8 +110,8 @@ msgstr "Antragstext"
 #
 # File: diff.php, line: 49
 # File: draft.php, line: 43
-# File: proposal_edit.php, line: 184
 # File: proposal.php, line: 342
+# File: proposal_edit.php, line: 184
 # File: inc/classes/Notification.php, line: 337
 # File: inc/classes/Notification.php, line: 356
 # File: inc/classes/Notification.php, line: 370
@@ -179,8 +179,8 @@ msgid "Counting"
 msgstr "Auszählung"
 #
 # File: admin_areas.php, line: 32
-# File: proposal_edit.php, line: 209
 # File: proposal.php, line: 485
+# File: proposal_edit.php, line: 209
 # File: inc/classes/Proposal.php, line: 1081
 msgid "Area"
 msgstr "Themenbereich"
@@ -238,7 +238,7 @@ msgstr "Fehler"
 # File: admin_ngroups.php, line: 25
 # File: areas.php, line: 43
 # File: ballots.php, line: 117
-# File: inc/classes/Member.php, line: 473
+# File: inc/classes/Member.php, line: 458
 msgid "Name"
 msgstr "Name"
 #
@@ -255,8 +255,8 @@ msgstr "Teilnahme"
 msgid "last time activated"
 msgstr "zuletzt aktiviert"
 #
-# File: proposal_edit.php, line: 226
 # File: proposal.php, line: 516
+# File: proposal_edit.php, line: 226
 # File: inc/classes/Proposal.php, line: 1083
 msgid "Proponents"
 msgstr "Antragsteller"
@@ -401,8 +401,8 @@ msgstr "Themen pro Seite"
 # File: proposal.php, line: 734
 # File: proposal.php, line: 782
 # File: inc/classes/Comments.php, line: 446
-# File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/DbTableAdmin.php, line: 863
+# File: inc/classes/DbTableAdmin_Period.php, line: 96
 # File: inc/classes/Issue.php, line: 1200
 # File: inc/classes/Issue.php, line: 1203
 msgid "edit"
@@ -495,8 +495,8 @@ msgstr "Der zu duplizierende Datensatz existiert nicht."
 msgid "The record %d has been duplicated. ID of the copy: %d"
 msgstr "Der Datensatz %d wurde dupliziert. ID der Kopie: %d"
 #
-# File: inc/classes/DbTableAdmin_Period.php, line: 102
 # File: inc/classes/DbTableAdmin.php, line: 869
+# File: inc/classes/DbTableAdmin_Period.php, line: 102
 msgid "duplicate"
 msgstr "duplizieren"
 #
@@ -804,9 +804,9 @@ msgstr "Der Inhalt wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt
 msgid "The reason has been truncated to the maximum allowed length of %d characters!"
 msgstr "Die Begründung wurde auf die maximal erlaubte Länge von %d Zeichen gekürzt!"
 #
-# File: proposal_edit.php, line: 27
 # File: proposal.php, line: 45
 # File: proposal.php, line: 68
+# File: proposal_edit.php, line: 27
 msgid "Your are not a proponent of this proposal."
 msgstr "Du bist kein Antragsteller dieses Antrags."
 #
@@ -890,15 +890,15 @@ msgstr "Aktionen"
 # File: ballots.php, line: 81
 # File: confirm_mail.php, line: 16
 # File: create_member.php, line: 39
-# File: proposal_edit.php, line: 135
 # File: proposal.php, line: 263
+# File: proposal_edit.php, line: 135
 # File: proposals.php, line: 21
 # File: register.php, line: 90
-# File: request_password_reset.php, line: 61
+# File: request_password_reset.php, line: 69
 # File: reset_password.php, line: 54
+# File: settings.php, line: 63
 # File: settings_encryption.php, line: 60
 # File: settings_notifications.php, line: 27
-# File: settings.php, line: 63
 # File: vote.php, line: 40
 # File: inc/classes/DbTableAdmin.php, line: 389
 msgid "Unknown action"
@@ -1248,9 +1248,9 @@ msgstr "Bestätigung der E-Mail-Adresse"
 msgid "Please confirm your email address by clicking the following link:"
 msgstr "Bitte bestätige deine E-Mail-Adresse durch Klick auf folgenden Link:"
 #
-# File: request_password_reset.php, line: 44
+# File: request_password_reset.php, line: 54
 # File: inc/classes/Member.php, line: 230
-# File: inc/classes/Member.php, line: 553
+# File: inc/classes/Member.php, line: 517
 msgid "If this link does not work, please open the following URL in your web browser:"
 msgstr "Wenn dieser Link nicht funktioniert, dann öffne die folgende URL im Web-Browser:"
 #
@@ -1326,7 +1326,7 @@ msgid "compare versions"
 msgstr "Versionen vergleichen"
 #
 # File: admin_ngroups.php, line: 23
-# File: inc/classes/Member.php, line: 472
+# File: inc/classes/Member.php, line: 457
 msgid "ID"
 msgstr "Nr."
 #
@@ -1488,7 +1488,7 @@ msgid "There are no areas in this group. You can not add a proposal without an a
 msgstr "Es gibt in dieser Gliederung noch keine Themenbereiche. Ein Antrag ohne Themenbereich kann nicht angelegt werden."
 #
 # File: admin_ngroups.php, line: 26
-# File: inc/classes/Member.php, line: 474
+# File: inc/classes/Member.php, line: 459
 msgid "active"
 msgstr "aktiv"
 #
@@ -1797,43 +1797,37 @@ msgstr "Bitte gib deine E-Mail-Adresse ein. Nach der Registrierung wirst du eine
 msgid "Activate account"
 msgstr "Account aktivieren"
 #
-# File: request_password_reset.php, line: 29
-#, php-format
-msgid "Sorry, but there is no confirmed email address for this account. Please contact %s!"
-msgstr "Leider ist zu diesem Account keine bestätigte E-Mail-Adresse angegeben. Bitte wende dich an %s!"
-#
-# File: request_password_reset.php, line: 39
+# File: request_password_reset.php, line: 49
 msgid "Password reset request"
 msgstr "Passwort zurücksetzen"
 #
-# File: request_password_reset.php, line: 41
+# File: request_password_reset.php, line: 51
 #, php-format
 msgid "Hello %s!"
 msgstr "Hallo %s!"
 #
-# File: request_password_reset.php, line: 42
+# File: request_password_reset.php, line: 52
 msgid "To reset your password please click on the following link:"
 msgstr "Um dein Passwort zurückzusetzen, klicke bitte auf folgenden Link:"
 #
-# File: request_password_reset.php, line: 46
+# File: request_password_reset.php, line: 56
 msgid "On that page please enter the code:"
 msgstr "Gib auf dieser Seite dann den Code ein:"
 #
-# File: request_password_reset.php, line: 48
+# File: request_password_reset.php, line: 58
 msgid "This code is only valid for one day."
 msgstr "Dieser Code ist nur einen Tag lang gültig."
 #
-# File: request_password_reset.php, line: 54
+# File: request_password_reset.php, line: 64
 msgid "If a member with this login exists, a reset link has been sent to the stored email address."
 msgstr "Sofern ein Mitglied mit diesem Benutzernamen existiert, wurde ein Link zum Zurücksetzen des Passworts an die gespeicherte E-Mail-Adresse geschickt."
 #
-# File: request_password_reset.php, line: 56
-# File: request_password_reset.php, line: 67
-# File: request_password_reset.php, line: 78
+# File: request_password_reset.php, line: 75
+# File: request_password_reset.php, line: 88
 msgid "Request password reset"
 msgstr "Passwort zurücksetzen"
 #
-# File: request_password_reset.php, line: 70
+# File: request_password_reset.php, line: 80
 msgid "Please enter your login name! You will receive an email with a link to reset your password. Note that the login name is case sensitive!"
 msgstr "Bitte gib deinen Benutzernamen ein! Du wirst eine E-Mail mit einem Link zum Zurücksetzen des Passworts bekommen. Beachte, dass Groß-/kleinschreibung unterschieden wird."
 #
@@ -1955,12 +1949,11 @@ msgid "The password name must have at least 8 characters!"
 msgstr "Das Passwort muss mindestens acht Zeichen lang sein!"
 #
 # File: inc/classes/Login.php, line: 254
-# File: inc/classes/Member.php, line: 512
 msgid "Please enter an email address!"
 msgstr "Bitte gib eine E-Mail-Adresse ein!"
 #
 # File: inc/classes/Member.php, line: 232
-# File: inc/classes/Member.php, line: 555
+# File: inc/classes/Member.php, line: 519
 msgid "On that page enter the code:"
 msgstr "Gib auf dieser Seite den Code ein:"
 #
@@ -1996,7 +1989,7 @@ msgstr "%d Punkte"
 msgid "Yes: 0, No: 0, Abstention: %d"
 msgstr "Ja: 0, Nein: 0, Enthaltungen: %d"
 #
-# File: request_password_reset.php, line: 35
+# File: request_password_reset.php, line: 45
 #, php-format
 msgid "The generated code could not be saved. Please try again or contact %s!"
 msgstr "Der generierte Code konnte nicht gespeichert werden. Bitte wende dich an %s!"
@@ -2042,7 +2035,6 @@ msgid "new"
 msgstr "neu"
 #
 # File: settings.php, line: 99
-# File: inc/classes/Member.php, line: 450
 msgid "send the confirmation email again"
 msgstr "Bestätigungs-E-Mail nocheinmal senden"
 #
@@ -2177,9 +2169,9 @@ msgstr "Dieser Schlüssel kann nicht verschlüsseln."
 msgid "The key was found and is usable."
 msgstr "Der Schlüssel wurde gefunden und ist verwendbar."
 #
+# File: settings.php, line: 69
 # File: settings_encryption.php, line: 66
 # File: settings_notifications.php, line: 33
-# File: settings.php, line: 69
 msgid "Member settings"
 msgstr "Mitglieds-Einstellungen"
 #
@@ -2922,19 +2914,19 @@ msgstr "Es gibt keine Abstimmungsperioden, in denen die Abstimmung noch nicht be
 msgid "no voting period"
 msgstr "keine Abstimmungsperiode"
 #
-# File: inc/classes/Member.php, line: 550
+# File: inc/classes/Member.php, line: 514
 msgid "Invitation to Basisentscheid"
 msgstr "Einladung zum Basisentscheid"
 #
-# File: inc/classes/Member.php, line: 551
+# File: inc/classes/Member.php, line: 515
 msgid "You are invited to Basisentscheid. Please click the following link to register:"
 msgstr "Du bist zum Basisentscheid eingeladen. Bitte klicke auf den folgenden Link, um Dich zu registrieren:"
 #
-# File: inc/classes/Member.php, line: 558
+# File: inc/classes/Member.php, line: 522
 msgid "An invitation email has been sent to the new member."
 msgstr "Eine Einladungs-E-Mail wurde an das neue Mitglied gesendet."
 #
-# File: inc/classes/Member.php, line: 560
+# File: inc/classes/Member.php, line: 524
 msgid "The new member was not created, because the invitation email could not be sent!"
 msgstr "Das neue Mitglied wurde nicht angelegt, weil die Einladungs-E-Mail nicht verschickt werden konnte!"
 #
@@ -2955,10 +2947,11 @@ msgstr "Ein Verantwortlicher hat für dich folgende E-Mail-Adresse eingetragen:"
 msgid "If this was not arranged with you, please contact %s!"
 msgstr "Falls das nicht so abgesprochen wurde, wende dich bitte an %s!"
 #
-# File: inc/classes/Member.php, line: 517
-msgid "The entered email address is not valid!"
-msgstr "Die eingegebene E-Mail-Adresse ist ungültig!"
-#
 # File: inc/classes/Member.php, line: 244
 msgid "The confirmation request email could not be sent."
 msgstr "Die Aufforderung zur Bestätigung der E-Mail-Adresse konnte nicht verschickt werden."
+#
+# File: request_password_reset.php, line: 38
+#, php-format
+msgid "Sorry, but there is no email address for this account. Please contact %s!"
+msgstr "Leider ist zu diesem Account keine E-Mail-Adresse angegeben. Bitte wende dich an %s!"
