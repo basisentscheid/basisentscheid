@@ -470,7 +470,7 @@ function input_hidden($name, $value) {
 
 
 /**
- * text input field
+ * input (type must be set in the attributes)
  *
  * @param string  $name
  * @param string  $value
@@ -486,14 +486,37 @@ function input_freetype($name, $value, $disabled=false, $attributes="") {
 <?
 }
 
+/**
+ * text input field
+ *
+ * @param string  $name
+ * @param string  $value
+ * @param boolean $disabled   (optional)
+ * @param string  $attributes (optional)
+ */
 function input_text($name, $value, $disabled=false, $attributes="")
 	{
 		input_freetype($name, $value, $disabled, $attributes . ' type="text"');
 	}
-	
+
+/**
+ * input for date and time
+ *
+ * @param string  $name
+ * @param string  $value a date and time as string 
+ * @param boolean $disabled   (optional)
+ * @param string  $attributes (optional)
+ */
 function input_datetime($name, $value, $disabled=false, $attributes="")
 	{
-		input_freetype($name, $value, $disabled, $attributes . ' type="datetime-local"');
+	// actually prefered input type: datetime-local but that is not yet implememted well (crashes in iOS, no copy-and-paste) 
+	// in the up to date (29-12-2016) webbrowsers
+	// so we use a simple text input
+	// use this format if input type="datetime-local": DATETIMEYEAR_INPUT_FORMAT
+		$value2 = $value;
+		$time = strtotime($value);
+		if ($time) $value2 = date(DATETIMEYEAR_FORMAT, $time);
+		input_freetype($name, $value2, $disabled, $attributes . ' type="text"');
 	}
 
 

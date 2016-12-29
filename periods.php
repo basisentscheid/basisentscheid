@@ -18,17 +18,18 @@ $d->columns = array(
 	array("debate",             _("Debate from"),                 "period", "timestamp", "timestamp",     'required'=>true), // 4 weeks before counting
 	array("preparation",        _("Voting preparation from"),     "period", "timestamp", "timestamp", 'required'=>true), // 1 week before voting
 	array("voting",             _("Online voting from"),          "period", "timestamp", "timestamp", 'required'=>true), // 2 weeks before counting
-	array("counting",           _("Counting/End of period from"), "period", "timestamp", "timestamp", 'required'=>true), // "Stichtag"
-	array(false,                _("Voting method"),     		  "center", "voting_method", "voting_method", 'type'=>"boolean"), // 'values'=> array('vvvote', 'pseudonymous', 'ballot_voting'), 'options'=> array(_('Online anonymous'), _('Online pseudonymous'), _('Ballot voting')), 
-//	array("ballot_voting",      _("Ballot voting"),               "center", "boolean",   "boolean",   'type'=>"boolean"),
-	array("ballot_assignment",  _("Ballot assignment from"),      "period", "timestamp", "timestamp", 'null'=>true), // 3 weeks before counting
-	array("ballot_preparation", _("Ballot preparation from"),     "period", "timestamp", "timestamp", 'null'=>true), // 1 week before counting
-	array("postage",            _("Postage"),                     "center", "boolean",   "postage", 'type'=>"boolean"),
-	array(false,                _("Ballots"),                     "center", "ballots",   false),
-//	array("vvvote",             "vvvote",                         "center", "boolean",  "boolean", 'type'=>"boolean", "display"=>"none"),
 	array("vvvote_vote_delay",  _("Delay voting intervall"),      "period", "text", "interval", 'null'=>true), // each day
-	array("vvvote_last_reg",    _("Allow the generation of voting certificates until"),   "period", "timestamp", "timestamp", 'null'=>true) // 1 hour before counting
+	array("vvvote_last_reg",    _("End of envelops generation"),  "period", "timestamp", "timestamp", 'null'=>true), // 1 hour before counting
+	array("counting",           _("Counting/End of period from"), "period", "timestamp", "timestamp", 'required'=>true), // "Stichtag"
+	array(false,                _("Voting method"),     		  "center", "voting_method", "voting_method", 'type'=>"boolean") // 'values'=> array('vvvote', 'pseudonymous', 'ballot_voting'), 'options'=> array(_('Online anonymous'), _('Online pseudonymous'), _('Ballot voting')), 
+//	array("ballot_voting",      _("Ballot voting"),               "center", "boolean",   "boolean",   'type'=>"boolean"),
+//	array("ballot_assignment",  _("Ballot assignment from"),      "period", "timestamp", "timestamp", 'null'=>true), // 3 weeks before counting
+//	array("ballot_preparation", _("Ballot preparation from"),     "period", "timestamp", "timestamp", 'null'=>true), // 1 week before counting
+//	array("postage",            _("Postage"),                     "center", "boolean",   "postage", 'type'=>"boolean"),
+//	array(false,                _("Ballots"),                     "center", "ballots",   false),
+//	array("vvvote",             "vvvote",                         "center", "boolean",  "boolean", 'type'=>"boolean", "display"=>"none"),
 );
+
 /*
 if (Login::$admin) {
 	$d->columns[] = array("vvvote", "vvvote", "center", "boolean", "boolean", 'type'=>"boolean");

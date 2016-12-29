@@ -36,21 +36,31 @@ class Period extends Relation {
 
 	protected $boolean_fields = array("ballot_voting", "postage", "vvvote");
 
+	/**
+	 * reads the booleans vvvote and ballot_voting in order to return the name of the voting method
+	 *
+	 * @return string
+	 */
 	private function getVoting_method() {
 		$default = 'pseudonymous';
-		if ($this->vvvote === true)        {$default = 'vvvote';}
+		if ($this->vvvote === true) {$default = 'vvvote';}
 		if ($this->ballot_voting === true) {$default = 'ballot_voting';}
 		return $default;
 	}
-	
+
+
+
+	/**
+	 * prints the html code for editing the voting method
+	 */
 	public function dbtableadmin_edit_voting_method() {
-		$options = array('vvvote' => _('Anonymous online voting'), 
-				'pseudonymous'    => _('Pseudonymous online voting'), 
-				'ballot_voting'   => _('Ballot voting'));
+		$options = array('vvvote' => _('Anonymous online voting'),
+			'pseudonymous'    => _('Pseudonymous online voting'),
+			'ballot_voting'   => _('Ballot voting'));
 		$selected = $this->getVoting_method();
 		$onClick = 'onChange="votingMethodChanged(this)"';
 		input_select('voting_method', $options, $selected, $onClick);
-		?>
+?>
 		<script> function votingMethodChanged(source) {
 			function displayBallotElements(display) {
 				document.getElementsByName('ballot_assignment')[0].parentElement.parentElement.style.display=display;
@@ -61,7 +71,7 @@ class Period extends Relation {
 				document.getElementsByName('vvvote_vote_delay')[0].parentElement.parentElement.style.display=display;
 				document.getElementsByName('vvvote_last_reg')[0].parentElement.parentElement.style.display=display;
 			}
-			
+
 			switch (source.value) {
 			case "pseudonymous":
 				displayBallotElements('none');
@@ -87,16 +97,32 @@ class Period extends Relation {
 		</script>
 		<?
 	}
-		public function dbtableadmin_print_voting_method() {
-			$options = array('vvvote' => _('Anonymous online voting'),
-					'pseudonymous'    => _('Pseudonymous online voting'),
-					'ballot_voting'   => _('Ballot voting'));
-			$selected = $this->getVoting_method();
-			
-			?> <?=$options[$selected]?> <?
-		}
-		
-				
+
+
+
+
+
+	/**
+	 * prints the html code for showing the voting method
+	 */
+	public function dbtableadmin_print_voting_method() {
+		$options = array (
+			'vvvote' => _( 'Anonymous online voting' ),
+			'pseudonymous' => _( 'Pseudonymous online voting' ),
+			'ballot_voting' => _( 'Ballot voting' )
+		);
+		$selected = $this->getVoting_method ();
+
+		?> <?=$options[$selected]?> <?
+	}
+
+
+
+
+
+
+
+
 	/**
 	 * get the ngroup this period belongs to
 	 *
@@ -687,11 +713,6 @@ class Period extends Relation {
 	 * @param array   $column
 	 */
 	public function dbtableadmin_edit_timestamp($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
-		if ($default) {
-			// adjust time format if it is a valid time
-			$time = strtotime($default);
-			if ($time) $default = date(DATETIMEYEAR_INPUT_FORMAT, $time);
-		}
 		$attributes = array('size="30"');
 		if (!empty($column['required'])) {
 			$attributes[] = 'required';
@@ -700,21 +721,39 @@ class Period extends Relation {
 		?> <?=sprintf(_("date and time, format e.g. %s"), date(DATETIMEYEAR_FORMAT, 2117003400));
 	}
 
+
+	/**
+	 * Prints the html code for editing the time interval, including examples for the format
+	 *
+	 * @param string  $colname
+	 * @param string  $default  a default to be prefilled in the input-box
+	 * @param unknown $id
+	 * @param boolean $disabled
+	 * @param array   $column
+	 */
 	public function dbtableadmin_edit_interval($colname, $default, /** @noinspection PhpUnusedParameterInspection */ $id, $disabled, array $column) {
-	    input_text($colname, $default);
+		input_text($colname, $default, $disabled);
 		echo _('Examples: "1 day", "10 minutes" or "3 hours"');
 	}
-	
-	
+
+
+	/**
+	 * Create the database entry and making sure that the boolean
+	 * fields vvvote and ballot_voting are written
+	 *
+	 * @param unknown $fields (optional)
+	 * @param unknown $extra  (optional)
+	 * @return unknown
+	 */
 	public function create($fields=false, $extra=array()) {
 		if (!in_array('vvvote', $fields)) {
 			$fields[] = 'vvvote';
 		}
 		if (!in_array('ballot_voting', $fields)) {
-		$fields[] = 'ballot_voting';
+			$fields[] = 'ballot_voting';
 		}
 		return parent::create($fields, $extra);
 	}
-	
+
 
 }
