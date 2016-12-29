@@ -7,11 +7,11 @@
  * 1) manual administration (config.php: IMPORT_MEMBERS=false)
  * - Members are identified by the "identity" column, where you can enter e.g. the real name or a member number. Of course this method offers no anonymity at all.
  * - If an invitation code expired, a new member account should be created.
- * - If a member forgets his password and has no working confirmed email address, an admin can set a new unconfirmed email address to which a confirmation request will be sent.
+ * - If a member forgets his password and has no working confirmed or unconfirmed email address, an admin can set a new unconfirmed email address. Then the member can use the password reset function.
  *
  * 2) import CSV files (config.php: IMPORT_MEMBERS=true)
  * - Members are identified by their invite code. The identity column stays empty. If the admin of the Basisentscheid and the admin of the member source database are different persons, the members can only be identified if both bring their data together.
- * - If a member forgets his password and has no working confirmed email address, or if an invite code expired, the member should get a new member account by setting a new invite code in the member source database and sending the member a new invitation.
+ * - If a member forgets his password and has no working confirmed or unconfirmed email address, or if an invite code expired, the member should get a new member account by setting a new invite code in the member source database and sending the member a new invitation.
  *
  * Members can not be deleted. If they are no longer allowed to vote, switch off the "eligible" flag.
  *
@@ -439,21 +439,6 @@ class Member extends Relation {
 
 
 	/**
-	 * edit the unconfirmed email address
-	 */
-	public function dbtableadmin_edit_mail() {
-?>
-<input type="email" name="mail_unconfirmed" value="<?=h($this->mail_unconfirmed)?>">
-<?
-		if ($this->mail_unconfirmed) {
-?>
-<input type="submit" name="submit_mail" value="<?=_("send the confirmation email again")?>">
-<?
-		}
-	}
-
-
-	/**
 	 * display the list of groups
 	 */
 	public function dbtableadmin_print_ngroups() {
@@ -499,30 +484,9 @@ class Member extends Relation {
 	 *
 	 * @return boolean
 	 */
-	public function dbtableadmin_beforesave() {
-
-		if (!isset($_POST['mail_unconfirmed'])) {
-			warning("Parameter missing.");
-			return false;
-		}
-
-		$mail = trim($_POST['mail_unconfirmed']);
-
-		if ( !$mail ) {
-			warning(_("Please enter an email address!"));
-			return false;
-		}
-
-		if ( ! filter_var($mail, FILTER_VALIDATE_EMAIL) ) {
-			warning(_("The entered email address is not valid!"));
-			return false;
-		}
-
-		if ($mail != $this->mail_unconfirmed) $this->mail_unconfirmed_changed = true;
-
-		$this->mail_unconfirmed = $mail;
-
-		return true;
+	public function dbtableadmin_beforesave_mail_unconfirmed() {
+		$this->mail_unconfirmed = trim($this->mail_unconfirmed);
+		return Login::check_mail($this->mail_unconfirmed);
 	}
 
 
@@ -569,11 +533,6 @@ class Member extends Relation {
 	public function dbtableadmin_after_edit() {
 
 		$this->save_ngroups();
-
-		// send email confirmation request
-		if ($this->mail_unconfirmed_changed or isset($_POST['submit_mail'])) {
-			$this->set_mail($this->mail_unconfirmed, true);
-		}
 
 	}
 
