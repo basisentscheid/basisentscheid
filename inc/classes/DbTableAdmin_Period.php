@@ -301,6 +301,14 @@ class DbTableAdmin_Period extends DbTableAdmin {
 		}
 		return true;
 	}
-
+	
+	
+	protected function convert_input($object, array $post, $input_columns=false, $msg_prefix="") {
+		$ret = parent::convert_input($object, $post, $input_columns, $msg_prefix);
+		if ($ret === false) return false;
+		$ret[] = 'ballot_voting';
+		$ret[] = 'vvvote';
+		return $ret;
+	}
 
 }

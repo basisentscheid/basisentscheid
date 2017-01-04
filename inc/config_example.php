@@ -113,6 +113,7 @@ const VVVOTE_SERVERS = "";
 const VVVOTE_CONFIG_ID = "";
 // comma separated list of passwords to access vvvote_check_token.php
 const VVVOTE_CHECK_TOKEN_PASSWORDS = "";
+const DEFAULT_VOTING_METHOD = 'vvvote'; // this is the default value for new periods, possible values: 'vvvote', 'ballot_voting' or 'pseudonymous'
 
 // --- Options for development and testing ---
 // display system informations in the HTML code of every page and disable gettext caching

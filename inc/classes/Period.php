@@ -24,7 +24,7 @@ class Period extends Relation {
 	public $vvvote_configurl;
 	public $vvvote_vote_delay;
 	public $vvvote_last_reg;
-
+	
 	public $debate_now;
 	public $preparation_now;
 	public $voting_now;
@@ -58,6 +58,7 @@ class Period extends Relation {
 			'pseudonymous'    => _('Pseudonymous online voting'),
 			'ballot_voting'   => _('Ballot voting'));
 		$selected = $this->getVoting_method();
+		if ($this->id === null) $selected = DEFAULT_VOTING_METHOD; // use the default for new periods 
 		$onClick = 'onChange="votingMethodChanged(this)"';
 		input_select('voting_method', $options, $selected, $onClick);
 ?>
@@ -735,25 +736,5 @@ class Period extends Relation {
 		input_text($colname, $default, $disabled);
 		echo _('Examples: "1 day", "10 minutes" or "3 hours"');
 	}
-
-
-	/**
-	 * Create the database entry and making sure that the boolean
-	 * fields vvvote and ballot_voting are written
-	 *
-	 * @param unknown $fields (optional)
-	 * @param unknown $extra  (optional)
-	 * @return unknown
-	 */
-	public function create($fields=false, $extra=array()) {
-		if (!in_array('vvvote', $fields)) {
-			$fields[] = 'vvvote';
-		}
-		if (!in_array('ballot_voting', $fields)) {
-			$fields[] = 'ballot_voting';
-		}
-		return parent::create($fields, $extra);
-	}
-
 
 }
