@@ -12,6 +12,8 @@ require "inc/common_http.php";
 Login::logout();
 
 
+$show_form = true;
+
 if ($action) {
 	switch ($action) {
 	case "request_password_reset":
@@ -25,8 +27,16 @@ if ($action) {
 		$result = DB::query($sql);
 		if ( $member = DB::fetch_object($result, "Member") ) {
 
-			if (!$member->mail) {
-				warning(sprintf(_("Sorry, but there is no confirmed email address for this account. Please contact %s!"), MAIL_SUPPORT), true);
+			// send the mail to both the confirmed and the unconfirmed mail address
+			if ($member->mail and $member->mail_unconfirmed) {
+				$to = $member->mail.", ".$member->mail_unconfirmed;
+			} elseif ($member->mail) {
+				$to = $member->mail;
+			} elseif ($member->mail_unconfirmed) {
+				$to = $member->mail_unconfirmed;
+			} else {
+				warning(sprintf(_("Sorry, but there is no email address for this account. Please contact %s!"), MAIL_SUPPORT), true);
+				$show_form = false;
 				break;
 			}
 
@@ -47,15 +57,13 @@ if ($action) {
 				.$member->password_reset_code."\n\n"
 				._("This code is only valid for one day.");
 
-			send_mail($member->mail, $subject, $body);
+			send_mail($to, $subject, $body);
 
 		}
 
 		success(_("If a member with this login exists, a reset link has been sent to the stored email address."));
-
-		html_head(_("Request password reset"));
-		html_foot();
-		exit;
+		$show_form = false;
+		break;
 
 	default:
 		warning(_("Unknown action"));
@@ -66,18 +74,22 @@ if ($action) {
 
 html_head(_("Request password reset"));
 
+if ($show_form) {
+
 ?>
 <p><?=_("Please enter your login name! You will receive an email with a link to reset your password. Note that the login name is case sensitive!")?></p>
 <?
 
-form(BN, 'class="login"');
-input_hidden("action", "request_password_reset");
+	form(BN, 'class="login"');
+	input_hidden("action", "request_password_reset");
 ?>
 <fieldset>
 	<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username" size="32" maxlength="32"></span></label>
 	<label class="th"><span class="label"></span><span class="input"><input type="submit" value="<?=_("Request password reset")?>"></span></label>
 </fieldset>
 <?
-form_end();
+	form_end();
+
+}
 
 html_foot();

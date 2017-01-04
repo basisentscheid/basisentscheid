@@ -21,8 +21,8 @@ $d->columns = array(
 	array("identity",         _("Identity")),
 	array("username",         _("Username"), "", "", "display", 'disabled'=>true),
 	array("mail",             _("Email"),    "", "", "display", 'disabled'=>true),
-	array("mail_unconfirmed", _("Email unconfirmed"), "", "", "mail", 'disabled'=>true, 'required'=>true),
-	array("eligible",         _("Eligible"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
+	array("mail_unconfirmed", _("Email unconfirmed"), 'required'=>true, 'beforesave'=>"mail_unconfirmed"),
+	array("eligible", _("Eligible"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
 	array("verified",         _("Verified"), "center", "boolean", "boolean", 'type'=>"boolean", 'nosearch'=>true),
 	array(false,              _("Groups"), "", "ngroups", "ngroups", 'noorder'=>true)
 );
