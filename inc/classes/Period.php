@@ -343,7 +343,7 @@ class Period extends Relation {
 
 			if ( isset($result['cmd']) and $result['cmd'] == "saveElectionUrl" and !empty($result['configUrl']) ) {
 				if (!$this->vvvote_configurl) {
-					// save configUrl from the frist server
+					// save configUrl from the first server
 					$this->vvvote_configurl = $result['configUrl'];
 					$this->update(['vvvote_configurl']);
 				} else {
