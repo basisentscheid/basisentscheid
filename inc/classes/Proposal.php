@@ -974,12 +974,15 @@ class Proposal extends Relation {
 		$value = $this->supporters;
 		$population = $this->issue()->area()->population();
 		$required = $this->quorum_required();
+		list($quroumNum, $quorumDen) = $this->quorum_level();
+		$numRequiredFromMinPopulation = ceil($this->issue()->area()->ngroup()->minimum_population * $quroumNum / $quorumDen);
 		$title = sprintf(
-			_("%d supporters of %d participants - %d supporters (%s) currently required for admission"),
+			_("%d of %d supporters, needed for admission. %s of the participants (%d) in an area are needed, but at least %d."),
 			$this->supporters,
-			$population,
 			$required,
-			numden($this->quorum_level())
+			numden($this->quorum_level()),
+			$this->issue()->area()->participants,
+			$numRequiredFromMinPopulation
 		);
 
 		$min_width = 120;

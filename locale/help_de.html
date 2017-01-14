@@ -177,3 +177,12 @@ Weitere Benachrichtigungen, die hier nicht aufgeführt sind, bekommst du immer. 
 ===settings_encryption.php
 
 Um E-Mail-Benachrichtigungen mit vertraulichen Daten in verschlüsselter Form zu bekommen, gibt es die Möglichkeit, einen <b>öffentlichen PGP-Schlüssel</b> hochzuladen. Dieser ist im ASCII-Armor-Format in das Textfeld zu kopieren. In einem weiteren Feld ist der Fingerabdruck dieses Schlüssels anzugeben. Der Schlüssel muss außerdem die bestätigte E-Mail-Adresse enthalten.
+
+===admin_ngroups.php
+
+<strong>Minimale Grundgesamtheit</strong>
+Unter anderen mit dieser Angabe wird gesteuert, wie viele Mitglieder notwendig sind, damit ein Antrag zugelassen wird.  
+Wenn weniger Mitglieder als die minimale Grundgesamtheit in einem Themenbereich angemeldet sind, wird die hier angegebene minimale Grundgesamtheit statt der Zahl der angemeldeten verwendet, um die für die Zulassung eines Antrages benötigte Anzahl Unterstützer zu ermitteln. Die Zahl der benötigten Anzahl Unterstützer ergibt sich dann aus der Multiplikation mit der Konstante "QUORUM_SUPPORT_NUM" für eigenständige Anträge bzw. "QUORUM_SUPPORT_ALTERNATIVE_NUM" für Alternativanträge in der Konfigutation. 
+<strong>Mindestquorum Verfahren</strong>
+Wenn dieses Verfahrensquorum überschritten ist, dann wird statt der Online-Abstimmung eine Offline-Abstimmung durchgeführt. In der Konfiguration ist festgelegt, wie groß der <i>Anteil</i> der zu einem Themenbereich Angemeldeten ist, der eine Offline-Abstimmung fordern muss (aktuell %QUORUM_VOTINGMODE), damit dieser Verfahrenswechsel stattfindet (Konstante "QUORUM_VOTINGMODE_NUM"). Hier kann zusätzlich eine Mindest<i>anzahl</i> Personen festgelegt werden. 
+

@@ -68,13 +68,13 @@ const CANCEL_NOT_ADMITTED_INTERVAL = '6 months';
 const CLEAR_INTERVAL = '1 week';
 // time of day when ballots close (Opening time is individual for each ballot.)
 const BALLOT_CLOSE_TIME = "18:00";
-// quorum for the first proposal
+// quorum for the first proposal. Minimal multiplicator can be set by the admin for each nested group in the webinterface reachable by /admin_ngroups.php
 const QUORUM_SUPPORT_NUM = 10; // numerator --> if denominator = 100: 10 --> 10%
 const QUORUM_SUPPORT_DEN = 100; // denominator
 // quorum for the alternative proposals
 const QUORUM_SUPPORT_ALTERNATIVE_NUM = 5;   // numerator --> if denominator = 100: 5 --> 5% 
 const QUORUM_SUPPORT_ALTERNATIVE_DEN = 100; // denominator
-// quorum for offline voting
+// quorum for offline voting. A minimal number can be set by the admin for each nested group in the webinterface reachable by /admin_ngroups.php
 const QUORUM_VOTINGMODE_NUM = 5; // numerator --> if denominator = 100: 5 --> 5%
 const QUORUM_VOTINGMODE_DEN = 100; // denominator
 

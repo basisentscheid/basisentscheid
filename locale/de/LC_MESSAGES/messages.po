@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basisentscheid\n"
-"POT-Creation-Date: 2017-01-04 21:13+0100\n"
-"PO-Revision-Date: 2017-01-04 21:14+0100\n"
+"POT-Creation-Date: 2017-01-14 00:09+0100\n"
+"PO-Revision-Date: 2017-01-14 00:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -56,7 +56,7 @@ msgstr "Willst du den Themenbereich %id% wirklich löschen?"
 msgid "The area %id% has been deleted."
 msgstr "Der Themenbereich %id% wurde gelöscht."
 
-#: admin_areas.php:32 inc/classes/Proposal.php:1094 proposal.php:485
+#: admin_areas.php:32 inc/classes/Proposal.php:1097 proposal.php:485
 #: proposal_edit.php:209
 msgid "Area"
 msgstr "Themenbereich"
@@ -232,7 +232,7 @@ msgstr "Willst du den Verantwortlichen %id% wirklich löschen?"
 msgid "The admin %id% has been deleted."
 msgstr "Der Verantwortliche %id% wurde gelöscht."
 
-#: admins.php:26 inc/classes/Proposal.php:1150
+#: admins.php:26 inc/classes/Proposal.php:1153
 msgid "Admin"
 msgstr "Verantwortlicher"
 
@@ -2115,51 +2115,51 @@ msgstr "Antragsteller"
 msgid "anonymous"
 msgstr "anonym"
 
-#: inc/classes/Proposal.php:978
+#: inc/classes/Proposal.php:980
 #, php-format
 msgid ""
-"%d supporters of %d participants - %d supporters (%s) currently required for "
-"admission"
+"%d of %d supporters, needed for admission. %s of the participants (%d) in an "
+"area are needed, but at least %d."
 msgstr ""
-"%d Unterstützer von %d Teilnehmern - %d Unterstützer (%s) momentan "
-"erforderlich zur Zulassung"
+"%d von %d zur Zulassung benötige Unterstützer. %s von den zu einem "
+"Themenbereich angemeldeten Benutzer (%d) werden benötigt, mindestens aber %d."
 
-#: inc/classes/Proposal.php:997 proposal.php:660
+#: inc/classes/Proposal.php:1000 proposal.php:660
 msgid "You support this proposal."
 msgstr "Du unterstützt diesen Antrag."
 
-#: inc/classes/Proposal.php:999 proposal.php:668
+#: inc/classes/Proposal.php:1002 proposal.php:668
 msgid "Your support for this proposal is expired."
 msgstr "Deine Unterstützung dieses Antrags ist verfallen."
 
-#: inc/classes/Proposal.php:1016
+#: inc/classes/Proposal.php:1019
 #, php-format
 msgid "%d points"
 msgstr "%d Punkte"
 
-#: inc/classes/Proposal.php:1051
+#: inc/classes/Proposal.php:1054
 #, php-format
 msgid "Yes: %d (%s), No: %d (%s), Abstention: %d"
 msgstr "Ja: %d (%s), Nein: %d (%s), Enthaltung: %d"
 
-#: inc/classes/Proposal.php:1061
+#: inc/classes/Proposal.php:1064
 #, php-format
 msgid "Yes: 0, No: 0, Abstention: %d"
 msgstr "Ja: 0, Nein: 0, Enthaltungen: %d"
 
-#: inc/classes/Proposal.php:1096 proposal.php:516 proposal_edit.php:226
+#: inc/classes/Proposal.php:1099 proposal.php:516 proposal_edit.php:226
 msgid "Proponents"
 msgstr "Antragsteller"
 
-#: inc/classes/Proposal.php:1129 inc/classes/Proposal.php:1210 proposal.php:615
+#: inc/classes/Proposal.php:1132 inc/classes/Proposal.php:1213 proposal.php:615
 msgid "Drafts"
 msgstr "Entwürfe"
 
-#: inc/classes/Proposal.php:1154 inc/classes/Proposal.php:1220
+#: inc/classes/Proposal.php:1157 inc/classes/Proposal.php:1223
 msgid "proponent revoked"
 msgstr "zurückgezogen"
 
-#: inc/classes/Proposal.php:1197
+#: inc/classes/Proposal.php:1200
 msgid "compare versions"
 msgstr "Versionen vergleichen"
 
@@ -3190,6 +3190,13 @@ msgstr "Ergebnis der Ermittlung des Abstimmungsverfahrens"
 #: votingmode_result.php:27
 msgid "Offline voting has been selected by admins."
 msgstr "Offline-Abstimmung wurde durch die Verantwortlichen festgelegt."
+
+#~ msgid ""
+#~ "%d supporters of %d participants - %d supporters (%s) currently required "
+#~ "for admission"
+#~ msgstr ""
+#~ "%d Unterstützer von %d Teilnehmern - %d Unterstützer (%s) momentan "
+#~ "erforderlich zur Zulassung"
 
 #~ msgid "The entered email address is not valid!"
 #~ msgstr "Die eingegebene E-Mail-Adresse ist ungültig!"
