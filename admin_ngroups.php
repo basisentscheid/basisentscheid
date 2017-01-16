@@ -36,7 +36,7 @@ $d->enable_delete_single  = false;
 
 $d->action($action);
 
-html_head(_("Groups"));
+html_head(_("Groups"), true);
 
 $d->display();
 
