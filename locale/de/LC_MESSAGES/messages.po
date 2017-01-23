@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basisentscheid\n"
-"POT-Creation-Date: 2017-01-14 00:09+0100\n"
-"PO-Revision-Date: 2017-01-14 00:11+0100\n"
+"POT-Creation-Date: 2017-01-23 12:52+0100\n"
+"PO-Revision-Date: 2017-01-23 12:54+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -416,7 +416,7 @@ msgstr "Es gab keine Urnenanträge."
 
 #: ballots.php:164 inc/classes/Comments.php:446
 #: inc/classes/DbTableAdmin.php:863 inc/classes/DbTableAdmin_Period.php:96
-#: inc/classes/Issue.php:1301 inc/classes/Issue.php:1304 proposal.php:327
+#: inc/classes/Issue.php:1305 inc/classes/Issue.php:1308 proposal.php:327
 #: proposal.php:338 proposal.php:546 proposal.php:734 proposal.php:782
 msgid "edit"
 msgstr "bearbeiten"
@@ -484,7 +484,7 @@ msgstr ""
 
 #: cli/test_locale.php:17 inc/classes/Issue.php:398 inc/classes/Issue.php:475
 #: inc/classes/Issue.php:694 inc/classes/Issue.php:825
-#: inc/classes/Issue.php:1332 inc/classes/Notification.php:288
+#: inc/classes/Issue.php:1336 inc/classes/Notification.php:288
 #: inc/classes/Notification.php:311 inc/classes/Notification.php:378
 #: inc/classes/Notification.php:389 inc/classes/Notification.php:401
 #: inc/classes/Notification.php:418 inc/classes/Notification.php:442
@@ -1002,9 +1002,9 @@ msgstr "Debatte"
 msgid "Voting preparation"
 msgstr "Abstimmungs&shy;vorbereitung"
 
-#: inc/classes/Issue.php:107 inc/classes/Issue.php:970
-#: inc/classes/Issue.php:974 inc/classes/Issue.php:978
-#: inc/classes/Issue.php:987 inc/classes/Issue.php:992
+#: inc/classes/Issue.php:107 inc/classes/Issue.php:974
+#: inc/classes/Issue.php:978 inc/classes/Issue.php:982
+#: inc/classes/Issue.php:991 inc/classes/Issue.php:996
 #: inc/classes/Notification.php:450 proposal.php:401 proposal.php:404
 #: proposals.php:111
 msgid "Voting"
@@ -1025,7 +1025,7 @@ msgid "Cancelled"
 msgstr "abgebrochen"
 
 #: inc/classes/Issue.php:125 inc/classes/Issue.php:131
-#: inc/classes/Issue.php:136 inc/classes/Issue.php:1018
+#: inc/classes/Issue.php:136 inc/classes/Issue.php:1022
 #, php-format
 msgid "until %s"
 msgstr "bis %s"
@@ -1054,13 +1054,13 @@ msgid "You demand offline voting"
 msgstr "Sie fordern, dass offline abgestimmt wird"
 
 #: inc/classes/Issue.php:401 inc/classes/Issue.php:714
-#: inc/classes/Issue.php:1158 inc/classes/Notification.php:484
+#: inc/classes/Issue.php:1162 inc/classes/Notification.php:484
 #: inc/functions.php:204 proposal.php:291
 msgid "Yes"
 msgstr "Ja"
 
 #: inc/classes/Issue.php:401 inc/classes/Issue.php:715
-#: inc/classes/Issue.php:1161 inc/classes/Notification.php:484
+#: inc/classes/Issue.php:1165 inc/classes/Notification.php:484
 #: inc/functions.php:205 proposal.php:292
 msgid "No"
 msgstr "Nein"
@@ -1078,8 +1078,8 @@ msgid "Your voting mode token"
 msgstr "Deine Abstimmungskennung für die Bestimmung des Abstimmungsverfahrens"
 
 #: inc/classes/Issue.php:405 inc/classes/Issue.php:484
-#: inc/classes/Issue.php:1325 inc/classes/Issue.php:1330
-#: inc/classes/Issue.php:1394
+#: inc/classes/Issue.php:1329 inc/classes/Issue.php:1334
+#: inc/classes/Issue.php:1398
 msgid "Voting time"
 msgstr "Abstimmungszeitpunkt"
 
@@ -1125,12 +1125,12 @@ msgid "Vote receipt for your vote on issue %d:"
 msgstr "Abstimmungsbeleg für deine Stimme zum Thema %d:"
 
 #: inc/classes/Issue.php:477 inc/classes/Issue.php:698
-#: inc/classes/Issue.php:1325 inc/classes/Issue.php:1338
+#: inc/classes/Issue.php:1329 inc/classes/Issue.php:1342
 msgid "Acceptance"
 msgstr "Zustimmung"
 
 #: inc/classes/Issue.php:478 inc/classes/Issue.php:702
-#: inc/classes/Issue.php:720 inc/classes/Issue.php:1338
+#: inc/classes/Issue.php:720 inc/classes/Issue.php:1342
 #: inc/classes/Notification.php:486
 msgid "Score"
 msgstr "Bewertung"
@@ -1161,7 +1161,7 @@ msgstr "Deine Stimme konnte nicht gespeichert werden!"
 msgid "Support"
 msgstr "Unterstützer"
 
-#: inc/classes/Issue.php:716 inc/classes/Issue.php:1164
+#: inc/classes/Issue.php:716 inc/classes/Issue.php:1168
 #: inc/classes/Notification.php:484 inc/functions.php:206 inc/functions.php:218
 msgid "Abstention"
 msgstr "Enthaltung"
@@ -1199,15 +1199,20 @@ msgstr "kürzliche Aktivität"
 msgid "Debate starts at %s"
 msgstr "Debatte startet am %s"
 
-#: inc/classes/Issue.php:953
+#: inc/classes/Issue.php:933
+#, php-format
+msgid "Admin has to assign a period"
+msgstr "Verantwortlicher muss eine Periode zuweisen"
+
+#: inc/classes/Issue.php:957
 msgid "enter result"
 msgstr "Ergebnis eingeben"
 
-#: inc/classes/Issue.php:955
+#: inc/classes/Issue.php:959
 msgid "edit result"
 msgstr "Ergebnis bearbeiten"
 
-#: inc/classes/Issue.php:974
+#: inc/classes/Issue.php:978
 msgid ""
 "You can not vote on this issue, because you are are not entitled in the "
 "group."
@@ -1215,11 +1220,11 @@ msgstr ""
 "Du kannst zu diesem Thema nicht abstimmen, weil du in der Gliederung nicht "
 "stimmberechtigt bist."
 
-#: inc/classes/Issue.php:989
+#: inc/classes/Issue.php:993
 msgid "You have voted on this issue."
 msgstr "Du hast zu diesem Thema abgestimmt."
 
-#: inc/classes/Issue.php:992 vote.php:28
+#: inc/classes/Issue.php:996 vote.php:28
 msgid ""
 "You can not vote in this voting period, because you were not yet entitled "
 "when the voting started."
@@ -1227,7 +1232,7 @@ msgstr ""
 "Du kannst in dieser Abstimmungsperiode nicht abstimmen, weil du noch nicht "
 "stimmberechtigt warst als die Abstimmung begann."
 
-#: inc/classes/Issue.php:1014
+#: inc/classes/Issue.php:1018
 msgid ""
 "You have already generated an envelope. Open the envelope in your browser to "
 "vote."
@@ -1235,51 +1240,51 @@ msgstr ""
 "Du hast bereits einen Wahlschein erstellt. Öffne den Wahlschein im Browser "
 "um abzustimmen."
 
-#: inc/classes/Issue.php:1014 inc/classes/Issue.php:1016
+#: inc/classes/Issue.php:1018 inc/classes/Issue.php:1020
 msgid "envelope"
 msgstr "Wahlschein"
 
-#: inc/classes/Issue.php:1079 inc/classes/Issue.php:1099
+#: inc/classes/Issue.php:1083 inc/classes/Issue.php:1103
 msgid "You demand offline voting."
 msgstr "Du forderst eine Offline-Abstimmung."
 
-#: inc/classes/Issue.php:1081
+#: inc/classes/Issue.php:1085
 msgid "You can demand offline voting."
 msgstr "Du kannst eine Offline-Abstimmung fordern."
 
-#: inc/classes/Issue.php:1083
+#: inc/classes/Issue.php:1087
 msgid "You are not entitled in this group."
 msgstr "Du bist nicht in dieser Gliederung nicht stimmberechtigt."
 
-#: inc/classes/Issue.php:1088 inc/classes/Issue.php:1092
+#: inc/classes/Issue.php:1092 inc/classes/Issue.php:1096
 msgid "determination if online or offline voting"
 msgstr "Entscheidung ob Online- oder Offline-Abstimmung"
 
-#: inc/classes/Issue.php:1101 proposal.php:364
+#: inc/classes/Issue.php:1105 proposal.php:364
 msgid "Revoke"
 msgstr "zurückziehen"
 
-#: inc/classes/Issue.php:1106
+#: inc/classes/Issue.php:1110
 msgid "Demand offline voting"
 msgstr "Offline-Abstimmung fordern"
 
-#: inc/classes/Issue.php:1117
+#: inc/classes/Issue.php:1121
 msgid "offline voting"
 msgstr "Offline-Abstimmung"
 
-#: inc/classes/Issue.php:1119
+#: inc/classes/Issue.php:1123
 msgid "online voting"
 msgstr "Online-Abstimmung"
 
-#: inc/classes/Issue.php:1132 inc/classes/Issue.php:1137
+#: inc/classes/Issue.php:1136 inc/classes/Issue.php:1141
 msgid "offline voting by admin"
 msgstr "Offline-Abstimmung durch Verantwortliche festgelegt"
 
-#: inc/classes/Issue.php:1134 inc/classes/Issue.php:1292
+#: inc/classes/Issue.php:1138 inc/classes/Issue.php:1296
 msgid "apply"
 msgstr "übernehmen"
 
-#: inc/classes/Issue.php:1237
+#: inc/classes/Issue.php:1241
 msgid ""
 "The issue can be assigned to a voting period when at least one proposal is "
 "admitted."
@@ -1287,11 +1292,11 @@ msgstr ""
 "Das Thema kann erst einer Abstimmungsperiode zugeordnet werden, wenn "
 "mindestens ein Antrag zugelassen ist."
 
-#: inc/classes/Issue.php:1255
+#: inc/classes/Issue.php:1259
 msgid "no voting period"
 msgstr "keine Abstimmungsperiode"
 
-#: inc/classes/Issue.php:1267
+#: inc/classes/Issue.php:1271
 msgid ""
 "There are no voting periods available, in which the debate has not yet "
 "started."
@@ -1299,7 +1304,7 @@ msgstr ""
 "Es gibt keine Abstimmungsperioden, in denen die Debatte noch nicht begonnen "
 "hat."
 
-#: inc/classes/Issue.php:1270
+#: inc/classes/Issue.php:1274
 msgid ""
 "There are no voting periods available, in which the voting has not yet "
 "started."
@@ -1307,16 +1312,16 @@ msgstr ""
 "Es gibt keine Abstimmungsperioden, in denen die Abstimmung noch nicht "
 "begonnen hat."
 
-#: inc/classes/Issue.php:1304
+#: inc/classes/Issue.php:1308
 msgid "select voting period"
 msgstr "Abstimmungsperiode auswählen"
 
-#: inc/classes/Issue.php:1325 inc/classes/Issue.php:1330
-#: inc/classes/Issue.php:1394
+#: inc/classes/Issue.php:1329 inc/classes/Issue.php:1334
+#: inc/classes/Issue.php:1398
 msgid "Vote token"
 msgstr "Abstimmungskennung"
 
-#: inc/classes/Issue.php:1394
+#: inc/classes/Issue.php:1398
 msgid "Demands offline voting"
 msgstr "Fordert eine Offline-Abstimmung"
 

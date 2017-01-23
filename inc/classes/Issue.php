@@ -927,6 +927,10 @@ class Issue extends Relation {
 							'<span class="datetime">'.datetimeformat_smart($this->period()->debate).'</span>'
 						);
 						?></span><?
+					} else {
+						?><br><span class="stateinfo"><?
+						printf(
+								_("Admin has to assign a period"));
 					}
 					?></td>
 <?
