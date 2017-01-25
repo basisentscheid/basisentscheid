@@ -417,8 +417,9 @@ function vvvote_curl_post_json($url, $post_json) {
 		trigger_error("HTTP code '".$http_code."'", E_USER_NOTICE);
 		return false;
 	}
-
-	return json_decode($result, true);
+	$ret = json_decode($result, true);
+	if ($ret === null) $ret = $result;
+	return $ret;
 }
 
 

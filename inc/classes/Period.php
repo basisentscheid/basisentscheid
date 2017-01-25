@@ -339,8 +339,10 @@ class Period extends Relation {
 		foreach ( split_csa(VVVOTE_SERVERS) as $server ) {
 
 			$result = vvvote_curl_post_json($server."backend/newelection.php", $post_json);
-			if ($result === false) return;
-
+			if (! is_array($result) ) {
+				trigger_error("While trying to create a new election, an answer from Vvvote server could not be interpreted as json, ElectionId: " . $post['electionId'] . ', Server: ' . $server . ', received: ' . print_r($result, true), E_USER_WARNING);
+				return;
+			}
 			if ( isset($result['cmd']) and $result['cmd'] == "saveElectionUrl" and !empty($result['configUrl']) ) {
 				if (!$this->vvvote_configurl) {
 					// save configUrl from the first server
@@ -366,7 +368,7 @@ class Period extends Relation {
 				continue;
 			}
 
-			trigger_error("Fetching configUrl from vvvote server failed", E_USER_WARNING);
+ 			trigger_error("Fetching configUrl from vvvote server $server failed, error: " . print_r($result, true), E_USER_WARNING);
 			return;
 
 		}

@@ -592,8 +592,11 @@ class Issue extends Relation {
 		$post_json = json_encode($post);
 
 		$result = vvvote_curl_post_json($servers[0]."backend/getresult.php", $post_json);
-		if ($result === false) return false;
-
+		if (! is_array($result) ) {
+			trigger_error("While trying to get the result, an answer from Vvvote server could not be interpreted as json, ElectionId: " . $post['electionId'] . ', Server: ' . $server . ', received: ' . print_r($result, true), E_USER_WARNING);
+			return;
+		}
+		
 		if ( isset($result['cmd']) and $result['cmd'] == "showStatistic" and !empty($result['data'][$this->id]) ) {
 
 			foreach ( $result['data'][$this->id] as $proposal_id => $proposal_result ) {
