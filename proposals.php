@@ -28,7 +28,7 @@ html_head(_("Proposals"), true);
 
 if (Login::$member and Login::$member->entitled($ngroup->id)) {
 ?>
-<div class="add_record"><a href="proposal_edit.php?ngroup=<?=$ngroup->id?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add proposal")?></a></div>
+<div class="add_record"><a href="proposal_edit.php?ngroup=<?=$ngroup->id?>" class="icontextlink"><?=_("Add proposal")?></a></div>
 <?
 }
 
@@ -65,14 +65,39 @@ foreach ( array('draft', 'submitted', 'admitted') as $state ) {
 $params = array('ngroup'=>$ngroup->id);
 if ($search) $params['search'] = $search;
 ?>
-<div class="filter proposals">
+
+
+<!-- <form id="search" class="search_fm" action="<?=BN?>" method="GET">
+<?
+input_hidden('ngroup', $ngroup->id);
+if ($filter) input_hidden("filter", $filter);
+?>
+<?=_("Search")?>: <input type="search" name="search" value="<?=h($search)?>">
+<input type="submit" value="<?=_("search")?>">
+<a href="<?=URI::strip(['search'])?>"><?=_("reset")?></a>
+</form> -->
+
+<form id="search" class="search_fm form-search form-horizontal pull-right" action="<?=BN?>" method="GET">
+	<div class="input-append span12">
+	<?
+input_hidden('ngroup', $ngroup->id);
+if ($filter) input_hidden("filter", $filter);
+?>
+		<input type="search" class="search-query" name="search" value="<?=h($search)?>" placeholder="<?=_("Search")?>">
+		<button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+		<a class="zur" href="<?=URI::strip(['search'])?>"><?=_("reset")?></a>
+	</div>
+</form>
+
+
+<div class="clearfix"></div>
+<div class="filter proposals filter_prop">
 <div class="top">
 	<a href="<?=URI::build($params)?>" title="<?
 echo _("issues in entry, debate and voting phases");
 ?>" class="top<?
 if ($filter=="") { ?> active<? }
 ?>"><?=_("open")?></a>
-	<div class="mid">
 		<a href="<?=URI::build($params + ['filter'=>"entry"])?>" title="<?
 printf(ngettext("%d issue in entry phase", "%d issues in entry phase", $counts['entry']), $counts['entry']);
 ?>"<?
@@ -93,15 +118,11 @@ printf(ngettext("%d issue in entry phase with admitted proposals", "%d issues in
 ?>" class="sub<?
 if ($filter=="admitted") { ?> active<? }
 ?>"><?=_("admitted")?> (<?=$counts['admitted']?>)</a>
-	</div>
-	<div class="mid">
 		<a href="<?=URI::build($params + ['filter'=>"debate"])?>" title="<?
 printf(ngettext("%d issue in debate phase", "%d issues in debate phase", $counts['debate']), $counts['debate']);
 ?>"<?
 if ($filter=="debate") { ?> class="active"<? }
 ?>><?=_("Debate")?> (<?=$counts['debate']?>)</a>
-	</div>
-	<div class="mid">
 		<a href="<?=URI::build($params + ['filter'=>"voting"])?>" title="<?
 printf(_("%d issues in voting, %d in voting preparation and %d in counting phase"), $counts['voting'], $counts['preparation'], $counts['counting']);
 $nyvic = $ngroup->not_yet_voted_issues_count();
@@ -111,7 +132,6 @@ if ($filter=="voting") { ?> class="active"<? }
 ?>><?=_("Voting")?> (<?=($counts['voting']+$counts['preparation']+$counts['counting']);
 if ($nyvic) { ?>, <? printf(_("not voted on %d"), $nyvic); }
 ?>)</a>
-	</div>
 </div>
 <div class="top">
 	<div class="mid_dummy">
@@ -122,17 +142,9 @@ if ($filter=="closed") { ?> active<? }
 ?>"><?=_("closed")?> (<?=($counts['finished']+$counts['cancelled'])?>)</a>
 	</div>
 </div>
-<form id="search" action="<?=BN?>" method="GET">
-<?
-input_hidden('ngroup', $ngroup->id);
-if ($filter) input_hidden("filter", $filter);
-?>
-<?=_("Search")?>: <input type="search" name="search" value="<?=h($search)?>">
-<input type="submit" value="<?=_("search")?>">
-<a href="<?=URI::strip(['search'])?>"><?=_("reset")?></a>
-</form>
-</div>
 
+</div>
+<section>
 <table class="proposals">
 <?
 
@@ -242,7 +254,7 @@ foreach ( $issues as $i => $issue ) {
 
 ?>
 </table>
-
+</section>
 <?
 $pager->msg_itemsperpage = _("Issues per page");
 $pager->display();

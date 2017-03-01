@@ -34,7 +34,7 @@ if (Login::$member) {
 ?>
 <label><?=_("Code")?>: <input type="text" name="code" size="20" value="<?=trim(@$_REQUEST['code'])?>"></label>
 <input type="hidden" name="action" value="confirm">
-<input type="submit" value="<?=_("confirm")?>">
+<input type="submit" class="orange_but first" value="<?=_("confirm")?>">
 <?
 	form_end();
 

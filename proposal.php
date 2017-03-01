@@ -315,40 +315,68 @@ if (Login::$member and $proposal->revoke) {
 
 
 ?>
+<div class="row">
+	<div class="col-md-12">
+		<section class="proposal_content">
+			<?
+			if (($is_proponent or Login::$admin) and $proposal->allowed_edit_content()) {
+			?>
+			<div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" alt="<?=_("edit")?>"><?=_("Edit proposal")?></a></div>
+			<?
+			}
+			?>
+			<h2><?=_("Title")?></h2>
+			<p class="proposal proposal_title"><?=h($proposal->title)?></p>
+			
+			
+		</section>
+	</div>
+	<section class="proposal_info" style="display: none;">
+		<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
+	</section>
+	<div class="col-md-12">
+		<h2><?=_("Content")?></h2>
+			<p class="proposal"><?=content2html($proposal->content)?></p>
+			
+	</div>
+	<div class="col-md-12">
+		<h2><?=_("Reason")?></h2>
+		<?
+			if ($is_proponent and $proposal->allowed_edit_reason_only()) {
+			?>
+			<div class="add prop_add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" alt="<?=_("edit")?>"><?=_("Edit reason")?></a></div>
+			<?
+			}
+			?>
+		<p class="proposal"><?=content2html($proposal->reason)?></p>
+	</div>
+</div>
 
-<section class="proposal_info">
-<? display_proposal_info($proposal, $issue, $proponents, $is_proponent); ?>
-</section>
 
-<section class="proposal_content">
-<?
-if (($is_proponent or Login::$admin) and $proposal->allowed_edit_content()) {
-?>
-<div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>"><?=_("Edit proposal")?></a></div>
-<?
-}
-?>
-<h2><?=_("Title")?></h2>
-<p class="proposal proposal_title"><?=h($proposal->title)?></p>
-<h2><?=_("Content")?></h2>
-<p class="proposal"><?=content2html($proposal->content)?></p>
-<?
-if ($is_proponent and $proposal->allowed_edit_reason_only()) {
-?>
-<div class="add"><a href="proposal_edit.php?id=<?=$proposal->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>"><?=_("Edit reason")?></a></div>
-<?
-}
-?>
-<h2><?=_("Reason")?></h2>
-<p class="proposal"><?=content2html($proposal->reason)?></p>
-</section>
+
 
 <div class="clearfix"></div>
 
 <?
 Comments::display($proposal);
+?>
+</div>
+</div>
+<div class="row">
+<div class="col-md-9 col-md-offset-3">
+<?
 
-help("timebar");
+		help("timebar");
+?>
+</div>
+</div>
+<div class="row">
+<div class="col-md-2 col-md-push-10">
+	
+</div>
+<div class="col-md-10 col-md-pull-2">
+<?
+
 
 // time bar
 if ($proposal->submitted or $proposal->revoke) {
@@ -446,11 +474,11 @@ if (Login::$admin) {
 	if ($issue->allowed_add_alternative_proposal()) {
 		if (Login::$member and Login::$member->entitled($_SESSION['ngroup'])) {
 ?>
-<div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
+<div class="add"><a href="proposal_edit.php?issue=<?=$proposal->issue?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABDlBMVEX/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/mw//sWH+/v7/zZ//2rr/q03/5tIAAABbgI6WAAAAUXRSTlMAHTxEORUzm+bdjiMgpv75khJI7+EwTvrwMiz15RYDzahbNMmi8VgxflWJZoVdajj9EwTqxoxlGfPfBm/8RwGkdauHAnn4JJ727o0OUKWqRgdR4XveAAAAAWJLR0RZmrL0GAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+ECCQwIH1rPAPQAAADlSURBVCjPY2CAA0YmZhZWBgzAxs4RCAKcXNwo4jy8fIEwwC8giJAQEg5EBiKiMAkx8UBUICEJkZCSDkQHMrIgCTn5QEygAJJRhHODgoODYGwloIwyXCY4JCQYxlYB+i8Qq4yqHIMadplAdQYNKCs0NDQsJCQMSEH4mgxaUJkQOIDwtRl0cMjoMujhsIeZQR+7jIEhg5ExVhkToE9N4TLhERHhMLYZUMbcAku4WVqBAs4aU8LGFhwLdvYYMg7QmLNyRJNwgse2s4srkriwInIScXP3gIp7eqGnLG8fHV8/FQ3/AJgAAGjHj47rKTKwAAAAAElFTkSuQmCC" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></a></div>
 <?
 		} else {
 ?>
-<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not eligible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></div>
+<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not eligible or not verified.")?>"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABDlBMVEX/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/mw//sWH+/v7/zZ//2rr/q03/5tIAAABbgI6WAAAAUXRSTlMAHTxEORUzm+bdjiMgpv75khJI7+EwTvrwMiz15RYDzahbNMmi8VgxflWJZoVdajj9EwTqxoxlGfPfBm/8RwGkdauHAnn4JJ727o0OUKWqRgdR4XveAAAAAWJLR0RZmrL0GAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+ECCQwIH1rPAPQAAADlSURBVCjPY2CAA0YmZhZWBgzAxs4RCAKcXNwo4jy8fIEwwC8giJAQEg5EBiKiMAkx8UBUICEJkZCSDkQHMrIgCTn5QEygAJJRhHODgoODYGwloIwyXCY4JCQYxlYB+i8Qq4yqHIMadplAdQYNKCs0NDQsJCQMSEH4mgxaUJkQOIDwtRl0cMjoMujhsIeZQR+7jIEhg5ExVhkToE9N4TLhERHhMLYZUMbcAku4WVqBAs4aU8LGFhwLdvYYMg7QmLNyRJNwgse2s4srkriwInIScXP3gIp7eqGnLG8fHV8/FQ3/AJgAAGjHj47rKTKwAAAAAElFTkSuQmCC" alt="<?=_("plus")?>"><?=_("Add alternative proposal")?></div>
 <?
 		}
 	}
@@ -482,8 +510,10 @@ html_foot();
  */
 function display_proposal_info(Proposal $proposal, Issue $issue, array $proponents, $is_proponent) {
 ?>
+<div class="widget">
 <h2><?=_("Area")?></h2>
-<p class="proposal"><?=h($issue->area()->name)?></p>
+<div class="bg_white">
+<p class="proposal proposal_title"><?=h($issue->area()->name)?></p>
 <?
 
 	$is_any_proponent = false;
@@ -495,27 +525,35 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 			}
 		}
 	}
+?>
 
+</div>
+</div>
+<div class="widget">
+<h2><?=_("Proponents")?></h2>
+<div class="bg_white">	
+<div class="proponents">
+<?
 	$allowed_edit_proponent = false;
 	if ($proposal->allowed_change_proponents()) {
 		if (Login::$member and Login::$member->entitled($_SESSION['ngroup'])) {
 			$allowed_edit_proponent = true;
 			if (!$is_any_proponent) {
 ?>
-<div class="add"><a href="<?=URI::append(['become_proponent'=>1])?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
+<div class="add"><a href="<?=URI::append(['become_proponent'=>1])?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABDlBMVEX/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/mw//sWH+/v7/zZ//2rr/q03/5tIAAABbgI6WAAAAUXRSTlMAHTxEORUzm+bdjiMgpv75khJI7+EwTvrwMiz15RYDzahbNMmi8VgxflWJZoVdajj9EwTqxoxlGfPfBm/8RwGkdauHAnn4JJ727o0OUKWqRgdR4XveAAAAAWJLR0RZmrL0GAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+ECCQwIH1rPAPQAAADlSURBVCjPY2CAA0YmZhZWBgzAxs4RCAKcXNwo4jy8fIEwwC8giJAQEg5EBiKiMAkx8UBUICEJkZCSDkQHMrIgCTn5QEygAJJRhHODgoODYGwloIwyXCY4JCQYxlYB+i8Qq4yqHIMadplAdQYNKCs0NDQsJCQMSEH4mgxaUJkQOIDwtRl0cMjoMujhsIeZQR+7jIEhg5ExVhkToE9N4TLhERHhMLYZUMbcAku4WVqBAs4aU8LGFhwLdvYYMg7QmLNyRJNwgse2s4srkriwInIScXP3gIp7eqGnLG8fHV8/FQ3/AJgAAGjHj47rKTKwAAAAAElFTkSuQmCC" alt="<?=_("plus")?>"><?=_("become proponent")?></a></div>
+
 <?
 			}
 		} else {
 ?>
-<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not eligible or not verified.")?>"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("become proponent")?></div>
+<div class="add icontextlink disabled" title="<?=_("You are not logged in, not in this group, not eligible or not verified.")?>"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABDlBMVEX/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/mw//sWH+/v7/zZ//2rr/q03/5tIAAABbgI6WAAAAUXRSTlMAHTxEORUzm+bdjiMgpv75khJI7+EwTvrwMiz15RYDzahbNMmi8VgxflWJZoVdajj9EwTqxoxlGfPfBm/8RwGkdauHAnn4JJ727o0OUKWqRgdR4XveAAAAAWJLR0RZmrL0GAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+ECCQwIH1rPAPQAAADlSURBVCjPY2CAA0YmZhZWBgzAxs4RCAKcXNwo4jy8fIEwwC8giJAQEg5EBiKiMAkx8UBUICEJkZCSDkQHMrIgCTn5QEygAJJRhHODgoODYGwloIwyXCY4JCQYxlYB+i8Qq4yqHIMadplAdQYNKCs0NDQsJCQMSEH4mgxaUJkQOIDwtRl0cMjoMujhsIeZQR+7jIEhg5ExVhkToE9N4TLhERHhMLYZUMbcAku4WVqBAs4aU8LGFhwLdvYYMg7QmLNyRJNwgse2s4srkriwInIScXP3gIp7eqGnLG8fHV8/FQ3/AJgAAGjHj47rKTKwAAAAAElFTkSuQmCC" alt="<?=_("plus")?>"><?=_("become proponent")?></div>
 <?
 		}
 	}
 
 ?>
-<h2><?=_("Proponents")?></h2>
-<div class="proponents">
-<ul>
+<div id="copy_user_w"></div>
+<ul class="user_w">
 <?
 	$confirmed_proponents = 0;
 	foreach ( $proponents as $proponent ) {
@@ -531,7 +569,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 ?>
 <input type="text" name="proponent" value="<?=h($proponent->proponent_name)?>" maxlength="<?=Proposal::proponent_length?>" required><br>
 <input type="hidden" name="action" value="apply_proponent">
-<input type="submit" value="<?=_("apply changes")?>">
+<input type="submit" class="orange_but first small" value="<?=_("apply changes")?>">
 <?
 				form_end();
 			} else {
@@ -543,7 +581,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 (<?=$proponent->identity()?>)
 <?
 				}
-				?> <a href="<?=URI::append(['edit_proponent'=>1])?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a><a href="<?=URI::append(['remove_proponent'=>1])?>" class="iconlink"><img src="img/delete.png" width="21" height="16" alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a><?
+				?> <a href="<?=URI::append(['edit_proponent'=>1])?>" class="iconlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" alt="<?=_("edit")?>" title="<?=_("edit your proponent name and contact details")?>"></a><a href="<?=URI::append(['remove_proponent'=>1])?>" class="iconlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAPCAQAAACYNP27AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMAzOL47XcAAAA3klEQVQY0y3KTSsEYQAA4OedndXutNi2/WAlBylKyU25UX6Bmx/l5KeJOMiFcJhmd3bIrHkdeM4PPX0hsuPKiRBFUerCsXl4M7Rrz50CgqFdW0YGhroKL17dhuhPWNG3asPUnvvg0JHgxxK1qKXjIXXg1JcViU9d1Nqylqm+G5sy1/blbmx7T7wLohKVaKHSViQKjVUzUSqo9GTyxEIjM0ciKnUEZeLrfzcCcpmgStQW1s19CxqlnkaZWMr11SqNWmFNpUrjT/hwZmTs0ti5gWd1iiffJmamShMtj7H+BRQOU4sQ0A+cAAAAAElFTkSuQmCC"  alt="<?=_("delete")?>" title="<?=_("remove yourself from the list of proponents")?>"></a><?
 			}
 		} elseif ($proponent->proponent_confirmed) {
 			echo content2html($proponent->proponent_name);
@@ -554,7 +592,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 (<?=$proponent->identity()?>)
 <input type="hidden" name="member" value="<?=$proponent->id?>">
 <input type="hidden" name="action" value="confirm_proponent">
-<input type="submit" value="<?=_("confirm")?>">
+<input type="submit" class="orange_but first small" value="<?=_("confirm")?>">
 <?
 			form_end();
 		} else {
@@ -565,21 +603,22 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 	}
 	if (Login::$member and $allowed_edit_proponent and isset($_GET['become_proponent']) and !$is_any_proponent) {
 ?>
-	<li><?
+	</ul><?
 		form(URI::same(), "", "", "proponent", true);
 ?>
-<input type="text" name="proponent" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>" required><br>
+
+<input type="text" name="proponent" class="prop" value="<?=h(Login::$member->username())?>" maxlength="<?=Proposal::proponent_length?>" required><br>
+<input type="submit" class="orange_but first" value="<?=_("apply to become proponent")?>">
 <div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal. To prevent fraud, also your username will be shown to the other proponents.")?></div>
 <input type="hidden" name="action" value="become_proponent">
-<input type="submit" value="<?=_("apply to become proponent")?>">
+
 <?
 		form_end();
-?>
-	</li>
-<?
+
 	}
 ?>
-</ul>
+
+
 <?
 
 	// submit proposal
@@ -595,7 +634,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 			form(URI::same(), "", "submit_proposal");
 ?>
 <input type="hidden" name="action" value="submit_proposal">
-<input type="submit" value="<?=_("submit proposal")?>">
+<input type="submit" class="orange_but first small" value="<?=_("submit proposal")?>">
 <?
 			form_end();
 		}
@@ -603,6 +642,9 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 
 ?>
 </div>
+</div>
+</div>
+
 <?
 
 	// show drafts only to the proponents
@@ -612,7 +654,7 @@ function display_proposal_info(Proposal $proposal, Issue $issue, array $proponen
 		$proposal->display_drafts($proponents);
 	} else {
 ?>
-<h2><a href="<?=URI::append(['show_drafts'=>1])?>"><?=_("Drafts")?></a></h2>
+<h2><a class="orange_but first" href="<?=URI::append(['show_drafts'=>1])?>"><?=_("Drafts")?></a></h2>
 <?
 	}
 
@@ -636,6 +678,8 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 	$proposal->bargraph_quorum($is_supporter, $is_valid);
 ?>
 </div>
+<div class="warp_users">
+<div class="users">
 <?
 
 	if (Login::$member or Login::$admin) {
@@ -648,6 +692,8 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 	}
 	if ($proposal->allowed_change_supporters()) {
 ?>
+</div>
+</div>
 <br class="clear">
 <?
 		$disabled = (Login::$member and Login::$member->entitled($_SESSION['ngroup'])) ? "" : " disabled";
@@ -671,7 +717,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 				form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="renew_support">
-<input type="submit" value="<?=_("Renew your support for this proposal")?>"<?=$disabled?>>
+<input type="submit" class="orange_but" value="<?=_("Renew your support for this proposal")?>"<?=$disabled?>>
 <?
 				form_end();
 			}
@@ -681,20 +727,20 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 			form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="revoke_support">
-<input type="submit" value="<?=_("Revoke your support for this proposal")?>"<?=$disabled?>>
+<input type="submit" class="orange_but" value="<?=_("Revoke your support for this proposal")?>"<?=$disabled?>>
 <?
 			form_end();
 		} else {
 			form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="add_support">
-<input type="submit" value="<?=_("Support this proposal")?>"<?=$disabled?>>
+<input type="submit" class="orange_but" value="<?=_("Support this proposal")?>"<?=$disabled?>>
 <?
 			form_end();
 			form(URI::same()."#supporters");
 ?>
 <input type="hidden" name="action" value="add_support_anonym">
-<input type="submit" value="<?=_("Support this proposal anonymously")?>"<?=$disabled?>>
+<input type="submit" class="orange_but" value="<?=_("Support this proposal anonymously")?>"<?=$disabled?>>
 <?
 			form_end();
 		}
@@ -712,13 +758,13 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 ?>
 <b><?=_("Admitted by decision")?>:</b>
 <input type="text" name="admission_decision" value="<?=h($proposal->admission_decision)?>">
-<input type="submit" value="<?=_("apply changes")?>">
+<input type="submit" class="orange_but" value="<?=_("apply changes")?>">
 <?
 			} else {
 ?>
 <b id="admission_decision"><?=_("Admit proposal due to a decision")?>:</b>
 <input type="text" name="admission_decision">
-<input type="submit" value="<?=_("admit proposal")?>">
+<input type="submit" class="orange_but" value="<?=_("admit proposal")?>">
 <?
 			}
 ?>
@@ -731,7 +777,7 @@ function display_quorum(Proposal $proposal, array $supporters, $is_supporter, $i
 	<b><?=_("Admitted by decision")?>:</b>
 	<?=content2html($proposal->admission_decision)?>
 	&nbsp;
-	<a href="<?=URI::append(['edit_admission_decision'=>1])?>#admission_decision" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+	<a href="<?=URI::append(['edit_admission_decision'=>1])?>#admission_decision" class="iconlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" <?alt(_("edit"))?>></a>
 </div>
 <?
 		} else {
@@ -774,12 +820,12 @@ function display_annotation(Proposal $proposal) {
 ?>
 <textarea name="annotation" cols="100" rows="3"><?=h($proposal->annotation)?></textarea>
 <input type="hidden" name="action" value="save_annotation">
-<input type="submit" value="<?=_("save")?>">
+<input type="submit" class="orange_but first" value="<?=_("save")?>">
 <?
 			form_end();
 		} else {
 ?>
-<div class="add"><a href="<?=URI::append(['edit_annotation'=>1])?>#annotation" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a></div>
+<div class="add"><a href="<?=URI::append(['edit_annotation'=>1])?>#annotation" class="iconlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" <?alt(_("edit"))?>></a></div>
 <h2><?=_("Annotation by admins")?></h2>
 <?=content2html($proposal->annotation)?>
 <?

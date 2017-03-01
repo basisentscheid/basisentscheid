@@ -102,7 +102,7 @@ if ( preg_match('#<section id="terms_of_use">.*</section>#s', file_get_contents(
 
 form(h(BN."?invite=".$invite));
 ?>
-<fieldset class="member">
+<fieldset class="member user_akk reg_form">
 	<div class="description td0"><?=_("Please choose a username, i.e. your real name or your nick name. This name will be used for login and will be shown to others to identify you. The username is case sensitive.")?></div>
 	<div class="input td0">
 		<label for="username"><?=_("Username")?></label>

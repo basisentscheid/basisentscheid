@@ -991,7 +991,7 @@ class Proposal extends Relation {
 		$required_left = round( min($required, $population) / $population * $max_width );
 		$width = max($min_width, $bar_width);
 
-		?><div class="bargraph bargraph_quorum" style="width:<?=$width?>px" title="<?=$title?>"><?
+		?><div class="bargraph bargraph_quorum" style="width:<?=$width?>px" title="<?=$title?>"><div class="brd"><?
 		?><div class="bar yes" style="width:<?=$bar_width?>px"></div><?
 		?><div class="required" style="margin-left:<?=$required_left?>px"></div><?
 		?><div class="legend" style="width:<?=$width?>px"><?=$value?></div><?
@@ -1003,7 +1003,7 @@ class Proposal extends Relation {
 			}
 		}
 		?><div class="clear"></div><?
-		?></div><?
+		?></div></div><?
 
 	}
 
@@ -1142,6 +1142,7 @@ function draft_select(side, draft) {
 	}
 }
 </script>
+<div class="bg_white">
 <form action="diff.php" method="GET">
 <table class="drafts">
 <?
@@ -1197,8 +1198,9 @@ function draft_select(side, draft) {
 		}
 ?>
 </table>
-<input type="submit" value="<?=_("compare versions")?>">
+<input type="submit" class="orange_but first small compare" value="<?=_("compare versions")?>">
 </form>
+</div>
 <?
 	}
 
@@ -1211,6 +1213,7 @@ function draft_select(side, draft) {
 	public function display_drafts_without_form(array $proponents) {
 ?>
 <h2><?=_("Drafts")?></h2>
+<div class="bg_white">
 <table class="drafts">
 <?
 		$sql = "SELECT * FROM draft WHERE proposal=".intval($this->id)." ORDER BY created DESC";
@@ -1242,6 +1245,7 @@ function draft_select(side, draft) {
 		}
 ?>
 </table>
+</div>
 <?
 	}
 

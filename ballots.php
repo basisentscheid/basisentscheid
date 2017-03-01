@@ -100,7 +100,7 @@ $show_select = ( $entitled and (!$row_voters or !$row_voters['agent']) and !$per
 
 if ($show_select and $entitled and $period->state=="ballot_application") {
 ?>
-<div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=_("Apply to operate a ballot")?></a></div>
+<div class="add_record"><a href="ballot_edit.php?period=<?=$period->id?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABDlBMVEX/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/mw//sWH+/v7/zZ//2rr/q03/5tIAAABbgI6WAAAAUXRSTlMAHTxEORUzm+bdjiMgpv75khJI7+EwTvrwMiz15RYDzahbNMmi8VgxflWJZoVdajj9EwTqxoxlGfPfBm/8RwGkdauHAnn4JJ727o0OUKWqRgdR4XveAAAAAWJLR0RZmrL0GAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+ECCQwIH1rPAPQAAADlSURBVCjPY2CAA0YmZhZWBgzAxs4RCAKcXNwo4jy8fIEwwC8giJAQEg5EBiKiMAkx8UBUICEJkZCSDkQHMrIgCTn5QEygAJJRhHODgoODYGwloIwyXCY4JCQYxlYB+i8Qq4yqHIMadplAdQYNKCs0NDQsJCQMSEH4mgxaUJkQOIDwtRl0cMjoMujhsIeZQR+7jIEhg5ExVhkToE9N4TLhERHhMLYZUMbcAku4WVqBAs4aU8LGFhwLdvYYMg7QmLNyRJNwgse2s4srkriwInIScXP3gIp7eqGnLG8fHV8/FQ3/AJgAAGjHj47rKTKwAAAAAElFTkSuQmCC" alt="<?=_("plus")?>"><?=_("Apply to operate a ballot")?></a></div>
 <?
 }
 
@@ -161,7 +161,7 @@ if (!$pager->linescount) {
 			/** @noinspection PhpUndefinedVariableInspection */
 			if ($row_voters and $row_voters['ballot']==$ballot->id) {
 				if ($row_voters['agent']) {
-					?><a href="ballot_edit.php?id=<?=$ballot->id?>" class="icontextlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>><?=_("You are agent for this ballot.")?></a><?
+					?><a href="ballot_edit.php?id=<?=$ballot->id?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" <?alt(_("edit"))?>><?=_("You are agent for this ballot.")?></a><?
 				} else {
 					?>&#10003; <?=_("You selected this ballot for voting.");
 				}

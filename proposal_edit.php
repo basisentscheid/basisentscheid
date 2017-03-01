@@ -186,7 +186,7 @@ if ($edit_content) {
 </section>
 
 <input type="hidden" name="action" value="save">
-<input type="submit" value="<?=_("Save")?>">
+<input type="submit" class="orange_but first" value="<?=_("Save")?>">
 <?
 form_end();
 ?>
@@ -224,6 +224,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 ?>
 </div>
 <h2><?=_("Proponents")?></h2>
+<div class="bg_white">
 <ul>
 <?
 	if ($proposal->id) {
@@ -242,7 +243,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 ?>
 	<li>
 		<div class="form">
-			<input type="text" name="proponent" value="<?
+			<input type="text" class="brd" name="proponent" value="<?
 		if (!empty($_POST['proponent'])) echo h($_POST['proponent']); else echo h(Login::$member->username());
 		?>" maxlength="<?=Proposal::proponent_length?>" required><br>
 			<div class="explain"><?=_("Enter your name and contact details as you would like to see them in the proposal.")?></div>
@@ -252,6 +253,7 @@ function display_proposal_info(Proposal $proposal, $issue, array $proponents) {
 	}
 ?>
 </ul>
+</div>
 <?
 
 	if (!$proposal->id) return;

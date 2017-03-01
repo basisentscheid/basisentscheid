@@ -43,7 +43,7 @@ if ( isset($_POST['username']) and isset($_POST['password']) ) {
 
 html_head(_("Login"));
 
-form(BN, 'class="login"');
+form(BN, 'class="login log_pg"');
 if (!empty($_POST['origin'])) input_hidden("origin", $_POST['origin']);
 ?>
 <fieldset>

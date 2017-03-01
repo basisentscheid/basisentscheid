@@ -149,15 +149,15 @@ class Filter {
 		if ( $this->enable_search ) {
 ?>
 <input type="text" name="search" value="<?=$this->search?>" size="20">
-<input type="submit" value="<?=_("search and filter")?>">
+<input type="submit" class="orange_but first middle search_icn" value="<?=_("search and filter")?>">
 <?
 		} else {
 ?>
-<input type="submit" value="<?=_("filter")?>">
+<input type="submit" class="orange_but first middle" value="<?=_("filter")?>">
 <?
 		}
 ?>
-<a href="<?=URI::strip(['filter', 'search'])?>"><?=_("reset")?></a>
+<a class="orange_but first middle reset_search" href="<?=URI::strip(['filter', 'search'])?>"><?=_("reset")?></a>
 </form>
 <?
 	}

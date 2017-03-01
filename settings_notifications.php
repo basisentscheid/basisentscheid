@@ -32,7 +32,9 @@ if ($action) {
 
 html_head(_("Member settings"));
 
-display_nav_settings();
+display_nav_settings(); ?>
+<div class="user_akk">
+<?
 
 form(BN, "", "", "settings_notifications", true);
 ?>
@@ -71,11 +73,12 @@ foreach (Notification::interests() as $interest => $interest_title) {
 	<tfoot>
 		<tr>
 			<td class="left"></td>
-			<td colspan="7"><input type="hidden" name="action" value="save"><input type="submit" value="<?=_("Save")?>"></td>
+			<td colspan="7"><input type="hidden" name="action" value="save"><input type="submit" class="orange_but first" value="<?=_("Save")?>"></td>
 		</tr>
 	</tfoot>
 </table>
 <?
-form_end();
+form_end(); ?>
+</div>
 
-html_foot();
+<? html_foot();

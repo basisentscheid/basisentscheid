@@ -68,7 +68,7 @@ class Ngroup extends Relation {
 			if ($ngroup->active) {
 				if (!empty($_GET['ngroup'])) return $ngroup;
 				// redirect if the ngroup is not yet in the URI
-				redirect(BN."?ngroup=".$ngroup->id);
+				redirect(BN."?ngroup=".$ngroup->id); 
 			}
 		}
 
