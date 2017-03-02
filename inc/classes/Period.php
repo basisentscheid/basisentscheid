@@ -339,9 +339,10 @@ class Period extends Relation {
 		foreach ( split_csa(VVVOTE_SERVERS) as $server ) {
 
 			$result = vvvote_curl_post_json($server."backend/newelection.php", $post_json);
-			echo "\n\n $post_json \n\n";
-			if ($result === false) return;
-echo "server: " . $server;
+			if (! is_array($result) ) {
+				trigger_error("While trying to create a new election, an answer from Vvvote server could not be interpreted as json, ElectionId: " . $post['electionId'] . ', Server: ' . $server . ', received: ' . print_r($result, true), E_USER_WARNING);
+				return;
+			}
 			if ( isset($result['cmd']) and $result['cmd'] == "saveElectionUrl" and !empty($result['configUrl']) ) {
 				if (!$this->vvvote_configurl) {
 					// save configUrl from the first server
@@ -361,16 +362,13 @@ echo "server: " . $server;
 			// election ID is already used
 			if ( isset($result['cmd']) and $result['cmd'] == "error" and isset($result['errorNo']) and $result['errorNo'] == 2120 ) {
 				if (!$this->vvvote_configurl) {
-//					trigger_error("Server says, election ID is already used, but no configUrl has been saved", E_USER_WARNING);
-					trigger_error("Vvvote server says, election ID is already used, but no configUrl has been saved. ElectionId: " . $post['electionId'] . ', Server: ' . $server, E_USER_WARNING);
-										return;
+					trigger_error("Server says, election ID is already used, but no configUrl has been saved", E_USER_WARNING);
+					return;
 				}
 				continue;
 			}
 
-//			trigger_error("Fetching configUrl from vvvote server failed", E_USER_WARNING);
-			trigger_error("Fetching configUrl from vvvote server failed, error: " . print_r($result, true), E_USER_WARNING);
-			
+			trigger_error("Fetching configUrl from vvvote server failed", E_USER_WARNING);
 			return;
 
 		}

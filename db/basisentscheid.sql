@@ -513,8 +513,7 @@ CREATE TABLE period (
     vvvote_configurl text,
     vvvote_vote_delay TEXT,
     vvvote_last_reg timestamp with time zone
-    
-);
+ );
 
 
 --
