@@ -23,14 +23,14 @@ The following instructions assume that your installation path is /www/basisentsc
 
 Download ZIP:
 $ cd /www/
-$ wget https://github.com/basisentscheid/basisentscheid/archive/master.zip
+$ wget https://github.com/piratenfraktion-nrw/basisentscheid/archive/master.zip
 $ unzip master.zip
 $ mv basisentscheid-master basisentscheid
 $ cd basisentscheid
 $ date > VERSION
 or clone repository:
 $ cd /www/
-$ git clone https://github.com/basisentscheid/basisentscheid.git
+$ git clone https://github.com/piratenfraktion-nrw/basisentscheid.git
 $ cd basisentscheid
 $ ./version.sh
 
@@ -83,13 +83,13 @@ $ cp config_example.php config.php
 $ vi config.php
 $ cd -
 
-Create the about page in your language ("en" or "de"):
+Create the about page in your language ("EN" or "DE"):
 $ cd locale/
-$ vi about_en.html
+$ vi about_EN.html
 $ cd -
 
 Compile German translation if you need it:
-$ cd locale/de/LC_MESSAGES/
+$ cd locale/DE/LC_MESSAGES/
 $ msgfmt messages.po
 $ cd -
 
@@ -136,6 +136,7 @@ $ git checkout --force v1.0.0
 === License ===
 
 Copyright 2014-2016 Magnus Rosenbaum <dev@cmr.cx>
+Copyright 2017 Piratenfraktion im Landtag NRW
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
