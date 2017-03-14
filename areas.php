@@ -97,6 +97,7 @@ while ($row = DB::fetch_assoc($result)) {
 
 ?>
 </table>
+<? print "<br>aktuelle Mitgliederanzahl: " . count_members(); ?>
 </div>
 <?
 

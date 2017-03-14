@@ -870,3 +870,16 @@ function content2html($text) {
 function alt($text) {
 	?>alt="<?=$text?>" title="<?=$text?>"<?
 }
+
+/**
+ * output current count of members
+ *
+ * @return count
+ */
+function count_members() {
+                $sql = "SELECT COUNT(*) FROM member WHERE activated is not NULL AND eligible = TRUE";
+                $result = DB::query($sql);
+                $row = DB::fetch_row($result);
+                return $row[0];
+        }
+
