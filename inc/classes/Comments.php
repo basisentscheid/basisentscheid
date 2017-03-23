@@ -469,7 +469,7 @@ if ( window.location.hash ) {
 				Login::access_allowed("comment") and
 				self::$proposal->allowed_add_comments($this->rubric)
 			) {
-				?><a href="<?=URI::append(['comment_edit'=>$comment->id])?>#comment<?=$comment->id?>" class="iconlink"><img src="img/icon_pencil.svg" <?alt(_("edit"))?>></a> <?
+				?><a href="<?=URI::append(['comment_edit'=>$comment->id])?>#comment<?=$comment->id?>" class="iconlink"><img src="img/edit.png" <?alt(_("edit"))?>></a> <?
 			}
 			// author and time
 			echo "<strong>"; echo $author_link?></strong>   <?=datetimeformat($comment->created)?></div>
