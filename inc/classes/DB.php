@@ -82,6 +82,19 @@ abstract class DB {
 		return self::esc($value);
 	}
 
+	/**
+	 * handle boolean and NULL values, not excaping strings
+	 * 
+	 * @param mixed   $value
+	 * @return string
+	 */
+	public static function value_to_sql_NoEsc($value) {
+		if (is_null($value)) return "NULL";
+		if ($value===true)  return "TRUE";
+		if ($value===false) return "FALSE";
+		return $value;
+	}
+	
 
 	/**
 	 * sanitize integers and handle NULL values
@@ -155,7 +168,23 @@ abstract class DB {
 		return $result;
 	}
 
-
+	/**
+	 * query using binded parameters with error management
+	 *
+	 * @param string  $sql
+	 * @return resource
+	 */
+	public static function query_params($sql, array $params) {
+		$result = pg_query_params($sql, $params);
+		if ($result === false) {
+			self::$error_occurred = true;
+			self::sql_error('statement: >' . $sql . '<, params: >' . print_r($params, true) . '<', "Postgres Error <i>".pg_last_error()."</i>");
+		}
+		return $result;
+	}
+	
+	
+	
 	/**
 	 * display an error with SQL statement and debug information
 	 *
@@ -272,6 +301,23 @@ abstract class DB {
 		}
 	}
 
+	/**
+	 * query using binded parameters and fetch one row
+	 *
+	 * @param string  $sql
+	 * @param array $params parameters to the sql statement
+	 * @return mixed
+	 */
+	public static function fetchassoc_params($sql, $params) {
+		$result = self::query_params($sql, $params);
+		if ( $result and $row = pg_fetch_assoc($result) ) {
+			pg_free_result($result);
+			return $row;
+		} else {
+			return false;
+		}
+	}
+	
 
 	/**
 	 * query and fetch one field
@@ -286,6 +332,20 @@ abstract class DB {
 		return $value;
 	}
 
+	/**
+	 * query using binded parameters and fetch one field
+	 *
+	 * @param string  $sql
+	 * @param array $params parameters to the sql statement
+	 * @return mixed
+	 */
+	public static function fetchfield_params($sql, array $params) {
+		$result = self::query_params($sql, $params);
+		$value = pg_fetch_result($result, 0);
+		pg_free_result($result);
+		return $value;
+	}
+	
 
 	/**
 	 * query and fetch all rows at once
@@ -300,7 +360,21 @@ abstract class DB {
 		return $fieldarray;
 	}
 
-
+	/**
+	 * query and fetch all rows at once
+	 *
+	 * @param string  $sql
+	 * @param array $params parameters to the sql statement
+	 * @return array
+	 */
+	public static function fetchfieldarray_params($sql, $params) {
+		$result = self::query_params($sql, $params);
+		$fieldarray = pg_fetch_all_columns($result);
+		pg_free_result($result);
+		return $fieldarray;
+	}
+	
+	
 	/**
 	 * query and fetch all objects at once
 	 *
@@ -316,6 +390,22 @@ abstract class DB {
 		return $objectarray;
 	}
 
+	/**
+	 * query and fetch all objects at once
+	 *
+	 * @param string  $sql
+	 * @param array $params parameters to the sql statement
+	 * @param string  $classname
+	 * @return array
+	 */
+	static function fetchobjectarray_params($sql, array $params, $classname) {
+		$result = self::query_params($sql, $params);
+		$objectarray = array();
+		while ( $object = self::fetch_object($result, $classname) ) $objectarray[] = $object;
+		pg_free_result($result);
+		return $objectarray;
+	}
+	
 
 	/**
 	 * query and get number of found rows
@@ -330,6 +420,20 @@ abstract class DB {
 		return $rows;
 	}
 
+	/**
+	 * query using binded parameters and get number of found rows
+	 *
+	 * @param string  $sql
+	 * @param array $params parameters to the sql statement
+	 * @return integer
+	 */
+	public static function numrows_params($sql, array $params) {
+		$result = self::query_params($sql, $params);
+		$rows = pg_num_rows($result);
+		pg_free_result($result);
+		return $rows;
+	}
+	
 
 	/**
 	 * INSERT one record
@@ -344,16 +448,19 @@ abstract class DB {
 
 		//self::transaction_start();
 
-		$fields_values = array_map("self::value_to_sql", $fields_values);
+		$fields_values = array_map("self::value_to_sql_NoEsc", $fields_values);
 		if ($extra) $fields_values += $extra;
-
-		$sql = "INSERT INTO $table (".join(",", array_keys($fields_values)).") VALUES (".join(",", $fields_values).")";
+		$param_num = array();
+		for ($i=1; $i<count($fields_values);$i++) {
+			$param_num[] = '$' . $i;
+		}
+		$sql = "INSERT INTO $table (".join(",", array_keys($fields_values)).") VALUES (".join(",", $param_num).")";
 
 		if ($insert_id!==false) {
 			$sql .= " RETURNING id";
 		}
 
-		if ( ! $result = self::query($sql) ) {
+		if ( ! $result = self::query_params($sql, $fields_values) ) {
 			//self::transaction_rollback();
 			return $result;
 		}
@@ -387,6 +494,43 @@ abstract class DB {
 		return self::query($sql);
 	}
 
+	/**
+	 * UPDATE one or more records using binded parameters
+	 *
+	 * @param string  $table
+	 * @param array   $where         WHERE part of the SQL statement: fieldname => expected_fieldvalue 
+	 * @param array   $fields_values (optional) associative array with database fields as keys and unescaped values as values (optional)
+	 * @param string  $extra         (optional) additional assignments without escaping
+	 * @return resource
+	 */
+	public static function update_param($table, array $where, array $fields_values=array(), $extra="") {
+	
+		$fields_values = self::convert_fields_values_NoEsc($fields_values);
+		if ($extra) $fields_values[] = $extra;
+	
+		$sql = "UPDATE " . $table . " SET " . join(', ', $fields_values) . self::where_and($where);
+		$params = array();
+		$whereStr = '';
+		$i = 1;
+		foreach ($where as $key => $value) {
+			if ($i > 0) $whereStr .= ' AND ';
+			$whereStr = $whereStr . ' ' . $key . ' = $' . $i;
+			$i++;
+			$params[] = $value;
+		}
+		$fields_valuesStr = '';
+		foreach ($fields_values as $key => $value) {
+			if (strlen($fields_valuesStr) > 0) $fields_valuesStr .= ',  ';
+			$fields_valuesStr = $fields_valuesStr . ' ' . $key . ' = $' . $i;
+			$i++;
+			$params[] = $value;
+		}
+		
+		$sql = "UPDATE " . $table . " SET " . $fields_valuesStr . 'WHERE ' . $whereStr;
+		
+		return self::query_params($sql, $params);
+	}
+	
 
 	/**
 	 * DELETE one or more records
@@ -440,7 +584,8 @@ abstract class DB {
 
 	/**
 	 * convert an associated array of field value pairs to an indexed array of SQL assignments
-	 *
+	 * escaping strings
+	 * 
 	 * @param array   $fields_values array('col1'=>"value", 'col2'=>true)
 	 * @return array                 array("column1='value'", "column2=TRUE")
 	 */
@@ -451,7 +596,22 @@ abstract class DB {
 		}
 		return $converted;
 	}
-
+	
+	/**
+	 * convert an associated array of field value pairs to an indexed array of SQL assignments
+	 * not escaping strings
+	 *
+	 * @param array   $fields_values array('col1'=>"value", 'col2'=>true)
+	 * @return array                 array("column1='value'", "column2=TRUE")
+	 */
+	public static function convert_fields_values_NoEsc(array $fields_values) {
+		$converted = array();
+		foreach ( $fields_values as $key => $value ) {
+			$converted[] = $key."=".self::value_to_sql_NoEsc($value);
+		}
+		return $converted;
+	}
+	
 
 	/**
 	 * combines conditions with WHERE and AND

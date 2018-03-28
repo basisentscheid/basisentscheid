@@ -115,6 +115,7 @@ abstract class Relation {
 		}
 
 		return DB::update($this->table, "id=".intval($this->id), $fields_values, $extra);
+		return DB::update_param($this->table, array('id' => intval($this->id)), $fields_values, $extra);
 	}
 
 
