@@ -404,6 +404,15 @@ function vvvote_curl_post_json($url, $post_json) {
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+	$urlparts = parse_url($url);
+	if ($urlparts['scheme'] === 'https') {
+		$verifyCertfile = __DIR__ . '/../tls-certificates/' . $urlparts['host'] . '.pem';
+		if (@file_get_contents($verifyCertfile) === false) trigger_error('6754534 Internal server configuration error: Could not read chain of SSL-certificates Looking for file >' . print_r($verifyCertfile, true) . '<', E_USER_ERROR);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); /* 2: check the common name and that it matches the HOST name */
+		curl_setopt($ch, CURLOPT_CAINFO, $verifyCertfile);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,  true);
+	}
+	
 	$result = curl_exec($ch);
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
