@@ -406,13 +406,13 @@ function vvvote_curl_post_json($url, $post_json) {
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 	$result = curl_exec($ch);
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	curl_close($ch);
 
 	// try again later if a server is not reachable
 	if (!$result) {
 		trigger_error(curl_error($ch), E_USER_NOTICE);
 		return false;
 	}
+	curl_close($ch);
 	if ($http_code!=200) {
 		trigger_error("HTTP code '".$http_code."'", E_USER_NOTICE);
 		return false;

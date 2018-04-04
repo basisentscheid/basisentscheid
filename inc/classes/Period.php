@@ -338,7 +338,7 @@ class Period extends Relation {
 		$all_servers_already_used = true;
 		foreach ( split_csa(VVVOTE_SERVERS) as $server ) {
 
-			$result = vvvote_curl_post_json($server."backend/newelection.php", $post_json);
+			$result = vvvote_curl_post_json($server."api/v1/newelection", $post_json);
 			if (! is_array($result) ) {
 				trigger_error("While trying to create a new election, an answer from Vvvote server could not be interpreted as json, ElectionId: " . $post['electionId'] . ', Server: ' . $server . ', received: ' . print_r($result, true), E_USER_WARNING);
 				return;
