@@ -89,7 +89,7 @@ abstract class DB {
 	 * @return string
 	 */
 	public static function value_to_sql_NoEsc($value) {
-		if (is_null($value)) return "NULL";
+//		if (is_null($value)) return "NULL";
 		if ($value===true)  return "TRUE";
 		if ($value===false) return "FALSE";
 		return $value;
@@ -441,7 +441,7 @@ abstract class DB {
 	 * @param string  $table
 	 * @param array   $fields_values (optional) Associative array with database fields as keys and unescaped values as values (optional)
 	 * @param mixed   $insert_id     (optional, reference)
-	 * @param array   $extra         (optional) additional assignments without escaping
+	 * @param array   $extra         (optional) additional sql value-string around according the parameter, use just '$' as a placeholder for the parameter. The field must be included in $fields_values.
 	 * @return resource
 	 */
 	public static function insert($table, array $fields_values=array(), &$insert_id=false, array $extra=array()) {
@@ -449,10 +449,13 @@ abstract class DB {
 		//self::transaction_start();
 
 		$fields_values = array_map("self::value_to_sql_NoEsc", $fields_values);
-		if ($extra) $fields_values += $extra;
 		$param_num = array();
-		for ($i=1; $i<count($fields_values);$i++) {
-			$param_num[] = '$' . $i;
+		// if ($extra) $fields_values += $extra;
+		$fieldnames = array_keys($fields_values);
+		for ($i=1; $i<=count($fields_values); $i++) {
+			if(array_key_exists($fieldnames[$i-1], $extra)) 
+				 $param_num[] = preg_replace('/(.*)\$(.*)/', '\1\$' . $i . '\2', $extra[$fieldnames[$i-1]]);
+			else $param_num[] = '$' . $i;
 		}
 		$sql = "INSERT INTO $table (".join(",", array_keys($fields_values)).") VALUES (".join(",", $param_num).")";
 

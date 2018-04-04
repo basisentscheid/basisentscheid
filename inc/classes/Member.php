@@ -76,7 +76,9 @@ class Member extends Relation {
 
 		$fields_values['invite'] = $this->invite;
 
-		$extra = array('invite_expiry' => "now() + ".DB::esc(INVITE_EXPIRY));
+		//$extra = array('invite_expiry' => "now() + ".DB::esc(INVITE_EXPIRY));
+		$fields_values['invite_expiry'] = INVITE_EXPIRY;
+		$extra = array('invite_expiry' => 'now() + $::interval');
 		return DB::insert("member", $fields_values, $this->id, $extra);
 	}
 
