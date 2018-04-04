@@ -409,7 +409,9 @@ function vvvote_curl_post_json($url, $post_json) {
 
 	// try again later if a server is not reachable
 	if (!$result) {
-		trigger_error(curl_error($ch), E_USER_NOTICE);
+		$errortxt = curl_error($ch);
+		curl_close($ch);
+		trigger_error($errortxt, E_USER_NOTICE);
 		return false;
 	}
 	curl_close($ch);
