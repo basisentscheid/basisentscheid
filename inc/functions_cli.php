@@ -404,15 +404,26 @@ function vvvote_curl_post_json($url, $post_json) {
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+	$urlparts = parse_url($url);
+	if ($urlparts['scheme'] === 'https') {
+		$verifyCertfile = __DIR__ . '/../tls-certificates/' . $urlparts['host'] . '.pem';
+		if (@file_get_contents($verifyCertfile) === false) trigger_error('6754534 Internal server configuration error: Could not read chain of SSL-certificates Looking for file >' . print_r($verifyCertfile, true) . '<', E_USER_ERROR);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); /* 2: check the common name and that it matches the HOST name */
+		curl_setopt($ch, CURLOPT_CAINFO, $verifyCertfile);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,  true);
+	}
+	
 	$result = curl_exec($ch);
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	curl_close($ch);
 
 	// try again later if a server is not reachable
 	if (!$result) {
-		trigger_error(curl_error($ch), E_USER_NOTICE);
+		$errortxt = curl_error($ch);
+		curl_close($ch);
+		trigger_error($errortxt, E_USER_NOTICE);
 		return false;
 	}
+	curl_close($ch);
 	if ($http_code!=200) {
 		trigger_error("HTTP code '".$http_code."'", E_USER_NOTICE);
 		return false;
