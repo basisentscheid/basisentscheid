@@ -78,7 +78,7 @@ class Proposal extends Relation {
 	 * @param array   $fields    (optional)
 	 * @return boolean
 	 */
-	public function create($proponent, $area=0, array $fields=array("title", "content", "reason", "issue")) {
+	public function create($proponent='', $area=0, array $fields=array("title", "content", "reason", "issue")) {
 		if (!$this->check_proponent($proponent)) return false;
 
 		if (!$this->issue) {

@@ -1287,7 +1287,7 @@ class Issue extends Relation {
 	 */
 	private function display_edit_period() {
 
-		$options =& $this->available_periods();
+		$options = $this->available_periods();
 
 		if (@$_GET['edit_period']==$this->id and is_array($options) and $options) {
 			form(URI::strip(['edit_period'])."#issue".$this->id);

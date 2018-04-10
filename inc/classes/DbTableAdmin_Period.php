@@ -65,7 +65,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				if (method_exists($this, $method)) {
 					$this->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$object,                               // 2 object
 						$column,                               // 3 column description (array)
 						$line,                                 // 4 line number (starting at 0)
@@ -75,7 +75,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 					$method = "dbtableadmin_".$method;
 					$object->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$column,                               // 2 column description (array)
 						$line,                                 // 3 line number (starting at 0)
 						$linescount                            // 4 count of lines selected in the database

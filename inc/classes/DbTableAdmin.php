@@ -578,7 +578,7 @@ class DbTableAdmin {
 			// if NULL is allowed, save empty input as NULL
 			if ( !empty($column['null']) and !$content ) $content = null;
 
-			$object->$column[0] = $content;
+			$object->{$column[0]} = $content;
 
 			// per column beforesave method
 			$save_column = true;
@@ -592,7 +592,7 @@ class DbTableAdmin {
 				}
 				$return = $callee->$method(
 					// parameters for column beforesave methods:
-					$object->$column[0], // content
+					$object->{$column[0]}, // content
 					$column,             // column description (array)
 					$msg_prefix          // prefix to show at direct edit
 				);
@@ -836,7 +836,7 @@ class DbTableAdmin {
 				if (method_exists($this, $method)) {
 					$this->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$object,                               // 2 object
 						$column,                               // 3 column description (array)
 						$line,                                 // 4 line number (starting at 0)
@@ -846,7 +846,7 @@ class DbTableAdmin {
 					$method = "dbtableadmin_".$method;
 					$object->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$column,                               // 2 column description (array)
 						$line,                                 // 3 line number (starting at 0)
 						$linescount                            // 4 count of lines selected in the database
@@ -1116,7 +1116,7 @@ function submit_delete_checked() {
 				$callee->$method(
 					// parameters for edit functions:
 					$column[0],                  // 1 column/attribute name
-					$this->object->$column[0],   // 2 default
+					$this->object->{$column[0]},   // 2 default
 					$this->object->id,           // 3 ID
 					!empty($column['disabled']), // 4 disabled (not editable)
 					$column                      // 5 (array) column description
