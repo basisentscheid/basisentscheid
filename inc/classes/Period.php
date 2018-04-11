@@ -367,7 +367,13 @@ class Period extends Relation {
 				}
 				continue;
 			}
-
+			
+			// Vvvote servers specified in wrong order
+			if ( isset($result['cmd']) and $result['cmd'] == "error" and isset($result['errorNo']) and $result['errorNo'] == 216577 ) {
+				trigger_error("Vvvote server says that the order of vvvote servers is wrong. The first server specified in their configs in 'pServerUrlBases' must match the first entry in my config in VVVOTE_SERVERS >" . VVVOTE_SERVERS . '<, Server which reported the error: >' . $server . '<', E_USER_WARNING);
+				return;
+			}
+				
  			trigger_error("Fetching configUrl from vvvote server $server failed, error: " . print_r($result, true), E_USER_WARNING);
 			return;
 
