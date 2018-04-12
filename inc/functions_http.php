@@ -457,7 +457,7 @@ function action_proposal_select_period() {
 			warning("The selected period does not exist!");
 			redirect();
 		}
-		$available =& $issue->available_periods();
+		$available = $issue->available_periods();
 		if (!isset($available[$period->id])) {
 			warning("The selected period is not available for the issue!");
 			redirect();
