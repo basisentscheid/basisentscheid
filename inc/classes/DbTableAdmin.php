@@ -578,7 +578,7 @@ class DbTableAdmin {
 			// if NULL is allowed, save empty input as NULL
 			if ( !empty($column['null']) and !$content ) $content = null;
 
-			$object->$column[0] = $content;
+			$object->{$column[0]} = $content;
 
 			// per column beforesave method
 			$save_column = true;
@@ -592,7 +592,7 @@ class DbTableAdmin {
 				}
 				$return = $callee->$method(
 					// parameters for column beforesave methods:
-					$object->$column[0], // content
+					$object->{$column[0]}, // content
 					$column,             // column description (array)
 					$msg_prefix          // prefix to show at direct edit
 				);
@@ -639,6 +639,7 @@ class DbTableAdmin {
 	 */
 	public function display() {
 ?>
+<div class="bg_white">
 <div id="dbtableadmin">
 <?
 
@@ -657,6 +658,7 @@ class DbTableAdmin {
 		}
 
 ?>
+</div>
 </div>
 <?
 	}
@@ -728,6 +730,7 @@ class DbTableAdmin {
 		}
 
 ?>
+<div id="doublescroll">
 <table id="dbtableadmin_list">
 <?
 		$this->display_list_thead($show_edit_column);
@@ -739,6 +742,7 @@ class DbTableAdmin {
 		}
 ?>
 </table>
+</div>
 <?
 
 		if ($show_form) form_end();
@@ -832,7 +836,7 @@ class DbTableAdmin {
 				if (method_exists($this, $method)) {
 					$this->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$object,                               // 2 object
 						$column,                               // 3 column description (array)
 						$line,                                 // 4 line number (starting at 0)
@@ -842,7 +846,7 @@ class DbTableAdmin {
 					$method = "dbtableadmin_".$method;
 					$object->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$column,                               // 2 column description (array)
 						$line,                                 // 3 line number (starting at 0)
 						$linescount                            // 4 count of lines selected in the database
@@ -860,7 +864,7 @@ class DbTableAdmin {
 				// edit
 				if ($this->enable_edit) {
 ?>
-			<a href="<?=URI::append(['id'=>$object->id])?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+			<a href="<?=URI::append(['id'=>$object->id])?>" class="iconlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" <?alt(_("edit"))?>></a>
 <?
 				}
 				// duplicate
@@ -961,7 +965,7 @@ class DbTableAdmin {
 
 		if ($this->enable_delete_single) {
 ?>
-			<img src="img/delete.png" width="21" height="16" class="iconbutton" <?alt(_("delete"))?> onclick="return submit_delete_button(<?=$object->id?>);">
+			<img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAPCAQAAACYNP27AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMAzOL47XcAAAA3klEQVQY0y3KTSsEYQAA4OedndXutNi2/WAlBylKyU25UX6Bmx/l5KeJOMiFcJhmd3bIrHkdeM4PPX0hsuPKiRBFUerCsXl4M7Rrz50CgqFdW0YGhroKL17dhuhPWNG3asPUnvvg0JHgxxK1qKXjIXXg1JcViU9d1Nqylqm+G5sy1/blbmx7T7wLohKVaKHSViQKjVUzUSqo9GTyxEIjM0ciKnUEZeLrfzcCcpmgStQW1s19CxqlnkaZWMr11SqNWmFNpUrjT/hwZmTs0ti5gWd1iiffJmamShMtj7H+BRQOU4sQ0A+cAAAAAElFTkSuQmCC" class="iconbutton" <?alt(_("delete"))?> onclick="return submit_delete_button(<?=$object->id?>);">
 <?
 		}
 		if ($this->enable_delete_checked) {
@@ -1073,7 +1077,7 @@ function submit_delete_checked() {
 		}
 
 ?>
-<div class="buttons th"><span class="cancel"><a href="<?=URI::strip(['id'])?>"><?=_("cancel")?></a></span><span class="input"><input type="submit" value="<?=_("save")?>"></span></div>
+<div class="buttons th"><span class="cancel"><a class="orange_but first" href="<?=URI::strip(['id'])?>"><?=_("cancel")?></a></span><span class="input wid"><input type="submit" class="orange_but" value="<?=_("save")?>"></span></div>
 </fieldset>
 <input type="hidden" name="action" value="editsubmit">
 <?
@@ -1112,7 +1116,7 @@ function submit_delete_checked() {
 				$callee->$method(
 					// parameters for edit functions:
 					$column[0],                  // 1 column/attribute name
-					$this->object->$column[0],   // 2 default
+					$this->object->{$column[0]},   // 2 default
 					$this->object->id,           // 3 ID
 					!empty($column['disabled']), // 4 disabled (not editable)
 					$column                      // 5 (array) column description
@@ -1132,7 +1136,7 @@ function submit_delete_checked() {
 	 */
 	protected function display_add_record() {
 ?>
-<div class="add_record"><a href="<?=URI::append(['id'=>0])?>" class="icontextlink"><img src="img/plus.png" width="16" height="16" alt="<?=_("plus")?>"><?=$this->msg_add_record?></a></div>
+<div class="add_record"><a href="<?=URI::append(['id'=>0])?>" class="icontextlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABDlBMVEX/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/kwD/mw//sWH+/v7/zZ//2rr/q03/5tIAAABbgI6WAAAAUXRSTlMAHTxEORUzm+bdjiMgpv75khJI7+EwTvrwMiz15RYDzahbNMmi8VgxflWJZoVdajj9EwTqxoxlGfPfBm/8RwGkdauHAnn4JJ727o0OUKWqRgdR4XveAAAAAWJLR0RZmrL0GAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+ECCQwIH1rPAPQAAADlSURBVCjPY2CAA0YmZhZWBgzAxs4RCAKcXNwo4jy8fIEwwC8giJAQEg5EBiKiMAkx8UBUICEJkZCSDkQHMrIgCTn5QEygAJJRhHODgoODYGwloIwyXCY4JCQYxlYB+i8Qq4yqHIMadplAdQYNKCs0NDQsJCQMSEH4mgxaUJkQOIDwtRl0cMjoMujhsIeZQR+7jIEhg5ExVhkToE9N4TLhERHhMLYZUMbcAku4WVqBAs4aU8LGFhwLdvYYMg7QmLNyRJNwgse2s4srkriwInIScXP3gIp7eqGnLG8fHV8/FQ3/AJgAAGjHj47rKTKwAAAAAElFTkSuQmCC" alt="<?=_("plus")?>"><?=$this->msg_add_record?></a></div>
 <?
 	}
 

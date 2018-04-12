@@ -60,7 +60,7 @@ class Member extends Relation {
 	 *
 	 * @return boolean
 	 */
-	public function create() {
+	public function create($fields = false, $extra=array()) {
 
 		$fields_values = array(
 			'eligible' => $this->eligible,

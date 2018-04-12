@@ -1018,9 +1018,9 @@ class Issue extends Relation {
 				AND period=".intval($this->period)."
 				AND generated=TRUE";
 		if ( DB::fetchfield($sql) ) {
-			?><br><span title="<?=_("You have already generated an envelope. Open the envelope in your browser to vote.")?>"><?=_("envelope")?> &#10003;</span><?
+			?><br><span class="already_icn" title="<?=_("You have already generated an envelope. Open the envelope in your browser to vote.")?>"><?=_("envelope")?> <i>&#10003;</i></span><?
 		} else {
-			?><br><a href="vote_vvvote.php?period=<?=$this->period?>"><?=_("envelope")?></a><br><span class="stateinfo"><?
+			?><br><a class="period_link" href="vote_vvvote.php?period=<?=$this->period?>"><?=_("envelope")?></a><br><span class="stateinfo"><?
 			printf(
 				_("until %s"),
 				'<span class="datetime">'.datetimeformat_smart($this->period()->vvvote_last_reg).'</span>'
@@ -1096,7 +1096,7 @@ class Issue extends Relation {
 			}
 			?>"><?
 			if (!$selected_proposal) { ?><a href="<?=$link?>#issue"><? }
-			?><img src="img/votingmode_20.png" width="75" height="20" alt="<?=_("determination if online or offline voting")?>" class="vmiddle"><?
+			?><img src="data:img/png;base64,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" alt="<?=_("determination if online or offline voting")?>" class="vmiddle"><?
 			if (!$selected_proposal) { ?></a><? }
 			if ($votingmode_demanded) { ?>&#10003;<? }
 			if ($selected_proposal) {
@@ -1105,12 +1105,12 @@ class Issue extends Relation {
 				if ($votingmode_demanded) {
 					echo _("You demand offline voting.")?>
 <input type="hidden" name="action" value="revoke_votingmode">
-<input type="submit" value="<?=_("Revoke")?>"<?=$disabled?>>
+<input type="submit" class="orange_but first" value="<?=_("Revoke")?>"<?=$disabled?>>
 <?
 				} else {
 ?>
 <input type="hidden" name="action" value="demand_votingmode">
-<input type="submit" value="<?=_("Demand offline voting")?>"<?=$disabled?>>
+<input type="submit" class="orange_but first" value="<?=_("Demand offline voting")?>"<?=$disabled?>>
 <?
 				}
 				form_end();
@@ -1121,9 +1121,9 @@ class Issue extends Relation {
 			} else {
 				?> class="votingmode link" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'"<?
 			}
-			?> title="<?=_("offline voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/offline_voting_30.png" width="37" height="30" alt="<?=_("offline voting")?>" class="vmiddle"></a><?
+			?> title="<?=_("offline voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAcCAMAAACqEUSYAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACJVBMVEX///8AAAD/jjYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/jjb/jjYAAAAAAAD/jjb/jjb/jjYAAAAAAAAAAAD/jjb/jjYAAAAAAAAAAAD/jjb/jjb/jjb/jjYAAAAAAAD/jjb/jjYAAAAAAAAAAAD/jjb/jjb/jjYAAAAAAAAAAAD/jjb/jjYAAAAAAAD/jjb/jjb/jjYAAAAAAAAAAAD/jjb/jjYAAAAAAAAAAAD/jjb/jjYAAAAAAAD/jjYAAAAAAAD/jjb/jzf/jjYAAAAAAAAAAAD/jjb/jjb/m1H/jjYAAAAAAAD/jjb/jjb/jjb/jjYAAAD/jjb/lkUAAAAAAAD/jjb/jjb/jjYAAAAAAAD/jjb/kj3/kTwCAAAAAAD/jjY0FAMAAAD/jjb/k0AAAAAAAAD/jjZTJw3/jjb/jjb/jjb/jjb/kDn/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/3cT///////////////7/0rH/kj8AAAD/jjb/x6D/t4L/+PT/59b/2b3/////9Oz/nlb/rW7/pWL/0K7//Pr///7/lEL/u4n/oVv/zan/4Mn/nlX/qWj/v5D/6dn/nVT/7N3/sXj/p2T/p2f/xJj/yqX/7+T/8ej/jzj//v1YMhv/wpU1MS7/xZv/y6X/yKH/wZT/tH3/pGD/vY5DQD/9mmH/+fX/4cv/xp7/59T/nlSWSh4TAAAAg3RSTlMAAAAaz2kNk9UE6a8JbUhaXPUbn/ULtaUI8agD8/5MVE4o8K7tBkfsRQ/4mWRNYEF13QG65QJ7jxj8jXpRbzMgx9hI8Pki/oAKlP7leycz1vcQzHn6MHIhxFeH/WDx7s2/hO9XKvaLAWz9LrevGeybDf3o29jc5Ovt8vgCHigwOTgzMt9mna8AAAABYktHRAH/Ai3eAAAACXBIWXMAAAsSAAALEgHS3X78AAAAB3RJTUUH4QIJDAUrztWKDAAAAaJJREFUKM910vk7VFEYB/B7rGMJkXUmmlS0EIM22VKh7CqhUIRsZYrRQul9s5xWRSSGkC17+Pt678xcd+5lvj/c5znv5znf89xzryDsCbPG2cXVTXCo7gAah+rhCeBlWTtJ8T5AD6v6AICvUv0O+ksaAHAoUKlBGGzTkFCAMKZQrQ4Ph1s1goqPKFWPiEf1Fo0EOHZcqSdIMSqa8OQpgNNMqWdExRjSWCo+q9I4EeMNpAkAiUkqPSfqecILFwEuMZUmi3qZpilUnLqvptE0HSCDqfRKJuFVOvbadYAspWbn3HhPepNuI5eK8xSaX9Db109aWMSYBqCY2am25NYA5x9IPwaz27T1jp2W3v30+ctXPvgN8ftQWTlAhbOs9+4P/0AcGRgcRfw5VlkFUM129cGvcT4hvox5EnGK/34IUCNr7aPpmVm0ZYr/mYO6elmFBvM8ysoXHjcyOzU0mReX/i6vrFLDGufrG82SWm6ipbWfi9n8t7XEt3eePJUUHcembTrjs+ftHaYok7Hzxcs2SeUv8KrldVf3m7c97/wNu3+oIPwHIwKkUTy87QcAAAAASUVORK5CYII=" alt="<?=_("offline voting")?>" class="vmiddle"></a><?
 		} elseif ($this->state!="entry") {
-			?> class="votingmode link" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="img/online_voting_30.png" width="24" height="30" alt="<?=_("online voting")?>" class="vmiddle"></a><?
+			?> class="votingmode link" onClick="location.href='votingmode_result.php?issue=<?=$this->id?>'" title="<?=_("online voting")?>"><a href="votingmode_result.php?issue=<?=$this->id?>"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAMAAABrN94UAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABIFBMVEX/jjb///8AAAD/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjb/jjYAAAD/jjb/jjb/jjb/jjYAAAAAAAD/jjb/jjb/jjb/jjYAAAAAAAD/jjb/jjb/jjb/jjb/jjYAAAAAAAD/jjb/jjb/jjb/jjb/jjb/jjYAAAD/jjb/jjb/jjb/jjYAAAD/jjb/jjb/jjb/jjYAAAAAAAD/jjYAAAAAAAAAAAAAAAAAAAD/jjb/jjYAAAAAAAAAAAAAAAD/jjb/jjYAAAAAAAAAAAAAAAD/jjYAAAAAAAAAAAAAAAAAAAD/jjYAAABYwUI3AAAAXnRSTlMAAAAQB46XFciAGdhuD9JdArhqe4gw+swFz0sLJnKUBGJK38Xv+DUYqEaR4hVkxBv3lr8DJaxEi7cDjlvzydlZKNv2LvUvZ/n2e3BnEwH+W6GDHONqS98CbwXtQZFjkVkKvwAAAAFiS0dEAmYLfGQAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMBBvxF4vhAAAA8ElEQVQoz23Q11YCMRAG4GFUEBQsKFhAQOwKYgGRIkW6HQuIkH3/t3AyCXtBdi6yJ/+3Sc4MgFFz4KIy4vkFtyN4FoXXCXxLQiw7gD8ghFgxYXWNcrFuQlDmYsOAzRBDeBa2tlW+g7I42o3INcr5XixuQ2I/KTs4kHkQ8fBIwfEJ7U8BzmTuBUTr/EJCin9Mw2WGPlcgwbq+IbjN8tW5O1ry9wqsAr9RLFFWpoMPftBgVfjxao0P1R/BhkZTjZQ7aIGGdqfbe1K9PdPw8i8aXt/eP3SDAP3PUh80fOH3zwDtOQ1hCoi/oz+E2eJ5jCf4D5zmMziT9LzLAAAAAElFTkSuQmCC" alt="<?=_("online voting")?>" class="vmiddle"></a><?
 		} else {
 			?>><?
 		}
@@ -1287,7 +1287,7 @@ class Issue extends Relation {
 	 */
 	private function display_edit_period() {
 
-		$options =& $this->available_periods();
+		$options = $this->available_periods();
 
 		if (@$_GET['edit_period']==$this->id and is_array($options) and $options) {
 			form(URI::strip(['edit_period'])."#issue".$this->id);
@@ -1296,7 +1296,7 @@ class Issue extends Relation {
 			input_hidden("issue", $this->id);
 			input_hidden("action", "select_period");
 ?>
-<input type="submit" value="<?=_("apply")?>">
+<input type="submit" class="orange_but first mar_t_b" value="<?=_("apply")?>">
 <?
 			form_end();
 		} else {
@@ -1305,10 +1305,10 @@ class Issue extends Relation {
 			}
 			if (!$options) return;
 			if (is_string($options)) {
-				?><span class="iconlink disabled"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=$options?>"></span><?
+				?><span class="iconlink disabled"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" alt="<?=_("edit")?>" title="<?=$options?>"></span><?
 				return;
 			}
-			?><a href="<?=URI::append(['edit_period'=>$this->id])?>#issue<?=$this->id?>" class="iconlink"><img src="img/edit.png" width="16" height="16" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
+			?><a href="<?=URI::append(['edit_period'=>$this->id])?>#issue<?=$this->id?>" class="iconlink"><img src="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" alt="<?=_("edit")?>" title="<?=_("select voting period")?>"></a><?
 		}
 
 	}

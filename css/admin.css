@@ -1,10 +1,19 @@
 
 body,
 nav ul.admin li a {
-	background-color: #FEE;
+	background-color: rgba(243, 146, 0, 0.18);
 }
 
 #user span.admin {
 	font-weight: bold;
 }
+
+input[type="radio"], input[type="checkbox"]{
+	float: left;
+}
+
+input, textarea, select{
+	    border: 1px solid #e8e8e8;
+}
+
 

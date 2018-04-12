@@ -15,7 +15,7 @@
 // available Languages
 $languages = array(
 	'en' => "en_GB.utf8",
-	'de' => "de_DE.utf8"
+	'DE' => "de_DE.utf8"
 );
 
 // activate language

@@ -65,7 +65,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				if (method_exists($this, $method)) {
 					$this->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$object,                               // 2 object
 						$column,                               // 3 column description (array)
 						$line,                                 // 4 line number (starting at 0)
@@ -75,7 +75,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 					$method = "dbtableadmin_".$method;
 					$object->$method(
 						// parameters for print methods:
-						($column[0]?$object->$column[0]:null), // 1 content
+						($column[0]?$object->{$column[0]}:null), // 1 content
 						$column,                               // 2 column description (array)
 						$line,                                 // 3 line number (starting at 0)
 						$linescount                            // 4 count of lines selected in the database
@@ -93,7 +93,7 @@ class DbTableAdmin_Period extends DbTableAdmin {
 				// edit
 				if ($this->enable_edit) {
 ?>
-			<a href="<?=URI::append(['id'=>$object->id])?>" class="iconlink"><img src="img/edit.png" width="16" height="16" <?alt(_("edit"))?>></a>
+			<a href="<?=URI::append(['id'=>$object->id])?>" class="iconlink"><img src="img/data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfhAgkMCSYc0bm9AAAAO0lEQVQY083IMRGAMBAAsIzUBSKokBrFQ81wx/YOnr1fAWQM1WU6dx3SXLsLKfS/9uHdNUN6anMbWu0P2jUhgcbH0ewAAAAASUVORK5CYII=" width="16" height="16" <?alt(_("edit"))?>></a>
 <?
 				}
 				// duplicate

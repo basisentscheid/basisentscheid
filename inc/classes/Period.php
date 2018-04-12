@@ -362,7 +362,7 @@ class Period extends Relation {
 			// election ID is already used
 			if ( isset($result['cmd']) and $result['cmd'] == "error" and isset($result['errorNo']) and $result['errorNo'] == 2120 ) {
 				if (!$this->vvvote_configurl) {
-					trigger_error("Vvvote server says, election ID is already used, but no configUrl has been saved. ElectionId: " . $post['electionId'] . ', Server: ' . $server, E_USER_WARNING);
+					trigger_error("Server says, election ID is already used, but no configUrl has been saved", E_USER_WARNING);
 					return;
 				}
 				continue;

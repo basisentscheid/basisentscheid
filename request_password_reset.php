@@ -80,12 +80,12 @@ if ($show_form) {
 <p><?=_("Please enter your login name! You will receive an email with a link to reset your password. Note that the login name is case sensitive!")?></p>
 <?
 
-	form(BN, 'class="login"');
+	form(BN, 'class="login log_pg"');
 	input_hidden("action", "request_password_reset");
 ?>
 <fieldset>
 	<label class="td0"><span class="label"><?=_("Username")?>:</span><span class="input"><input type="text" name="username" size="32" maxlength="32"></span></label>
-	<label class="th"><span class="label"></span><span class="input"><input type="submit" value="<?=_("Request password reset")?>"></span></label>
+	<label class="th req_pas"><span class="label"></span><span class="input"><input type="submit" value="<?=_("Request password reset")?>"></span></label>
 </fieldset>
 <?
 	form_end();

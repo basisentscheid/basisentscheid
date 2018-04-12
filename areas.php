@@ -38,6 +38,7 @@ html_head(_("Subject areas"), true);
 $entitled = ( Login::$member and Login::$member->entitled($ngroup->id) );
 
 ?>
+<div class="bg_white">
 <table>
 	<tr>
 		<th><?=_("Name")?></th>
@@ -83,7 +84,7 @@ while ($row = DB::fetch_assoc($result)) {
 ?>
 <input type="hidden" name="area" value="<?=$row['id']?>">
 <input type="hidden" name="action" value="subscribe">
-<input type="submit" value="<?=$row['activated']?_("subscribe anew"):_("subscribe")?>">
+<input type="submit" title="Für die kommenden zwei Abstimmungsperioden anmelden" value="<?=$row['activated']?_("subscribe anew"):_("subscribe")?>">
 <?
 		form_end();
 ?>
@@ -96,7 +97,8 @@ while ($row = DB::fetch_assoc($result)) {
 
 ?>
 </table>
-
+<? print "<br>aktuelle Mitgliederanzahl: " . count_members(); ?>
+</div>
 <?
 
 

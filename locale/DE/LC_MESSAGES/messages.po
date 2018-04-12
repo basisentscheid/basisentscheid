@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basisentscheid\n"
-"POT-Creation-Date: 2017-01-23 12:52+0100\n"
-"PO-Revision-Date: 2017-01-23 12:54+0100\n"
+"POT-Creation-Date: 2017-01-14 00:09+0100\n"
+"PO-Revision-Date: 2017-01-25 15:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.8\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -254,15 +254,15 @@ msgstr "zuletzt aktiviert"
 
 #: areas.php:78
 msgid "unsubscribe"
-msgstr "abmelden"
+msgstr "Abmelden"
 
 #: areas.php:86
 msgid "subscribe anew"
-msgstr "erneut anmelden"
+msgstr "Anmeldedauer verlängern"
 
 #: areas.php:86
 msgid "subscribe"
-msgstr "anmelden"
+msgstr "Anmelden"
 
 #: ballot_edit.php:17
 msgid "This ballot does not exist!"
@@ -2262,11 +2262,11 @@ msgstr "angemeldet als Verantwortlicher %s"
 
 #: inc/functions_http.php:285
 msgid "Log out"
-msgstr "abmelden"
+msgstr "Abmelden"
 
 #: inc/functions_http.php:292
 msgid "Log in"
-msgstr "anmelden"
+msgstr "Anmelden"
 
 #: inc/functions_http.php:307
 msgid "Account"
@@ -2298,7 +2298,7 @@ msgstr "Hilfe ausblenden"
 
 #: inc/functions_http.php:741
 msgid "show help"
-msgstr "Hilfe zeigen"
+msgstr "Hilfe anzeigen"
 
 #: index.php:16
 msgid "Recently interesting issues"
@@ -2374,7 +2374,7 @@ msgstr "Debatte ab"
 
 #: periods.php:20 periods.php:34
 msgid "Voting preparation from"
-msgstr "Abstimmungsvorbereitung ab"
+msgstr "Abstimmungs-vorbereitung ab"
 
 #: periods.php:21 periods.php:35
 msgid "Online voting from"

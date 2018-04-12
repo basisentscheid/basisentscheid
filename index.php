@@ -39,7 +39,7 @@ if (Ngroup::$active_ngroups) {
 		/** @var $issue Issue */
 		list($proposals, $submitted) = $issue->proposals_list();
 ?>
-	<tr class="issue_separator"><td colspan="6"></td></tr>
+	<!-- <tr class="issue_separator"><td colspan="6"></td></tr> -->
 <?
 		$issue->display_proposals($proposals, $submitted, count($proposals), false, 0, [], true);
 	}
@@ -47,7 +47,10 @@ if (Ngroup::$active_ngroups) {
 ?>
 </table>
 </section>
-
+</div>
+</div>
+<div class="row">
+<div class="col-md-5">
 <section class="dates">
 	<h2><?=_("Upcoming dates")?></h2>
 	<table>
@@ -100,7 +103,8 @@ if (Ngroup::$active_ngroups) {
 ?>
 	</table>
 </section>
-
+</div>
+<div class="col-md-7">
 <section class="ngroups">
 <h2 id="ngroups"><?=_("Groups")?></h2>
 <table>
@@ -157,6 +161,8 @@ foreach ($ngroups as $ngroup) {
 </section>
 
 <div class="clearfix"></div>
+</div>
+</div>
 <?
 
 html_foot();

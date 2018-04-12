@@ -72,10 +72,9 @@ Issue::display_proposals_th(true, count($proposals) > 1);
 $issue->display_proposals($proposals, $submitted, count($proposals), true);
 ?>
 	<tr>
-		<td></td>
 		<td colspan="<?
 if (count($proposals) > 1) echo 4; else echo 3;
-?>" class="th"><input type="submit" value="<?=_("Submit voting result")?>"></td>
+?>"><input type="submit"  class="orange_but first" value="<?=_("Submit voting result")?>"></td>
 	</tr>
 </table>
 <?

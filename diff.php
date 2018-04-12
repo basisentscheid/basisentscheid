@@ -33,7 +33,7 @@ if (!$is_proponent and !Login::$admin) {
 }
 
 
-html_head( sprintf(_("<a%s>Proposal %d</a>, version differences"), ' href="proposal.php?id='.$proposal->id.'"', $proposal->id) );
+html_head( sprintf(_("Proposal %d, version differences"), $proposal->id) );
 
 ?>
 
